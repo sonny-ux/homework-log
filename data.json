@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T08:18:45+00:00",
+ "updated": "2026-11-03T08:19:17+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -406,7 +406,7 @@
    "end_min": 960,
    "minutes": 19,
    "in_progress": false,
-   "topic": "Physics review, Ch. 3 notes: what the damping rate γ is; how amplitude decays.",
+   "topic": "Physics study, your Ch. 3 notes: what the damping rate γ is; how amplitude decays.",
    "refs": []
   },
   {
@@ -496,7 +496,7 @@
    "end_min": 165,
    "minutes": 61,
    "in_progress": false,
-   "topic": "Physics PS6 background: why waves move (x − vt), phase, wave speed, sine and cosine.",
+   "topic": "Physics study, Waves Guide: why waves move (x − vt), phase, wave speed, sine and cosine.",
    "refs": [
     "problem set 6",
     "problem set"
