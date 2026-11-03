@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "84a3b22c01";
+var APP_BUILD = "bda2d06f22";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2128,7 +2128,7 @@ function drawPastry(ctx, W, H, t){
   // side view, crowded and warm: a long glass counter heaped with pastries on the left, menus and shelves behind, a rainbow
   // painting; then tables packed close running right under droopy lamps and bright speckled prints, a red wainscot, and at
   // the far back right the sliding bathroom door to a yellow room. Norm types, gets up, goes to the back, and returns.
-  var P = Math.max(W + 60, 320), wallB = Math.round(H*0.62), backY = Math.round(H*0.73), frontY = Math.round(H*0.9);
+  var P = Math.max(W + 60, 300), wallB = Math.round(H*0.66), backY = Math.round(H*0.76), frontY = Math.round(H*0.92);
   var cw = 128, dX = P - 30, seatX = Math.round(cw + (dX - cw)*0.52);
   var c = t % 64, nx, ny, nmode = 'sit', ndir = 1, door = 0, inside = false;
   if (c < 26){ nx = seatX; ny = frontY; }
@@ -2146,7 +2146,7 @@ function drawPastry(ctx, W, H, t){
   function R(x, y, w, h, col){ ctx.fillStyle = col; ctx.fillRect(x, y, w, h); }
   // warm walls, a red wainscot, the floor
   R(0, 0, P, wallB, '#f2e2c4'); for (var k = 0; k < 90; k++) R((k*37) % P, (k*23) % wallB, 2, 1, 'rgba(160,120,70,.08)');
-  var DY = 26; for (var y = 0; y < DY; y++) R(0, y, P, 1, y < 8 ? '#cdb48a' : y < 18 ? '#dcc49c' : '#e6d0a8'); R(0, DY, P, 2, '#d6bf96'); R(0, DY + 2, P, 1, '#c9ae82'); for (var x = 40; x < P; x += 70) R(x, 0, 3, DY, '#c9ae82');
+  var DY = 16; for (var y = 0; y < DY; y++) R(0, y, P, 1, y < 8 ? '#cdb48a' : y < 18 ? '#dcc49c' : '#e6d0a8'); R(0, DY, P, 2, '#d6bf96'); R(0, DY + 2, P, 1, '#c9ae82'); for (var x = 40; x < P; x += 70) R(x, 0, 3, DY, '#c9ae82');
   R(cw, wallB - 16, P - cw, 16, '#9a2a24'); R(cw, wallB - 17, P - cw, 1, '#e8d4b0'); R(cw, wallB - 1, P - cw, 1, '#6a1e1a');
   for (var y = wallB; y < H; y++) R(0, y, P, 1, (Math.floor((y - wallB)/5) % 2) ? '#7a5032' : '#6e482c');
   for (var y = wallB; y < H; y += 5) for (var x = ((y - wallB)/5 % 2) ? 0 : 12; x < P; x += 24) R(x, y, 1, 5, '#5a3820');
@@ -2192,8 +2192,8 @@ function drawPastry(ctx, W, H, t){
   function table(x, y){ R(x - 7, y - 16, 15, 2, '#3a2214'); R(x - 7, y - 14, 15, 1, '#2a1a10'); R(x, y - 13, 1, 13, '#2a1a10'); R(x - 3, y - 1, 7, 1, '#2a1a10'); }
   var looks = [['bob','#151218','#8a2a2a',3],['cap','#151218','#8a6a5a',0],['long','#241a14','#3d6a4a',1],['short','#c9c3b6','#2f4a6a',0],['long','#e9c45a','#f3e8d4',0],['short','#151218','#151218',2],['long','#5a3a24','#c9b89a',3],['messy','#241a14','#5a6a4a',1],['bob','#e8e4dc','#e8a0b4',0],['short','#3b2a20','#3a3a48',2],['long','#151218','#e8e4dc',1],['beanie','#c4473a','#2a2a32',0]];
   var bk = [], fr = [];
-  for (var x = cw + 16, i = 0; x < dX - 8; x += 26, i++) bk.push(x);
-  for (var x = cw + 10, i = 0; x < dX - 12; x += 28, i++) if (Math.abs(x - seatX) > 18) fr.push(x);
+  for (var x = cw + 22, i = 0; x < dX - 14; x += 42, i++) bk.push(x);
+  for (var x = cw + 14, i = 0; x < dX - 16; x += 46, i++) if (Math.abs(x - seatX) > 26) fr.push(x);
   function pair(x, y, i){ table(x, y); [-1, 1].forEach(function(sd, j){ var L = looks[(i*2 + j) % looks.length]; stPerson(ctx, {sit: 1, nocup: 1, v: 0, dir: -sd, ph: i + j, hair: L[0], hc: L[1], jacket: L[2], skin: L[3], pants: '#2a2a32', glasses: (i + j) % 4 === 0}, x + sd*8, y, t); });
     R(x - 3, y - 18, 3, 2, '#f3efe6'); if (i % 2) R(x + 1, y - 19, 4, 3, 'rgba(160,200,255,.7)'); else R(x + 1, y - 19, 2, 3, 'rgba(220,235,245,.7)'); }
   bk.forEach(function(x, i){ pair(x, backY, i); });
@@ -2251,7 +2251,7 @@ VIG.static = function(ctx, W, H){ for (var y = 0; y < H; y++) for (var x = 0; x 
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 190 : sc === 'anime' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
