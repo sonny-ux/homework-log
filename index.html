@@ -1110,7 +1110,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "fa4da9cb99";
+var APP_BUILD = "9399957f84";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1528,11 +1528,12 @@ function todayColour(){
 }
 function drawSkyline(ctx, W, H, t, st){
   var P = st.P, shore = st.shore, oa = Math.max(0, Math.round(P*0.40 - W*0.5)), ob = Math.min(P - W, Math.round(P*0.80 - W*0.5)), off = Math.round(oa + (ob - oa)*(1 - Math.cos(t*0.025))/2);
-  function R(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x - off, y, w, h); }
-  var sky = ['#070a1e','#0c1030','#141640','#221a4c','#3a2257','#5a2c5e'];
+  var DAY = isDay(); function R(x, y, w, h, c){ ctx.fillStyle = DAY ? dayC(c) : c; ctx.fillRect(x - off, y, w, h); }
+  var sky = isDay() ? ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#070a1e','#0c1030','#141640','#221a4c','#3a2257','#5a2c5e'];
   for (var y = 0; y < shore; y++){ var f = y/shore*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
-  for (var k = 0; k < 40; k++){ var sx = ((k*97) % P) - off*0.3, sy = (k*41) % Math.round(H*0.3); if (sx < 0 || sx > W) continue; if (Math.sin(t*1.5 + k*2.1) > -.3){ ctx.fillStyle = k % 5 ? '#9aa9c8' : '#ffffff'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
-  var mx = Math.round(W*0.8), my = Math.round(H*0.12); for (var y = -5; y <= 5; y++) for (var x = -5; x <= 5; x++){ var d = x*x + y*y; if (d <= 25 && (x + 2)*(x + 2) + (y - 1)*(y - 1) > 14){ ctx.fillStyle = '#f6efdf'; ctx.fillRect(mx + x, my + y, 1, 1); } }
+  if (isDay()){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 9, 2); } daySun(ctx, Math.round(W*0.8), Math.round(H*0.12)); }
+  for (var k = 0; k < 40; k++){ var sx = ((k*97) % P) - off*0.3, sy = (k*41) % Math.round(H*0.3); if (sx < 0 || sx > W) continue; if (!isDay() && Math.sin(t*1.5 + k*2.1) > -.3){ ctx.fillStyle = k % 5 ? '#9aa9c8' : '#ffffff'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
+  var mx = Math.round(W*0.8), my = Math.round(H*0.12); if (!isDay()) for (var y = -5; y <= 5; y++) for (var x = -5; x <= 5; x++){ var d = x*x + y*y; if (d <= 25 && (x + 2)*(x + 2) + (y - 1)*(y - 1) > 14){ ctx.fillStyle = '#f6efdf'; ctx.fillRect(mx + x, my + y, 1, 1); } }
   var px = ((t*6) % (W + 40)) - 20, py = Math.round(H*0.18); ctx.fillStyle = Math.floor(t*2) % 2 ? '#ff5a4e' : '#ffffff'; ctx.fillRect(Math.round(px), py, 1, 1);
   // back layer, then the main skyline
   st.back.forEach(function(b, i){ var top = shore - b.h - 20; R(b.x, top, b.w, b.h + 20, '#1c1b45'); for (var y = top + 3; y < shore; y += 4) if (Math.sin(b.x*3 + y + i) > .7) R(b.x + 2, y, 1, 1, '#6a5a7a'); });
@@ -1558,13 +1559,13 @@ function drawSkyline(ctx, W, H, t, st){
   var wx = Math.round(P*0.82); for (var y = 0; y < 104; y++){ var hw = Math.round(2 + y*0.07); R(wx - hw, shore - 104 + y, hw*2 + 1, 1, '#2c3a5e'); if (y % 3 === 0) R(wx - hw + ((y*3) % (hw*2 + 1)), shore - 104 + y, 1, 1, '#9fc0ff'); }
   R(wx, shore - 124, 1, 20, '#b9c0cc'); if (Math.floor(t*1.5) % 2) R(wx, shore - 125, 1, 1, '#ff5a4e');
   // shoreline lights
-  for (var x = 0; x < W; x += 3){ ctx.fillStyle = Math.sin(x*0.7 + t*2) > 0 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, shore - 1, 1, 1); }
+  if (!isDay()) for (var x = 0; x < W; x += 3){ ctx.fillStyle = Math.sin(x*0.7 + t*2) > 0 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, shore - 1, 1, 1); }
   // river: dark bands with the lit windows broken into moving reflections
-  for (var y = shore; y < H; y++){ ctx.fillStyle = y < shore + 6 ? '#121534' : y < shore + 20 ? '#0e112a' : '#0a0c20'; ctx.fillRect(0, y, W, 1); }
+  for (var y = shore; y < H; y++){ ctx.fillStyle = isDay() ? (y < shore + 6 ? '#6a9ac4' : y < shore + 20 ? '#5a8ab8' : '#4a7aaa') : (y < shore + 6 ? '#121534' : y < shore + 20 ? '#0e112a' : '#0a0c20'); ctx.fillRect(0, y, W, 1); }
   for (var y = shore + 1; y < H; y += 2){ var d = y - shore, src = shore - d*1.4;
     for (var x = 0; x < W; x += 2){ var sx = x + Math.round(Math.sin(y*0.55 + t*1.8)*(1 + d*0.06)), q = Math.sin((sx + off)*12.9898 + Math.round(src)*78.233)*43758.5453, r = q - Math.floor(q);
-      if (r > .8 && Math.sin(t*2 + x*0.3 + y) > 0){ ctx.globalAlpha = Math.max(.1, .6 - d/(H - shore)); ctx.fillStyle = r > .93 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, y, 2, 1); ctx.globalAlpha = 1; } } }
-  var ecx = ex - off; for (var y = shore + 2; y < H; y += 2){ ctx.globalAlpha = .35; ctx.fillStyle = cc; ctx.fillRect(Math.round(ecx - 1 + Math.sin(y*0.6 + t*2)*2), y, 3, 1); ctx.globalAlpha = 1; }
+      if (r > .8 && Math.sin(t*2 + x*0.3 + y) > 0){ ctx.globalAlpha = Math.max(.1, .6 - d/(H - shore)); ctx.fillStyle = isDay() ? (r > .93 ? '#ffffff' : '#b8d8ee') : (r > .93 ? '#ffe7a1' : '#c9a35a'); ctx.fillRect(x, y, 2, 1); ctx.globalAlpha = 1; } } }
+  var ecx = ex - off; if (!isDay()) for (var y = shore + 2; y < H; y += 2){ ctx.globalAlpha = .35; ctx.fillStyle = cc; ctx.fillRect(Math.round(ecx - 1 + Math.sin(y*0.6 + t*2)*2), y, 3, 1); ctx.globalAlpha = 1; }
   // an orange ferry crossing, its windows lit, a wake behind it
   var fx = Math.round(((t*5) % (W + 70)) - 35), fy = shore + 14;
   ctx.fillStyle = 'rgba(200,210,230,.35)'; for (var k = 1; k < 14; k++) if ((k + Math.floor(t*4)) % 3) ctx.fillRect(fx - k*2, fy + 3 + (k % 2), 2, 1);
@@ -1584,7 +1585,7 @@ function drawSkyline(ctx, W, H, t, st){
   ctx.fillStyle = '#9fc0ff'; ctx.fillRect(hx - 3, hy + 1, 2, 1);
   var rot = Math.floor(t*12) % 2; ctx.fillStyle = '#b9bcd0'; ctx.fillRect(rot ? hx - 6 : hx - 3, hy - 1, rot ? 12 : 6, 1); ctx.fillRect(hx, hy - 2, 1, 1);
   if (Math.floor(t*2.5) % 2){ ctx.fillStyle = '#ff5a4e'; ctx.fillRect(hx + 8, hy - 1, 1, 1); }
-  ctx.globalCompositeOperation = 'lighter'; var bx = Math.sin(t*0.4)*14;
+  ctx.globalCompositeOperation = isDay() ? 'destination-over' : 'lighter'; var bx = Math.sin(t*0.4)*14;
   for (var d = 2; d < 40; d++){ var cx2 = hx + Math.round(bx*d/40), w = 1 + Math.round(d*0.18); ctx.fillStyle = 'rgba(110,100,60,' + (0.28*(1 - d/40)) + ')'; ctx.fillRect(cx2 - w, hy + 3 + d, w*2 + 1, 1); }
   ctx.globalCompositeOperation = 'source-over';
   seasonParticles(ctx, W, H, t, 0);
@@ -1688,7 +1689,7 @@ function drawVanGogh(ctx, W, H, t, st){
   var hz = Math.round(H*0.52), sw = [[W*0.3, H*0.17, 1], [W*0.78, H*0.3, -1]], sun = [W*0.82, H*0.12];
   ctx.fillStyle = '#1f3f86'; ctx.fillRect(0, 0, W, hz);
   // sky: strokes follow the eddies; light rings travel outward through them
-  var skyC = ['#1f3f86','#2c56a8','#3f6fc4','#6f9ad8','#a9c6ea','#f2e2a0'];
+  var skyC = isDay() ? ['#4d8ad8','#6aa0e0','#8ab8ec','#bcd8f4','#f3f6ff','#fff3b0'] : ['#1f3f86','#2c56a8','#3f6fc4','#6f9ad8','#a9c6ea','#f2e2a0'];
   for (var y = 1; y < hz; y += 2) for (var x = (y % 4 ? 0 : 1); x < W; x += 3){
     var b0 = Math.sin(x*0.07 + y*0.11)*0.35, vx = Math.cos(b0), vy = Math.sin(b0), glow = 0;
     sw.forEach(function(c){ var dx = x - c[0], dy = y - c[1], d = Math.sqrt(dx*dx + dy*dy) + .01, wgt = Math.min(3, Math.pow(30/d, 2)); vx += -dy/d*c[2]*wgt; vy += dx/d*c[2]*wgt; glow = Math.max(glow, Math.max(0, Math.sin(d*0.45 - t*1.2*c[2]))*Math.min(1, 30/d)); });
@@ -1758,11 +1759,13 @@ function coneySetup(W, H){
 function drawConey(ctx, W, H, t, st){
   var P = st.P, B = st.B || 0, dt = st.last ? Math.min(.2, t - st.last) : 0; st.last = t;
   var Rng = Math.max(1, P + B - W), a0 = Math.max(0, Math.min(1, (P*0.64 - W/2)/Rng)), off = Math.round(Rng*(1 - Math.cos(t*0.02 + Math.acos(1 - 2*a0)))/2), bw = Math.round(H*0.66), sand = Math.round(H*0.72), sea = Math.round(H*0.8);
-  var sky = ['#0a0a24','#12123a','#1e1650','#33205e','#5a2c66','#8a3a6a'];
+  var DAY = isDay(), sky = DAY ? ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#0a0a24','#12123a','#1e1650','#33205e','#5a2c66','#8a3a6a'];
   for (var y = 0; y < bw; y++){ var f = y/bw*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
-  for (var k = 0; k < 26; k++){ var sx = ((k*71) % P) - off*0.4, sy = (k*31) % Math.round(H*0.25); if (sx >= 0 && sx < W && Math.sin(t*1.5 + k) > -.3){ ctx.fillStyle = k % 4 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
+  if (DAY){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 9, 2); } daySun(ctx, Math.round(W*0.82), Math.round(H*0.1)); gulls(ctx, W, H, t); }
+  for (var k = 0; k < 26; k++){ var sx = ((k*71) % P) - off*0.4, sy = (k*31) % Math.round(H*0.25); if (!DAY && sx >= 0 && sx < W && Math.sin(t*1.5 + k) > -.3){ ctx.fillStyle = k % 4 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
   ctx.save(); ctx.translate(-off, 0);
-  function R(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
+  var CONEY_DAY = {'#3a3048':'#e8d2a0', '#4e4258':'#d6be8a', '#2a1f1a':'#a8865a', '#1a1a44':'#4a92cc', '#121234':'#3a80bc', '#6a7ab0':'#a8daf4', '#e6eeff':'#ffffff', '#7a6a7a':'#efdcb0', '#6a5a6a':'#d9c49a', '#8a3a6a':'#c4def2', '#7a3468':'#b8d8f0', '#5a6a4a':'#7a9a5a', '#6b4a33':'#a8865a', '#5a3a28':'#8a6a48', '#8a6a4a':'#c9a878', '#3d6a8a':'#3d6a8a', '#5a8aaa':'#5a8aaa', '#2f5a7a':'#2f5a7a', '#b5651d':'#b5651d', '#5a3a2a':'#5a3a2a', '#3b2a24':'#3b2a24', '#241a14':'#241a14', '#f0c6a0':'#f0c6a0', '#c9c3b6':'#c9c3b6', '#3b2a20':'#3b2a20', '#d9a982':'#d9a982', '#c9c2b2':'#e8e4dc', '#9a948a':'#c9c3b6'};
+  function R(x, y, w, h, c){ ctx.fillStyle = DAY ? dayC(c, CONEY_DAY) : c; ctx.fillRect(x, y, w, h); }
   // the parachute tower, lattice lit red
   var pj = Math.round(P*0.1), pt = Math.round(H*0.12);
   for (var y = pt + 8; y < bw; y++){ var hw = Math.round(2 + (y - pt)*0.06); R(pj - hw, y, 1, 1, '#c4473a'); R(pj + hw, y, 1, 1, '#c4473a'); if (y % 5 === 0) for (var x = -hw; x <= hw; x++) R(pj + x, y, 1, 1, '#8a2a2a'); }
@@ -2022,6 +2025,22 @@ function drawCinema(ctx, W, H, t){
 VIG.mlh = function(ctx, W, H, t){ miniLighthouse(ctx, W, H, t); };
 VIG.film = function(ctx, W, H, t){ drawFilm(ctx, 0, 0, W, H, t); };
 
+// ---- daylight colours: a night colour lifted into day; warm window lights become glass; given overrides win
+var DAYC = {};
+function dayC(c, ov){ if (ov && ov[c]) return ov[c]; if (typeof c !== 'string' || c[0] !== '#' || c.length !== 7) return c; if (DAYC[c]) return DAYC[c];
+  var r = parseInt(c.substr(1, 2), 16), g = parseInt(c.substr(3, 2), 16), b = parseInt(c.substr(5, 2), 16), out;
+  if (r > 200 && g < 120 && b < 120) out = c;
+  else if (r > 170 && g > 120 && b < 190 && r >= b + 30) out = '#6e7e94';
+  else { var f = 0.58, tr = 196, tg = 208, tb = 222; out = 'rgb(' + Math.round(r + (tr - r)*f) + ',' + Math.round(g + (tg - g)*f) + ',' + Math.round(b + (tb - b)*f) + ')'; }
+  DAYC[c] = out; return out; }
+function daySky(ctx, W, top, bot, t, cloudSeed){
+  var sky = ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'];
+  for (var y = top; y < bot; y++){ var f = (y - top)/(bot - top)*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
+  for (var k = 0; k < 4; k++){ var cx = ((t*(1.5 + k*0.5) + k*53 + (cloudSeed || 0)) % (W + 50)) - 25, cy = top + 8 + k*((bot - top)/6); ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx), Math.round(cy), 18, 3); ctx.fillRect(Math.round(cx) + 4, Math.round(cy) - 2, 9, 2); ctx.fillStyle = '#e6eef6'; ctx.fillRect(Math.round(cx), Math.round(cy) + 3, 18, 1); }
+}
+function daySun(ctx, x, y){ for (var yy = -6; yy <= 6; yy++) for (var xx = -6; xx <= 6; xx++){ var d = xx*xx + yy*yy; if (d <= 36){ ctx.fillStyle = d <= 20 ? '#fff6c8' : '#ffe680'; ctx.fillRect(x + xx, y + yy, 1, 1); } } }
+function gulls(ctx, W, H, t){ for (var k = 0; k < 3; k++){ var gx = Math.round(((t*(6 + k*2) + k*40) % (W + 20)) - 10), gy = Math.round(H*(0.16 + k*0.07) + Math.sin(t + k)*3), fl = Math.floor(t*4 + k) % 2; ctx.fillStyle = '#ffffff'; ctx.fillRect(gx, gy, 1, 1); ctx.fillRect(gx - 1, gy - fl, 1, 1); ctx.fillRect(gx + 1, gy - fl, 1, 1); ctx.fillRect(gx - 2, gy - fl, 1, 1); ctx.fillRect(gx + 2, gy - fl, 1, 1); ctx.fillStyle = '#5a6a7a'; ctx.fillRect(gx, gy + 1, 1, 1); } }
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
@@ -2035,28 +2054,29 @@ VIG.film = function(ctx, W, H, t){ drawFilm(ctx, 0, 0, W, H, t); };
   function draw(now){
     var t = (now - t0) / 1000, hz = Math.round(H*0.6), lx = Math.round(W*0.7), base = Math.round(H*0.74);
     // sky bands, dithered at the joins
-    var bands = ['#070b1c','#0b1026','#111836','#172042','#1f2a50','#2a3762'];
+    var DAY = isDay(), bands = DAY ? ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#070b1c','#0b1026','#111836','#172042','#1f2a50','#2a3762'];
     for (var y = 0; y < hz; y++){ var f = y / hz * (bands.length-1), i = Math.floor(f), fr = f - i;
       for (var x = 0; x < W; x++) px(x, y, ((x + y) % 2 === 0 && fr > .5) ? bands[Math.min(i+1, bands.length-1)] : bands[i]); }
     // stars twinkle
-    stars.forEach(function(s){ var b = .5 + .5*Math.sin(t*1.7 + s[2]); if (b > .25) px(s[0], s[1], s[3] ? '#ffe7a1' : (b > .8 ? '#ffffff' : '#9aa9c8')); });
+    if (DAY){ daySky(ctx, W, 0, 0, t); for (var k = 0; k < 3; k++){ var cx = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy = 10 + k*14; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx), cy, 18, 3); ctx.fillRect(Math.round(cx) + 4, cy - 2, 9, 2); } }
+    if (!DAY) stars.forEach(function(s){ var b = .5 + .5*Math.sin(t*1.7 + s[2]); if (b > .25) px(s[0], s[1], s[3] ? '#ffe7a1' : (b > .8 ? '#ffffff' : '#9aa9c8')); });
     // moon
     var mx = Math.round(W*0.22), my = Math.round(H*0.14);
-    for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ var d = x*x + y*y; if (d <= 30) px(mx+x, my+y, (x-2)*(x-2) + (y+1)*(y+1) <= 22 && d > 12 ? '#f3ead3' : d <= 30 ? '#f6efdf' : ''); }
-    for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ if (x*x+y*y <= 30 && (x+3)*(x+3) + (y-1)*(y-1) <= 6) px(mx+x, my+y, '#d9cdb0'); }
+    if (DAY) daySun(ctx, mx, my); else for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ var d = x*x + y*y; if (d <= 30) px(mx+x, my+y, (x-2)*(x-2) + (y+1)*(y+1) <= 22 && d > 12 ? '#f3ead3' : d <= 30 ? '#f6efdf' : ''); }
+    if (!DAY) for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ if (x*x+y*y <= 30 && (x+3)*(x+3) + (y-1)*(y-1) <= 6) px(mx+x, my+y, '#d9cdb0'); }
     // sea: gentle horizontal swells and a sparse moon path
     for (var y = hz; y < H; y++){ var depth = (y - hz) / (H - hz);
       for (var x = 0; x < W; x++){
-        var c = depth < .12 ? '#25365f' : depth < .4 ? '#1d2c52' : '#172446';
+        var c = DAY ? (depth < .12 ? '#5a9ad0' : depth < .4 ? '#4a8ac4' : '#3a78b4') : (depth < .12 ? '#25365f' : depth < .4 ? '#1d2c52' : '#172446');
         var w = Math.sin(x*0.18 + t*1.2 + Math.sin(y*0.55)*2.2 + y*0.3);
-        if (y % 2 === 0 && w > .93) c = '#4d77b3'; else if (y % 2 === 0 && w > .8) c = '#2f5f9e';
-        if (Math.abs(x - mx) < 2 + depth*5 && y % 2 === 1 && Math.sin(x*1.7 + t*2.5 + y*0.8) > .55) c = '#d9cdb0';
+        if (y % 2 === 0 && w > .93) c = DAY ? '#ffffff' : '#4d77b3'; else if (y % 2 === 0 && w > .8) c = DAY ? '#9fd0f0' : '#2f5f9e';
+        if (Math.abs(x - mx) < 2 + depth*5 && y % 2 === 1 && Math.sin(x*1.7 + t*2.5 + y*0.8) > .55) c = DAY ? '#fff6c8' : '#d9cdb0';
         px(x, y, c); } }
     // rocky point the lighthouse stands on, sea in front of it
     var rockBot = base + 9;
     for (var x = lx - 20; x < W; x++){ var top = base - Math.round(3 + 2*Math.sin(x*0.5) + (x > lx-6 && x < lx+7 ? 3 : 0));
       var bot = rockBot - Math.round(Math.max(0, (lx - 20 + 8 - x)) * .4);
-      for (var y = top; y < bot; y++) px(x, y, y === top ? '#5a412f' : ((x+y)%3 ? '#241f1a' : '#30281f')); }
+      for (var y = top; y < bot; y++) px(x, y, y === top ? (DAY ? '#8a7a5a' : '#5a412f') : ((x+y)%3 ? (DAY ? '#5a4a3a' : '#241f1a') : (DAY ? '#6a5a48' : '#30281f'))); }
     for (var x = lx - 24; x < W; x++){ var fy = rockBot + Math.round(1.2*Math.sin(t*2 + x*0.35)); if (Math.sin(t*2.4 + x*0.6) > .1) px(x, fy, '#f6efdf'); if (Math.sin(t*1.7 + x*0.9) > .6) px(x, fy + 1, '#9aa9c8'); }
     // lighthouse: tapered tower with red bands, gallery, lantern, roof
     var top = base - 44;
@@ -2066,18 +2086,19 @@ VIG.film = function(ctx, W, H, t){ drawFilm(ctx, 0, 0, W, H, t); };
     for (var y = top + 4; y < top + 9; y++) for (var x = -2; x <= 2; x++) px(lx + x, y, (Math.abs(x) === 2) ? '#241f1a' : '#ffe7a1');
     for (var x = -3; x <= 3; x++) px(lx + x, top + 3, '#241f1a'); for (var x = -2; x <= 2; x++) px(lx + x, top + 2, '#241f1a'); px(lx, top + 1, '#241f1a');
     // sweeping beam: a warm cone that fades with distance
-    var a = Math.sin(t * 0.9), dir = a >= 0 ? 1 : -1, reach = Math.abs(a) * W * 1.15, ly = top + 6;
+    var a = Math.sin(t * 0.9), dir = a >= 0 ? 1 : -1, reach = DAY ? 0 : Math.abs(a) * W * 1.15, ly = top + 6;
+    if (DAY) gulls(ctx, W, H, t);
     ctx.globalCompositeOperation = 'lighter';
     for (var d = 3; d < reach; d++){ var spread = Math.round(1 + d * 0.13); ctx.globalAlpha = (0.85 * Math.abs(a)) * (1 - d / (W*1.25));
       for (var y = -spread; y <= spread; y++) px(lx + dir*d, ly + y, Math.abs(y) < spread*.5 ? '#6e5a2a' : '#4a3c1c'); }
     ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
-    if (Math.abs(a) < .18){ ctx.globalAlpha = .6; for (var y = -4; y <= 4; y++) for (var x = -4; x <= 4; x++) if (x*x+y*y < 14) px(lx + x, ly + y, '#fff3c4'); ctx.globalAlpha = 1; }
+    if (!DAY && Math.abs(a) < .18){ ctx.globalAlpha = .6; for (var y = -4; y <= 4; y++) for (var x = -4; x <= 4; x++) if (x*x+y*y < 14) px(lx + x, ly + y, '#fff3c4'); ctx.globalAlpha = 1; }
     // the keeper: on a near rock, oilskin and watch cap, a tankard of ale, his lantern beside him
     var kx = Math.round(W*0.2), ky = H - 6;
-    for (var x = -18; x < 26; x++){ var rt = ky - 6 + Math.round(Math.abs(x)*0.12 + Math.sin(x*0.7)*1.2); for (var y = rt; y < H; y++) px(kx + x, y, y === rt ? '#5a412f' : ((x + y) % 3 ? '#1d1914' : '#2a231c')); }
+    for (var x = -18; x < 26; x++){ var rt = ky - 6 + Math.round(Math.abs(x)*0.12 + Math.sin(x*0.7)*1.2); for (var y = rt; y < H; y++) px(kx + x, y, y === rt ? (DAY ? '#8a7a5a' : '#5a412f') : ((x + y) % 3 ? (DAY ? '#4a3e32' : '#1d1914') : (DAY ? '#5a4e40' : '#2a231c'))); }
     for (var x = -20; x < 30; x++) if (Math.sin(t*2.2 + x*0.5) > .3) px(kx + x, H - 2 + Math.round(Math.sin(t*2 + x*0.3)), '#f6efdf');
     stPerson(ctx, {dir:1, v:0, sit:1, ph:1, skin:0, jacket:'#e9c45a', pants:'#2b2f45', hair:'beanie', hc:'#2f5f9e', beard:'#c9c3b6', coffee:1, pipe:1}, kx, ky - 4, t);
-    var lnx = kx + 14, lny = ky - 11; ctx.globalCompositeOperation = 'lighter'; for (var y = -9; y <= 9; y++) for (var x = -9; x <= 9; x++){ var d = x*x + y*y; if (d < 81){ ctx.globalAlpha = .22*(1 - d/81)*(0.85 + 0.15*Math.sin(t*9)); px(lnx + x, lny + y, '#6e5a2a'); } } ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    var lnx = kx + 14, lny = ky - 11; ctx.globalCompositeOperation = DAY ? 'source-over' : 'lighter'; if (!DAY) for (var y = -9; y <= 9; y++) for (var x = -9; x <= 9; x++){ var d = x*x + y*y; if (d < 81){ ctx.globalAlpha = .22*(1 - d/81)*(0.85 + 0.15*Math.sin(t*9)); px(lnx + x, lny + y, '#6e5a2a'); } } ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
     px(lnx - 1, lny - 4, '#241f1a'); px(lnx, lny - 4, '#241f1a'); px(lnx + 1, lny - 4, '#241f1a'); ctx.fillStyle = '#241f1a'; ctx.fillRect(lnx - 2, lny - 3, 5, 1); ctx.fillRect(lnx - 2, lny + 2, 5, 2); ctx.fillStyle = '#ffd36b'; ctx.fillRect(lnx - 1, lny - 2, 3, 4); ctx.fillStyle = '#fff3c4'; ctx.fillRect(lnx, lny - 1, 1, 2);
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
@@ -2120,7 +2141,7 @@ document.addEventListener('click', function(e){
 // ===== Scene windows: small live versions of each scene, placed through the app. Tap to enter.
 function miniLighthouse(ctx, W, H, t){
   var hz = Math.round(H*0.62), lx = Math.round(W*0.68), base = Math.round(H*0.78);
-  for (var y = 0; y < hz; y++){ ctx.fillStyle = y < hz*.4 ? '#0b1026' : y < hz*.75 ? '#151d40' : '#22305a'; ctx.fillRect(0, y, W, 1); }
+  var DAY = isDay(); for (var y = 0; y < hz; y++){ ctx.fillStyle = DAY ? (y < hz*.5 ? '#7fb8e6' : '#aad2f0') : (y < hz*.4 ? '#0b1026' : y < hz*.75 ? '#151d40' : '#22305a'); ctx.fillRect(0, y, W, 1); }
   [[8,6],[20,12],[40,5],[52,16],[30,20],[14,26]].forEach(function(st, i){ if (Math.sin(t*2 + i) > -.3){ ctx.fillStyle = '#f6efdf'; ctx.fillRect(st[0]*W/64, st[1]*H/64, 1, 1); } });
   ctx.fillStyle = '#f6efdf'; ctx.fillRect(Math.round(W*.22), Math.round(H*.16), 4, 4);
   for (var y = hz; y < H; y++){ ctx.fillStyle = '#1b2a4f'; ctx.fillRect(0, y, W, 1); for (var x = 0; x < W; x++) if ((y % 2 === 0) && Math.sin(x*.4 + t*1.6 + y) > .9){ ctx.fillStyle = '#4d77b3'; ctx.fillRect(x, y, 1, 1); } }
