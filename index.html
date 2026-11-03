@@ -17,13 +17,13 @@
 /* Mondrian: white ground, heavy black rules, red / blue / yellow / black / grey blocks, one per class. */
 :root {
   --ink: #2a2a2a; --paper: #fbf9f4; --off: #f1ede4; --muted: #7a776f; --rule: 3px; --thin: 1.5px; --gridline: #ebe6db; --onc: #fbf9f4;
-  --red: #c4473a; --blue: #2f5f9e; --yellow: #e9c45a; --black: #3a3a3a; --grey: #ece2c6;
+  --red: #c4473a; --blue: #2f5f9e; --yellow: #e9c45a; --black: #3a3a3a; --grey: #f0e6c8;
   --sans: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root { --ink: #8d887e; --paper: #1b1a18; --off: #26241f; --muted: #9b968c; --gridline: #26241f; --onc: #f1ede4;
-    --red: #b5584c; --blue: #4d74ad; --yellow: #c9a957; --black: #4a463f; --grey: #e6dcc3; color-scheme: dark; }
+    --red: #b5584c; --blue: #4d74ad; --yellow: #c9a957; --black: #4a463f; --grey: #f3ead3; color-scheme: dark; }
   html, body { color: #e9e5dc; }
   .c-Lit-Study { color: #f1ede4 !important; outline: 1px solid #6a655c; outline-offset: -1px; }
   .c-Phil-of-Sci, .c-Woolf { color: #1b1a18 !important; }
@@ -521,7 +521,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "605b850a5a";
+var APP_BUILD = "79322e4222";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
