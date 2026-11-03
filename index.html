@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "41577ee496";
+var APP_BUILD = "3c29760c54";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1388,7 +1388,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.lashes){ U(1, -32, 2, 1, '#241a14'); U(2, -31, 1, 1, '#241a14'); }
   if (p.freckles){ U(1, -29, 1, 1, '#c98a6a'); U(3, -29, 1, 1, '#c98a6a'); U(2, -30, 1, 1, '#d9a07a'); }
   if (p.ruff){ U(-4, -27, 9, 2, '#f8f4ec'); for (var k = -4; k < 5; k += 2) U(k, -27, 1, 2, '#d9d4cc'); U(-3, -25, 7, 1, '#e6e0d4'); }
-  if (p.glasses){ var gc = p.glassC || '#c9a43a'; U(0, -32, 4, 1, gc); U(0, -31, 1, 1, gc); U(3, -31, 1, 1, gc); U(0, -30, 4, 1, gc); U(1, -31, 2, 1, '#e8eef6'); U(-1, -31, 1, 1, gc); }
+  if (p.glasses){ var gc = p.glassC || '#c9a43a'; U(1, -32, 2, 1, gc); U(1, -30, 2, 1, gc); U(0, -31, 1, 1, gc); U(3, -31, 1, 1, gc); U(1, -31, 1, 1, '#241f1a'); U(2, -31, 1, 1, 'rgba(232,238,246,.75)'); U(-1, -31, 1, 1, gc); U(-2, -31, 1, 1, gc); }
   if (p.pencil){ U(-2, -35, 1, 4, '#e9c45a'); U(-2, -36, 1, 1, '#f0a0a0'); }
   if (p.stache){ U(1, -29, 3, 1, p.stache); U(1, -27, 2, 2, p.stache); }
   if (p.goatee){ U(1, -27, 2, 2, p.goatee); U(1, -29, 2, 1, p.goatee); }
