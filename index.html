@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "9d2188c7ed";
+var APP_BUILD = "76e6e16e2d";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2124,31 +2124,43 @@ function rooftopBand(ctx, x, roof, t){
 // ===== Scene 9: inside the Hungarian Pastry Shop. Brick on one side, a wall of framed book covers, lamps, the pastry case,
 // small marble tables; at the front table a man in a houndstooth jacket faces us, typing, a mug and a glass of water beside him.
 function drawPastry(ctx, W, H, t){
-  var floorY = Math.round(H*0.62);
-  ctx.fillStyle = '#3a2418'; ctx.fillRect(0, 0, W, H);
-  var bw = Math.round(W*0.34);
-  for (var y = 0; y < floorY; y += 4) for (var x = (y/4) % 2 ? 0 : 4; x < bw; x += 8){ var r = Math.sin(x*3.1 + y*1.7); ctx.fillStyle = r > .4 ? '#a8604a' : r > -.3 ? '#8a4a3a' : '#c9a08a'; ctx.fillRect(x, y, 7, 3); }
-  for (var y = 3; y < floorY; y += 4){ ctx.fillStyle = '#d6c8b0'; ctx.fillRect(0, y, bw, 1); }
-  ctx.fillStyle = '#4a2e1a'; ctx.fillRect(bw, 0, W - bw, floorY); for (var x = bw; x < W; x += 9){ ctx.fillStyle = '#3a2214'; ctx.fillRect(x, 0, 1, floorY); }
-  for (var r = 0; r < 5; r++) for (var c = 0; c < Math.floor((W - bw - 6)/11); c++){ var fx = bw + 4 + c*11, fy = 10 + r*15, k = r*7 + c;
-    ctx.fillStyle = '#c9a43a'; ctx.fillRect(fx, fy, 9, 12); ctx.fillStyle = ['#c4473a','#2f5f9e','#e9c45a','#3d7a55','#f3ead3','#8e5fa8','#151218','#d9822b'][k % 8]; ctx.fillRect(fx + 1, fy + 1, 7, 10);
-    ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(fx + 2, fy + 3, 5, 1); ctx.fillRect(fx + 2, fy + 8, 3, 1); }
-  for (var k = 0; k < 3; k++){ var lx = Math.round(W*(0.2 + k*0.3)), ly = 18 + (k % 2)*6; ctx.fillStyle = '#151218'; ctx.fillRect(lx, 0, 1, ly); ctx.fillStyle = '#e9b04a'; ctx.fillRect(lx - 3, ly, 7, 3); ctx.fillStyle = '#fff3c4'; ctx.fillRect(lx - 1, ly + 3, 3, 1);
-    ctx.globalCompositeOperation = 'lighter'; for (var rr = 18; rr > 0; rr -= 3){ ctx.fillStyle = 'rgba(90,60,20,.05)'; ctx.beginPath(); ctx.arc(lx, ly + 4, rr, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
-  var cx0 = Math.round(W*0.52), cw = W - cx0 - 2, cy0 = floorY - 22;
-  ctx.fillStyle = '#5a3a22'; ctx.fillRect(cx0, cy0 + 8, cw, 14); ctx.fillStyle = '#7a5a3a'; ctx.fillRect(cx0, cy0 + 8, cw, 1);
-  ctx.fillStyle = 'rgba(200,230,240,.35)'; ctx.fillRect(cx0 + 2, cy0, cw - 4, 9); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(cx0 + 2, cy0 + 8, cw - 4, 1);
-  for (var k = 0; k < Math.floor((cw - 6)/8); k++){ var px = cx0 + 4 + k*8; if (k % 3 === 0){ for (var l = 0; l < 4; l++){ ctx.fillStyle = l % 2 ? '#3a2010' : '#e9c45a'; ctx.fillRect(px, cy0 + 4 + l, 6, 1); } ctx.fillStyle = '#c98a3a'; ctx.fillRect(px, cy0 + 3, 6, 1); } else if (k % 3 === 1){ ctx.fillStyle = '#e8c48a'; ctx.fillRect(px, cy0 + 5, 6, 3); ctx.fillStyle = '#f3efe6'; ctx.fillRect(px + 1, cy0 + 4, 4, 1); } else { ctx.fillStyle = '#f3efe6'; ctx.fillRect(px + 1, cy0 + 4, 4, 4); ctx.fillStyle = '#c4302a'; ctx.fillRect(px + 2, cy0 + 3, 2, 1); } }
-  ctx.fillStyle = '#9a9a9a'; ctx.fillRect(W - 14, cy0 - 8, 10, 8); ctx.fillStyle = '#5a5a5a'; ctx.fillRect(W - 12, cy0 - 1, 2, 2); for (var k = 0; k < 2; k++){ var ph = (t*0.7 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(W - 10 + Math.round(Math.sin(ph*8)), cy0 - 10 - Math.round(ph*8), 1, 1); }
-  stPerson(ctx, {dir: -1, v: 0, ph: 1, skin: 3, hair: 'bob', hc: '#5a3a24', jacket: '#f3efe6', pants: '#2a2a32'}, cx0 + Math.round(cw*0.45), cy0 + 8, t);
-  ctx.fillStyle = '#5a3a22'; ctx.fillRect(cx0, cy0 + 8, cw, 14); ctx.fillStyle = 'rgba(200,230,240,.35)'; ctx.fillRect(cx0 + 2, cy0, cw - 4, 9);
-  for (var y = floorY; y < H; y++){ ctx.fillStyle = (Math.floor(y/5) % 2) ? '#5a3a24' : '#4e321e'; ctx.fillRect(0, y, W, 1); }
-  for (var y = floorY; y < H; y += 5) for (var x = (y/5) % 2 ? 0 : 10; x < W; x += 20){ ctx.fillStyle = '#3a2416'; ctx.fillRect(x, y, 1, 5); }
-  function table(tx, ty, tw){ ctx.fillStyle = '#e8e4dc'; ctx.fillRect(tx - tw, ty, tw*2 + 1, 3); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(tx - tw, ty + 3, tw*2 + 1, 1); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(tx - tw + 3, ty + 1, 4, 1); ctx.fillStyle = '#151218'; ctx.fillRect(tx, ty + 4, 1, 14); ctx.fillRect(tx - 4, ty + 17, 9, 1); }
-  table(Math.round(W*0.18), floorY + 8, 7); stPerson(ctx, {dir: 1, v: 0, sit: 1, nocup: 1, ph: 2, skin: 0, hair: 'long', hc: '#241a14', jacket: '#3d6a4a', pants: '#2a2a32'}, Math.round(W*0.18) - 10, floorY + 26, t);
-  ctx.fillStyle = '#f3ead3'; ctx.fillRect(Math.round(W*0.18) - 3, floorY + 6, 6, 2);
-  table(Math.round(W*0.72), floorY + 10, 7); stPerson(ctx, {dir: -1, v: 0, sit: 1, nocup: 1, ph: 4, skin: 2, hair: 'short', hc: '#151218', glasses: 1, jacket: '#8a5a3c', pants: '#3a3f55'}, Math.round(W*0.72) + 10, floorY + 28, t);
-  ctx.fillStyle = '#f3efe6'; ctx.fillRect(Math.round(W*0.72) - 2, floorY + 6, 3, 4);
+  // warm cream room, low ceiling, red wainscot, tulip sconces, framed prints; the pastry case on the left, the menu column, the long room of tables
+  var vx = Math.round(W*0.6), vy = 96, floorY = 104;
+  ctx.fillStyle = '#efe0c4'; ctx.fillRect(0, 0, W, 14); ctx.fillStyle = '#e2cfae'; ctx.fillRect(0, 13, W, 1);
+  ctx.fillStyle = '#ead6b2'; ctx.fillRect(0, 14, W, floorY - 14);
+  var bx0 = Math.round(W*0.5), bx1 = W - 4; ctx.fillStyle = '#e2cca6'; ctx.fillRect(bx0, 34, bx1 - bx0, 62); ctx.fillStyle = '#d6bf96'; ctx.fillRect(bx0, 34, bx1 - bx0, 1); ctx.fillRect(bx0, 34, 1, 62);
+  ctx.fillStyle = '#8a2a2a'; ctx.fillRect(0, 84, W, 20); ctx.fillStyle = '#e8d4b0'; ctx.fillRect(0, 83, W, 1); ctx.fillStyle = '#6a1e1e'; ctx.fillRect(0, 103, W, 1);
+  for (var k = 0; k < 6; k++){ var fx = Math.round(W*0.45) + k*Math.round(W*0.09), fy = 40 + (k % 2)*2, fw = 8, fh = 10; if (fx + fw > W - 3) break; ctx.fillStyle = '#1a1414'; ctx.fillRect(fx, fy, fw, fh); ctx.fillStyle = '#f3ead8'; ctx.fillRect(fx + 1, fy + 1, fw - 2, fh - 2); ctx.fillStyle = '#5a4a3a'; for (var l = 0; l < 3; l++) ctx.fillRect(fx + 2, fy + 3 + l*2, fw - 4 - (l % 2), 1); }
+  for (var k = 0; k < 7; k++){ var sx = Math.round(W*0.42) + k*Math.round(W*0.085), sy = 64; if (sx > W - 4) break; ctx.fillStyle = '#c9a43a'; ctx.fillRect(sx, sy, 1, 4); ctx.fillRect(sx, sy, 3, 1); ctx.fillStyle = '#fff3d8'; ctx.fillRect(sx + 1, sy + 1, 3, 3); ctx.fillStyle = '#ffffff'; ctx.fillRect(sx + 2, sy + 2, 1, 1);
+    ctx.globalCompositeOperation = 'lighter'; for (var r = 10; r > 0; r -= 2){ ctx.fillStyle = 'rgba(80,55,20,.05)'; ctx.beginPath(); ctx.arc(sx + 2, sy + 2, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+  // the floor: worn planks running back toward the far wall
+  for (var y = floorY; y < H; y++){ ctx.fillStyle = (Math.floor((y - floorY)/4) % 2) ? '#6a4a30' : '#5e4028'; ctx.fillRect(0, y, W, 1); }
+  for (var k = -6; k <= 10; k++){ var bxk = vx + k*Math.round(W*0.12); ctx.fillStyle = '#4a321e'; for (var y = floorY; y < H; y++){ var f = (y - vy)/(H - vy); ctx.fillRect(Math.round(vx + (bxk - vx)*f), y, 1, 1); } }
+  // the far room: rows of dark tables and people, smaller with distance
+  [[floorY + 2, 2, 7], [floorY + 10, 3, 9], [floorY + 22, 4, 12]].forEach(function(row, ri){ var y = row[0], sz = row[1], step = row[2];
+    for (var x = Math.round(W*0.46) + (ri % 2)*Math.round(step/2), i = 0; x < W - 2; x += step, i++){ var hcol = ['#241a14','#5a3a24','#8a6a4a','#151218','#c9c3b6'][(i + ri) % 5], body = ['#151218','#3a3a42','#8a2a2a','#2f4a6a','#e8e4dc'][(i*3 + ri) % 5];
+      ctx.fillStyle = body; ctx.fillRect(x, y - sz*2, sz*2, sz*2); ctx.fillStyle = '#e0b89a'; ctx.fillRect(x + Math.floor(sz/2), y - sz*3, sz, sz); ctx.fillStyle = hcol; ctx.fillRect(x + Math.floor(sz/2), y - sz*3 - 1, sz, Math.max(1, Math.floor(sz/2)));
+      ctx.fillStyle = '#3a2214'; ctx.fillRect(x - 1, y, sz*3 + 2, Math.max(1, sz - 1)); if (i % 2){ ctx.fillStyle = 'rgba(160,200,255,.6)'; ctx.fillRect(x + sz*2, y - sz, sz, Math.max(1, sz - 1)); } } });
+  // the column with the hand-lettered menu
+  var cx = Math.round(W*0.38); ctx.fillStyle = '#efe0c4'; ctx.fillRect(cx, 14, 9, H*0.55); ctx.fillStyle = '#d9c8a0'; ctx.fillRect(cx + 1, 16, 7, 70); ctx.fillStyle = '#3a2a1a'; for (var l = 0; l < 16; l++) ctx.fillRect(cx + 2, 18 + l*4, 3 + (l*3) % 4, 1); ctx.fillStyle = '#8a2a2a'; ctx.fillRect(cx + 2, 18, 5, 1); ctx.fillRect(cx + 2, 50, 4, 1);
+  ctx.fillStyle = '#efe0c4'; ctx.fillRect(cx, 86, 9, 20); ctx.fillStyle = '#9fc0e0'; ctx.fillRect(cx + 1, 90, 7, 6);
+  // the counter side: shelves of coffee pots, the red exit sign, the glass case full of cakes, the register
+  ctx.fillStyle = '#f3ead8'; ctx.fillRect(0, 16, Math.round(W*0.24), 50); ctx.fillStyle = '#d6c8b0'; for (var l = 0; l < 4; l++) ctx.fillRect(0, 26 + l*12, Math.round(W*0.24), 1);
+  for (var k = 0; k < 8; k++){ ctx.fillStyle = k % 2 ? '#b9bfca' : '#9aa0ac'; ctx.fillRect(2 + (k % 4)*5, 20 + Math.floor(k/4)*12, 3, 5); ctx.fillStyle = '#e8eef6'; ctx.fillRect(2 + (k % 4)*5, 20 + Math.floor(k/4)*12, 1, 2); }
+  ctx.fillStyle = '#ff4a3a'; ctx.fillRect(Math.round(W*0.12), 4, 12, 6); ptext(ctx, 'EXIT', Math.round(W*0.12) - 1, 5, 1, '#fff0e8');
+  var cw = Math.round(W*0.34), cy0 = 92; ctx.fillStyle = '#4a2e1a'; ctx.fillRect(0, cy0, cw, H - cy0 - 18); ctx.fillStyle = 'rgba(220,235,240,.5)'; ctx.fillRect(1, cy0 + 2, cw - 4, 44); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(0, cy0, cw, 2);
+  for (var l = 0; l < 3; l++){ var sy = cy0 + 6 + l*14; ctx.fillStyle = '#d6dbe4'; ctx.fillRect(1, sy + 10, cw - 4, 1); for (var k = 0; k < Math.floor((cw - 4)/7); k++){ var px = 2 + k*7;
+      if (l === 1){ for (var q = 0; q < 5; q++){ ctx.fillStyle = q % 2 ? '#e9c45a' : '#f3e0a8'; ctx.fillRect(px, sy + 4 + q, 6, 1); } ctx.fillStyle = '#c98a3a'; ctx.fillRect(px, sy + 3, 6, 1); }
+      else if (l === 2){ ctx.fillStyle = '#3a2010'; ctx.fillRect(px + 1, sy + 5, 5, 5); ctx.fillStyle = '#6a4a2a'; ctx.fillRect(px + 2, sy + 5, 2, 1); }
+      else { ctx.fillStyle = '#f3efe6'; ctx.fillRect(px + 1, sy + 6, 4, 4); ctx.fillStyle = '#e8c48a'; ctx.fillRect(px + 1, sy + 9, 4, 1); } } }
+  ctx.fillStyle = '#f3efe6'; ctx.fillRect(cw - 12, cy0 - 5, 7, 5); ctx.fillStyle = '#7ab4f0'; ctx.fillRect(cw - 11, cy0 - 4, 5, 2);
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(80,70,40,.18)'; ctx.fillRect(1, cy0 + 2, cw - 4, 44); ctx.globalCompositeOperation = 'source-over';
+  // a white-haired man in black at the counter, choosing
+  stPerson(ctx, {dir: -1, v: 0, ph: 2, skin: 0, hair: 'messy', hc: '#e8e4dc', glasses: 1, glassC: '#151218', jacket: '#151218', pants: '#1a1a22'}, Math.round(cw*0.7), H - 20, t);
+  // a near table on the right: a student with a laptop
+  var nx = W - 16; ctx.fillStyle = '#4a2a1a'; ctx.fillRect(nx - 10, H - 52, 22, 3); ctx.fillStyle = '#3a2214'; ctx.fillRect(nx, H - 49, 2, 16);
+  stPerson(ctx, {dir: -1, v: 0, sit: 1, nocup: 1, ph: 4, skin: 1, hair: 'cap', hc: '#151218', jacket: '#8a6a5a', plaid: 1, pants: '#2a2a32'}, nx + 10, H - 34, t);
+  ctx.fillStyle = '#9aa0ac'; ctx.fillRect(nx - 6, H - 58, 8, 6); ctx.fillStyle = 'rgba(160,200,255,.7)'; ctx.fillRect(nx - 5, H - 57, 6, 4); ctx.fillStyle = '#c9ccd6'; ctx.fillRect(nx - 9, H - 54, 3, 2);
   // the man at the front table, facing us
   var mx = Math.round(W*0.5), T = H - 30;
   for (var y = T - 26; y < T; y++) for (var x = mx - 12; x <= mx + 12; x++){ ctx.fillStyle = ((x + y) % 2) ? '#7a7a7e' : ((x*3 + y) % 5 ? '#a8a8ac' : '#5a5a5e'); ctx.fillRect(x, y, 1, 1); }
