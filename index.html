@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "f3ac57b9b1";
+var APP_BUILD = "00ab244eba";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1412,6 +1412,9 @@ function stPerson(ctx, p, x, y, t){
   if (p.pearls){ U(-3, -36, 7, 1, '#3a2a20'); for (var k = -3; k < 4; k += 2) U(k, -36, 1, 1, '#f3efe6'); }
   if (p.bucket){ U(-3, -37, 7, 3, p.bucket); U(-5, -34, 11, 1, p.bucket); U(-3, -35, 7, 1, 'rgba(0,0,0,.2)'); }
   if (p.bobby){ U(-3, -39, 6, 5, '#1a2040'); U(-2, -41, 4, 2, '#1a2040'); U(-1, -42, 2, 1, '#2a3050'); U(-4, -35, 8, 1, '#141a34'); U(0, -38, 2, 2, '#c9c3b6'); U(-3, -14, 7, 1, '#141a34'); for (var k = -23; k < -15; k += 3) U(0, k, 1, 1, '#c9c3b6'); }
+  if (p.pillowhat){ U(-5, -38, 12, 3, '#e8e4dc'); U(-3, -40, 8, 2, '#f3efe6'); U(-6, -37, 2, 2, '#d6d0c4'); U(5, -37, 2, 2, '#d6d0c4'); U(-1, -40, 3, 1, '#ffffff'); }
+  if (p.redhood){ U(-3, -35, 1, 8, '#c4302a'); U(-2, -35, 5, 1, '#c4302a'); U(-2, -27, 6, 2, '#c4302a'); U(1, -25, 2, 10, '#c4302a'); U(1, -15, 1, 1, '#e06a5a'); U(2, -16, 1, 1, '#e06a5a'); }
+  if (p.zip){ U(0, -24, 1, 10, '#9a8a6a'); U(-3, -25, 2, 1, '#2a2a32'); U(2, -25, 2, 1, '#2a2a32'); }
   if (p.knit){ U(-3, -38, 6, 4, p.knit); U(-2, -39, 4, 1, p.knit); U(-3, -35, 7, 1, '#2e2e36'); U(-1, -37, 1, 2, '#2e2e36'); U(1, -37, 1, 2, '#2e2e36'); }
   if (p.bowler){ U(-3, -38, 6, 3, '#6b1e2a'); U(-2, -39, 4, 1, '#6b1e2a'); U(-3, -36, 6, 1, '#2a2a2a'); U(-5, -35, 10, 1, '#5a1a24'); }
   if (p.party){ U(-1, -38, 4, 2, '#d9302a'); U(0, -41, 3, 3, '#d9302a'); U(1, -43, 1, 2, '#d9302a'); U(0, -39, 1, 1, '#f3ead3'); U(2, -41, 1, 1, '#f3ead3'); U(1, -43, 1, 1, '#f3ead3'); }
@@ -1516,7 +1519,7 @@ function drawStMarks(ctx, W, H, t, st){
       {hair: 'cap', hc: '#9a9a9a', jacket: '#3a3a42', pants: '#2a2a32', skin: 0}, {hair: 'long', hc: '#5a3a24', jacket: '#d9822b', pants: '#3a4a6a', skin: 3},
       {hair: 'short', hc: '#8a5a3a', jacket: '#2f5f9e', pants: '#1a1a22', skin: 1}]);
     var b0 = st.b[0]; crowd.forEach(function(p, k){ p.dir = k % 2 ? -1 : 1; p.v = 0; p.ph = k; stPerson(ctx, p, Math.round(b0.x + 14 + k*9), walk + 15, t); });
-    var fu2 = t % 80; if (fu2 < 60){ var fr = st.friends || (st.friends = [usTwo()[1], usTwo()[0], gingerGuy()]), fxm, fmv;
+    var fu2 = t % 80; if (fu2 < 60){ var fr = st.friends || (st.friends = [usTwo()[1], usTwo()[0], alfieGuy(), gingerGuy(), lucyGirl()]), fxm, fmv;
       if (fu2 < 7){ fxm = W + 20 - (W + 20 - Math.round(W*0.42))*(fu2/7); fmv = 1; } else if (fu2 < 50){ fxm = Math.round(W*0.42); fmv = 0; } else { fxm = Math.round(W*0.42) - (fu2 - 50)*9; fmv = 1; }
       fr.forEach(function(p, k){ p.dir = -1; p.v = fmv; p.ph = k*1.7; stPerson(ctx, p, Math.round(fxm) + k*9, curb - 4, t); }); } }
   // the two of you, ambling down the near sidewalk, one with a bag of groceries
@@ -1631,6 +1634,8 @@ function usTwo(){ return [{hair:'curly', hc:'#5a3a24', bowler:1, dress:1, jacket
 function heldHands(ctx, x1, x2, y){ ctx.fillStyle = '#f0c6a0'; ctx.fillRect(Math.min(x1, x2), y, Math.abs(x2 - x1) + 1, 1); }
 function tinyHeart(ctx, x, y, a){ ctx.globalAlpha = a; ctx.fillStyle = '#ff7a9a'; ctx.fillRect(x, y, 1, 1); ctx.fillRect(x + 2, y, 1, 1); ctx.fillRect(x, y + 1, 3, 1); ctx.fillRect(x + 1, y + 2, 1, 1); ctx.globalAlpha = 1; }
 function gingerGuy(){ return {hair: 'swept', hc: '#c4652a', skin: 0, freckles: 1, jacket: '#c9b89a', cable: 1, lace: 1, pants: '#2a2a32', ph: 1}; }
+function alfieGuy(){ return {hair: 'bigcurl', hc: '#7a5a3a', stache: '#7a5a3a', jacket: '#151218', tee: '#7a9ac8', scarf: 1, pants: '#151218', logo: 1, skin: 0, ph: 2}; }
+function lucyGirl(){ return {hair: 'short', hc: '#241a14', pillowhat: 1, redhood: 1, jacket: '#151218', zip: 1, pants: '#1a1a22', lips: '#c4473a', skin: 0, ph: 4}; }
 function bowtieMe(){ return {hair: 'wavy', hc: '#241a14', glasses: 1, stache: '#3b2a20', goatee: '#3b2a20', jacket: '#1a1a22', bowtie: 1, camel: 1, pants: '#1a1a22', skin: 0, ph: 3}; }
 function colSetup(W, H){
   var seed = 3; function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
