@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "9839a190e8";
+var APP_BUILD = "72172a42da";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2423,7 +2423,13 @@ ROOMS.street = function(ctx, W, H, t, go){
   ptext(ctx, word, gx + 2, gy + 2, 2, '#151218'); ptext(ctx, word, gx, gy, 2, '#d6dbe4'); ctx.fillStyle = '#ffffff'; for (var k = 0; k < textW(word, 2); k += 4) ctx.fillRect(gx + k, gy, 1, 1);
   ctx.fillStyle = '#e9c45a'; [[2, 11, 4], [9, 11, 6], [17, 11, 3]].forEach(function(d){ ctx.fillRect(gx + d[0], gy + d[1], 1, d[2]); ctx.fillRect(gx + d[0], gy + d[1] + d[2], 1, 1); });
   ctx.fillStyle = '#c4302a'; var tx = gx + 2, ty = gy + 20; for (var k = 0; k < 22; k++) ctx.fillRect(tx + k, ty + Math.round(Math.sin(k*0.9)*2), 1, 1); ctx.fillRect(tx + 22, ty - 3, 1, 5); ctx.fillRect(tx + 5, ty - 3, 1, 4);
-  ptext(ctx, 'WOOLF', gx + textW(word, 2) + 6, gy + 3, 1, '#ff7ad9'); ctx.fillStyle = '#5ab4ff'; for (var k = 0; k < 14; k++) ctx.fillRect(gx + textW(word, 2) + 5 + k, gy + 10 + (k % 3 === 0 ? 1 : 0), 1, 1);
+  ptext(ctx, 'WOOLF', gx + textW(word, 2) + 6, gy + 3, 1, '#ff7ad9');
+  // a psi, sprayed in green with a black outline
+  var PSI = ['x.....x','x..x..x','x..x..x','.x.x.x.','..xxx..','...x...','...x...','..xxx..'], px0 = gx + textW(word, 2) + 11, py0 = gy + 15;
+  PSI.forEach(function(row, y){ for (var x = 0; x < row.length; x++) if (row[x] === 'x'){ ctx.fillStyle = '#151218'; ctx.fillRect(px0 + x - 1, py0 + y - 1, 3, 3); } });
+  PSI.forEach(function(row, y){ for (var x = 0; x < row.length; x++) if (row[x] === 'x'){ ctx.fillStyle = '#7ae07a'; ctx.fillRect(px0 + x, py0 + y, 1, 1); } });
+  ctx.fillStyle = '#7ae07a'; ctx.fillRect(px0 + 3, py0 + 8, 1, 3);
+ ctx.fillStyle = '#5ab4ff'; for (var k = 0; k < 14; k++) ctx.fillRect(gx + textW(word, 2) + 5 + k, gy + 10 + (k % 3 === 0 ? 1 : 0), 1, 1);
   // sidewalk and curb
   ctx.fillStyle = '#5f5866'; ctx.fillRect(0, walk, W, curb - walk); for (var x = 0; x < W; x += 16){ ctx.fillStyle = '#4e4856'; ctx.fillRect(x, walk, 1, curb - walk); } ctx.fillStyle = '#a89c94'; ctx.fillRect(0, curb, W, 2); ctx.fillStyle = '#1d1b26'; ctx.fillRect(0, curb + 2, W, H - curb - 2);
   // against the wall: a man asleep in a cardboard box with a sleeping bag; his dog curled at his feet; a cup, a cart of bags
