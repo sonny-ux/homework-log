@@ -225,6 +225,12 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .si i { width: 14px; height: 14px; margin-top: 4px; outline: 1.5px solid var(--ink); }
 .si small { color: var(--muted); } .si p { font-size: 14px; margin-top: 4px; line-height: 1.4; } .si p.sm { color: var(--muted); font-size: 13px; }
 .sheet .none { color: var(--muted); font-size: 14px; padding: 4px 0; }
+.plan { border: var(--rule) solid var(--ink); }
+.pl { display: grid; grid-template-columns: 20px 14px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; }
+.pl + .pl { border-top: var(--thin) solid var(--ink); }
+.pl .pn { font-weight: 700; color: var(--muted); } .pl i { width: 14px; height: 14px; outline: 1.5px solid var(--ink); }
+.pl small { color: var(--muted); } .pl p { font-size: 13px; color: var(--muted); margin-top: 2px; } .pl .pm { font-weight: 700; }
+.plan .tip { border-top: var(--thin) solid var(--ink); padding: 8px 12px; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -236,6 +242,8 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
     <h2>Today <span class="sub" id="daysub"></span></h2>
     <div class="band" id="band"></div>
     <div class="list" id="daylist"></div>
+    <h2 style="margin-top:16px">Suggested for today <span class="sub" id="plansub"></span></h2>
+    <div class="plan" id="plan"></div>
   </section>
 
   <section id="wk">
@@ -542,6 +550,35 @@ document.addEventListener('click', function(e){
   var t = e.target.closest('[data-day]'); if (t) openDay(t.dataset.day);
 });
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeDay(); });
+
+function renderPlan(){
+  // Spread each open assignment's remaining time over the days left, most urgent first.
+  var nowStudy = sday({date: iso(new Date()), start_min: new Date().getHours()*60 + new Date().getMinutes()});
+  var td = parse(nowStudy), by = dayStats();
+  var doneToday = by[nowStudy] ? by[nowStudy].min : 0;
+  var items = DATA.assignments.filter(function(a){ return !a.done && a.key && parse(a.due) >= addDays(td, -14); }).map(function(a){
+    var t = typicalMinutes(a), left = Math.max(0, t.m - spentOn(a));
+    var daysLeft = Math.round((parse(a.due) - td)/864e5);
+    var late = daysLeft < 0, dueTonight = daysLeft === 0 || (daysLeft === 1 && a.time && /^(0?[0-9]|1[01]):\d\d AM/.test(a.time));
+    var share = late ? left : left / Math.max(1, daysLeft + (a.time && /PM/.test(a.time) ? 1 : 0));
+    return {a:a, left:left, daysLeft:daysLeft, late:late, today: Math.round(Math.min(left, Math.max(share, 30))/15)*15};
+  }).filter(function(x){ return x.left > 10; });
+  items.sort(function(x, y){ return (x.late === y.late ? 0 : x.late ? -1 : 1) || x.daysLeft - y.daysLeft; });
+  var budget = 0; Object.keys(by).forEach(function(k){ budget += by[k].min; }); budget = Math.max(150, Math.min(360, budget / Math.max(1, Object.keys(by).length)));
+  var plan = [], used = 0;
+  items.forEach(function(x){ if (used >= budget) return; var m = Math.min(x.today, Math.max(30, budget - used)); plan.push({x:x, m:m}); used += m; });
+  el('plansub').textContent = plan.length ? 'about ' + hm(Math.round(used)) + ' of work' : '';
+  if (!plan.length){ el('plan').innerHTML = '<p class="nz" style="padding:10px 12px">Nothing pressing. A good day to get ahead or review.</p>'; return; }
+  var tips = [];
+  var exam = DATA.assignments.filter(function(a){ return !a.done && /midterm|final|exam/i.test(a.title) && parse(a.due) >= td; })[0];
+  if (exam){ var ed = Math.round((parse(exam.due) - td)/864e5), seen = 0; DATA.sessions.forEach(function(s){ if (s['class'] === exam['class'] && sday(s) > iso(addDays(td, -7))) seen += s.minutes||0; });
+    if (ed <= 10) tips.push(esc(exam['class']) + ' ' + esc(exam.title) + ' is in ' + ed + ' days' + (seen ? '' : ', with no ' + esc(exam['class']) + ' study in the last week') + '; working its homework counts as review.'); }
+  var lastNight = by[iso(addDays(td, -1))]; if (lastNight && lastNight.last >= 1440 + 120) tips.push('Last night ran until ' + clk(lastNight.last) + '; starting earlier today would leave the hard parts for when you are freshest.');
+  el('plan').innerHTML = plan.map(function(p, i){
+    var a = p.x.a, why = p.x.late ? 'past due; finish first' : p.x.daysLeft === 0 ? 'due today' : p.x.daysLeft === 1 ? 'due tomorrow' + (a.time ? ' ' + a.time.replace(':00','') : '') : 'due ' + DAYS[parse(a.due).getDay()] + ' · about ' + hm(Math.round(p.x.left)) + ' left';
+    return '<div class="pl" data-day="' + a.due + '"><span class="pn">' + (i+1) + '</span><i class="' + cls(a['class']) + '"></i><div><b>' + esc(a.title) + '</b> <small>' + esc(a['class']) + '</small><p>' + why + '</p></div><div class="pm">' + hm(Math.round(p.m)) + '</div></div>';
+  }).join('') + (tips.length ? tips.map(function(t){ return '<p class="tip">' + t + '</p>'; }).join('') : '');
+}
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -693,7 +730,7 @@ function renderAssignments(){
 }
 
 function render(){
-  renderToday(); renderWeek(); renderAssignments();
+  renderToday(); renderPlan(); renderWeek(); renderAssignments();
   var u = new Date(DATA.updated);
   el('upd').textContent = 'Updated ' + DAYS[u.getDay()] + ' ' + MON[u.getMonth()] + ' ' + u.getDate() + ', ' + u.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + ' · from the coursework log';
 }
@@ -723,7 +760,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "59cb0d831a";
+var APP_BUILD = "8b94cb2618";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
