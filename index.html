@@ -244,6 +244,8 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 
   <section id="asg">
     <h2>Due <span class="sub" id="asgsub"></span></h2>
+    <div class="wkhead"><h2 style="margin:0"><span id="calname">This week and next</span> <span class="sub" id="calsub"></span></h2>
+      <div class="arrows"><button id="cprev" aria-label="Earlier weeks">‹</button><button id="cnow" aria-label="Back to this week">Now</button><button id="cnext" aria-label="Later weeks">›</button></div></div>
     <div class="cal" id="cal"></div>
     <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
     <div class="fc" id="fc"></div>
@@ -603,12 +605,17 @@ function renderForecast(){
   el('fc').innerHTML = '<div class="fsum"><b>~' + hm(total) + '</b> of work left · about <b>' + hm(Math.round(total/daysLeft/15)*15) + '</b> a day for ' + daysLeft + ' days</div>' + rows.join('')
     + '<p class="fnote">Estimates use how long similar assignments took in your log (or a typical figure when there is no history), minus the time already logged on each.</p>';
 }
+var CAL_OFF = 0;
 function renderCal(){
-  var start = sunday(today), html = '';
+  var start = sunday(today), html = ''; start.setDate(start.getDate() + 7*CAL_OFF);
+  var endD = new Date(start); endD.setDate(endD.getDate() + 13);
+  el('calname').textContent = CAL_OFF === 0 ? 'This week and next' : CAL_OFF === -1 ? 'Last week and this week' : CAL_OFF === 1 ? 'Next week and the one after' : (CAL_OFF < 0 ? (-CAL_OFF) + ' weeks back' : CAL_OFF + ' weeks ahead');
+  el('calsub').textContent = MON[start.getMonth()] + ' ' + start.getDate() + ' – ' + MON[endD.getMonth()] + ' ' + endD.getDate();
+  el('cnow').classList.toggle('on', CAL_OFF === 0);
   for (var i = 0; i < 7; i++) html += '<div class="ch">' + DAYS[i] + '</div>';
   for (var i = 0; i < 14; i++){
     var d = new Date(start); d.setDate(d.getDate() + i); var ds = iso(d);
-    var items = DATA.assignments.filter(function(a){ return a.due === ds && !a.done; });
+    var items = DATA.assignments.filter(function(a){ return a.due === ds; });
     var past = d < today && iso(d) !== iso(today);
     html += '<div class="cd' + (ds === iso(today) ? ' today' : '') + (past ? ' past' : '') + '"><div class="n">' + (d.getDate() === 1 || i === 0 ? MON[d.getMonth()] + ' ' : '') + d.getDate() + '</div>'
       + items.map(function(a){ return '<div class="ci ' + cls(a['class']) + '" title="' + esc(a.title) + '">' + esc(window.innerWidth < 560 ? abbr(a.title) : a.title) + (a.time ? ' <small>' + esc(a.time.replace(':00','')) + '</small>' : '') + '</div>'; }).join('') + '</div>';
@@ -656,6 +663,9 @@ var ZOOMS = [0.6, 1, 1.6, 2.4, 3.4], ZI = 1, FIT = false;
 el('zin').onclick = function(){ ZI = Math.min(ZOOMS.length-1, ZI+1); renderWeek(); };
 el('zout').onclick = function(){ ZI = Math.max(0, ZI-1); renderWeek(); };
 el('zfit').onclick = function(){ FIT = !FIT; el('zfit').classList.toggle('on', FIT); renderWeek(); };
+el('cprev').onclick = function(){ CAL_OFF--; renderCal(); };
+el('cnext').onclick = function(){ CAL_OFF++; renderCal(); };
+el('cnow').onclick = function(){ CAL_OFF = 0; renderCal(); };
 el('prev').onclick = function(){ weekStart.setDate(weekStart.getDate() - 7); renderWeek(); };
 el('next').onclick = function(){ weekStart.setDate(weekStart.getDate() + 7); renderWeek(); };
 document.querySelectorAll('nav.seg a').forEach(function(a){
@@ -674,7 +684,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "3bcad50c17";
+var APP_BUILD = "7c909362bf";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
