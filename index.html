@@ -226,7 +226,7 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 
   <section id="wk">
     <div class="wkhead"><h2><span id="wkname">Week</span> <span class="sub" id="wksub"></span></h2>
-      <div class="wktools"><div class="arrows"><button id="zout" aria-label="Zoom out">−</button><button id="zin" aria-label="Zoom in">+</button><button id="zfit" aria-label="Fit to worked hours">Fit</button></div>
+      <div class="wktools"><div class="arrows"><button id="zfit" aria-label="Fit to worked hours">Fit</button></div>
       <div class="arrows"><button id="prev" aria-label="Previous week">‹</button><button id="next" aria-label="Next week">›</button></div></div></div>
     <div class="week" id="week"></div>
     <h2 style="margin-top:18px">By class <span class="sub" id="compsub"></span></h2>
@@ -660,8 +660,6 @@ function render(){
 }
 
 var ZOOMS = [0.6, 1, 1.6, 2.4, 3.4], ZI = 1, FIT = false;
-el('zin').onclick = function(){ ZI = Math.min(ZOOMS.length-1, ZI+1); renderWeek(); };
-el('zout').onclick = function(){ ZI = Math.max(0, ZI-1); renderWeek(); };
 el('zfit').onclick = function(){ FIT = !FIT; el('zfit').classList.toggle('on', FIT); renderWeek(); };
 el('cprev').onclick = function(){ CAL_OFF--; renderCal(); };
 el('cnext').onclick = function(){ CAL_OFF++; renderCal(); };
@@ -684,7 +682,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "7c909362bf";
+var APP_BUILD = "e96dd45ba4";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
