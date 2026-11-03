@@ -157,6 +157,15 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .noticed p { padding: 9px 0; font-size: 15px; line-height: 1.45; }
 .noticed p + p { border-top: var(--thin) solid var(--ink); }
 .noticed .nz { color: var(--muted); }
+.topics { border: var(--rule) solid var(--ink); }
+.tg + .tg { border-top: var(--rule) solid var(--ink); }
+.th { display: flex; align-items: center; gap: 8px; font-weight: 700; padding: 8px 12px; border-bottom: var(--thin) solid var(--ink); }
+.th i { width: 14px; height: 14px; outline: 1.5px solid var(--ink); }
+.tr { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 7px 12px; font-size: 14px; line-height: 1.4; }
+.tr + .tr { border-top: var(--thin) dashed var(--gridline); }
+.tr .td { color: var(--muted); font-size: 12px; padding-top: 2px; }
+.row .t .tp { font-size: 13px; color: var(--muted); margin-top: 2px; }
+@media (max-width: 560px) { .tr { grid-template-columns: 72px 1fr; } }
 </style>
 </head>
 <body>
@@ -179,6 +188,8 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
     <div class="zero" id="zero"></div>
     <h2 style="margin-top:18px">Noticed <span class="sub">this week, from your log</span></h2>
     <div class="noticed" id="noticed"></div>
+    <h2 style="margin-top:18px">Topics <span class="sub">what each session was on</span></h2>
+    <div class="topics" id="topics"></div>
   </section>
 
   <section id="asg">
@@ -217,7 +228,7 @@ function renderToday(){
       + '<div class="tot"><b>' + hm(total) + '</b><span>today</span></div>';
   el('daysub').textContent = ss.length ? ss.length + ' session' + (ss.length > 1 ? 's' : '') : '';
   el('daylist').innerHTML = ss.map(function(s){
-    return '<div class="row"><div class="sw ' + cls(s['class']) + '"></div><div class="t"><b>' + esc(s['class']) + '</b> <small>' + esc(s.start) + '–' + esc(s.in_progress ? 'now' : s.end) + '</small></div><div class="m">' + hm(s.minutes||0) + '</div></div>';
+    return '<div class="row"><div class="sw ' + cls(s['class']) + '"></div><div class="t"><b>' + esc(s['class']) + '</b> <small>' + esc(s.start) + '–' + esc(s.in_progress ? 'now' : s.end) + '</small>' + (s.topic ? '<div class="tp">' + esc(s.topic) + '</div>' : '') + '</div><div class="m">' + hm(s.minutes||0) + '</div></div>';
   }).join('');
   el('daylist').style.display = ss.length ? '' : 'none';
 }
@@ -262,10 +273,23 @@ function renderWeek(){
   }
   html += '<div class="foot first"></div>' + totals.map(function(t){ return '<div class="foot">' + (t ? hm(t) : '—') + '</div>'; }).join('');
   g.innerHTML = html;
-  renderComp(ss); renderNoticed(ss);
+  renderComp(ss); renderNoticed(ss); renderTopics(ss);
 }
 
 
+
+function renderTopics(ss){
+  var by = {};
+  ss.slice().sort(function(a,b){ return (a.date+String(a.start_min).padStart(4,'0')).localeCompare(b.date+String(b.start_min).padStart(4,'0')); })
+    .forEach(function(s){ if (!s.topic) return; (by[s['class']] = by[s['class']] || []).push(s); });
+  var cs = CLASSES.filter(function(c){ return by[c]; }).concat(Object.keys(by).filter(function(c){ return CLASSES.indexOf(c) < 0; }));
+  el('topics').innerHTML = cs.length ? cs.map(function(c){
+    return '<div class="tg"><div class="th"><i class="' + cls(c) + '"></i>' + esc(c) + '</div>' + by[c].map(function(s){
+      var d = parse(s.date);
+      return '<div class="tr"><span class="td">' + DAYS[d.getDay()] + ' ' + esc(s.start) + '</span><span>' + esc(s.topic) + '</span></div>';
+    }).join('') + '</div>';
+  }).join('') : '<p class="nz" style="padding:10px 0">No topics logged this week.</p>';
+}
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }

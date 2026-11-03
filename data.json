@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T07:55:48+00:00",
+ "updated": "2026-11-03T07:59:00+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -11,7 +11,8 @@
    "start_min": 1118,
    "end_min": 1220,
    "minutes": 102,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "HW6 prep (file hw6.pdf, header reads \"Homework 5\"; due Mon 10/26, 11:59 PM), Munkres §22: definition of…"
   },
   {
    "date": "2026-10-25",
@@ -23,7 +24,8 @@
    "start_min": 1283,
    "end_min": 1384,
    "minutes": 101,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Read the iPad Concept C transcript (worked example p(x,y) = x + y)"
   },
   {
    "date": "2026-10-25",
@@ -35,7 +37,8 @@
    "start_min": 1404,
    "end_min": 1440,
    "minutes": 36,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Continuity defined via preimages (backward) vs. open maps (forward); worked example p(x,y) = x + y redone in…"
   },
   {
    "date": "2026-10-26",
@@ -47,7 +50,8 @@
    "start_min": 0,
    "end_min": 153,
    "minutes": 153,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Step 3 via the section j(s) = (s,0): why j is continuous (interactive figures), j⁻¹(p⁻¹(U)) = U, (p∘j)⁻¹ =…"
   },
   {
    "date": "2026-10-26",
@@ -59,7 +63,8 @@
    "start_min": 994,
    "end_min": 1035,
    "minutes": 41,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Q3 prep"
   },
   {
    "date": "2026-10-26",
@@ -71,7 +76,8 @@
    "start_min": 1126,
    "end_min": 1158,
    "minutes": 32,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Q3(a) sketches checked (A correct; B: square sides should be dashed, and the strip between square and segment…"
   },
   {
    "date": "2026-10-26",
@@ -83,7 +89,8 @@
    "start_min": 1183,
    "end_min": 1207,
    "minutes": 24,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Q3(a) sketches finished (B fixed: dashed sides, empty gap; shade both squares; B also has a solid top)"
   },
   {
    "date": "2026-10-26",
@@ -95,7 +102,8 @@
    "start_min": 1243,
    "end_min": 1298,
    "minutes": 55,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Q3(b) worked out: why {(0,0)} is not open in A (every disk meets the square near the corner, e.g. (r/2,…"
   },
   {
    "date": "2026-10-26",
@@ -107,7 +115,8 @@
    "start_min": 1309,
    "end_min": 1350,
    "minutes": 41,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Q4(a) read and unpacked in this chat (subspace vs. quotient topology on the image A; \"finer\" = every…"
   },
   {
    "date": "2026-10-26",
@@ -119,7 +128,8 @@
    "start_min": 1364,
    "end_min": 1439,
    "minutes": 75,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Q4(a) (general method: proving one topology is finer than another), Q4(b) (existence proof: B = f(X) with the…"
   },
   {
    "date": "2026-10-27",
@@ -131,7 +141,8 @@
    "start_min": 61,
    "end_min": 74,
    "minutes": 13,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina"
   },
   {
    "date": "2026-10-27",
@@ -143,7 +154,8 @@
    "start_min": 83,
    "end_min": 114,
    "minutes": 31,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Reading Eliza Haywood, Fantomina, then writing a reflection (1:45–1:54)"
   },
   {
    "date": "2026-10-27",
@@ -155,7 +167,8 @@
    "start_min": 150,
    "end_min": 173,
    "minutes": 23,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Virginia Woolf: reading To the Lighthouse (syllabus for 10/27 and 10/29)"
   },
   {
    "date": "2026-10-27",
@@ -167,7 +180,8 @@
    "start_min": 785,
    "end_min": 913,
    "minutes": 128,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (two pages; due 10/27, submitting late by Fri 10/30)"
   },
   {
    "date": "2026-10-27",
@@ -179,7 +193,8 @@
    "start_min": 997,
    "end_min": 1002,
    "minutes": 5,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina (due Fri 10/30)"
   },
   {
    "date": "2026-10-27",
@@ -191,7 +206,8 @@
    "start_min": 1035,
    "end_min": 1098,
    "minutes": 63,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Problem Set 5 (20 pts; Canvas; was due Tue 10/27 9:00 AM, turning in late Wed 10/28)"
   },
   {
    "date": "2026-10-27",
@@ -203,7 +219,8 @@
    "start_min": 1126,
    "end_min": 1140,
    "minutes": 14,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Problem Set 5: set up a link for the guide (published to the vibrations-waves-guide site, ps5/) and rebuilt…"
   },
   {
    "date": "2026-10-27",
@@ -215,7 +232,8 @@
    "start_min": 1140,
    "end_min": 1210,
    "minutes": 70,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Working through Problem Set 5 with the guide, from Problem 1(a)"
   },
   {
    "date": "2026-10-27",
@@ -227,7 +245,8 @@
    "start_min": 1297,
    "end_min": 1339,
    "minutes": 42,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (prompt 6: laws, causation, counterfactuals; late cutoff Fri 10/30)"
   },
   {
    "date": "2026-10-28",
@@ -239,7 +258,8 @@
    "start_min": 1023,
    "end_min": 1070,
    "minutes": 47,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (prompt 6: laws, causation, counterfactuals; late cutoff Fri 10/30)"
   },
   {
    "date": "2026-10-28",
@@ -251,7 +271,8 @@
    "start_min": 1081,
    "end_min": 1110,
    "minutes": 29,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (prompt 6), continuing from the Hume passage"
   },
   {
    "date": "2026-10-28",
@@ -263,7 +284,8 @@
    "start_min": 1123,
    "end_min": 1166,
    "minutes": 43,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (prompt 6): lawlike vs. law (a law is a true lawlike statement); chain Hume → Goodman → laws →…"
   },
   {
    "date": "2026-10-28",
@@ -275,7 +297,8 @@
    "start_min": 1335,
    "end_min": 1440,
    "minutes": 105,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (prompt 6), drafting in Pages"
   },
   {
    "date": "2026-10-29",
@@ -287,7 +310,8 @@
    "start_min": 0,
    "end_min": 38,
    "minutes": 38,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Jackson kept the length (fits at 11 pt)"
   },
   {
    "date": "2026-10-29",
@@ -299,7 +323,8 @@
    "start_min": 64,
    "end_min": 129,
    "minutes": 65,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina (due Fri 10/30)"
   },
   {
    "date": "2026-10-29",
@@ -311,7 +336,8 @@
    "start_min": 931,
    "end_min": 981,
    "minutes": 50,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Paper 1 (prompt 6; late cutoff Fri 10/30): final sweep (Cartwright on truth of laws, Russell's laws carrying…"
   },
   {
    "date": "2026-11-02",
@@ -323,7 +349,8 @@
    "start_min": 941,
    "end_min": 960,
    "minutes": 19,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Chapter 3, damped and driven oscillator (reviewing own notes)"
   },
   {
    "date": "2026-11-02",
@@ -335,7 +362,8 @@
    "start_min": 1068,
    "end_min": 1096,
    "minutes": 28,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Virginia Woolf session"
   },
   {
    "date": "2026-11-02",
@@ -347,7 +375,8 @@
    "start_min": 1099,
    "end_min": 1176,
    "minutes": 77,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Approaches to Literary Study: Paper 2 (drama; due Fri 11/6; prompt saved to School/syllabi)"
   },
   {
    "date": "2026-11-02",
@@ -359,7 +388,8 @@
    "start_min": 1254,
    "end_min": 1344,
    "minutes": 90,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Problem Set 6 (King 5-2, 5-3, 5-6; was due Sun 11/1, Gradescope; doing it late)"
   },
   {
    "date": "2026-11-02",
@@ -371,7 +401,8 @@
    "start_min": 1361,
    "end_min": 1399,
    "minutes": 38,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Problem Set 6, Problem 2 (King 5-3): (i), (ii), (iii) shown to satisfy the wave equation by substitution u =…"
   },
   {
    "date": "2026-11-03",
@@ -383,7 +414,8 @@
    "start_min": 53,
    "end_min": 98,
    "minutes": 45,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Nelson Goodman, Fact, Fiction, and Forecast: Ch. 3 (\"The New Riddle of Induction\") key terms reviewed (old…"
   },
   {
    "date": "2026-11-03",
@@ -395,7 +427,8 @@
    "start_min": 104,
    "end_min": 165,
    "minutes": 61,
-   "in_progress": false
+   "in_progress": false,
+   "topic": "Concepts behind PS6 Problem 2: why f(x − vt) moves toward +x (following a crest; x catching up with vt;…"
   }
  ],
  "assignments": [
