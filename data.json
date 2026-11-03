@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T08:18:07+00:00",
+ "updated": "2026-11-03T08:18:45+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -282,7 +282,7 @@
    "end_min": 1339,
    "minutes": 42,
    "in_progress": false,
-   "topic": "Phil of Sci Paper 1: shaped the thesis and plan; read Goodman.",
+   "topic": "Phil of Sci Paper 1: shaped the thesis and plan; read Goodman, Fact, Fiction, and Forecast (induction chapters), ahead of class.",
    "refs": [
     "paper 1"
    ]
@@ -314,7 +314,7 @@
    "end_min": 1110,
    "minutes": 29,
    "in_progress": false,
-   "topic": "Phil of Sci Paper 1: brought in Goodman on laws and prediction; planned word budget.",
+   "topic": "Phil of Sci Paper 1: brought in Goodman's view that laws are what we use for prediction; planned word budget.",
    "refs": [
     "paper 1"
    ]

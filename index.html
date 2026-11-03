@@ -187,6 +187,7 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .tb .stack .fade { opacity: .28; }
 .tb .tv small { font-weight: 500; color: var(--muted); }
 .trends .tnote { color: var(--muted); font-size: 13px; }
+.tr b { font-weight: 700; }
 </style>
 </head>
 <body>
@@ -314,9 +315,21 @@ function renderTopics(ss){
     .forEach(function(s){ if (!s.topic) return; (by[s['class']] = by[s['class']] || []).push(s); });
   var cs = CLASSES.filter(function(c){ return by[c]; }).concat(Object.keys(by).filter(function(c){ return CLASSES.indexOf(c) < 0; }));
   el('topics').innerHTML = cs.length ? cs.map(function(c){
+    var lastHead = null, alias = {'Physics III':'Physics', 'Lit Study':'Lit Study', 'Phil of Sci':'Phil of Sci', 'Topology':'Topology', 'Woolf':'Woolf'};
     return '<div class="tg"><div class="th"><i class="' + cls(c) + '"></i>' + esc(c) + '</div>' + by[c].map(function(s){
-      var d = parse(s.date);
-      return '<div class="tr"><span class="td">' + DAYS[d.getDay()] + ' ' + esc(s.start) + '</span><span>' + esc(s.topic) + '</span></div>';
+      var d = parse(s.date), t = s.topic;
+      // the class is already the group heading, so drop it from the start of the line
+      [c, alias[c]].forEach(function(n){ if (n && t.indexOf(n + ' ') === 0) t = t.slice(n.length + 1); });
+      t = t.charAt(0).toUpperCase() + t.slice(1);
+      // when consecutive lines are for the same assignment, name it once
+      var k = t.indexOf(': '), head = k > 0 ? t.slice(0, k) : null, body = k > 0 ? t.slice(k + 2) : t;
+      var headKey = head ? head.replace(/\s*\(.*?\)/g, '').replace(/,.*$/, '').trim() : null;
+      var sub = head && head.indexOf(',') > 0 ? head.slice(head.indexOf(',') + 1).trim() : '';
+      var shown = (head && headKey === lastHead)
+        ? (sub ? '<b>' + esc(sub) + ':</b> ' + esc(body) : esc(body.charAt(0).toUpperCase() + body.slice(1)))
+        : (head ? '<b>' + esc(head) + ':</b> ' + esc(body) : esc(t));
+      lastHead = headKey;
+      return '<div class="tr"><span class="td">' + DAYS[d.getDay()] + ' ' + esc(s.start) + '</span><span>' + shown + '</span></div>';
     }).join('') + '</div>';
   }).join('') : '<p class="nz" style="padding:10px 0">No topics logged this week.</p>';
 }
@@ -543,7 +556,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "cba0f22de3";
+var APP_BUILD = "6f2d8427b5";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
