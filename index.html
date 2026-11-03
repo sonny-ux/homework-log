@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "774e2ac4f5";
+var APP_BUILD = "4009a00a92";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1343,6 +1343,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.orchids){ U(1, -22, 3, 2, '#f0a0b4'); U(2, -21, 1, 1, '#c4476a'); U(-3, -14, 3, 2, '#f0a0b4'); U(-2, -13, 1, 1, '#c4476a'); U(0, -10, 3, 2, '#e88aa0'); U(1, -9, 1, 1, '#c4476a'); }
   if (p.hounds){ for (var yy = -24; yy < -14; yy++) for (var xx = -3; xx < 4; xx++) if ((xx + yy) % 2 === 0) U(xx, yy, 1, 1, (xx*3 + yy) % 5 ? '#a8a8ac' : '#5a5a5e'); }
   if (p.shirtC){ U(-1, -25, 3, 11, p.shirtC); U(-2, -25, 1, 3, '#5a5a5e'); U(2, -25, 1, 3, '#5a5a5e'); }
+  if (p.hoodie){ U(-4, -26, 4, 4, '#2a1c18'); U(-1, -24, 1, 4, '#d9cdb0'); U(1, -24, 1, 3, '#d9cdb0'); U(-3, -17, 7, 2, '#2a1c18'); U(-1, -28, 1, 1, '#c9c3b6'); }
   if (p.floral){ [[-2,-24,'#2a3a6a'],[1,-22,'#2a3a6a'],[-3,-19,'#2a3a6a'],[2,-18,'#f3e0a8'],[-1,-16,'#2a3a6a'],[0,-21,'#f3e0a8'],[3,-24,'#c98a3a'],[-2,-21,'#c98a3a']].forEach(function(q){ U(q[0], q[1], 1, 1, q[2]); }); U(-1, -25, 3, 1, '#f3e0a8'); }
   if (p.wrapdress){ for (var k = 0; k < 7; k++){ U(-3 + k, -24 + k, 1, 1, '#2a3a6a'); U(-2 + k, -24 + k, 1, 1, '#d9602a'); } U(-3, -16, 7, 1, '#2a3a6a'); if (p.sit){ U(-2, -13, 2, 1, '#2a3a6a'); U(2, -12, 3, 1, '#d9602a'); U(5, -9, 1, 4, '#2a3a6a'); } }
   if (p.plaid){ for (var k = -24; k < -14; k += 3) U(-3, k, 7, 1, 'rgba(255,230,180,.3)'); U(-1, -25, 1, 11, 'rgba(0,0,0,.2)'); U(2, -25, 1, 11, 'rgba(0,0,0,.2)'); }
@@ -2567,7 +2568,7 @@ var ROOMS = {
     ctx.fillStyle = '#6a3226'; ctx.fillRect(cx0, F - 24, cw, 11); ctx.fillStyle = '#7a3b2e'; ctx.fillRect(cx0, F - 13, cw, 8); ctx.fillStyle = '#5e2b20'; ctx.fillRect(cx0 - 3, F - 18, 4, 13); ctx.fillRect(cx0 + cw - 1, F - 18, 4, 13);
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(cx0, F - 5, 2, 5); ctx.fillRect(cx0 + cw - 2, F - 5, 2, 5);
     // Nico's day, on a two-minute loop: asleep; up for push-ups and sit-ups; on the couch with the TV and a bag of chips; TV off, drawing at the table; back to sleep
-    var nc = t % 120, br = Math.sin(t*1.2) > 0 ? 1 : 0, nico = {hair: 'short', hc: '#241f1a', jacket: '#7a8a9a', pants: '#2f3a5a', skin: 0, ph: 1};
+    var nc = t % 120, br = Math.sin(t*1.2) > 0 ? 1 : 0, nico = {hair: 'messy', hc: '#2a1a14', glasses: 1, glassC: '#8a7a6a', jacket: '#3a2a24', hoodie: 1, pants: '#c9b896', skin: 0, ph: 1};
     var dtx = Math.round(W*0.06) + 2, dty = F;
     function R2(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
     if (nc < 40 || nc >= 114){
@@ -2579,13 +2580,13 @@ var ROOMS = {
       var ex = cx0 + Math.round(cw/2) - 12, ey = F + 4;
       if (nc < 43){ nico.dir = 1; nico.v = 0; stPerson(ctx, nico, cx0 + 12, F, t); if (nc < 41.5){ R2(cx0 + 16, F - 34, 1, 1, '#ffffff'); } }
       else if (nc < 55){ var up = Math.floor(t*1.6) % 2 === 0, by = up ? ey - 6 : ey - 3;
-        R2(ex, by - 1, 5, 4, '#f0c6a0'); R2(ex, by - 2, 5, 2, '#241f1a'); R2(ex + 5, by, 12, 3, '#7a8a9a'); R2(ex + 17, by + (up ? 1 : 0), 8, 2, '#2f3a5a'); R2(ex + 25, ey - 1, 2, 1, '#151218');
+        R2(ex, by - 1, 5, 4, '#f0c6a0'); R2(ex, by - 2, 5, 2, '#241f1a'); R2(ex + 5, by, 12, 3, '#3a2a24'); R2(ex + 17, by + (up ? 1 : 0), 8, 2, '#c9b896'); R2(ex + 25, ey - 1, 2, 1, '#151218');
         R2(ex + 6, by + 3, 1, ey - by - 3, '#f0c6a0'); R2(ex + 9, by + 3, 1, ey - by - 3, '#d9a982');
         if (Math.floor(t*1.6) % 6 === 0){ R2(ex - 2, by - 6, 1, 2, '#9fd3f2'); } }
       else if (nc < 66){ var sit = Math.floor(t*1.3) % 2 === 0;
-        R2(ex + 12, ey - 1, 6, 1, '#151218'); R2(ex + 10, ey - 5, 2, 4, '#2f3a5a'); R2(ex + 12, ey - 6, 5, 2, '#2f3a5a'); R2(ex + 4, ey - 3, 7, 2, '#2f3a5a');
-        if (sit){ for (var k = 0; k < 8; k++) R2(ex + 4 - Math.round(k*0.45), ey - 4 - k, 4, 1, '#7a8a9a'); R2(ex - 1, ey - 17, 5, 5, '#f0c6a0'); R2(ex - 1, ey - 18, 5, 2, '#241f1a'); R2(ex + 2, ey - 12, 4, 1, '#f0c6a0'); }
-        else { R2(ex - 6, ey - 4, 11, 3, '#7a8a9a'); R2(ex - 11, ey - 5, 5, 4, '#f0c6a0'); R2(ex - 12, ey - 5, 2, 4, '#241f1a'); } }
+        R2(ex + 12, ey - 1, 6, 1, '#151218'); R2(ex + 10, ey - 5, 2, 4, '#c9b896'); R2(ex + 12, ey - 6, 5, 2, '#c9b896'); R2(ex + 4, ey - 3, 7, 2, '#c9b896');
+        if (sit){ for (var k = 0; k < 8; k++) R2(ex + 4 - Math.round(k*0.45), ey - 4 - k, 4, 1, '#3a2a24'); R2(ex - 1, ey - 17, 5, 5, '#f0c6a0'); R2(ex - 1, ey - 18, 5, 2, '#241f1a'); R2(ex + 2, ey - 12, 4, 1, '#f0c6a0'); }
+        else { R2(ex - 6, ey - 4, 11, 3, '#3a2a24'); R2(ex - 11, ey - 5, 5, 4, '#f0c6a0'); R2(ex - 12, ey - 5, 2, 4, '#241f1a'); } }
       else if (nc < 92){ nico.dir = 1; nico.v = 0; nico.sit = 1; nico.nocup = 1; stPerson(ctx, nico, cx0 + 16, F - 6, t);
         R2(cx0 + 24, F - 15, 5, 6, '#e8822a'); R2(cx0 + 24, F - 15, 5, 1, '#c4302a'); R2(cx0 + 25, F - 13, 3, 2, '#e9c45a');
         if (Math.sin(t*1.1) > .6){ R2(cx0 + 18, F - 30, 2, 2, '#f0c6a0'); R2(cx0 + 20, F - 30, 1, 1, '#e9c45a'); } if (Math.sin(t*1.1 - .5) > .8) R2(cx0 + 20, F - 22, 1, 1, '#e9c45a'); }
