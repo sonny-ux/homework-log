@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "893ca95fec";
+var APP_BUILD = "2b3df5f274";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1341,6 +1341,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.choker) U(-1, -26, 3, 1, '#3a4a8a');
   if (p.pearlstrand){ U(-1, -24, 1, 1, '#f3efe6'); U(0, -23, 1, 1, '#f3efe6'); U(1, -24, 1, 1, '#f3efe6'); U(0, -20, 1, 2, '#f3efe6'); }
   if (p.orchids){ U(1, -22, 3, 2, '#f0a0b4'); U(2, -21, 1, 1, '#c4476a'); U(-3, -14, 3, 2, '#f0a0b4'); U(-2, -13, 1, 1, '#c4476a'); U(0, -10, 3, 2, '#e88aa0'); U(1, -9, 1, 1, '#c4476a'); }
+  if (p.hounds){ for (var yy = -24; yy < -14; yy++) for (var xx = -3; xx < 4; xx++) if ((xx + yy) % 2 === 0) U(xx, yy, 1, 1, (xx*3 + yy) % 5 ? '#a8a8ac' : '#5a5a5e'); }
   if (p.plaid){ for (var k = -24; k < -14; k += 3) U(-3, k, 7, 1, 'rgba(255,230,180,.3)'); U(-1, -25, 1, 11, 'rgba(0,0,0,.2)'); U(2, -25, 1, 11, 'rgba(0,0,0,.2)'); }
   if (p.cable){ U(-2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(0, -25, 1, 2, 'rgba(0,0,0,.18)'); for (var k = -22; k < -15; k += 2) U(0, k, 1, 1, 'rgba(255,255,255,.18)'); }
   if (p.bowtie){ U(-1, -25, 3, 3, '#f3efe6'); U(-1, -24, 3, 1, '#151218'); U(0, -23, 1, 6, '#f3efe6'); }
@@ -2124,64 +2125,76 @@ function rooftopBand(ctx, x, roof, t){
 // ===== Scene 9: inside the Hungarian Pastry Shop. Brick on one side, a wall of framed book covers, lamps, the pastry case,
 // small marble tables; at the front table a man in a houndstooth jacket faces us, typing, a mug and a glass of water beside him.
 function drawPastry(ctx, W, H, t){
-  // warm cream room, low ceiling, red wainscot, tulip sconces, framed prints; the pastry case on the left, the menu column, the long room of tables
-  var vx = Math.round(W*0.6), vy = 96, floorY = 104;
-  ctx.fillStyle = '#efe0c4'; ctx.fillRect(0, 0, W, 14); ctx.fillStyle = '#e2cfae'; ctx.fillRect(0, 13, W, 1);
-  ctx.fillStyle = '#ead6b2'; ctx.fillRect(0, 14, W, floorY - 14);
-  var bx0 = Math.round(W*0.5), bx1 = W - 4; ctx.fillStyle = '#e2cca6'; ctx.fillRect(bx0, 34, bx1 - bx0, 62); ctx.fillStyle = '#d6bf96'; ctx.fillRect(bx0, 34, bx1 - bx0, 1); ctx.fillRect(bx0, 34, 1, 62);
-  ctx.fillStyle = '#8a2a2a'; ctx.fillRect(0, 84, W, 20); ctx.fillStyle = '#e8d4b0'; ctx.fillRect(0, 83, W, 1); ctx.fillStyle = '#6a1e1e'; ctx.fillRect(0, 103, W, 1);
-  for (var k = 0; k < 6; k++){ var fx = Math.round(W*0.45) + k*Math.round(W*0.09), fy = 40 + (k % 2)*2, fw = 8, fh = 10; if (fx + fw > W - 3) break; ctx.fillStyle = '#1a1414'; ctx.fillRect(fx, fy, fw, fh); ctx.fillStyle = '#f3ead8'; ctx.fillRect(fx + 1, fy + 1, fw - 2, fh - 2); ctx.fillStyle = '#5a4a3a'; for (var l = 0; l < 3; l++) ctx.fillRect(fx + 2, fy + 3 + l*2, fw - 4 - (l % 2), 1); }
-  for (var k = 0; k < 7; k++){ var sx = Math.round(W*0.42) + k*Math.round(W*0.085), sy = 64; if (sx > W - 4) break; ctx.fillStyle = '#c9a43a'; ctx.fillRect(sx, sy, 1, 4); ctx.fillRect(sx, sy, 3, 1); ctx.fillStyle = '#fff3d8'; ctx.fillRect(sx + 1, sy + 1, 3, 3); ctx.fillStyle = '#ffffff'; ctx.fillRect(sx + 2, sy + 2, 1, 1);
-    ctx.globalCompositeOperation = 'lighter'; for (var r = 10; r > 0; r -= 2){ ctx.fillStyle = 'rgba(80,55,20,.05)'; ctx.beginPath(); ctx.arc(sx + 2, sy + 2, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
-  // the floor: worn planks running back toward the far wall
-  for (var y = floorY; y < H; y++){ ctx.fillStyle = (Math.floor((y - floorY)/4) % 2) ? '#6a4a30' : '#5e4028'; ctx.fillRect(0, y, W, 1); }
-  for (var k = -6; k <= 10; k++){ var bxk = vx + k*Math.round(W*0.12); ctx.fillStyle = '#4a321e'; for (var y = floorY; y < H; y++){ var f = (y - vy)/(H - vy); ctx.fillRect(Math.round(vx + (bxk - vx)*f), y, 1, 1); } }
-  // the far room: rows of dark tables and people, smaller with distance
-  [[floorY + 2, 2, 7], [floorY + 10, 3, 9], [floorY + 22, 4, 12]].forEach(function(row, ri){ var y = row[0], sz = row[1], step = row[2];
-    for (var x = Math.round(W*0.46) + (ri % 2)*Math.round(step/2), i = 0; x < W - 2; x += step, i++){ var hcol = ['#241a14','#5a3a24','#8a6a4a','#151218','#c9c3b6'][(i + ri) % 5], body = ['#151218','#3a3a42','#8a2a2a','#2f4a6a','#e8e4dc'][(i*3 + ri) % 5];
-      ctx.fillStyle = body; ctx.fillRect(x, y - sz*2, sz*2, sz*2); ctx.fillStyle = '#e0b89a'; ctx.fillRect(x + Math.floor(sz/2), y - sz*3, sz, sz); ctx.fillStyle = hcol; ctx.fillRect(x + Math.floor(sz/2), y - sz*3 - 1, sz, Math.max(1, Math.floor(sz/2)));
-      ctx.fillStyle = '#3a2214'; ctx.fillRect(x - 1, y, sz*3 + 2, Math.max(1, sz - 1)); if (i % 2){ ctx.fillStyle = 'rgba(160,200,255,.6)'; ctx.fillRect(x + sz*2, y - sz, sz, Math.max(1, sz - 1)); } } });
-  // the column with the hand-lettered menu
-  var cx = Math.round(W*0.38); ctx.fillStyle = '#efe0c4'; ctx.fillRect(cx, 14, 9, H*0.55); ctx.fillStyle = '#d9c8a0'; ctx.fillRect(cx + 1, 16, 7, 70); ctx.fillStyle = '#3a2a1a'; for (var l = 0; l < 16; l++) ctx.fillRect(cx + 2, 18 + l*4, 3 + (l*3) % 4, 1); ctx.fillStyle = '#8a2a2a'; ctx.fillRect(cx + 2, 18, 5, 1); ctx.fillRect(cx + 2, 50, 4, 1);
-  ctx.fillStyle = '#efe0c4'; ctx.fillRect(cx, 86, 9, 20); ctx.fillStyle = '#9fc0e0'; ctx.fillRect(cx + 1, 90, 7, 6);
-  // the counter side: shelves of coffee pots, the red exit sign, the glass case full of cakes, the register
-  ctx.fillStyle = '#f3ead8'; ctx.fillRect(0, 16, Math.round(W*0.24), 50); ctx.fillStyle = '#d6c8b0'; for (var l = 0; l < 4; l++) ctx.fillRect(0, 26 + l*12, Math.round(W*0.24), 1);
-  for (var k = 0; k < 8; k++){ ctx.fillStyle = k % 2 ? '#b9bfca' : '#9aa0ac'; ctx.fillRect(2 + (k % 4)*5, 20 + Math.floor(k/4)*12, 3, 5); ctx.fillStyle = '#e8eef6'; ctx.fillRect(2 + (k % 4)*5, 20 + Math.floor(k/4)*12, 1, 2); }
-  ctx.fillStyle = '#ff4a3a'; ctx.fillRect(Math.round(W*0.12), 4, 12, 6); ptext(ctx, 'EXIT', Math.round(W*0.12) - 1, 5, 1, '#fff0e8');
-  var cw = Math.round(W*0.34), cy0 = 92; ctx.fillStyle = '#4a2e1a'; ctx.fillRect(0, cy0, cw, H - cy0 - 18); ctx.fillStyle = 'rgba(220,235,240,.5)'; ctx.fillRect(1, cy0 + 2, cw - 4, 44); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(0, cy0, cw, 2);
-  for (var l = 0; l < 3; l++){ var sy = cy0 + 6 + l*14; ctx.fillStyle = '#d6dbe4'; ctx.fillRect(1, sy + 10, cw - 4, 1); for (var k = 0; k < Math.floor((cw - 4)/7); k++){ var px = 2 + k*7;
-      if (l === 1){ for (var q = 0; q < 5; q++){ ctx.fillStyle = q % 2 ? '#e9c45a' : '#f3e0a8'; ctx.fillRect(px, sy + 4 + q, 6, 1); } ctx.fillStyle = '#c98a3a'; ctx.fillRect(px, sy + 3, 6, 1); }
-      else if (l === 2){ ctx.fillStyle = '#3a2010'; ctx.fillRect(px + 1, sy + 5, 5, 5); ctx.fillStyle = '#6a4a2a'; ctx.fillRect(px + 2, sy + 5, 2, 1); }
-      else { ctx.fillStyle = '#f3efe6'; ctx.fillRect(px + 1, sy + 6, 4, 4); ctx.fillStyle = '#e8c48a'; ctx.fillRect(px + 1, sy + 9, 4, 1); } } }
-  ctx.fillStyle = '#f3efe6'; ctx.fillRect(cw - 12, cy0 - 5, 7, 5); ctx.fillStyle = '#7ab4f0'; ctx.fillRect(cw - 11, cy0 - 4, 5, 2);
-  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(80,70,40,.18)'; ctx.fillRect(1, cy0 + 2, cw - 4, 44); ctx.globalCompositeOperation = 'source-over';
-  // a white-haired man in black at the counter, choosing
-  stPerson(ctx, {dir: -1, v: 0, ph: 2, skin: 0, hair: 'messy', hc: '#e8e4dc', glasses: 1, glassC: '#151218', jacket: '#151218', pants: '#1a1a22'}, Math.round(cw*0.7), H - 20, t);
-  // a near table on the right: a student with a laptop
-  var nx = W - 16; ctx.fillStyle = '#4a2a1a'; ctx.fillRect(nx - 10, H - 52, 22, 3); ctx.fillStyle = '#3a2214'; ctx.fillRect(nx, H - 49, 2, 16);
-  stPerson(ctx, {dir: -1, v: 0, sit: 1, nocup: 1, ph: 4, skin: 1, hair: 'cap', hc: '#151218', jacket: '#8a6a5a', plaid: 1, pants: '#2a2a32'}, nx + 10, H - 34, t);
-  ctx.fillStyle = '#9aa0ac'; ctx.fillRect(nx - 6, H - 58, 8, 6); ctx.fillStyle = 'rgba(160,200,255,.7)'; ctx.fillRect(nx - 5, H - 57, 6, 4); ctx.fillStyle = '#c9ccd6'; ctx.fillRect(nx - 9, H - 54, 3, 2);
-  // the man at the front table, facing us
-  var mx = Math.round(W*0.5), T = H - 30;
-  for (var y = T - 26; y < T; y++) for (var x = mx - 12; x <= mx + 12; x++){ ctx.fillStyle = ((x + y) % 2) ? '#7a7a7e' : ((x*3 + y) % 5 ? '#a8a8ac' : '#5a5a5e'); ctx.fillRect(x, y, 1, 1); }
-  ctx.fillStyle = '#151218'; ctx.fillRect(mx - 4, T - 25, 9, 25); ctx.fillStyle = '#5a5a5e'; ctx.fillRect(mx - 6, T - 25, 2, 12); ctx.fillRect(mx + 5, T - 25, 2, 12);
-  ctx.fillStyle = '#c48a6a'; ctx.fillRect(mx - 2, T - 29, 5, 4);
-  ctx.fillStyle = '#d9a982'; ctx.fillRect(mx - 6, T - 44, 13, 15); ctx.fillStyle = '#c48a6a'; ctx.fillRect(mx - 6, T - 44, 1, 15); ctx.fillRect(mx + 6, T - 44, 1, 15); ctx.fillRect(mx - 7, T - 39, 1, 4); ctx.fillRect(mx + 7, T - 39, 1, 4);
-  ctx.fillStyle = '#2a2a2a'; ctx.fillRect(mx - 6, T - 48, 13, 5); ctx.fillRect(mx - 7, T - 46, 2, 7); ctx.fillRect(mx + 6, T - 46, 2, 7); ctx.fillStyle = '#8a8a8a'; ctx.fillRect(mx - 4, T - 48, 2, 1); ctx.fillRect(mx + 1, T - 47, 3, 1); ctx.fillRect(mx - 7, T - 43, 1, 2); ctx.fillRect(mx + 7, T - 44, 1, 2);
-  ctx.fillStyle = '#b07a5a'; ctx.fillRect(mx - 3, T - 42, 7, 1);
-  ctx.fillStyle = '#3a2a1a'; ctx.fillRect(mx - 6, T - 38, 6, 1); ctx.fillRect(mx + 1, T - 38, 6, 1); ctx.fillRect(mx - 6, T - 35, 6, 1); ctx.fillRect(mx + 1, T - 35, 6, 1); ctx.fillRect(mx - 6, T - 38, 1, 4); ctx.fillRect(mx + 6, T - 38, 1, 4); ctx.fillRect(mx, T - 37, 1, 1);
-  ctx.fillStyle = 'rgba(232,238,246,.45)'; ctx.fillRect(mx - 5, T - 37, 4, 2); ctx.fillRect(mx + 2, T - 37, 4, 2);
-  ctx.fillStyle = '#241a14'; ctx.fillRect(mx - 3, T - 35, 1, 1); ctx.fillRect(mx + 3, T - 35, 1, 1);
-  ctx.fillStyle = '#c48a6a'; ctx.fillRect(mx, T - 34, 1, 3); ctx.fillStyle = '#9a5a4a'; ctx.fillRect(mx - 2, T - 31, 5, 1); ctx.fillRect(mx - 3, T - 32, 1, 1); ctx.fillRect(mx + 3, T - 32, 1, 1);
-  ctx.fillStyle = '#e8e4dc'; ctx.fillRect(mx - 26, T, 53, 4); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(mx - 26, T + 4, 53, 1); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(mx - 20, T + 1, 6, 1); ctx.fillRect(mx + 10, T + 2, 5, 1);
-  ctx.fillStyle = '#151218'; ctx.fillRect(mx, T + 5, 2, H - T - 7); ctx.fillRect(mx - 8, H - 3, 18, 2);
-  ctx.fillStyle = '#2a2a32'; ctx.fillRect(mx - 9, T - 9, 19, 9); ctx.fillStyle = '#3a3a44'; ctx.fillRect(mx - 9, T - 9, 19, 1); ctx.fillStyle = 'rgba(160,200,255,.25)'; ctx.fillRect(mx - 9, T - 10, 19, 1);
-  ctx.fillStyle = '#151218'; ctx.fillRect(mx - 10, T - 1, 21, 2);
-  for (var k = 0; k < 2; k++){ var hxk = mx - 8 + k*11, tap = Math.floor(t*8 + k*1.5) % 2; ctx.fillStyle = '#7a7a7e'; ctx.fillRect(hxk - 2, T - 6, 4, 5); ctx.fillStyle = '#d9a982'; ctx.fillRect(hxk, T - 2 - tap, 5, 2); ctx.fillStyle = '#c48a6a'; ctx.fillRect(hxk + 1 + tap*2, T - 1, 1, 1); }
-  ctx.fillStyle = '#f3efe6'; ctx.fillRect(mx - 22, T - 6, 5, 6); ctx.fillRect(mx - 17, T - 5, 1, 3); ctx.fillStyle = '#5a3a22'; ctx.fillRect(mx - 22, T - 6, 5, 1);
-  for (var k = 0; k < 2; k++){ var ph = (t*0.6 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(mx - 20 + Math.round(Math.sin(ph*7 + k)), T - 8 - Math.round(ph*8), 1, 1); }
-  ctx.fillStyle = 'rgba(220,235,245,.6)'; ctx.fillRect(mx + 15, T - 10, 5, 10); ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.fillRect(mx + 15, T - 10, 1, 10); ctx.fillStyle = '#e8822a'; for (var k = 0; k < 12; k++) ctx.fillRect(mx + 17 + Math.floor(k/4), T - 2 - k, 1, 1); ctx.fillStyle = '#e9c45a'; ctx.fillRect(mx + 12, T - 1, 9, 1);
-  seasonParticles && 0;
+  // a flattened side view, like the other scenes: the counter on the left facing us, women serving behind it, seats in front,
+  // tables running in to the right, droopy wall lamps, speckled pink-green-red paintings, and at the far back right a sliding
+  // bathroom door with a yellow room behind it. Norm types at his table, gets up now and then, goes to the back, and comes back.
+  var P = Math.max(W + 40, 230), wallB = Math.round(H*0.62), backY = Math.round(H*0.72), frontY = Math.round(H*0.9);
+  var dX = P - 34, seatX = Math.round(P*0.6);
+  var c = t % 64, nx, ny, nmode = 'sit', ndir = 1, door = 0, inside = false;
+  if (c < 26){ nx = seatX; ny = frontY; }
+  else if (c < 33){ var f = (c - 26)/7; nx = seatX + (dX + 8 - seatX)*f; ny = frontY + (backY - frontY)*f; nmode = 'walk'; }
+  else if (c < 35){ nx = dX + 8; ny = backY; nmode = 'stand'; door = (c - 33)/2; }
+  else if (c < 36){ nx = dX + 8; ny = backY; door = 1; inside = true; }
+  else if (c < 38){ nx = dX + 8; ny = backY; door = 1 - (c - 36)/2; inside = true; }
+  else if (c < 48){ nx = dX + 8; ny = backY; inside = true; door = 0; }
+  else if (c < 50){ nx = dX + 8; ny = backY; door = (c - 48)/2; inside = true; }
+  else if (c < 51){ nx = dX + 8; ny = backY; door = 1; nmode = 'stand'; ndir = -1; }
+  else if (c < 58){ var f2 = (c - 51)/7; nx = dX + 8 + (seatX - dX - 8)*f2; ny = backY + (frontY - backY)*f2; nmode = 'walk'; ndir = -1; door = Math.max(0, 1 - (c - 51)); }
+  else { nx = seatX; ny = frontY; }
+  var want = Math.max(0, Math.min(P - W, Math.round(nx - W*0.5))), off = want;
+  ctx.save(); ctx.translate(-off, 0);
+  function R(x, y, w, h, col){ ctx.fillStyle = col; ctx.fillRect(x, y, w, h); }
+  // white walls, a soft cornice, the floor
+  R(0, 0, P, wallB, '#f3eee4'); for (var k = 0; k < 60; k++) R((k*37) % P, (k*23) % wallB, 2, 1, 'rgba(160,140,110,.08)');
+  R(0, 0, P, 6, '#e6dccb'); R(0, 6, P, 1, '#d6cbb5'); R(0, wallB - 4, P, 4, '#d6cbb5'); R(0, wallB - 4, P, 1, '#c9bca2');
+  for (var y = wallB; y < H; y++) R(0, y, P, 1, (Math.floor((y - wallB)/5) % 2) ? '#7a5636' : '#6e4c2e');
+  for (var y = wallB; y < H; y += 5) for (var x = ((y - wallB)/5 % 2) ? 0 : 12; x < P; x += 24) R(x, y, 1, 5, '#5a3c22');
+  // speckled abstract paintings in pink, green and red
+  for (var k = 0; k < Math.floor((P - 90)/40); k++){ var px = 84 + k*40, py = 22 + (k % 2)*6, pw = 18 + (k % 3)*4, ph = 14 + (k % 2)*4;
+    R(px - 1, py - 1, pw + 2, ph + 2, '#2a2420'); R(px, py, pw, ph, ['#f2d6dc','#dcebd8','#f6e2d6'][k % 3]);
+    for (var q = 0; q < pw*ph/3; q++){ var sx = px + (q*7 + k*3) % pw, sy = py + (q*5 + k) % ph; R(sx, sy, 1, 1, ['#e8507a','#4a9a5a','#c4302a','#f0a0b4','#7ac08a'][(q + k) % 5]); } }
+  // droopy wall lamps
+  for (var k = 0; k < Math.floor((P - 70)/32); k++){ var lx = 92 + k*32, ly = 56;
+    R(lx, ly, 1, 3, '#8a6a3a'); for (var i = 0; i < 6; i++) R(lx + i, ly - 1 + Math.round(i*i*0.15), 1, 1, '#8a6a3a');
+    var hx = lx + 6, hy = ly + 5; R(hx - 2, hy, 5, 3, '#fff0d0'); R(hx - 1, hy + 3, 3, 2, '#fff6e0'); R(hx, hy + 5, 1, 1, '#ffffff');
+    ctx.globalCompositeOperation = 'lighter'; for (var r = 14; r > 0; r -= 2){ ctx.fillStyle = 'rgba(80,55,20,.045)'; ctx.beginPath(); ctx.arc(hx, hy + 3, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+  // the bathroom door at the back right: it slides along the wall and shows a yellow room
+  var dW = 16, dTop = wallB - 46; R(dX - 2, dTop - 2, dW + 4, 46, '#d6cbb5');
+  R(dX, dTop, dW, 44, '#f5d65a'); R(dX + 2, dTop + 8, 6, 8, '#d6eef6'); R(dX + 2, dTop + 8, 6, 1, '#c9a43a'); R(dX + 9, dTop + 22, 6, 3, '#f8f4ec'); R(dX + 11, dTop + 20, 1, 2, '#9a9a9a'); R(dX, dTop + 40, dW, 4, '#e8c04a');
+  if (inside && door > 0.4){ stPerson(ctx, {dir: 1, v: 0, ph: 1, skin: 0, hair: 'short', hc: '#2a2a2a', glasses: 1, glassC: '#3a2a1a', jacket: '#8a8a8e', hounds: 1, tee: '#151218', pants: '#5a5a62'}, dX + 8, dTop + 44, t); }
+  var slide = Math.round(door*dW); R(dX + slide, dTop, dW, 44, '#f8f4ec'); R(dX + slide, dTop, 1, 44, '#d6cbb5'); R(dX + slide + 2, dTop + 20, 1, 6, '#9a948a'); R(dX - 2, dTop - 3, dW*2 + 4, 2, '#9a948a');
+  R(dX + dW + 2, dTop, dW + 2, 44, '#f3eee4');
+  R(dX + slide, dTop, dW, 44, '#f8f4ec'); R(dX + slide, dTop, 1, 44, '#d6cbb5'); R(dX + slide + 2, dTop + 20, 1, 6, '#9a948a');
+  // the counter on the left, facing us: women serving behind the glass case
+  var cw = 72, ct = wallB - 16;
+  R(0, 14, cw - 6, 30, '#f8f4ec'); for (var l = 0; l < 3; l++) R(0, 22 + l*9, cw - 6, 1, '#d6cbb5'); for (var k = 0; k < 9; k++) R(3 + (k % 5)*12, 16 + Math.floor(k/5)*9, 4, 5, k % 2 ? '#b9bfca' : '#f3efe6');
+  [[20, {skin: 3, hair: 'bob', hc: '#5a3a24', jacket: '#f3efe6', dir: 1}], [50, {skin: 1, hair: 'long', hc: '#241a14', jacket: '#c4473a', dir: -1}]].forEach(function(w, i){ var pp = w[1]; pp.v = 0; pp.ph = i*2; pp.pants = '#2a2a32'; stPerson(ctx, pp, w[0], ct + 8, t); });
+  var hand = Math.sin(t*0.8) > .4; if (hand){ R(26, ct - 8, 6, 1, '#f3efe6'); R(27, ct - 10, 4, 2, '#e9c45a'); }
+  R(0, ct, cw, wallB + 22 - ct, '#5a3a22'); R(0, ct, cw, 2, '#e8e4dc'); R(2, ct + 4, cw - 4, wallB + 16 - ct, '#6a4a2e'); for (var x = 6; x < cw - 4; x += 12) R(x, ct + 6, 8, wallB + 12 - ct, '#5e4028');
+  R(2, ct - 14, cw - 4, 14, 'rgba(210,235,240,.45)'); R(2, ct - 14, cw - 4, 1, '#e8e4dc');
+  for (var k = 0; k < 8; k++){ var px = 4 + k*8; if (k % 3 === 0){ for (var q = 0; q < 4; q++) R(px, ct - 7 + q, 6, 1, q % 2 ? '#3a2010' : '#e9c45a'); } else if (k % 3 === 1){ R(px, ct - 5, 6, 3, '#e8c48a'); R(px + 1, ct - 6, 4, 1, '#f3efe6'); } else { R(px + 1, ct - 6, 4, 4, '#3a2010'); R(px + 2, ct - 7, 2, 1, '#c4302a'); } }
+  R(cw - 14, ct - 19, 8, 5, '#f3efe6'); R(cw - 13, ct - 18, 6, 2, '#7ab4f0');
+  // tables and people: a back row and a front row running to the right, seats in front of the counter
+  function table(x, y){ R(x - 7, y - 16, 15, 2, '#e8e4dc'); R(x - 7, y - 14, 15, 1, '#c9c3b6'); R(x, y - 13, 1, 13, '#2a1a12'); R(x - 3, y - 1, 7, 1, '#2a1a12'); }
+  var crowd = [
+    [12, frontY, 1, {skin: 0, hair: 'long', hc: '#8a6a4a', jacket: '#151218', pants: '#3a3a48'}], [40, frontY, -1, {skin: 2, hair: 'short', hc: '#151218', jacket: '#c9c3b6', pants: '#2a2a32'}],
+    [96, backY, 1, {skin: 3, hair: 'bob', hc: '#151218', jacket: '#8a2a2a', pants: '#2a2a32'}], [118, backY, -1, {skin: 0, hair: 'cap', hc: '#151218', jacket: '#8a6a5a', plaid: 1, pants: '#2a2a32'}],
+    [150, backY, 1, {skin: 1, hair: 'long', hc: '#241a14', jacket: '#3d6a4a', pants: '#1a1a22'}], [172, backY, -1, {skin: 0, hair: 'short', hc: '#c9c3b6', glasses: 1, jacket: '#2f4a6a', pants: '#2a2a32'}],
+    [96, frontY, 1, {skin: 2, hair: 'long', hc: '#151218', jacket: '#e8e4dc', pants: '#2a2a32'}]];
+  [107, 161].forEach(function(x){ table(x, backY); }); table(107, frontY);
+  crowd.forEach(function(q, i){ if (q[1] !== backY) return; var pp = q[3]; pp.sit = 1; pp.nocup = 1; pp.v = 0; pp.dir = q[2]; pp.ph = i; stPerson(ctx, pp, q[0], q[1], t); });
+  R(103, backY - 19, 6, 3, 'rgba(160,200,255,.7)'); R(157, backY - 18, 3, 2, '#f3efe6');
+  // Norm, when he's out in the room
+  var norm = {dir: ndir, v: nmode === 'walk' ? 1 : 0, sit: nmode === 'sit' ? 1 : 0, nocup: 1, ph: 2, skin: 0, hair: 'short', hc: '#2a2a2a', glasses: 1, glassC: '#3a2a1a', jacket: '#8a8a8e', hounds: 1, tee: '#151218', pants: '#5a5a62'};
+  table(seatX + 9, frontY);
+  if (!inside) stPerson(ctx, norm, Math.round(nx), Math.round(ny), t);
+  if (nmode === 'sit'){ var tap = Math.floor(t*8) % 2; R(seatX + 3, frontY - 18 - tap, 3, 1, '#d9a982'); }
+  R(seatX + 5, frontY - 21, 7, 4, '#2a2a32'); R(seatX + 5, frontY - 17, 8, 1, '#151218'); R(seatX + 6, frontY - 20, 5, 2, 'rgba(160,200,255,.35)');
+  R(seatX + 13, frontY - 20, 3, 3, '#f3efe6'); R(seatX + 16, frontY - 19, 1, 1, '#f3efe6'); for (var k = 0; k < 2; k++){ var ph = (t*0.6 + k/2) % 1; R(seatX + 14 + Math.round(Math.sin(ph*7)), frontY - 22 - Math.round(ph*6), 1, 1, 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'); }
+  R(seatX + 2, frontY - 21, 2, 4, 'rgba(220,235,245,.6)'); R(seatX + 3, frontY - 24, 1, 4, '#e8822a');
+  crowd.forEach(function(q, i){ if (q[1] === backY) return; var pp = q[3]; pp.sit = 1; pp.nocup = 1; pp.v = 0; pp.dir = q[2]; pp.ph = i; stPerson(ctx, pp, q[0], q[1], t); });
+  R(4, frontY - 16, 52, 2, '#3a2214'); R(103, frontY - 19, 4, 3, '#f3efe6');
+  ctx.restore();
 }
 
 // ===== Channel 2: an original anime-style fantasy show. A hilltop castle at dusk, a lantern-lit town, petals falling,
