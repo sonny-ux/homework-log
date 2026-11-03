@@ -153,6 +153,10 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .cal .ci { font-size: 11px; font-weight: 700; padding: 3px 4px; line-height: 1.15; hyphens: auto; -webkit-hyphens: auto; overflow: hidden; }
 .cal .ci small { font-weight: 500; opacity: .85; }
 @media (max-width: 560px) { .cal .cd { min-height: 64px; padding: 3px 2px; } .cal .ci { font-size: 9.5px; padding: 2px 3px; } .chip { font-size: 8.5px; } }
+.noticed { border: var(--rule) solid var(--ink); padding: 4px 14px; }
+.noticed p { padding: 9px 0; font-size: 15px; line-height: 1.45; }
+.noticed p + p { border-top: var(--thin) solid var(--ink); }
+.noticed .nz { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -173,6 +177,8 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
     <h2 style="margin-top:18px">By class <span class="sub" id="compsub"></span></h2>
     <div class="comp" id="comp"></div>
     <div class="zero" id="zero"></div>
+    <h2 style="margin-top:18px">Noticed <span class="sub">this week, from your log</span></h2>
+    <div class="noticed" id="noticed"></div>
   </section>
 
   <section id="asg">
@@ -256,9 +262,54 @@ function renderWeek(){
   }
   html += '<div class="foot first"></div>' + totals.map(function(t){ return '<div class="foot">' + (t ? hm(t) : '—') + '</div>'; }).join('');
   g.innerHTML = html;
-  renderComp(ss);
+  renderComp(ss); renderNoticed(ss);
 }
 
+
+function renderNoticed(ss){
+  var out = [], ws = iso(weekStart);
+  if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
+  var total = ss.reduce(function(a,s){ return a+(s.minutes||0); }, 0);
+  function clock(m){ var h=Math.floor(m/60)%24, mm=m%60, ap=h<12?'AM':'PM', hh=h%12||12; return hh+(mm?':'+String(mm).padStart(2,'0'):'')+' '+ap; }
+  // when you work
+  var late = ss.filter(function(s){ return s.start_min < 5*60; }), lateMin = late.reduce(function(a,s){ return a+(s.minutes||0); },0);
+  var eve = ss.filter(function(s){ return s.start_min >= 18*60; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+  var day = total - lateMin - eve;
+  var parts = [['after midnight', lateMin], ['in the evening', eve], ['during the day', day]].sort(function(a,b){ return b[1]-a[1]; });
+  out.push('Most of your work this week happened <b>' + parts[0][0] + '</b> (' + Math.round(100*parts[0][1]/total) + '%).');
+  if (late.length){
+    var latest = late.reduce(function(a,s){ return Math.max(a, s.in_progress ? s.start_min : s.end_min); }, 0);
+    var nights = {}; late.forEach(function(s){ nights[s.date]=1; });
+    out.push('You worked past midnight on <b>' + Object.keys(nights).length + (Object.keys(nights).length>1?' nights':' night') + '</b>, as late as <b>' + clock(latest) + '</b>. ' + Math.round(100*lateMin/total) + '% of the week’s hours came after midnight.');
+  }
+  // longest day and session
+  var byDay = {}; ss.forEach(function(s){ byDay[s.date] = (byDay[s.date]||0) + (s.minutes||0); });
+  var days = Object.keys(byDay), best = days.sort(function(a,b){ return byDay[b]-byDay[a]; })[0];
+  var bd = parse(best);
+  out.push('Your longest day was <b>' + DAYS[bd.getDay()] + '</b> with ' + hm(byDay[best]) + (days.length>1 ? ', and you studied on ' + days.length + ' of 7 days.' : '. It was the only day with logged study so far.'));
+  var longest = ss.reduce(function(a,s){ return (s.minutes||0) > (a.minutes||0) ? s : a; });
+  var avg = Math.round(total/ss.length);
+  out.push('Your stretches averaged <b>' + hm(avg) + '</b>; the longest was ' + hm(longest.minutes) + ' of ' + longest['class'] + '.');
+  // switching classes within a day
+  var switches = 0; days.forEach(function(d){ var cs = ss.filter(function(s){return s.date===d;}).sort(function(a,b){return a.start_min-b.start_min;}); for (var i=1;i<cs.length;i++) if (cs[i]['class']!==cs[i-1]['class']) switches++; });
+  if (switches) out.push('You switched between classes <b>' + switches + (switches>1?' times':' time') + '</b> within a day, rather than staying on one subject.');
+  // balance
+  var by = {}; ss.forEach(function(s){ by[s['class']] = (by[s['class']]||0) + (s.minutes||0); });
+  var top = Object.keys(by).sort(function(a,b){ return by[b]-by[a]; })[0];
+  if (by[top]/total >= .5) out.push('<b>' + top + '</b> took ' + Math.round(100*by[top]/total) + '% of your time.');
+  // classes not touched lately, and what is coming for them
+  var lastSeen = {}; DATA.sessions.forEach(function(s){ if (s.date <= iso(today) && (!lastSeen[s['class']] || s.date > lastSeen[s['class']])) lastSeen[s['class']] = s.date; });
+  CLASSES.forEach(function(c){
+    var next = DATA.assignments.filter(function(a){ return a['class']===c && !a.done && a.due >= iso(today); })[0];
+    var ago = lastSeen[c] ? Math.round((today - parse(lastSeen[c]))/864e5) : null;
+    if ((ago === null || ago >= 5) && next) out.push('<b>' + c + '</b>: ' + (ago === null ? 'no logged time yet' : 'last studied ' + ago + ' days ago') + ', with ' + esc(next.title) + ' due ' + DAYS[parse(next.due).getDay()] + '.');
+  });
+  // compared with last week
+  var prev = new Date(weekStart); prev.setDate(prev.getDate()-7); var pw = iso(prev);
+  var prevTot = DATA.sessions.filter(function(s){ return s.week === pw; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+  if (prevTot) out.push('So far ' + hm(total) + ' this week, against ' + hm(prevTot) + ' all of last week.');
+  el('noticed').innerHTML = out.map(function(t){ return '<p>' + t + '</p>'; }).join('');
+}
 function renderComp(ss){
   var by = {}; ss.forEach(function(s){ by[s['class']] = (by[s['class']]||0) + (s.minutes||0); });
   var items = Object.keys(by).map(function(k){ return {c:k, m:by[k]}; }).sort(function(a,b){ return b.m - a.m; });
