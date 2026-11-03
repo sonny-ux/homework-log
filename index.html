@@ -188,6 +188,29 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .tb .tv small { font-weight: 500; color: var(--muted); }
 .trends .tnote { color: var(--muted); font-size: 13px; }
 .tr b { font-weight: 700; }
+.wktools { display: flex; gap: 8px; }
+.arrows button.on { background: var(--ink); color: var(--paper); }
+.rng button { font-size: 13px; padding: 4px 10px; }
+.hl { border: var(--rule) solid var(--ink); border-left: 10px solid var(--red); padding: 10px 12px; margin-bottom: 12px; font-weight: 600; font-size: 15px; }
+.hl span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.card { border: var(--rule) solid var(--ink); padding: 10px 12px 12px; }
+.ct { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--muted); }
+.cbig { font-size: 28px; font-weight: 700; margin-top: 2px; } .cbig small { font-size: 13px; font-weight: 500; color: var(--muted); }
+.cn { font-size: 14px; margin: 4px 0 8px; }
+.hbars { position: relative; height: 90px; display: flex; align-items: flex-end; gap: 2px; border-bottom: var(--thin) solid var(--ink); }
+.hb { flex: 1; height: 100%; display: flex; align-items: flex-end; } .hb div { width: 100%; background: var(--muted); opacity: .45; }
+.hb.in div { background: var(--blue); opacity: 1; } .hb.fut div { opacity: 0; }
+.avgline { position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--ink); } .avgline span { position: absolute; right: 0; top: -16px; font-size: 10px; color: var(--muted); }
+.hdots { position: relative; height: 80px; display: flex; gap: 2px; border-bottom: var(--thin) solid var(--ink); border-top: var(--thin) dashed var(--gridline); }
+.hd { flex: 1; position: relative; } .hd i { position: absolute; left: 50%; width: 9px; height: 9px; margin: 0 0 -4px -4px; border-radius: 50%; background: var(--muted); }
+.hd.in i { background: var(--red); outline: 1.5px solid var(--ink); }
+.hdots .top, .hdots .bot { position: absolute; left: 0; font-size: 10px; color: var(--muted); } .hdots .top { top: -14px; } .hdots .bot { bottom: -14px; }
+.hcons { display: flex; gap: 5px; } .hcons i { width: 18px; height: 18px; outline: var(--thin) solid var(--ink); } .hcons i.on { background: var(--blue); }
+.hbal .hr { display: grid; grid-template-columns: 44px 1fr 38px; gap: 8px; align-items: center; font-size: 12px; margin: 4px 0; }
+.hbal .bar { position: relative; height: 12px; outline: var(--thin) solid var(--ink); } .hbal .bar i { position: absolute; left: 0; top: 0; bottom: 0; }
+.hbal .bar b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); } .hbal em { font-style: normal; text-align: right; }
+.hbal .hk { font-size: 10px; color: var(--muted); margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -203,15 +226,18 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 
   <section id="wk">
     <div class="wkhead"><h2><span id="wkname">Week</span> <span class="sub" id="wksub"></span></h2>
-      <div class="arrows"><button id="prev" aria-label="Previous week">‹</button><button id="next" aria-label="Next week">›</button></div></div>
+      <div class="wktools"><div class="arrows"><button id="zout" aria-label="Zoom out">−</button><button id="zin" aria-label="Zoom in">+</button><button id="zfit" aria-label="Fit to worked hours">Fit</button></div>
+      <div class="arrows"><button id="prev" aria-label="Previous week">‹</button><button id="next" aria-label="Next week">›</button></div></div></div>
     <div class="week" id="week"></div>
     <h2 style="margin-top:18px">By class <span class="sub" id="compsub"></span></h2>
     <div class="comp" id="comp"></div>
     <div class="zero" id="zero"></div>
     <h2 style="margin-top:18px">Noticed <span class="sub" id="notsub">this week, from your log</span></h2>
     <div class="noticed" id="noticed"></div>
-    <h2 style="margin-top:18px">Trends <span class="sub">week by week</span></h2>
-    <div class="trends" id="trends"></div>
+    <div class="wkhead" style="margin-top:18px"><h2>Trends <span class="sub" id="trsub"></span></h2>
+      <div class="arrows rng"><button data-r="D">Day</button><button data-r="W" class="on">Week</button><button data-r="M">Month</button></div></div>
+    <div id="hl"></div>
+    <div class="cards" id="cards"></div>
     <h2 style="margin-top:18px">Topics <span class="sub">what each session was on</span></h2>
     <div class="topics" id="topics"></div>
   </section>
@@ -268,10 +294,15 @@ function renderWeek(){
   el('compsub').dataset.when = off === 0 ? 'this week' : name.toLowerCase();
   el('notsub').textContent = (off === 0 ? 'this week' : name.toLowerCase()) + ', from your log';
   var ss = DATA.sessions.filter(function(s){ return s.week === ws; });
-  var lo = 9*60, hi = 23*60;
-  ss.forEach(function(s){ lo = Math.min(lo, s.start_min); if (!s.in_progress) hi = Math.max(hi, s.end_min > s.start_min ? s.end_min : 24*60); });
-  lo = Math.floor(lo/60)*60; hi = Math.min(24*60, Math.ceil(hi/60)*60);
-  var H = window.innerWidth < 560 ? 26 : 32, px = H/60, height = (hi-lo)*px;
+  var allSS = ss;
+  if (FIT) ss = ss.map(function(s){ // study-day view: a late night stays in the column of the evening it began
+    var o = Object.assign({}, s); o.date = sday(s); o.start_min = nightMin(s.start_min);
+    if (!s.in_progress) o.end_min = nightMin(s.end_min) < o.start_min ? nightMin(s.end_min) + 1440 : nightMin(s.end_min);
+    return o; }).filter(function(s){ return s.date >= ws; });
+  var lo = FIT && ss.length ? 48*60 : 9*60, hi = FIT && ss.length ? 0 : 23*60;
+  ss.forEach(function(s){ lo = Math.min(lo, s.start_min); hi = Math.max(hi, s.in_progress ? s.start_min + 30 : (s.end_min > s.start_min ? s.end_min : 24*60)); });
+  lo = Math.max(0, Math.floor((lo - (FIT ? 30 : 0))/60)*60); hi = Math.min(FIT ? 29*60 : 24*60, Math.ceil((hi + (FIT ? 30 : 0))/60)*60);
+  var H = (window.innerWidth < 560 ? 26 : 32) * ZOOMS[ZI], px = H/60, height = (hi-lo)*px;
   var g = el('week'); g.style.setProperty('--hr', H + 'px');
   var html = '<div class="corner"></div>';
   for (var i = 0; i < 7; i++){
@@ -287,7 +318,7 @@ function renderWeek(){
   }
   if (anyDue) html += dueRow;
   html += '<div class="axis" style="height:' + height + 'px">';
-  for (var m = lo + 120; m < hi; m += 120){ var h = (m/60)%24, lab = h === 0 ? '12a' : h < 12 ? h + 'a' : h === 12 ? '12p' : (h-12) + 'p'; html += '<span style="top:' + ((m-lo)*px) + 'px">' + lab + '</span>'; }
+  var step = ZOOMS[ZI] >= 1.6 ? 60 : 120; for (var m = lo + step; m < hi; m += step){ var h = (m/60)%24, lab = h === 0 ? '12a' : h < 12 ? h + 'a' : h === 12 ? '12p' : (h-12) + 'p'; html += '<span style="top:' + ((m-lo)*px) + 'px">' + lab + '</span>'; }
   html += '</div>';
   var totals = [];
   for (var i = 0; i < 7; i++){
@@ -304,7 +335,7 @@ function renderWeek(){
   }
   html += '<div class="foot first"></div>' + totals.map(function(t){ return '<div class="foot">' + (t ? hm(t) : '—') + '</div>'; }).join('');
   g.innerHTML = html;
-  renderComp(ss); renderNoticed(ss); renderTrends(); renderTopics(ss);
+  renderComp(ss); renderNoticed(ss); renderHealth(); renderTopics(ss);
 }
 
 
@@ -387,6 +418,89 @@ function renderTrends(){
   if (moved.length) lines.push('Biggest difference: <b>' + moved[0][0] + '</b> ' + (moved[0][1] > 0 ? 'up ' : 'down ') + hm(Math.abs(moved[0][1])) + (viewingCurrent ? ' compared with this point last week.' : ' from the week before.'));
   el('trends').innerHTML = bars + lines.map(function(t){ return '<p>' + t + '</p>'; }).join('');
 }
+
+// ===== Health-style trends. A "study day" runs 5 AM to 5 AM, so late nights count with the evening they belong to.
+var RANGE = 'W';
+function sday(s){ var d = parse(s.date); if (s.start_min < 300) d.setDate(d.getDate()-1); return iso(d); }
+function nightMin(m){ return m < 300 ? m + 1440 : m; }           // minutes after midnight, late night continuing past 24:00
+function clk(m){ m = ((m % 1440) + 1440) % 1440; var h = Math.floor(m/60), mm = Math.round(m%60), ap = h < 12 ? 'AM' : 'PM'; return (h%12||12) + (mm ? ':' + String(mm).padStart(2,'0') : '') + ' ' + ap; }
+function addDays(d, n){ var x = new Date(d); x.setDate(x.getDate()+n); return x; }
+function dayStats(){
+  var by = {};
+  DATA.sessions.forEach(function(s){
+    var k = sday(s), e = s.in_progress ? s.start_min : (s.end_min > s.start_min || s.start_min < 300 ? s.end_min : s.end_min + 1440);
+    var o = by[k] || (by[k] = {min:0, first:1e9, last:0, n:0, longest:0, late:0, cls:{}});
+    o.min += s.minutes||0; o.n++; o.longest = Math.max(o.longest, s.minutes||0);
+    o.first = Math.min(o.first, nightMin(s.start_min)); o.last = Math.max(o.last, nightMin(e));
+    if (s.start_min < 300) o.late += s.minutes||0;
+    o.cls[s['class']] = (o.cls[s['class']]||0) + (s.minutes||0);
+  });
+  return by;
+}
+function windowDays(endIso, n){ var out = [], e = parse(endIso); for (var i = n-1; i >= 0; i--) out.push(iso(addDays(e, -i))); return out; }
+function agg(days, by){
+  var a = {days:days.length, studied:0, min:0, n:0, first:[], last:[], longest:0, late:0, cls:{}};
+  days.forEach(function(d){ var o = by[d]; if (!o) return; a.studied++; a.min += o.min; a.n += o.n; a.first.push(o.first); a.last.push(o.last); a.longest = Math.max(a.longest, o.longest); a.late += o.late;
+    Object.keys(o.cls).forEach(function(c){ a.cls[c] = (a.cls[c]||0) + o.cls[c]; }); });
+  function mean(v){ return v.length ? v.reduce(function(x,y){return x+y;},0)/v.length : null; }
+  a.perDay = a.min / Math.max(1, a.days); a.firstAvg = mean(a.first); a.lastAvg = mean(a.last); a.avgSess = a.n ? a.min/a.n : 0;
+  return a;
+}
+function renderHealth(){
+  var by = dayStats(), nowStudy = sday({date: iso(new Date()), start_min: new Date().getHours()*60 + new Date().getMinutes()});
+  var cur, base = [], label, chartDays;
+  if (RANGE === 'D'){ cur = [nowStudy]; for (var i = 1; i <= 14; i++) base.push([iso(addDays(parse(nowStudy), -i))]); label = 'today vs. your last 2 weeks'; chartDays = windowDays(nowStudy, 14); }
+  else if (RANGE === 'W'){ var ws = sunday(parse(nowStudy)), n = Math.round((parse(nowStudy) - ws)/864e5) + 1;
+    cur = windowDays(nowStudy, n); for (var w = 1; w <= 4; w++) base.push(windowDays(iso(addDays(parse(nowStudy), -7*w)), n));
+    label = 'this week so far vs. the same days of the last 4 weeks'; chartDays = windowDays(iso(addDays(ws, 6)), 7); }
+  else { cur = windowDays(nowStudy, 28); base.push(windowDays(iso(addDays(parse(nowStudy), -28)), 28)); label = 'last 28 days vs. the 28 before'; chartDays = windowDays(nowStudy, 28); }
+  el('trsub').textContent = label;
+  var A = agg(cur, by), Bs = base.map(function(d){ return agg(d, by); }).filter(function(b){ return b.studied; });
+  function bavg(f){ var v = Bs.map(f).filter(function(x){ return x != null; }); return v.length ? v.reduce(function(x,y){return x+y;},0)/v.length : null; }
+  var B = {perDay: bavg(function(b){return b.perDay;}), firstAvg: bavg(function(b){return b.firstAvg;}), lastAvg: bavg(function(b){return b.lastAvg;}),
+           avgSess: bavg(function(b){return b.avgSess || null;}), studied: bavg(function(b){return b.studied/b.days;}), late: bavg(function(b){return b.min ? b.late/b.min : null;})};
+  var maxDay = Math.max.apply(null, chartDays.map(function(d){ return by[d] ? by[d].min : 0; }).concat([B.perDay||0, 60]));
+  function bars(){ return '<div class="hbars">' + chartDays.map(function(d){ var m = by[d] ? by[d].min : 0, inCur = cur.indexOf(d) >= 0, fut = d > nowStudy;
+      return '<div class="hb' + (inCur ? ' in' : '') + (fut ? ' fut' : '') + '"><div style="height:' + (100*m/maxDay) + '%"></div></div>'; }).join('')
+      + (B.perDay ? '<div class="avgline" style="bottom:' + (100*B.perDay/maxDay) + '%"><span>usual ' + hm(Math.round(B.perDay)) + '</span></div>' : '') + '</div>'; }
+  function dots(key){ var vals = chartDays.map(function(d){ return by[d] ? by[d][key] : null; }).filter(function(v){ return v != null; });
+    if (!vals.length) return '';
+    var lo = Math.min.apply(null, vals) - 60, hi = Math.max.apply(null, vals) + 60;
+    return '<div class="hdots">' + chartDays.map(function(d){ var v = by[d] ? by[d][key] : null;
+      return '<div class="hd' + (cur.indexOf(d) >= 0 ? ' in' : '') + '">' + (v == null ? '' : '<i style="bottom:' + (100*(v-lo)/(hi-lo)) + '%"></i>') + '</div>'; }).join('')
+      + '<span class="top">' + clk(hi) + '</span><span class="bot">' + clk(lo) + '</span></div>'; }
+  function cmp(a, b, fmt, more, less){ if (a == null || b == null) return ''; var d = a - b; if (Math.abs(d) < Math.max(5, Math.abs(b)*0.08)) return 'About your usual (' + fmt(b) + ').'; return (d > 0 ? more : less) + ' your usual ' + fmt(b) + '.'; }
+  var cards = [], hi = [];
+  var lead = RANGE === 'D' ? 'today' : RANGE === 'W' ? 'a day this week' : 'a day';
+  cards.push({t:'Study time', big: hm(Math.round(RANGE === 'D' ? A.min : A.perDay)), unit: RANGE === 'D' ? 'today' : 'per day',
+    note: cmp(RANGE === 'D' ? A.min : A.perDay, B.perDay, function(x){ return hm(Math.round(x)); }, 'Above', 'Below'), chart: bars(),
+    score: B.perDay ? ((RANGE === 'D' ? A.min : A.perDay) - B.perDay)/B.perDay : 0});
+  if (A.lastAvg != null) cards.push({t:'When you stop', big: clk(A.lastAvg), unit: RANGE === 'D' ? 'last session ended' : 'usual finish',
+    note: B.lastAvg != null ? (Math.abs(A.lastAvg - B.lastAvg) < 20 ? 'Close to your usual ' + clk(B.lastAvg) + '.' : (A.lastAvg > B.lastAvg ? 'About ' + hm(Math.round(A.lastAvg - B.lastAvg)) + ' later than usual (' + clk(B.lastAvg) + ').' : 'About ' + hm(Math.round(B.lastAvg - A.lastAvg)) + ' earlier than usual (' + clk(B.lastAvg) + ').')) : '',
+    chart: dots('last'), score: B.lastAvg != null ? (A.lastAvg - B.lastAvg)/180 : 0});
+  if (A.firstAvg != null) cards.push({t:'When you start', big: clk(A.firstAvg), unit: RANGE === 'D' ? 'first session' : 'usual start',
+    note: B.firstAvg != null ? (Math.abs(A.firstAvg - B.firstAvg) < 20 ? 'Close to your usual ' + clk(B.firstAvg) + '.' : (A.firstAvg > B.firstAvg ? 'About ' + hm(Math.round(A.firstAvg - B.firstAvg)) + ' later than usual (' + clk(B.firstAvg) + ').' : 'About ' + hm(Math.round(B.firstAvg - A.firstAvg)) + ' earlier than usual (' + clk(B.firstAvg) + ').')) : '',
+    chart: dots('first'), score: B.firstAvg != null ? (A.firstAvg - B.firstAvg)/240 : 0});
+  if (A.n) cards.push({t:'Session length', big: hm(Math.round(A.avgSess)), unit: 'average stretch', note: 'Longest: ' + hm(A.longest) + '. ' + cmp(A.avgSess, B.avgSess, function(x){ return hm(Math.round(x)); }, 'Longer than', 'Shorter than'), chart: '', score: B.avgSess ? (A.avgSess - B.avgSess)/B.avgSess : 0});
+  if (RANGE !== 'D') cards.push({t:'Consistency', big: A.studied + ' of ' + A.days, unit: 'days with study',
+    note: B.studied != null ? 'Usually ' + Math.round(B.studied*A.days) + ' of ' + A.days + '.' : '',
+    chart: '<div class="hcons">' + cur.map(function(d){ return '<i class="' + (by[d] ? 'on' : '') + '"></i>'; }).join('') + '</div>', score: B.studied != null ? (A.studied/A.days - B.studied) : 0});
+  var tot = A.min, baseCls = {}, baseTot = 0; Bs.forEach(function(b){ Object.keys(b.cls).forEach(function(c){ baseCls[c] = (baseCls[c]||0) + b.cls[c]; baseTot += b.cls[c]; }); });
+  if (tot){ var rows = CLASSES.map(function(c){ var a = 100*(A.cls[c]||0)/tot, u = baseTot ? 100*(baseCls[c]||0)/baseTot : null; return {c:c, a:a, u:u}; }).filter(function(r){ return r.a || r.u; });
+    var biggest = rows.slice().sort(function(x,y){ return Math.abs((y.a-(y.u||0))) - Math.abs((x.a-(x.u||0))); })[0];
+    cards.push({t:'Balance', big: '', unit: '', note: biggest && biggest.u != null && Math.abs(biggest.a - biggest.u) >= 10 ? '<b>' + biggest.c + '</b>: ' + Math.round(biggest.a) + '% of your time, usually ' + Math.round(biggest.u) + '%.' : 'Close to your usual mix.',
+      chart: '<div class="hbal">' + rows.map(function(r){ return '<div class="hr"><span>' + esc(SHORT[r.c]||r.c) + '</span><div class="bar"><i class="' + cls(r.c) + '" style="width:' + r.a + '%"></i>' + (r.u != null ? '<b style="left:' + r.u + '%"></b>' : '') + '</div><em>' + Math.round(r.a) + '%</em></div>'; }).join('') + '<p class="hk">Bar = now · tick = usual</p></div>',
+      score: biggest && biggest.u != null ? Math.abs(biggest.a - biggest.u)/100 : 0});
+  }
+  // highlight: late nights in a row, else the biggest change
+  var streak = 0; for (var i = 0; i < 14; i++){ var d = iso(addDays(parse(nowStudy), -i)); if (by[d] && by[d].last >= 1440) streak++; else if (i > 0 || by[d]) break; }
+  var hlt = streak >= 2 ? 'You have worked past midnight ' + streak + ' nights in a row.' : null;
+  if (!hlt){ var top = cards.filter(function(c){ return c.note && c.note.indexOf('About your usual') < 0 && c.note.indexOf('Close to') < 0; }).sort(function(a,b){ return Math.abs(b.score) - Math.abs(a.score); })[0];
+    if (top) hlt = top.t + ': ' + top.note.replace(/<[^>]+>/g, ''); }
+  el('hl').innerHTML = hlt ? '<div class="hl"><span>Highlight</span>' + hlt + '</div>' : '';
+  el('cards').innerHTML = cards.map(function(c){ return '<div class="card"><div class="ct">' + c.t + '</div>' + (c.big ? '<div class="cbig">' + c.big + ' <small>' + c.unit + '</small></div>' : '') + (c.note ? '<div class="cn">' + c.note + '</div>' : '') + (c.chart || '') + '</div>'; }).join('');
+}
+document.addEventListener('click', function(e){ var b = e.target.closest('.rng button'); if (!b) return; RANGE = b.dataset.r; document.querySelectorAll('.rng button').forEach(function(x){ x.classList.toggle('on', x === b); }); renderHealth(); });
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -538,6 +652,10 @@ function render(){
   el('upd').textContent = 'Updated ' + DAYS[u.getDay()] + ' ' + MON[u.getMonth()] + ' ' + u.getDate() + ', ' + u.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + ' · from the coursework log';
 }
 
+var ZOOMS = [0.6, 1, 1.6, 2.4, 3.4], ZI = 1, FIT = false;
+el('zin').onclick = function(){ ZI = Math.min(ZOOMS.length-1, ZI+1); renderWeek(); };
+el('zout').onclick = function(){ ZI = Math.max(0, ZI-1); renderWeek(); };
+el('zfit').onclick = function(){ FIT = !FIT; el('zfit').classList.toggle('on', FIT); renderWeek(); };
 el('prev').onclick = function(){ weekStart.setDate(weekStart.getDate() - 7); renderWeek(); };
 el('next').onclick = function(){ weekStart.setDate(weekStart.getDate() + 7); renderWeek(); };
 document.querySelectorAll('nav.seg a').forEach(function(a){
@@ -556,7 +674,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "6f2d8427b5";
+var APP_BUILD = "3bcad50c17";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
