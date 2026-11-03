@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T21:32:08+00:00",
+ "updated": "2026-11-03T22:20:27+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -508,12 +508,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "4:29 PM",
-   "end": "now",
+   "end": "5:19 PM",
    "start_min": 989,
-   "end_min": 992,
-   "minutes": 3,
-   "in_progress": true,
-   "topic": "Topology HW7: read all six questions; open and closed maps.",
+   "end_min": 1039,
+   "minutes": 50,
+   "in_progress": false,
+   "topic": "Topology HW7, Q1: equivalence classes written; why collapsing a closed set stays Hausdorff.",
    "refs": [
     "homework 7"
    ]
