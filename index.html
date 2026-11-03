@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "ac873a92a0";
+var APP_BUILD = "4ad5c4b5e0";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2152,6 +2152,14 @@ function drawPastry(ctx, W, H, t, st){
   R(cw, wallB - 16, P - cw, 16, '#9a2a24'); R(cw, wallB - 17, P - cw, 1, '#e8d4b0'); R(cw, wallB - 1, P - cw, 1, '#6a1e1a');
   for (var y = wallB; y < H; y++) R(0, y, P, 1, (Math.floor((y - wallB)/5) % 2) ? '#7a5032' : '#6e482c');
   for (var y = wallB; y < H; y += 5) for (var x = ((y - wallB)/5 % 2) ? 0 : 12; x < P; x += 24) R(x, y, 1, 5, '#5a3820');
+  // ceiling tiles, slow ceiling fans with worn wooden blades, and silver egg pendants on chains
+  for (var x = 0; x < P; x += 18) R(x, 0, 1, DY, 'rgba(255,255,255,.35)');
+  for (var k = 0; k < Math.floor(P/110) + 1; k++){ var fx = 70 + k*110, fy = DY + 2, a = t*2.2 + k;
+    R(fx, DY - 2, 1, 6, '#2a2420'); R(fx - 3, fy + 3, 7, 3, '#2a2420'); R(fx - 2, fy + 6, 5, 1, '#3a3430');
+    for (var b = 0; b < 5; b++){ var ang = a + b*Math.PI*2/5, len = Math.round(Math.cos(ang)*14), dep = Math.sin(ang); if (Math.abs(len) < 2) continue;
+      R(len > 0 ? fx + 3 : fx - 3 + len, fy + 4 + (dep > 0 ? 1 : 0), Math.abs(len), 2, dep > 0 ? '#6a3a1e' : '#4a2814'); R(len > 0 ? fx + 3 + Math.abs(len) - 3 : fx - 3 + len, fy + 4 + (dep > 0 ? 1 : 0), 3, 1, '#8a5a3a'); }
+    for (var q = 0; q < 2; q++){ var px = fx + (q ? 40 : -40); if (px < cw - 20 || px > P - 10) continue; for (var y = DY; y < DY + 10; y += 2) R(px, y, 1, 1, '#6a6a6a');
+      R(px - 1, DY + 10, 3, 2, '#2a2420'); R(px - 3, DY + 12, 7, 6, '#b9bcc6'); R(px - 2, DY + 18, 5, 2, '#9a9ca6'); R(px - 2, DY + 13, 1, 4, '#e8eaf0'); R(px - 1, DY + 20, 3, 1, '#fff3d0'); } }
   ctx.save(); ctx.translate(0, DY);
   // bright speckled prints in black frames
   for (var k = 0; k < Math.floor((dX - cw - 20)/30); k++){ var px = cw + 12 + k*30, py = 18 + (k % 2)*4, pw = 14 + (k % 3)*3, ph = 18;
