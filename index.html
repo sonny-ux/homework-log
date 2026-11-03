@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "7e332d566d";
+var APP_BUILD = "774e2ac4f5";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2559,17 +2559,46 @@ var ROOMS = {
     nightWindow(ctx, 11, 16, 24, 28, t);
     ctx.fillStyle = '#a8452a'; ctx.fillRect(7, 10, 4, 38); ctx.fillRect(35, 10, 4, 38); ctx.fillStyle = '#3b2a24'; ctx.fillRect(6, 9, 34, 1);
     // TV glow on the room
-    var tvx = Math.round(W*0.64), glow = 0.12 + 0.05*Math.sin(t*3) + (go === 'tv' ? .2 : 0);
+    var tvx = Math.round(W*0.64), nc0 = t % 120, glow = (nc0 >= 92 && nc0 < 112) ? 0 : 0.12 + 0.05*Math.sin(t*3) + (go === 'tv' ? .2 : 0);
     ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(90,70,150,' + glow + ')'; ctx.beginPath(); ctx.moveTo(tvx + 4, F - 26); ctx.lineTo(Math.round(W*0.18), F + 8); ctx.lineTo(tvx + 4, F + 8); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
     // Nico's room. Rug, couch, Nico asleep under a blanket, breathing
     var cx0 = Math.round(W*0.25), cw = Math.round(W*0.34);
     ctx.fillStyle = '#8a5a3c'; ctx.fillRect(cx0 - 4, F + 2, cw + 8, 3); ctx.fillStyle = '#c4473a'; for (var x = cx0 - 4; x < cx0 + cw + 4; x += 4) ctx.fillRect(x, F + 3, 2, 1);
     ctx.fillStyle = '#6a3226'; ctx.fillRect(cx0, F - 24, cw, 11); ctx.fillStyle = '#7a3b2e'; ctx.fillRect(cx0, F - 13, cw, 8); ctx.fillStyle = '#5e2b20'; ctx.fillRect(cx0 - 3, F - 18, 4, 13); ctx.fillRect(cx0 + cw - 1, F - 18, 4, 13);
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(cx0, F - 5, 2, 5); ctx.fillRect(cx0 + cw - 2, F - 5, 2, 5);
-    var br = Math.sin(t*1.2) > 0 ? 1 : 0;
-    ctx.fillStyle = '#e8dcc0'; ctx.fillRect(cx0 + 1, F - 18, 7, 4); ctx.fillStyle = '#f0c6a0'; ctx.fillRect(cx0 + 3, F - 21, 5, 5); ctx.fillStyle = '#241f1a'; ctx.fillRect(cx0 + 2, F - 22, 6, 2); ctx.fillRect(cx0 + 2, F - 20, 2, 3); ctx.fillStyle = '#d9a982'; ctx.fillRect(cx0 + 5, F - 18, 2, 1);
-    ctx.fillStyle = '#2f5f9e'; ctx.fillRect(cx0 + 8, F - 18 - br, cw - 11, 5 + br); ctx.fillStyle = '#4d7ed0'; for (var x = cx0 + 10; x < cx0 + cw - 4; x += 5) ctx.fillRect(x, F - 18 - br, 2, 5 + br); ctx.fillRect(cx0 + cw - 6, F - 20, 3, 2);
-    for (var k = 0; k < 3; k++){ var ph = (t*0.35 + k/3) % 1; pz(ctx, cx0 + 6 + Math.round(ph*10) + k, F - 26 - Math.round(ph*16), 1 - ph); }
+    // Nico's day, on a two-minute loop: asleep; up for push-ups and sit-ups; on the couch with the TV and a bag of chips; TV off, drawing at the table; back to sleep
+    var nc = t % 120, br = Math.sin(t*1.2) > 0 ? 1 : 0, nico = {hair: 'short', hc: '#241f1a', jacket: '#7a8a9a', pants: '#2f3a5a', skin: 0, ph: 1};
+    var dtx = Math.round(W*0.06) + 2, dty = F;
+    function R2(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
+    if (nc < 40 || nc >= 114){
+      R2(cx0 + 1, F - 18, 7, 4, '#e8dcc0'); R2(cx0 + 3, F - 21, 5, 5, '#f0c6a0'); R2(cx0 + 2, F - 22, 6, 2, '#241f1a'); R2(cx0 + 2, F - 20, 2, 3, '#241f1a'); R2(cx0 + 5, F - 18, 2, 1, '#d9a982');
+      R2(cx0 + 8, F - 18 - br, cw - 11, 5 + br, '#2f5f9e'); for (var x = cx0 + 10; x < cx0 + cw - 4; x += 5) R2(x, F - 18 - br, 2, 5 + br, '#4d7ed0'); R2(cx0 + cw - 6, F - 20, 3, 2, '#4d7ed0');
+      for (var k = 0; k < 3; k++){ var ph = (t*0.35 + k/3) % 1; pz(ctx, cx0 + 6 + Math.round(ph*10) + k, F - 26 - Math.round(ph*16), 1 - ph); }
+    } else {
+      R2(cx0 + cw - 18, F - 16, 14, 3, '#2f5f9e'); R2(cx0 + cw - 16, F - 18, 8, 2, '#4d7ed0'); R2(cx0 + 1, F - 18, 7, 4, '#e8dcc0');
+      var ex = cx0 + Math.round(cw/2) - 12, ey = F + 4;
+      if (nc < 43){ nico.dir = 1; nico.v = 0; stPerson(ctx, nico, cx0 + 12, F, t); if (nc < 41.5){ R2(cx0 + 16, F - 34, 1, 1, '#ffffff'); } }
+      else if (nc < 55){ var up = Math.floor(t*1.6) % 2 === 0, by = up ? ey - 6 : ey - 3;
+        R2(ex, by - 1, 5, 4, '#f0c6a0'); R2(ex, by - 2, 5, 2, '#241f1a'); R2(ex + 5, by, 12, 3, '#7a8a9a'); R2(ex + 17, by + (up ? 1 : 0), 8, 2, '#2f3a5a'); R2(ex + 25, ey - 1, 2, 1, '#151218');
+        R2(ex + 6, by + 3, 1, ey - by - 3, '#f0c6a0'); R2(ex + 9, by + 3, 1, ey - by - 3, '#d9a982');
+        if (Math.floor(t*1.6) % 6 === 0){ R2(ex - 2, by - 6, 1, 2, '#9fd3f2'); } }
+      else if (nc < 66){ var sit = Math.floor(t*1.3) % 2 === 0;
+        R2(ex + 12, ey - 1, 6, 1, '#151218'); R2(ex + 10, ey - 5, 2, 4, '#2f3a5a'); R2(ex + 12, ey - 6, 5, 2, '#2f3a5a'); R2(ex + 4, ey - 3, 7, 2, '#2f3a5a');
+        if (sit){ for (var k = 0; k < 8; k++) R2(ex + 4 - Math.round(k*0.45), ey - 4 - k, 4, 1, '#7a8a9a'); R2(ex - 1, ey - 17, 5, 5, '#f0c6a0'); R2(ex - 1, ey - 18, 5, 2, '#241f1a'); R2(ex + 2, ey - 12, 4, 1, '#f0c6a0'); }
+        else { R2(ex - 6, ey - 4, 11, 3, '#7a8a9a'); R2(ex - 11, ey - 5, 5, 4, '#f0c6a0'); R2(ex - 12, ey - 5, 2, 4, '#241f1a'); } }
+      else if (nc < 92){ nico.dir = 1; nico.v = 0; nico.sit = 1; nico.nocup = 1; stPerson(ctx, nico, cx0 + 16, F - 6, t);
+        R2(cx0 + 24, F - 15, 5, 6, '#e8822a'); R2(cx0 + 24, F - 15, 5, 1, '#c4302a'); R2(cx0 + 25, F - 13, 3, 2, '#e9c45a');
+        if (Math.sin(t*1.1) > .6){ R2(cx0 + 18, F - 30, 2, 2, '#f0c6a0'); R2(cx0 + 20, F - 30, 1, 1, '#e9c45a'); } if (Math.sin(t*1.1 - .5) > .8) R2(cx0 + 20, F - 22, 1, 1, '#e9c45a'); }
+      else if (nc < 112){ nico.dir = 1; nico.v = 0; nico.sit = 1; nico.nocup = 1; stPerson(ctx, nico, dtx + 2, F + 1, t);
+        var drawH = Math.floor(t*5) % 3; R2(dtx + 11 + drawH, F - 19, 2, 1, '#f0c6a0'); R2(dtx + 12 + drawH, F - 20, 1, 1, '#e9c45a'); R2(dtx + 10, F - 18, 9, 1, '#fbf7ee');
+        for (var k = 0; k < Math.min(7, Math.floor((nc - 92)/2.5)); k++) R2(dtx + 11 + k, F - 18 - (k % 2), 1, 1, ['#2a2a2a','#c4473a','#2f5f9e'][k % 3]); }
+      else { nico.dir = -1; nico.v = 1; stPerson(ctx, nico, Math.round(dtx + 8 + (cx0 + 10 - dtx - 8)*((nc - 112)/2)), F, t); }
+    }
+    // the little drawing table by the window, and its lamp that comes on when he draws
+    R2(dtx + 8, F - 17, 14, 2, '#7a5a41'); R2(dtx + 9, F - 15, 1, 15, '#5a412f'); R2(dtx + 20, F - 15, 1, 15, '#5a412f'); R2(dtx + 9, F - 18, 6, 1, '#fbf7ee');
+    R2(dtx + 19, F - 24, 1, 6, '#241f1a'); R2(dtx + 17, F - 26, 4, 2, '#3d7a55');
+    if (nc >= 92 && nc < 112){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,90,40,.18)'; ctx.beginPath(); ctx.moveTo(dtx + 18, F - 24); ctx.lineTo(dtx + 8, F - 17); ctx.lineTo(dtx + 24, F - 17); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; R2(dtx + 18, F - 24, 2, 1, '#ffe7a1'); }
+    var TVOFF = nc >= 92 && nc < 112;
     // floor lamp, off
     var lx = Math.round(W*0.2); ctx.fillStyle = '#241f1a'; ctx.fillRect(lx, F - 34, 1, 34); ctx.fillRect(lx - 2, F - 1, 5, 1); ctx.fillStyle = '#8a7a5a'; ctx.fillRect(lx - 3, F - 38, 7, 4);
     // the polaroid of Low Library, taped above the couch
@@ -2586,7 +2615,7 @@ var ROOMS = {
     // the TV on its stand, the wave on its screen
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(tvx - 2, F - 10, 32, 10); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tvx - 2, F - 10, 32, 1); ctx.fillRect(tvx + 12, F - 8, 1, 7);
     ctx.fillStyle = '#3a3644'; ctx.fillRect(tvx, F - 33, 28, 23); ctx.fillStyle = '#5a5468'; ctx.fillRect(tvx, F - 33, 28, 1);
-    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else vigInto(ctx, performance.now() < TV_STATIC ? 'static' : (TVCH ? 'anime' : 'film'), tvx + 2, F - 31, 20, 19, t);
+    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else if (TVOFF){ ctx.fillStyle = '#1a1a22'; ctx.fillRect(tvx + 2, F - 31, 20, 19); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(tvx + 4, F - 29, 6, 2); } else vigInto(ctx, performance.now() < TV_STATIC ? 'static' : (TVCH ? 'anime' : 'film'), tvx + 2, F - 31, 20, 19, t);
     ctx.fillStyle = '#c9a43a'; ctx.fillRect(tvx + 24, F - 29, 2, 2); ctx.fillStyle = '#9a8f88'; ctx.fillRect(tvx + 24, F - 24, 2, 2);
     ctx.fillStyle = '#241f1a'; for (var k = 0; k < 7; k++){ ctx.fillRect(tvx + 10 - k, F - 34 - k, 1, 1); ctx.fillRect(tvx + 16 + k, F - 34 - k, 1, 1); }
     S.push({x: tvx + 22, y: F - 31, w: 6, h: 11, channel: 1, id: 'knob'});
