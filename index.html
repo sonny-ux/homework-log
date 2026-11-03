@@ -308,7 +308,7 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 #rest { position: fixed; inset: 0; z-index: 60; background: #070b1c; opacity: 0; pointer-events: none; transition: opacity .5s; }
 #rest.on { opacity: 1; pointer-events: auto; }
 #rest canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; object-fit: cover; }
-.resthint { position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom)); text-align: center; color: rgba(243,234,211,.55); font: 10px var(--pixel); letter-spacing: .08em; text-transform: uppercase; animation: hintfade 6s forwards; }
+.resthint { display: none !important; position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom)); text-align: center; color: rgba(243,234,211,.55); font: 10px var(--pixel); letter-spacing: .08em; text-transform: uppercase; animation: hintfade 6s forwards; }
 @keyframes hintfade { 0%, 60% { opacity: 1; } 100% { opacity: 0; } }
 .pixbox { cursor: pointer; }
 .rdots { position: absolute; top: max(14px, env(safe-area-inset-top)); left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
@@ -972,7 +972,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "b830f614b4";
+var APP_BUILD = "9454d1c83f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1014,16 +1014,16 @@ function drawCity(ctx, W, H, t, st){
   // far building wall closing the street, with the ticker
   var fa = P(-1.6, 3.2, 9), fb = P(1.6, -0.5, 9);
   ctx.fillStyle = '#1b1830'; ctx.fillRect(fa[0], fa[1], fb[0]-fa[0], fb[1]-fa[1]);
-  ctx.fillStyle = '#000'; var ty = Math.round(fa[1] + (fb[1]-fa[1])*0.18), th = 9; ctx.fillRect(fa[0], ty, fb[0]-fa[0], th);
+  var tsc = Math.max(1, Math.round(H/220)); ctx.fillStyle = '#000'; var ty = Math.round(fa[1] + (fb[1]-fa[1])*0.18), th = 9*tsc; ctx.fillRect(fa[0], ty, fb[0]-fa[0], th);
   ctx.save(); ctx.beginPath(); ctx.rect(fa[0], ty, fb[0]-fa[0], th); ctx.clip();
-  var tw = textW(D.ticker || '', 1) + 6, off = (t*14) % tw; for (var k = -1; k < 3; k++) ptext(ctx, D.ticker || '', Math.round(fa[0] + k*tw - off), ty + 2, 1, '#ffd36b'); ctx.restore();
-  for (var r = 0; r < 4; r++) for (var c = 0; c < 9; c++){ var wx = fa[0] + 3 + c*((fb[0]-fa[0]-6)/9), wy = ty + th + 3 + r*5; ctx.fillStyle = st.wins[r*9+c][0] > .45 ? '#e9c45a' : '#2a2747'; ctx.fillRect(Math.round(wx), Math.round(wy), 2, 2); }
+  var tw = textW(D.ticker || '', tsc) + 6*tsc, off = (t*14*tsc) % tw; for (var k = -1; k < 3; k++) ptext(ctx, D.ticker || '', Math.round(fa[0] + k*tw - off), ty + 2*tsc, tsc, '#ffd36b'); ctx.restore();
+  for (var r = 0; r < 4; r++) for (var c = 0; c < 9; c++){ var wx = fa[0] + 3*tsc + c*((fb[0]-fa[0]-6*tsc)/9), wy = ty + th + 3*tsc + r*5*tsc; ctx.fillStyle = st.wins[r*9+c][0] > .45 ? '#e9c45a' : '#2a2747'; ctx.fillRect(Math.round(wx), Math.round(wy), 2*tsc, 2*tsc); }
   // road and sidewalks
   for (var y = vy; y < H; y++){ var z = CAM*f/(y - vy + .001); var half = 1.0/z*f, side = 1.6/z*f;
     ctx.fillStyle = '#16141f'; ctx.fillRect(0, y, W, 1);
     ctx.fillStyle = '#26232f'; ctx.fillRect(vx - side, y, side*2, 1);
     ctx.fillStyle = '#1d1b26'; ctx.fillRect(vx - half, y, half*2, 1);
-    if (Math.floor(z*2 - t*3) % 2 === 0 && z < 9){ ctx.fillStyle = '#e9c45a'; ctx.fillRect(Math.round(vx - Math.max(1, 0.03/z*f)), y, Math.max(1, Math.round(0.06/z*f)), 1); } }
+    if (Math.floor(z*2 - t*3) % 2 === 0 && z < 9){ ctx.fillStyle = '#e9c45a'; var dw = Math.min(4, Math.max(1, Math.round(0.05/z*f))); ctx.fillRect(Math.round(vx - dw/2), y, dw, 1); } }
   // buildings on both sides: street-facing walls drawn in depth slices, far to near
   var cols = ['#2b2340','#3a2a3c','#22304a','#3b2f2a','#2c3a35'];
   for (var side = -1; side <= 1; side += 2){
@@ -1033,8 +1033,8 @@ function drawCity(ctx, W, H, t, st){
       ctx.fillStyle = cols[(Math.floor(z*2) + (side>0?2:0)) % cols.length];
       ctx.beginPath(); ctx.moveTo(a1[0], a1[1]); ctx.lineTo(a2[0], a2[1]); ctx.lineTo(b2[0], b2[1]); ctx.lineTo(b1[0], b1[1]); ctx.closePath(); ctx.fill();
       // windows: a few per slice, some flicker
-      for (var wy = 0.4; wy < hgt - 0.2; wy += 0.45){ for (var wz = 0.12; wz < 0.5; wz += 0.2){
-        var q = P(X, wy, z - wz), sz = Math.max(1, Math.round(0.12/(z-wz)*f)), w = st.wins[Math.floor((z*13 + wy*7 + wz*31 + (side>0?50:0))) % st.wins.length];
+      for (var wy = 0.35; wy < hgt - 0.15; wy += 0.28){ for (var wz = 0.08; wz < 0.5; wz += 0.13){
+        var q = P(X, wy, z - wz), sz = Math.max(1, Math.round(0.09/(z-wz)*f)), w = st.wins[Math.floor((z*13 + wy*7 + wz*31 + (side>0?50:0))) % st.wins.length];
         var lit = w[0] > .5 || (w[1] > .9 && Math.sin(t*2 + w[2]*20) > 0);
         ctx.fillStyle = lit ? (w[2] > .7 ? '#ffd36b' : '#e9c45a') : '#1a1628'; ctx.fillRect(Math.round(q[0]), Math.round(q[1]), sz, sz); } }
     }
@@ -1054,17 +1054,17 @@ function drawCity(ctx, W, H, t, st){
     ctx.fillStyle = '#0d0c14'; ctx.fillRect(x0 - 1, y0 - 1, x1 - x0 + 2, y1 - y0 + 2);
     ctx.fillStyle = b.bg; ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
     var L = b.lines.filter(Boolean), widest = Math.max.apply(null, L.map(function(l){ return textW(l, 1); }));
-    var sc = Math.max(1, Math.min(Math.floor((x1 - x0 - 4)/widest), Math.floor((y1 - y0 - 2)/(L.length*6))));
+    var sc = Math.max(1, Math.min(tsc, Math.floor((x1 - x0 - 4)/widest), Math.floor((y1 - y0 - 2)/(L.length*6))));
     var lh = 6*sc, total = L.length*lh - sc, ly = Math.round(y0 + ((y1-y0) - total)/2);
     // blink border lights
-    for (var bx = x0; bx < x1; bx += 3){ ctx.fillStyle = (Math.floor(t*4 + bx/3) % 2) ? '#fff3c4' : b.bg; ctx.fillRect(bx, y0, 1, 1); ctx.fillRect(bx, y1 - 1, 1, 1); }
+    for (var bx = x0; bx < x1; bx += 3*tsc){ ctx.fillStyle = (Math.floor(t*4 + bx/3) % 2) ? '#fff3c4' : b.bg; ctx.fillRect(bx, y0, tsc, tsc); ctx.fillRect(bx, y1 - tsc, tsc, tsc); }
     ctx.save(); ctx.beginPath(); ctx.rect(x0 + 1, y0 + 1, x1 - x0 - 2, y1 - y0 - 2); ctx.clip();
     L.forEach(function(line, i){ ptext(ctx, line, Math.round(x0 + ((x1-x0) - textW(line, sc))/2), ly + i*lh, sc, b.fg); });
     ctx.restore();
   });
   // cars: headlights coming toward you, taillights going away
   for (var i = 0; i < 4; i++){ var ph = (t*0.35 + i/4) % 1, lane = i % 2 ? -0.5 : 0.5, z = lane < 0 ? 9 - ph*8 : 1.2 + ph*8;
-    var c = P(lane, 0.05, z), sz = Math.max(1, Math.round(0.08/z*f)), col = lane < 0 ? '#fff3c4' : '#c4473a', gap = Math.max(2, Math.round(0.25/z*f));
+    var c = P(lane, 0.05, z), sz = Math.min(5, Math.max(1, Math.round(0.06/z*f))), col = lane < 0 ? '#fff3c4' : '#c4473a', gap = Math.max(2, Math.round(0.25/z*f));
     ctx.fillStyle = col; ctx.fillRect(Math.round(c[0]) - gap, Math.round(c[1]) - sz, sz, sz); ctx.fillRect(Math.round(c[0]) + gap - sz, Math.round(c[1]) - sz, sz, sz); }
   // season over the city
   seasonParticles(ctx, W, H, t, vy);
@@ -1132,7 +1132,7 @@ function drawWoolfWaves(ctx, W, H, t){
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'city' ? 220 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'city' ? 440 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
