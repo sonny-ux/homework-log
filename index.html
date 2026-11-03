@@ -424,8 +424,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   <nav class="seg"><a href="#home" class="on">Home</a><a href="#day">Time</a><a href="#asg">HW</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
 
   <section id="home"><div class="tiles" id="tiles"></div>
-    <figure class="room" data-room="penthouse" data-size="tall" aria-label="The penthouse: a pianist, a chandelier, tall windows on the city"><canvas></canvas></figure>
-    <figure title="out the window" role="button" aria-label="Look out the window: St. Marks" class="scenewin window" data-scene="1" data-vig="street"><span class="frame f-window"><canvas width="80" height="60" style="width:160px;height:120px"></canvas><b class="curt l"></b><b class="curt r"></b></span></figure></section>
+    <figure class="room" data-room="penthouse" data-size="tall" aria-label="The penthouse: a pianist, a chandelier, tall windows on the city"><canvas></canvas></figure></section>
 
   <section id="day">
     <div class="subnav"><a href="#day">Today</a><a href="#wk">This week</a></div>
@@ -478,6 +477,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <figure title="the lighthouse keeper" role="button" aria-label="the lighthouse keeper" class="scenewin left" data-scene="0" data-vig="cabin" style="--off:0px"><span class="frame f-porthole"><canvas width="72" height="72" style="width:72px;height:72px"></canvas></span></figure>
   </section>
 
+  <figure title="out the window" role="button" aria-label="Look out the window: St. Marks" class="scenewin window" data-scene="1" data-vig="street"><span class="frame f-window"><canvas width="80" height="60" style="width:160px;height:120px"></canvas><b class="curt l"></b><b class="curt r"></b></span></figure>
   <figure class="room" data-room="street" aria-label="The street at the door: a man asleep in a box, the subway entrance"><canvas></canvas></figure>
   <p class="updated" id="upd"></p>
 <div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rctl"><button data-go="x" aria-label="Close">close</button></div></div>
@@ -1091,7 +1091,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "2e7b36df29";
+var APP_BUILD = "c169d4adae";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
