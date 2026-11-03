@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "3609fb0004";
+var APP_BUILD = "7e332d566d";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2729,7 +2729,7 @@ var ROOMS = {
     var her = usTwo()[0]; her.sit = 1; her.v = 0; her.dir = -1; her.ph = 1; stPerson(ctx, her, bx + 16, F - 1, t);
     ctx.fillStyle = '#7fb7d9'; ctx.fillRect(bx + 7, F - 15, 5, 2); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 7, F - 16, 2, 1); ctx.fillRect(bx + 10, F - 16, 2, 1);
     // the stick insects' tank in the corner, on its stand
-    var kx = W - 19, ky = F - 30; S.push({x: kx - 5, y: ky - 6, w: 22, h: 36, scene: 11, id: 'tank'});
+    var kx = W - 19, ky = F - 30; S.push({x: kx - 5, y: ky - 6, w: 22, h: 36, scene: 10, id: 'tank'});
     ctx.fillStyle = '#5a3a28'; ctx.fillRect(kx, F - 13, 14, 2); ctx.fillRect(kx + 1, F - 11, 1, 11); ctx.fillRect(kx + 12, F - 11, 1, 11); ctx.fillRect(kx + 1, F - 4, 12, 1);
     ctx.fillStyle = 'rgba(190,230,210,.45)'; ctx.fillRect(kx, ky, 14, 17); ctx.fillStyle = '#6b4a33'; ctx.fillRect(kx + 1, ky + 14, 12, 3);
     ctx.fillStyle = '#7a5a3a'; for (var k = 0; k < 11; k++){ ctx.fillRect(kx + 2 + k, ky + 13 - k, 1, 1); } for (var k = 0; k < 6; k++) ctx.fillRect(kx + 10 - k, ky + 14 - Math.round(k*1.6), 1, 1);
