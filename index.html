@@ -476,7 +476,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   </section>
 
   <p class="updated" id="upd"></p>
-<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
+<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rctl"><button data-go="x" aria-label="Close">close</button></div></div>
 <div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
 </main>
 <script>
@@ -1087,7 +1087,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "ffc1590ebc";
+var APP_BUILD = "9934b2c4f2";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1880,10 +1880,6 @@ var VIG = {
     rest.classList.add('on'); rest.setAttribute('aria-hidden', 'false'); show(i); void rest.offsetWidth;
     rest.style.transition = 'clip-path .75s cubic-bezier(.65,0,.25,1)'; rest.style.clipPath = 'circle(150% at ' + cx + 'px ' + cy + 'px)'; }
   function close(){ rest.style.transition = ''; rest.style.clipPath = ''; rest.style.opacity = ''; rest.classList.remove('on'); rest.setAttribute('aria-hidden', 'true'); if (raf) cancelAnimationFrame(raf); raf = null; }
-  var sx = null, sy = null;
-  document.addEventListener('touchstart', function(e){ var tt = e.touches[0]; sx = tt.clientX; sy = tt.clientY; }, {passive:true});
-  document.addEventListener('touchend', function(e){ if (sx === null) return; var tt = e.changedTouches[0], dx = tt.clientX - sx, dy = tt.clientY - sy; sx = null;
-    if (Math.abs(dx) > 70 && Math.abs(dx) > 2*Math.abs(dy)){ if (dx > 0){ if (!rest.classList.contains('on')){ if (!document.querySelector('.sheet.on')) open(); } else if (scene < SCENES.length - 1) show(scene + 1); } else if (dx < 0 && rest.classList.contains('on')){ if (scene > 0) show(scene - 1); else close(); } } }, {passive:true});
   rest.addEventListener('click', function(e){ var b = e.target.closest('[data-go]'); if (!b) return; e.stopPropagation(); var g = b.dataset.go;
     if (g === 'x') close(); else if (g === 'n') show((scene + 1) % SCENES.length); else show((scene - 1 + SCENES.length) % SCENES.length); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
