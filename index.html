@@ -415,6 +415,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 /* ===== Rooms of the building ===== */
 .room { margin: 18px 0 4px; display: flex; justify-content: center; }
 .room canvas { display: block; image-rendering: pixelated; box-shadow: 0 0 0 1px #2a1f1a, 3px 4px 0 rgba(0,0,0,.18); }
+.room.square { justify-content: flex-end; margin-right: 18px; }
 </style>
 </head>
 <body>
@@ -423,6 +424,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   <nav class="seg"><a href="#home" class="on">Home</a><a href="#day">Time</a><a href="#asg">HW</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
 
   <section id="home"><div class="tiles" id="tiles"></div>
+    <figure class="room" data-room="penthouse" data-size="tall" aria-label="The penthouse: a pianist, a chandelier, tall windows on the city"><canvas></canvas></figure>
     <figure title="out the window" role="button" aria-label="Look out the window: St. Marks" class="scenewin window" data-scene="1" data-vig="street"><span class="frame f-window"><canvas width="80" height="60" style="width:160px;height:120px"></canvas><b class="curt l"></b><b class="curt r"></b></span></figure></section>
 
   <section id="day">
@@ -472,9 +474,11 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <div class="wkhead"><h2>Log <span class="sub" id="logsub"></span></h2>
       <div class="arrows"><button id="lprev" aria-label="Earlier week">‹</button><button id="lnow" aria-label="This week">Now</button><button id="lnext" aria-label="Later week">›</button></div></div>
     <div class="topics" id="topics"></div>
+    <figure class="room square" data-room="studio" data-size="square" aria-label="A bare studio: you on a mattress playing guitar"><canvas></canvas></figure>
     <figure title="the lighthouse keeper" role="button" aria-label="the lighthouse keeper" class="scenewin left" data-scene="0" data-vig="cabin" style="--off:0px"><span class="frame f-porthole"><canvas width="72" height="72" style="width:72px;height:72px"></canvas></span></figure>
   </section>
 
+  <figure class="room" data-room="street" aria-label="The street at the door: a man asleep in a box, the subway entrance"><canvas></canvas></figure>
   <p class="updated" id="upd"></p>
 <div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rctl"><button data-go="x" aria-label="Close">close</button></div></div>
 <div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
@@ -1087,7 +1091,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "cd03495ada";
+var APP_BUILD = "0f02c65f9e";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1315,8 +1319,8 @@ function stPerson(ctx, p, x, y, t){
   // front arm and what it carries
   if (p.books){ U(1, -24, 2, 6, jk); U(2, -19, 4, 2, '#c4473a'); U(2, -21, 5, 2, '#2f5f9e'); U(2, -17, 4, 1, '#e9c45a'); U(2, -18, 1, 2, sk); }
   else if (p.pizza){ U(1, -24, 2, 6, jk); U(3, -20, 2, 2, sk); U(5, -21, 3, 1, '#c9862a'); U(5, -20, 2, 1, '#e9b04a'); U(5, -19, 1, 1, '#e9b04a'); U(6, -20, 1, 1, '#c4473a'); }
-  else if (p.sit && p.nocup){ var talk = Math.sin(t*1.7 + p.ph*2) > .75; U(1, -24, 2, talk ? 4 : 8, jk); if (talk) U(3, -22, 2, 2, sk); else U(1, -16, 2, 2, sk); }
-  else if (p.sit){ var sip = Math.sin(t*0.9 + p.ph) > .7, cup = function(dx, dy){ if (p.ale){ U(dx, dy, 3, 4, '#d9a03a'); U(dx, dy, 3, 1, '#f6f2ea'); U(dx - 1, dy - 1, 4, 1, '#f6f2ea'); U(dx + 3, dy + 1, 1, 2, '#8a7a6a'); U(dx + 1, dy + 1, 1, 3, '#e9c45a'); } else U(dx, dy, 2, 3, '#c9c3b6'); };
+  else if (p.sit && p.nocup && !p.guitar){ var talk = Math.sin(t*1.7 + p.ph*2) > .75; U(1, -24, 2, talk ? 4 : 8, jk); if (talk) U(3, -22, 2, 2, sk); else U(1, -16, 2, 2, sk); }
+  else if (p.sit && !p.guitar){ var sip = Math.sin(t*0.9 + p.ph) > .7, cup = function(dx, dy){ if (p.ale){ U(dx, dy, 3, 4, '#d9a03a'); U(dx, dy, 3, 1, '#f6f2ea'); U(dx - 1, dy - 1, 4, 1, '#f6f2ea'); U(dx + 3, dy + 1, 1, 2, '#8a7a6a'); U(dx + 1, dy + 1, 1, 3, '#e9c45a'); } else U(dx, dy, 2, 3, '#c9c3b6'); };
     U(1, -24, 2, sip ? 4 : 8, jk); if (sip){ cup(3, -28); U(2, -24, 2, 2, sk); } else { U(1, -16, 2, 2, sk); cup(3, -16); } }
   else if (p.guitar && p.mill){ var ang = t*7, sx0 = 1, sy0 = -23 + bob;
     U(-1, -18, 6, 5, '#151218'); U(0, -17, 4, 3, '#c4473a'); U(2, -16, 1, 1, '#f3ead3'); for (var k = 0; k < 7; k++) U(5 + k, -19 - k, 1, 1, '#c9c3b6'); U(12, -27, 2, 2, '#151218'); U(-4, -24, 2, 5, jk); U(9, -24, 2, 2, sk);
@@ -1709,11 +1713,11 @@ function coneySetup(W, H){
     {hair:'beanie', hc:'#e9c45a', jacket:'#8e5fa8', pants:'#24202b', skin:0, balloon:'#5dff9a'},
     {hair:'mohawk', hc:'#ff5a4e', jacket:'leather', pants:'#1a1820', skin:1, punk:1}];
   var people = cast.map(function(c, i){ c.dir = i % 2 ? -1 : 1; c.v = 4 + rnd()*4; c.x = rnd()*P; c.ph = i*1.9; c.lane = i % 2; return c; });
-  return {P: P, people: people, last: 0};
+  return {P: P, B: 160, people: people, last: 0};
 }
 function drawConey(ctx, W, H, t, st){
-  var P = st.P, dt = st.last ? Math.min(.2, t - st.last) : 0; st.last = t;
-  var off = Math.round(Math.max(0, Math.min(P - W, P*0.64 - W/2 + Math.sin(t*0.03)*(P - W)*0.6))), bw = Math.round(H*0.66), sand = Math.round(H*0.72), sea = Math.round(H*0.8);
+  var P = st.P, B = st.B || 0, dt = st.last ? Math.min(.2, t - st.last) : 0; st.last = t;
+  var Rng = Math.max(1, P + B - W), a0 = Math.max(0, Math.min(1, (P*0.64 - W/2)/Rng)), off = Math.round(Rng*(1 - Math.cos(t*0.02 + Math.acos(1 - 2*a0)))/2), bw = Math.round(H*0.66), sand = Math.round(H*0.72), sea = Math.round(H*0.8);
   var sky = ['#0a0a24','#12123a','#1e1650','#33205e','#5a2c66','#8a3a6a'];
   for (var y = 0; y < bw; y++){ var f = y/bw*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
   for (var k = 0; k < 26; k++){ var sx = ((k*71) % P) - off*0.4, sy = (k*31) % Math.round(H*0.25); if (sx >= 0 && sx < W && Math.sin(t*1.5 + k) > -.3){ ctx.fillStyle = k % 4 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
@@ -1752,11 +1756,26 @@ function drawConey(ctx, W, H, t, st){
   // sand, then the sea: waves roll in, steepen and break into foam on the beach
   R(0, sand + 4, P, sea - sand - 4, '#3a3048'); for (var x = 0; x < P; x += 2) if (Math.sin(x*3.3) > .4) R(x, sand + 5 + (x % 3), 1, 1, '#4e4258');
   R(0, sand, P, 4, '#2a1f1a');
-  for (var y = sea; y < H; y++) R(0, y, P, 1, y < sea + 4 ? '#1a1a44' : '#121234');
+  for (var y = sea; y < H; y++) R(0, y, P + B, 1, y < sea + 4 ? '#1a1a44' : '#121234');
   for (var k = 0; k < 5; k++){ var ph = (t*0.18 + k/5) % 1, yy = Math.round(H - ph*(H - sea)), amp = 1 + Math.round(ph*2);
-    for (var x = 0; x < P; x++){ var y = yy + Math.round(Math.sin(x*0.12 + k*1.7)*amp); if (Math.sin(x*0.3 + k + t) > (ph > .85 ? -0.6 : 0.2)) R(x, y, 1, 1, ph > .85 ? '#ffffff' : '#6a7ab0'); } }
-  for (var x = 0; x < P; x++){ var fy = sea - 1 + Math.round(Math.sin(t*1.2 + x*0.05)*1.5); if (Math.sin(x*0.5 + t*2) > -.2) R(x, fy, 1, 1, '#e6eeff'); }
+    for (var x = 0; x < P + B; x++){ var y = yy + Math.round(Math.sin(x*0.12 + k*1.7)*amp); if (Math.sin(x*0.3 + k + t) > (ph > .85 ? -0.6 : 0.2)) R(x, y, 1, 1, ph > .85 ? '#ffffff' : '#6a7ab0'); } }
+  for (var x = 0; x < P + B; x++){ var fy = sea - 1 + Math.round(Math.sin(t*1.2 + x*0.05)*1.5); if (Math.sin(x*0.5 + t*2) > -.2) R(x, fy, 1, 1, '#e6eeff'); }
   for (var y = sea + 2; y < H; y += 2){ ctx.globalAlpha = .3; R(wx - 2 + Math.round(Math.sin(y + t*2)*2), y, 5, 1, ['#ff5a4e','#ffe7a1','#5ab4ff'][Math.floor(t*3 + y) % 3]); ctx.globalAlpha = 1; }
+  // past the boardwalk: steps down to the open beach, dunes and beach grass, and you asleep in a sleeping bag with your guitar
+  if (B){ var bx0 = P;
+    for (var y = bw - 30; y < sea; y++){ ctx.fillStyle = y < bw ? (y % 2 ? '#8a3a6a' : '#5a2c66') : '#8a3a6a'; ctx.fillRect(bx0, y, B, 1); }
+    for (var k = 0; k < 6; k++){ var lx2 = bx0 + 30 + k*22; if (Math.sin(t*0.8 + k*2) > .2){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(lx2, bw + 4 - (k % 3)*3, 1, 1); } }
+    for (var k = 0; k < 6; k++) R(bx0 + k*3, bw + k*3, 4, 3, k % 2 ? '#5a3a28' : '#6b4a33');
+    for (var x = bx0; x < P + B; x++){ var top = sand - 6 + Math.round(Math.sin((x - bx0)*0.05)*3 + Math.sin((x - bx0)*0.13)*1.5); for (var y = top; y < sea; y++) R(x, y, 1, 1, ((x*7 + y*3) % 11) ? (y < top + 2 ? '#7a6a7a' : '#4e4258') : '#6a5a6a'); }
+    for (var k = 0; k < 9; k++){ var gx = bx0 + 14 + k*15 + (k % 3)*3, gy = sand - 7 + Math.round(Math.sin((gx - bx0)*0.05)*3); for (var b2 = 0; b2 < 3; b2++) R(gx + b2*2 + Math.round(Math.sin(t*1.3 + k + b2)), gy - 3 - b2, 1, 3 + b2, '#5a6a4a'); }
+    var sx = bx0 + 82, sy = sand - 4 + Math.round(Math.sin(82*0.05)*3), br = Math.sin(t*1.1) > 0 ? 1 : 0;
+    ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(80,90,140,.18)'; ctx.fillRect(sx - 6, sy - 6, 40, 8); ctx.globalCompositeOperation = 'source-over';
+    R(sx, sy - 5 - br, 22, 5 + br, '#3d6a8a'); R(sx, sy - 5 - br, 22, 1, '#5a8aaa'); for (var x = sx + 4; x < sx + 22; x += 5) R(x, sy - 4 - br, 1, 4, '#2f5a7a'); R(sx + 21, sy - 4, 2, 4, '#2f5a7a');
+    R(sx - 6, sy - 6, 7, 6, '#f0c6a0'); R(sx - 7, sy - 7, 4, 7, '#241a14'); R(sx - 6, sy - 7, 6, 2, '#241a14'); R(sx - 9, sy - 4, 3, 4, '#241a14'); R(sx - 3, sy - 3, 2, 1, '#3b2a20'); R(sx - 2, sy - 2, 1, 2, '#3b2a20'); R(sx - 4, sy - 5, 2, 1, '#d9a982');
+    R(sx - 10, sy - 1, 9, 1, '#c9c2b2');
+    var gx2 = sx + 26, gy2 = sy - 2; R(gx2, gy2 - 5, 9, 6, '#b5651d'); R(gx2 + 1, gy2 - 6, 7, 8, '#b5651d'); R(gx2 + 3, gy2 - 3, 3, 3, '#3b2a24'); R(gx2 + 9, gy2 - 3, 12, 2, '#5a3a2a'); R(gx2 + 21, gy2 - 4, 3, 4, '#3b2a24'); for (var k = 0; k < 4; k++) R(gx2 + 3 + k*5, gy2 - 3, 1, 1, '#c9c3b6');
+    for (var k = 0; k < 3; k++){ var ph = (t*0.3 + k/3) % 1; pz(ctx, sx - 4 + Math.round(ph*8) + k, sy - 12 - Math.round(ph*16), 1 - ph); }
+    R(P + B - 30, sand - 18, 1, 14, '#5a4a3a'); R(P + B - 34, sand - 18, 9, 1, '#5a4a3a'); }
   // people on the boardwalk
   [0, 1].forEach(function(lane){ st.people.forEach(function(pp){ if (pp.lane !== lane) return; pp.x += pp.dir*pp.v*dt; if (pp.x > P + 20) pp.x = -20; if (pp.x < -20) pp.x = P + 20;
     var x = Math.round(pp.x), y = lane ? sand - 1 : bw + 5; stPerson(ctx, pp, x, y, t);
@@ -1765,7 +1784,7 @@ function drawConey(ctx, W, H, t, st){
     if (pp.hotdog){ R2(3, -17, 5, 2, '#e9c48a'); R2(4, -17, 3, 1, '#c4472a'); R2(4, -18, 3, 1, '#ffe066'); }
     if (pp.balloon){ var bob = Math.round(Math.sin(t*1.5 + pp.ph)); for (var k = 0; k < 14; k++) R2(2 + Math.round(Math.sin(k*0.5 + t)*0.6), -16 - k, 1, 1, '#c9c3b6'); R2(-1, -36 + bob, 6, 6, pp.balloon); R2(0, -37 + bob, 4, 1, pp.balloon); R2(0, -35 + bob, 1, 2, '#ffffff'); } }); });
   // the two of you, strolling hand in hand
-  var cp = st.us || (st.us = usTwo()), cx = ((t*5) % (P + 60)) - 30;
+  var cp = st.us || (st.us = usTwo()), cx = ((t*5) % (P + 30)) - 30;
   cp.forEach(function(p, k){ p.dir = 1; p.v = 1; p.ph = k*3; stPerson(ctx, p, Math.round(cx) + (k ? 5 : -5), bw + 9, t); });
   heldHands(ctx, Math.round(cx) - 2, Math.round(cx) + 2, bw - 6);
   if ((t % 9) < 2) tinyHeart(ctx, Math.round(cx) - 1, bw - 30 - Math.round((t % 9)*5), 1 - (t % 9)*0.4);
@@ -2105,16 +2124,100 @@ var ROOMS = {
     ctx.fillStyle = '#ffe066'; ctx.fillRect(kx + 2, ky + 2, 6, 6); ctx.fillStyle = '#9fd3f2'; ctx.fillRect(kx + 3, ky + 11, 6, 6); ctx.fillStyle = '#8a7a6a'; ctx.fillRect(kx + 3, ky + 4, 4, 1); ctx.fillRect(kx + 4, ky + 13, 4, 1);
     var pcy = ky + 4 - (go === 'card' ? 2 : 0); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(kx + 11, pcy, 16, 12); vigInto(ctx, 'shell', kx + 12, pcy + 1, 14, 9, t); ctx.fillStyle = '#c4473a'; ctx.fillRect(kx + 18, pcy - 1, 2, 2);
     S.push({x: kx + 10, y: pcy - 1, w: 18, h: 14, scene: 3, id: 'card'});
+    // a wall between the study and the bedroom, with an open doorway
+    var wx = W - 46; ctx.fillStyle = '#3a3026'; ctx.fillRect(wx, 5, 3, F - 5); ctx.fillStyle = '#9a8a6a'; ctx.fillRect(wx - 1, 26, 5, 1); ctx.fillStyle = '#4e4234'; ctx.fillRect(wx, 27, 3, F - 27); ctx.fillStyle = '#2a2420'; ctx.fillRect(wx + 1, 28, 1, F - 28);
     // the bed, and the cat asleep on it
     var bx = W - 40, br = Math.sin(t*1.4) > 0 ? 1 : 0; ctx.fillStyle = '#5a3a2a'; ctx.fillRect(bx, F - 12, 34, 12); ctx.fillRect(bx + 30, F - 20, 4, 20); ctx.fillStyle = '#c4473a'; ctx.fillRect(bx, F - 14, 30, 5); ctx.fillStyle = '#e06a5a'; for (var x = bx; x < bx + 30; x += 6) ctx.fillRect(x, F - 14, 3, 5); ctx.fillStyle = '#f3ead3'; ctx.fillRect(bx + 22, F - 17, 8, 3);
     ctx.fillStyle = '#d9822b'; ctx.fillRect(bx + 6, F - 18 - br, 9, 4 + br); ctx.fillRect(bx + 14, F - 19, 3, 3); ctx.fillStyle = '#b5651d'; ctx.fillRect(bx + 14, F - 20, 1, 1); ctx.fillRect(bx + 16, F - 20, 1, 1); ctx.fillRect(bx + 4, F - 15, 3, 1); ctx.fillStyle = '#241f1a'; ctx.fillRect(bx + 15, F - 18, 1, 1);
     return S;
   }
 };
+
+// ---- more floors: a penthouse, a bare studio, and the street at the door
+ROOMS.penthouse = function(ctx, W, H, t, go){
+  var F = H - 14, S = [];
+  ctx.fillStyle = '#e9e2d0'; ctx.fillRect(0, 0, W, H); for (var x = 8; x < W; x += 16){ ctx.fillStyle = '#e0d6c0'; ctx.fillRect(x, 8, 6, F - 12); ctx.fillStyle = '#d6cbb0'; ctx.fillRect(x, 8, 6, 1); }
+  ctx.fillStyle = '#2a2430'; ctx.fillRect(0, 0, W, 4); ctx.fillStyle = '#c9a43a'; ctx.fillRect(0, 4, W, 2); ctx.fillRect(0, F - 3, W, 1);
+  for (var y = F; y < H - 4; y += 3) for (var x = 0; x < W; x += 3){ ctx.fillStyle = ((x + y)/3) % 2 ? '#f3efe6' : '#2a2a30'; ctx.fillRect(x, y, 3, 3); }
+  ctx.fillStyle = '#3a3644'; ctx.fillRect(0, H - 4, W, 4);
+  // tall windows on the city; the middle one leads there
+  var ww = 22, wh = F - 18, xs = [Math.round(W*0.14), Math.round(W*0.5) - 11, Math.round(W*0.86) - 22];
+  xs.forEach(function(wx, i){ ctx.fillStyle = '#c9a43a'; ctx.fillRect(wx - 2, 10, ww + 4, wh + 4); vigInto(ctx, 'skyline', wx, 12, ww, wh, t + i*7); ctx.fillStyle = 'rgba(233,226,208,.9)'; ctx.fillRect(wx + 10, 12, 2, wh); ctx.fillRect(wx, 12 + Math.round(wh/2), ww, 1);
+    ctx.fillStyle = '#7a1e2a'; ctx.fillRect(wx - 5, 8, 4, wh + 8); ctx.fillRect(wx + ww + 1, 8, 4, wh + 8); });
+  S.push({x: xs[1] - 2, y: 10, w: ww + 4, h: wh + 4, scene: 4, id: 'pwin'});
+  // the chandelier
+  var cx = Math.round(W*0.32); ctx.fillStyle = '#c9a43a'; ctx.fillRect(cx, 6, 1, 8); ctx.fillRect(cx - 7, 14, 15, 1); ctx.fillRect(cx - 5, 16, 11, 1); for (var k = -7; k <= 7; k += 2){ ctx.fillStyle = Math.sin(t*4 + k) > -.3 ? '#fff3c4' : '#ffd36b'; ctx.fillRect(cx + k, 12, 1, 2); }
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.12)'; ctx.beginPath(); ctx.moveTo(cx - 7, 16); ctx.lineTo(cx - 28, F); ctx.lineTo(cx + 28, F); ctx.lineTo(cx + 7, 16); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
+  // the rug, the grand piano and the pianist in a velvet jacket; notes drift up
+  ctx.fillStyle = '#7a1e2a'; ctx.fillRect(Math.round(W*0.2), F + 1, Math.round(W*0.5), 3); ctx.fillStyle = '#c9a43a'; for (var x = Math.round(W*0.2); x < Math.round(W*0.7); x += 5) ctx.fillRect(x, F + 2, 2, 1);
+  var px = Math.round(W*0.56); ctx.fillStyle = '#151218'; ctx.fillRect(px, F - 18, 34, 6); ctx.fillRect(px + 20, F - 22, 14, 4); ctx.fillRect(px + 1, F - 12, 2, 12); ctx.fillRect(px + 30, F - 12, 2, 12); ctx.fillStyle = '#3a3644'; ctx.fillRect(px, F - 18, 34, 1);
+  ctx.fillStyle = '#151218'; for (var k = 0; k < 12; k++) ctx.fillRect(px + 6 + k, F - 19 - Math.round(k*1.2), 1, 1); ctx.fillStyle = '#f3efe6'; ctx.fillRect(px - 1, F - 15, 8, 2); for (var k = 0; k < 4; k++){ ctx.fillStyle = '#151218'; ctx.fillRect(px + k*2, F - 15, 1, 1); }
+  stPerson(ctx, {dir: 1, v: 0, sit: 1, nocup: 1, ph: 3, skin: 0, jacket: '#5a1a3a', pants: '#151218', hair: 'short', hc: '#c9c3b6'}, px - 8, F + 1, t);
+  for (var k = 0; k < 3; k++){ var ph = (t*0.4 + k/3) % 1; ctx.globalAlpha = 1 - ph; ctx.fillStyle = '#2a2430'; var nx = px + 8 + Math.round(ph*20), ny = F - 24 - Math.round(ph*24 + Math.sin(ph*10)*2); ctx.fillRect(nx, ny, 2, 2); ctx.fillRect(nx + 1, ny - 3, 1, 3); ctx.globalAlpha = 1; }
+  // a woman in a gown by the window with champagne
+  var g = {dir: -1, v: 0, ph: 5, skin: 3, jacket: '#1d4a5a', pants: '#1d4a5a', dress: 1, hair: 'long', hc: '#e9c45a'}; stPerson(ctx, g, Math.round(W*0.2), F + 1, t);
+  ctx.fillStyle = '#ffe7a1'; ctx.fillRect(Math.round(W*0.2) - 6, F - 22, 2, 3); ctx.fillStyle = '#e8eef6'; ctx.fillRect(Math.round(W*0.2) - 5, F - 19, 1, 2);
+  // a fiddle-leaf fig
+  var fx = W - 12; ctx.fillStyle = '#e8e4dc'; ctx.fillRect(fx - 3, F - 7, 7, 7); for (var k = 0; k < 7; k++){ ctx.fillStyle = k % 2 ? '#3d7a55' : '#2a5a3a'; ctx.fillRect(fx - 4 + (k % 3)*3, F - 28 + k*3, 4, 3); } ctx.fillStyle = '#5a412f'; ctx.fillRect(fx, F - 26, 1, 20);
+  return S;
+};
+ROOMS.studio = function(ctx, W, H, t, go){
+  var F = roomShell(ctx, W, H, '#7a7466', '#727060', '#8a8270'), S = [];
+  ctx.fillStyle = '#6a6252'; ctx.fillRect(W - 30, 6, 14, 10); ctx.fillRect(W - 26, 16, 6, 6); ctx.fillStyle = '#5a5444'; ctx.fillRect(18, 30, 1, 6); ctx.fillRect(19, 36, 1, 4); ctx.fillRect(20, 40, 1, 3);
+  nightWindow(ctx, 12, 14, 18, 22, t); ctx.fillStyle = '#151218'; ctx.fillRect(9, 30, 24, 1); for (var x = 9; x < 33; x += 2) ctx.fillRect(x, 27, 1, 3);
+  // a bare bulb that flickers
+  var on = !(Math.sin(t*13) > .93); ctx.fillStyle = '#241f1a'; ctx.fillRect(Math.round(W*0.55), 4, 1, 12); ctx.fillStyle = on ? '#fff3c4' : '#8a8270'; ctx.fillRect(Math.round(W*0.55) - 1, 16, 3, 3);
+  if (on){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,90,40,.16)'; ctx.beginPath(); ctx.moveTo(Math.round(W*0.55), 18); ctx.lineTo(8, F); ctx.lineTo(W - 8, F); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; }
+  // the radiator, hissing
+  ctx.fillStyle = '#b9b2a4'; for (var k = 0; k < 6; k++) ctx.fillRect(W - 24 + k*3, F - 12, 2, 12); ctx.fillStyle = '#8a8478'; ctx.fillRect(W - 24, F - 3, 18, 1);
+  for (var k = 0; k < 2; k++){ var ph = (t*0.8 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.5*(1 - ph)) + ')'; ctx.fillRect(W - 10 + Math.round(Math.sin(ph*9)*1), F - 14 - Math.round(ph*8), 1, 1); }
+  // a mattress on the floor; you on it, playing; a pizza box and a noodle cup
+  ctx.fillStyle = '#d9cdb0'; ctx.fillRect(8, F - 5, 40, 5); ctx.fillStyle = '#b9ad94'; ctx.fillRect(8, F - 5, 40, 1); ctx.fillStyle = '#5a6a7a'; ctx.fillRect(28, F - 6, 18, 3); ctx.fillStyle = '#f3ead3'; ctx.fillRect(10, F - 8, 8, 3);
+  var me = usTwo()[1]; me.sit = 1; me.v = 0; me.dir = 1; me.ph = 4; me.guitar = 1; me.nocup = 0; stPerson(ctx, me, 30, F - 2, t);
+  var gp = go === 'gtr' ? 1 : 0; for (var k = 0; k < 2; k++){ var ph = (t*0.5 + k/2) % 1; ctx.globalAlpha = 1 - ph; ctx.fillStyle = '#f3ead3'; ctx.fillRect(40 + Math.round(ph*12), F - 30 - Math.round(ph*18 + Math.sin(ph*12)*2), 2, 2); ctx.globalAlpha = 1; }
+  S.push({x: 22, y: F - 40, w: 26, h: 40, scene: 7, id: 'gtr'});
+  ctx.fillStyle = '#c9a07a'; ctx.fillRect(52, F - 2, 10, 2); ctx.fillStyle = '#c4473a'; ctx.fillRect(55, F - 3, 4, 1); ctx.fillStyle = '#f3ead3'; ctx.fillRect(64, F - 4, 3, 4); ctx.fillStyle = '#c4473a'; ctx.fillRect(64, F - 4, 3, 1);
+  return S;
+};
+ROOMS.street = function(ctx, W, H, t, go){
+  var S = [], walk = H - 20, curb = H - 8;
+  // the building's base: brick, the stoop up to the door, a basement grate
+  ctx.fillStyle = '#7a3b2e'; ctx.fillRect(0, 0, W, walk); for (var y = 0; y < walk; y += 3) for (var x = (y/3) % 2 ? 0 : 3; x < W; x += 6){ ctx.fillStyle = '#5e2e24'; ctx.fillRect(x, y, 1, 3); ctx.fillRect(0, y, W, 0); }
+  for (var y = 2; y < walk; y += 3){ ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(0, y, W, 1); }
+  var dx = Math.round(W*0.42); ctx.fillStyle = '#e8dcc0'; ctx.fillRect(dx - 3, 18, 26, walk - 30); ctx.fillStyle = '#3b2a24'; ctx.fillRect(dx, 22, 20, walk - 34); ctx.fillStyle = '#ffcf7a'; ctx.globalAlpha = .6; ctx.fillRect(dx + 3, 25, 6, 10); ctx.fillRect(dx + 11, 25, 6, 10); ctx.globalAlpha = 1; ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx + 9, 40, 2, 2);
+  for (var k = 0; k < 4; k++){ ctx.fillStyle = k % 2 ? '#9a8f88' : '#a89c94'; ctx.fillRect(dx - 6 - k*3, walk - 12 + k*3, 32 + k*6, 3); }
+  ctx.fillStyle = '#151218'; ctx.fillRect(dx - 18 - 0, walk - 14, 1, 14); ctx.fillRect(dx - 18, walk - 14, 12, 1);
+  ctx.fillStyle = '#ffe7a1'; ctx.fillRect(dx + 7, 10, 6, 4); ctx.fillStyle = '#241f1a'; ctx.fillRect(dx + 7, 14, 6, 1);
+  ctx.fillStyle = '#151218'; ctx.fillRect(Math.round(W*0.12), walk - 12, 20, 10); for (var x = Math.round(W*0.12) + 1; x < Math.round(W*0.12) + 20; x += 2){ ctx.fillStyle = '#4a4656'; ctx.fillRect(x, walk - 11, 1, 8); }
+  // sidewalk and curb
+  ctx.fillStyle = '#5f5866'; ctx.fillRect(0, walk, W, curb - walk); for (var x = 0; x < W; x += 16){ ctx.fillStyle = '#4e4856'; ctx.fillRect(x, walk, 1, curb - walk); } ctx.fillStyle = '#a89c94'; ctx.fillRect(0, curb, W, 2); ctx.fillStyle = '#1d1b26'; ctx.fillRect(0, curb + 2, W, H - curb - 2);
+  // against the wall: a man asleep in a cardboard box with a sleeping bag; his dog curled at his feet; a cup, a cart of bags
+  var bx = 8, by = walk + 6; ctx.fillStyle = '#b5865a'; ctx.fillRect(bx, by - 2, 44, 3); ctx.fillStyle = '#c9a07a'; ctx.fillRect(bx + 18, by - 14, 26, 12); ctx.fillStyle = '#a8784a'; ctx.fillRect(bx + 18, by - 14, 26, 1); ctx.fillRect(bx + 18, by - 14, 1, 12); ctx.fillStyle = '#8a5a3a'; ctx.fillRect(bx + 20, by - 12, 23, 10);
+  var br = Math.sin(t*0.9) > 0 ? 1 : 0; ctx.fillStyle = '#3d6a3a'; ctx.fillRect(bx + 6, by - 6 - br, 34, 5 + br); ctx.fillStyle = '#4e7a4a'; ctx.fillRect(bx + 6, by - 6 - br, 34, 1);
+  ctx.fillStyle = '#8a5a3c'; ctx.fillRect(bx + 1, by - 7, 6, 5); ctx.fillStyle = '#5a3a6a'; ctx.fillRect(bx, by - 9, 7, 3); ctx.fillStyle = '#7a7a7a'; ctx.fillRect(bx + 2, by - 3, 4, 1);
+  ctx.fillStyle = '#c9a07a'; ctx.fillRect(bx + 44, by - 4, 7, 3); ctx.fillRect(bx + 49, by - 6, 2, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(bx + 50, by - 6, 1, 1); ctx.fillStyle = '#a8784a'; ctx.fillRect(bx + 43, by - 3 - (Math.floor(t*3) % 2), 1, 1);
+  ctx.fillStyle = '#f3ead3'; ctx.fillRect(bx + 54, by - 4, 3, 4); ctx.fillStyle = '#c9a43a'; ctx.fillRect(bx + 55, by - 3, 1, 1);
+  for (var k = 0; k < 3; k++){ var ph = (t*0.3 + k/3) % 1; pz(ctx, bx + 2 + Math.round(ph*6) + k, by - 14 - Math.round(ph*12), 1 - ph); }
+  var cx = Math.round(W*0.68); ctx.fillStyle = '#9aa0ac'; ctx.fillRect(cx, walk - 4, 16, 1); ctx.fillRect(cx, walk - 4, 1, 9); ctx.fillRect(cx + 15, walk - 4, 1, 9); ctx.fillRect(cx, walk + 4, 16, 1); for (var x = cx + 2; x < cx + 15; x += 3) ctx.fillRect(x, walk - 3, 1, 7);
+  ctx.fillStyle = '#2a2a3a'; ctx.fillRect(cx + 2, walk - 10, 6, 7); ctx.fillStyle = '#5a6a7a'; ctx.fillRect(cx + 8, walk - 9, 6, 6); ctx.fillStyle = '#151218'; ctx.fillRect(cx + 2, walk + 6, 2, 2); ctx.fillRect(cx + 13, walk + 6, 2, 2); ctx.fillRect(cx + 15, walk - 7, 3, 1);
+  // pigeons pecking
+  [[0.6, 0], [0.63, 1]].forEach(function(q){ var x = Math.round(W*q[0]), pk = Math.floor(t*2 + q[1]) % 3 === 0 ? 1 : 0; ctx.fillStyle = '#7a7c8a'; ctx.fillRect(x, curb - 5, 4, 3); ctx.fillRect(x + 3, curb - 6 + pk, 2, 2); ctx.fillStyle = '#5a9a8a'; ctx.fillRect(x + 3, curb - 4, 1, 1); ctx.fillStyle = '#c47a5a'; ctx.fillRect(x + 1, curb - 2, 1, 2); ctx.fillRect(x + 3, curb - 2, 1, 2); });
+  // the subway entrance: green globes, railing, steps going down; it leads to the Q to Coney Island
+  var sx = W - 34; ctx.fillStyle = '#151218'; ctx.fillRect(sx, walk + 2, 28, curb - walk - 2); for (var k = 0; k < 4; k++){ ctx.fillStyle = k % 2 ? '#3a3644' : '#4a4656'; ctx.fillRect(sx + 2 + k*3, walk + 3 + k*2, 24 - k*3, 2); }
+  ctx.fillStyle = '#3d6a3a'; ctx.fillRect(sx, walk - 10, 1, 12); ctx.fillRect(sx + 27, walk - 10, 1, 12); ctx.fillRect(sx, walk - 6, 28, 1);
+  [sx, sx + 27].forEach(function(gx){ ctx.fillStyle = Math.sin(t*2 + gx) > -.8 ? '#7ae07a' : '#3d6a3a'; ctx.fillRect(gx - 1, walk - 14, 3, 4); });
+  ctx.fillStyle = '#e9c45a'; ctx.fillRect(sx + 11, walk - 13, 6, 6); ctx.fillStyle = '#241f1a'; ctx.fillRect(sx + 13, walk - 11, 2, 2);
+  if (go === 'sub'){ ctx.fillStyle = 'rgba(255,207,122,.5)'; ctx.fillRect(sx + 2, walk + 3, 24, curb - walk - 4); }
+  S.push({x: sx - 2, y: walk - 15, w: 32, h: curb - walk + 15, scene: 7, id: 'sub'});
+  // a streetlamp
+  var lx = Math.round(W*0.3); ctx.fillStyle = '#151218'; ctx.fillRect(lx, 6, 1, curb - 6); ctx.fillRect(lx, 6, 6, 1); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(lx + 4, 7, 3, 2);
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.15)'; ctx.beginPath(); ctx.moveTo(lx + 5, 9); ctx.lineTo(lx - 14, curb); ctx.lineTo(lx + 26, curb); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
+  return S;
+};
 (function(){
   var rooms = [].slice.call(document.querySelectorAll('.room')), t0 = performance.now(), visible = new Set();
   if ('IntersectionObserver' in window){ var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }); }); rooms.forEach(function(r){ io.observe(r); }); } else rooms.forEach(function(r){ visible.add(r); });
-  function fit(r){ var c = r.querySelector('canvas'), cw = r.clientWidth; if (!cw) return false; var sc = cw >= 520 ? 3 : 2, W = Math.max(150, Math.min(260, Math.floor(cw/sc))), H = 92; if (c.width !== W || c.height !== H){ c.width = W; c.height = H; c.style.width = (W*sc) + 'px'; c.style.height = (H*sc) + 'px'; } return true; }
+  function fit(r){ var c = r.querySelector('canvas'), cw = r.clientWidth; if (!cw) return false; var sc = cw >= 520 ? 3 : 2, sz = r.dataset.size || 'full', H = sz === 'tall' ? 112 : 92, W = sz === 'square' ? 92 : Math.max(150, Math.min(260, Math.floor(cw/sc))); if (c.width !== W || c.height !== H){ c.width = W; c.height = H; c.style.width = (W*sc) + 'px'; c.style.height = (H*sc) + 'px'; } return true; }
   function tick(){ var t = (performance.now() - t0)/1000;
     visible.forEach(function(r){ if (!fit(r)) return; var c = r.querySelector('canvas'); r._spots = ROOMS[r.dataset.room](c.getContext('2d'), c.width, c.height, t, r._go || null); });
     setTimeout(function(){ requestAnimationFrame(tick); }, 110); }
