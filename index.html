@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "794579b00f";
+var APP_BUILD = "83be1f6007";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1258,6 +1258,11 @@ function drawWoolfWaves(ctx, W, H, t){
   for (var r = 0; r < 9; r++){ var yb = hz + 3 + r*r*1.4 + ((t*3 + r*2) % 4); for (var x = 0; x < W; x++){ if (Math.sin(x*0.25 + t*1.5 + r) > .55){ ctx.fillStyle = r % 2 ? '#fbe4f0' : '#ffffff'; ctx.fillRect(x, Math.round(yb + Math.sin(x*0.2 + t + r)), 1, 1); } } }
   // sun path on the water
   for (var y = hz; y < H; y += 2){ if (Math.sin(y*1.1 + t*3) > .2){ ctx.fillStyle = 'rgba(255,243,196,.7)'; ctx.fillRect(Math.round(sx - 2 + Math.sin(y + t)*2), y, 4, 1); } }
+  // the yellow submarine surfaces now and then
+  var su = (t + 6) % 34; if (su < 16){ var rise = su < 4 ? su/4 : su > 12 ? (16 - su)/4 : 1, scy = Math.round(hz + 26 - rise*20 + Math.sin(t*1.6)*1), scx = Math.round(W*0.5 + (su - 8)*1.5);
+    drawSubmarine(ctx, scx, scy, t, false);
+    for (var y = hz + 10; y < H; y++){ if (y < scy + 1) continue; ctx.globalAlpha = 0.72; var b2 = Math.min(seas.length - 1, Math.floor((y - hz)/(H - hz)*seas.length)); ctx.fillStyle = seas[b2]; ctx.fillRect(scx - 26, y, 50, 1); ctx.globalAlpha = 1; }
+    for (var x = scx - 22; x < scx + 22; x++) if (Math.sin(x*0.6 + t*3) > -.2){ ctx.fillStyle = '#ffffff'; ctx.fillRect(x, scy + 1 + Math.round(Math.sin(x*0.4 + t*2)), 1, 1); } }
   // a single gull
   var gx = (t*8) % (W + 20) - 10, gy = H*0.25 + Math.sin(t)*4; ctx.fillStyle = '#3a2a63'; ctx.fillRect(Math.round(gx), Math.round(gy), 1, 1); ctx.fillRect(Math.round(gx) - 1, Math.round(gy) - (Math.floor(t*4) % 2), 1, 1); ctx.fillRect(Math.round(gx) + 1, Math.round(gy) - (Math.floor(t*4) % 2), 1, 1);
 }
@@ -1361,7 +1366,7 @@ function stPerson(ctx, p, x, y, t){
     U(-1, -18, 6, 5, '#151218'); U(0, -17, 4, 3, '#c4473a'); U(2, -16, 1, 1, '#f3ead3'); for (var k = 0; k < 7; k++) U(5 + k, -19 - k, 1, 1, '#c9c3b6'); U(12, -27, 2, 2, '#151218'); U(-4, -24, 2, 5, jk); U(9, -24, 2, 2, sk);
     for (var k = 0; k <= 7; k++){ var ax = Math.round(sx0 + Math.cos(ang)*k), ay = Math.round(sy0 + Math.sin(ang)*k); R(ax, ay, 2, 2, k > 6 ? sk : jk); }
     if (Math.abs(Math.sin(ang) - 1) < .4){ ctx.fillStyle = '#ffe7a1'; for (var k = 0; k < 4; k++) R(4 + k*2, -12 - k, 1, 1, '#ffe7a1'); } }
-  else if (p.guitar){ var st = Math.floor(t*5) % 2; U(-1, -18, 6, 5, '#b5651d'); U(0, -17, 4, 3, '#d9822b'); U(2, -16, 1, 1, '#241f1a'); for (var k = 0; k < 6; k++) U(5 + k, -19 - k, 1, 1, '#5a412f'); U(11, -26, 2, 2, '#3b2a24');
+  else if (p.guitar){ var st = Math.floor(t*5) % 2; U(-1, -18, 6, 5, p.bass ? '#7a3a1a' : '#b5651d'); U(0, -17, 4, 3, '#d9822b'); U(2, -16, 1, 1, '#241f1a'); for (var k = 0; k < 6; k++) U(5 + k, -19 - k, 1, 1, '#5a412f'); U(11, -26, 2, 2, '#3b2a24');
     U(0, -22 + st, 2, 5, jk); U(1, -17 + st, 2, 2, sk); U(-4, -24, 2, 5, jk); U(8, -23, 2, 2, sk); }
   else { U(1 - a, -24, 2, 9, p.bareArms ? sk : jk); U(1 - a, -15, 2, 2, p.lace ? '#f3efe6' : sk); if (p.lace) U(1 - a, -16, 2, 1, '#f3efe6'); }
   // head
@@ -1476,6 +1481,7 @@ function drawStMarks(ctx, W, H, t, st){
       if (torus){ ctx.fillRect(ix + 1, iy, 6, 1); ctx.fillRect(ix, iy + 1, 2, 3); ctx.fillRect(ix + 6, iy + 1, 2, 3); ctx.fillRect(ix + 1, iy + 4, 6, 1); }
       else { ctx.fillRect(ix, iy, 6, 1); ctx.fillRect(ix, iy, 1, 5); ctx.fillRect(ix + 5, iy, 1, 5); ctx.fillRect(ix, iy + 4, 6, 1); ctx.fillRect(ix + 6, iy + 1, 2, 1); ctx.fillRect(ix + 7, iy + 1, 1, 3); ctx.fillRect(ix + 6, iy + 3, 2, 1); }
       for (var k = 0; k < 4; k++){ var dx2 = wx + 2 + k*8, dy2 = wy + wh - 6; ctx.fillStyle = '#c98a4a'; ctx.fillRect(dx2, dy2, 6, 3); ctx.fillStyle = ['#ff7ad9','#7a3b2e','#f3ead3','#ff7ad9'][k]; ctx.fillRect(dx2, dy2, 6, 1); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(dx2 + 2, dy2 + 1, 2, 1); } }
+    if (bi === 0) rooftopBand(ctx, b.x + 17, top - 4, t);
     // the ghost walks one roof, sometimes
     if (bi === 1 && !DAY){ var gp = (t*0.04) % 1, ga = Math.max(0, Math.sin(gp*Math.PI*2)); if (ga > .05){ ctx.globalAlpha = .35*ga; stPerson(ctx, {dir:1, v:1, ph:0, skin:4, jacket:'#cdd8f2', pants:'#b9c6e6', hair:'helmet', hc:'#e6eeff'}, Math.round(b.x + 6 + gp*(b.w - 12)), top - 4, t*0.5); ctx.globalAlpha = 1; } }
   });
@@ -1570,6 +1576,9 @@ function drawSkyline(ctx, W, H, t, st){
   // One World Trade
   var wx = Math.round(P*0.82); for (var y = 0; y < 104; y++){ var hw = Math.round(2 + y*0.07); R(wx - hw, shore - 104 + y, hw*2 + 1, 1, '#2c3a5e'); if (y % 3 === 0) R(wx - hw + ((y*3) % (hw*2 + 1)), shore - 104 + y, 1, 1, '#9fc0ff'); }
   R(wx, shore - 124, 1, 20, '#b9c0cc'); if (Math.floor(t*1.5) % 2) R(wx, shore - 125, 1, 1, '#ff5a4e');
+  // the yellow submarine flying over the city
+  var fu = (t + 25) % 60; if (fu < 14){ var fx2 = Math.round(-30 + (W + 60)*(fu/14)), fy2 = Math.round(shore*0.35 + Math.sin(fu*1.2)*6); drawSubmarine(ctx, fx2, fy2, t, false);
+    for (var k = 0; k < 8; k++){ var bx2 = fx2 - 26 - k*5, by2 = fy2 + Math.round(Math.sin(k + t*3)*3); ctx.globalAlpha = 1 - k/8; ctx.fillStyle = k % 3 ? '#e6f4ff' : '#ff9ad9'; ctx.fillRect(bx2, by2, k % 2 ? 1 : 2, k % 2 ? 1 : 2); ctx.globalAlpha = 1; } }
   // shoreline lights
   if (!isDay()) for (var x = 0; x < W; x += 3){ ctx.fillStyle = Math.sin(x*0.7 + t*2) > 0 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, shore - 1, 1, 1); }
   // river: dark bands with the lit windows broken into moving reflections
@@ -1881,6 +1890,8 @@ var VIG = {
     var cols = ['#7a3b2e','#5e4a5a','#8a5a3c']; for (var b = 0; b < 3; b++){ var x0 = b*27 - 2, top = 6 + (b % 2)*3; ctx.fillStyle = cols[b]; ctx.fillRect(x0, top, 27, 32 - top);
       ctx.fillStyle = '#2a1f1a'; ctx.fillRect(x0, top - 1, 27, 2);
       for (var r = 0; r < 2; r++) for (var c = 0; c < 3; c++){ var wx = x0 + 3 + c*8, wy = top + 4 + r*10, lit = !dy0 && Math.sin(b*7 + r*3 + c*5) > -.3; ctx.fillStyle = '#e8dcc0'; ctx.fillRect(wx - 1, wy - 1, 6, 8); ctx.fillStyle = lit ? (c % 2 ? '#ffd36b' : '#f7b267') : (dy0 ? '#8fb4d0' : '#221c36'); ctx.fillRect(wx, wy, 4, 6); if (dy0){ ctx.fillStyle = '#c9e0f0'; ctx.fillRect(wx, wy, 1, 2); } } }
+    [0, 4, 8, 13].forEach(function(dx, i){ var bx3 = 30 + dx, by3 = 8; ctx.fillStyle = ['#5a3a24','#241a14','#3b2a20','#5a3a24'][i]; ctx.fillRect(bx3, by3 - 6, 2, 2); ctx.fillStyle = '#f0c6a0'; ctx.fillRect(bx3, by3 - 5, 2, 1); ctx.fillStyle = ['#c9a07a','#1a1a22','#151218','#c4302a'][i]; ctx.fillRect(bx3, by3 - 4, 2, 3); ctx.fillStyle = '#2a2a32'; ctx.fillRect(bx3, by3 - 1, 1, 1); ctx.fillRect(bx3 + 1, by3 - 1, 1, 1); if (i < 3){ ctx.fillStyle = '#b5651d'; ctx.fillRect(bx3 + 1 + (Math.floor(t*4 + i) % 2), by3 - 3, 2, 1); } else { ctx.fillStyle = '#e8e4dc'; ctx.fillRect(bx3 + 2, by3 - 3, 2, 2); } });
+    if (Math.sin(t*3) > 0){ ctx.fillStyle = '#f3ead3'; ctx.fillRect(36 + Math.floor(t*2) % 6, 0, 1, 2); }
     ctx.fillStyle = '#1a1424'; ctx.fillRect(0, 32, W, 12);
     ptext(ctx, 'PIZZA', 4, 33, 1, Math.sin(t*7) > .85 ? '#4a2a2a' : '#ff5a4e'); ptext(ctx, 'GRUE', 32, 33, 1, (t % 10) > 5 ? '#5ab4ff' : '#5dff9a'); ptext(ctx, 'CAFE', 56, 33, 1, '#9ff0c0');
     for (var x = 0; x < W; x++){ ctx.fillStyle = (x % 6) < 3 ? ['#c4473a','#24202b','#3d7a55'][Math.min(2, Math.floor(x/27))] : '#f3ead3'; ctx.fillRect(x, 39, 1, 2); }
@@ -2070,6 +2081,30 @@ function daySky(ctx, W, top, bot, t, cloudSeed){
 function daySun(ctx, x, y){ for (var yy = -6; yy <= 6; yy++) for (var xx = -6; xx <= 6; xx++){ var d = xx*xx + yy*yy; if (d <= 36){ ctx.fillStyle = d <= 20 ? '#fff6c8' : '#ffe680'; ctx.fillRect(x + xx, y + yy, 1, 1); } } }
 function gulls(ctx, W, H, t){ for (var k = 0; k < 3; k++){ var gx = Math.round(((t*(6 + k*2) + k*40) % (W + 20)) - 10), gy = Math.round(H*(0.16 + k*0.07) + Math.sin(t + k)*3), fl = Math.floor(t*4 + k) % 2; ctx.fillStyle = '#ffffff'; ctx.fillRect(gx, gy, 1, 1); ctx.fillRect(gx - 1, gy - fl, 1, 1); ctx.fillRect(gx + 1, gy - fl, 1, 1); ctx.fillRect(gx - 2, gy - fl, 1, 1); ctx.fillRect(gx + 2, gy - fl, 1, 1); ctx.fillStyle = '#5a6a7a'; ctx.fillRect(gx, gy + 1, 1, 1); } }
 
+// ===== The yellow submarine, four faces in its portholes; and four musicians playing on a rooftop
+function drawSubmarine(ctx, cx, cy, t, flip){
+  var R = function(dx, dy, w, h, c){ ctx.fillStyle = c; ctx.fillRect(flip ? cx - dx - w + 1 : cx + dx, cy + dy, w, h); };
+  for (var yy = -6; yy <= 6; yy++){ var hw = Math.round(18*Math.sqrt(Math.max(0, 1 - Math.pow(yy/6.6, 2)))); R(-hw, yy, hw*2 + 1, 1, yy > 3 ? '#d9a010' : yy < -4 ? '#ffe066' : '#f5c518'); }
+  R(-17, 1, 35, 1, '#e04a2a'); R(16, -2, 3, 4, '#f5c518'); R(19, -1, 1, 2, '#e04a2a');
+  R(-22, -5, 4, 3, '#e04a2a'); R(-22, 3, 4, 3, '#e04a2a'); R(-20, -2, 3, 4, '#d9a010');
+  var pr = Math.floor(t*10) % 2; R(-24, pr ? -4 : -1, 1, pr ? 8 : 2, '#9a9a9a'); R(-25, pr ? -1 : -4, 3, pr ? 2 : 8, 'rgba(154,154,154,.6)');
+  R(-4, -12, 11, 6, '#f5c518'); R(-4, -12, 11, 1, '#ffe066'); R(-5, -7, 13, 1, '#d9a010'); R(1, -19, 1, 7, '#9a9a9a'); R(1, -19, 4, 2, '#9a9a9a'); R(4, -19, 1, 2, '#151218');
+  [-12, -5, 2, 9].forEach(function(px, i){ R(px - 1, -3, 5, 5, '#c9a43a'); R(px, -2, 3, 3, '#9fd3f2'); R(px + 1, -1, 2, 2, ['#f0c6a0','#e8b48a','#f0c6a0','#e8b48a'][i]); R(px, -2, 3, 1, ['#5a3a24','#241a14','#3b2a20','#5a3a24'][i]); if (i % 2) R(px + 1, 0, 2, 1, '#3b2a20'); });
+  for (var k = 0; k < 4; k++){ var bp = (t*0.8 + k/4) % 1; ctx.globalAlpha = 1 - bp; R(-24 - Math.round(bp*6), 4 - Math.round(bp*14) + (k % 2)*3, 1, 1, '#e6f4ff'); ctx.globalAlpha = 1; }
+}
+function rooftopBand(ctx, x, roof, t){
+  var band = [
+    {dir: 1, v: 0, ph: 1, skin: 0, hair: 'long', hc: '#5a3a24', beard: '#5a3a24', jacket: '#c9a07a', pants: '#e8e4dc', guitar: 1},
+    {dir: 1, v: 0, ph: 2, skin: 0, hair: 'long', hc: '#241a14', beard: '#241a14', jacket: '#1a1a22', pants: '#1a1a22', guitar: 1, bass: 1},
+    {dir: -1, v: 0, ph: 3, skin: 0, hair: 'long', hc: '#3b2a20', stache: '#3b2a20', jacket: '#151218', pants: '#3d7a55', guitar: 1},
+    {dir: 1, v: 0, ph: 4, sit: 1, nocup: 1, skin: 0, hair: 'long', hc: '#5a3a24', beard: '#5a3a24', jacket: '#c4302a', pants: '#2a2a32'}];
+  [0, 10, 20].forEach(function(dx, i){ stPerson(ctx, band[i], x + dx, roof, t); });
+  var dx = x + 31; stPerson(ctx, band[3], dx, roof - 1, t);
+  var hit = Math.floor(t*4) % 2; ctx.fillStyle = '#e8e4dc'; ctx.fillRect(dx + 4, roof - 9, 7, 6); ctx.fillStyle = '#c4302a'; ctx.fillRect(dx + 4, roof - 9, 7, 1); ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx + 2, roof - 18 + hit, 6, 1); ctx.fillRect(dx + 10, roof - 15 - hit, 4, 1); ctx.fillStyle = '#9a9a9a'; ctx.fillRect(dx + 5, roof - 17, 1, 8); ctx.fillRect(dx + 12, roof - 14, 1, 5);
+  ctx.fillStyle = '#2a2a32'; ctx.fillRect(x - 6, roof - 10, 4, 10); ctx.fillStyle = '#5a5a6a'; ctx.fillRect(x - 5, roof - 9, 2, 2); ctx.fillRect(x - 5, roof - 5, 2, 2);
+  for (var k = 0; k < 3; k++){ var nph = (t*0.4 + k/3) % 1; ctx.globalAlpha = 1 - nph; ctx.fillStyle = '#f3ead3'; var nx = x + 6 + k*12 + Math.round(Math.sin(nph*6 + k)*3), ny = roof - 42 - Math.round(nph*20); ctx.fillRect(nx, ny, 2, 2); ctx.fillRect(nx + 1, ny - 3, 1, 3); ctx.globalAlpha = 1; }
+}
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
@@ -2101,6 +2136,12 @@ function gulls(ctx, W, H, t){ for (var k = 0; k < 3; k++){ var gx = Math.round((
         if (y % 2 === 0 && w > .93) c = DAY ? '#ffffff' : '#4d77b3'; else if (y % 2 === 0 && w > .8) c = DAY ? '#9fd0f0' : '#2f5f9e';
         if (Math.abs(x - mx) < 2 + depth*5 && y % 2 === 1 && Math.sin(x*1.7 + t*2.5 + y*0.8) > .55) c = DAY ? '#fff6c8' : '#d9cdb0';
         px(x, y, c); } }
+    // the yellow submarine: a periscope across the bay, then a surfacing out by the light
+    var lu = (t + 10) % 46;
+    if (lu < 12){ var pxp = Math.round(-6 + (W*0.55)*(lu/12)), pyp = hz + 14; ctx.fillStyle = '#9a9a9a'; ctx.fillRect(pxp, pyp - 6, 1, 6); ctx.fillRect(pxp, pyp - 6, 3, 2); ctx.fillStyle = '#151218'; ctx.fillRect(pxp + 2, pyp - 6, 1, 2); for (var k = 0; k < 6; k++) if (Math.sin(k + t*4) > -.3){ ctx.fillStyle = DAY ? '#ffffff' : '#9aa9c8'; ctx.fillRect(pxp - 2 - k*2, pyp + (k % 2), 2, 1); } }
+    else if (lu > 16 && lu < 30){ var r2 = lu < 19 ? (lu - 16)/3 : lu > 27 ? (30 - lu)/3 : 1, scx2 = Math.round(W*0.38 + (lu - 23)*2), scy2 = Math.round(hz + 30 - r2*14);
+      drawSubmarine(ctx, scx2, scy2, t, false); for (var y = scy2 + 1; y < scy2 + 12; y++){ ctx.globalAlpha = 0.75; ctx.fillStyle = DAY ? '#4a8ac4' : '#1d2c52'; ctx.fillRect(scx2 - 26, y, 52, 1); ctx.globalAlpha = 1; }
+      for (var x = scx2 - 22; x < scx2 + 22; x++) if (Math.sin(x*0.6 + t*3) > 0) px(x, scy2 + 1, DAY ? '#ffffff' : '#9aa9c8'); }
     // rocky point the lighthouse stands on, sea in front of it
     var rockBot = base + 9;
     for (var x = lx - 20; x < W; x++){ var top = base - Math.round(3 + 2*Math.sin(x*0.5) + (x > lx-6 && x < lx+7 ? 3 : 0));
