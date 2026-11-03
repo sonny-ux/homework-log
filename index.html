@@ -132,6 +132,27 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
   .bar h1 { font-size: 20px; }
   :root { --rule: 3px; }
 }
+.comp .r b.sm { font-size: 14px; }
+.comp .r { padding: 6px 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 6px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i, .chip i { width: 12px; height: 12px; display: inline-block; outline: 1.5px solid var(--ink); flex: 0 0 auto; }
+.week .duelab { border-bottom: var(--thin) solid var(--ink); font-size: 9px; text-transform: uppercase; color: var(--muted); padding: 4px 2px; text-align: right; }
+.week .duecell { border-left: var(--rule) solid var(--ink); border-bottom: var(--thin) solid var(--ink); padding: 3px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.chip { display: flex; align-items: flex-start; gap: 4px; font-size: 10px; font-weight: 700; line-height: 1.15; overflow: hidden; hyphens: auto; -webkit-hyphens: auto; }
+.chip i { margin-top: 2px; }
+.chip i { width: 8px; height: 8px; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: var(--rule) solid var(--ink); margin-bottom: 14px; }
+.cal .ch { font-size: 11px; font-weight: 700; text-transform: uppercase; text-align: center; padding: 4px 0; border-bottom: var(--thin) solid var(--ink); }
+.cal .ch:not(:nth-child(7n+1)), .cal .cd:not(:nth-child(7n+1)) { border-left: var(--thin) solid var(--ink); }
+.cal .cd { min-height: 74px; padding: 4px; border-top: var(--thin) solid var(--ink); display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cal .cd:nth-child(-n+14) { border-top: none; }
+.cal .cd .n { font-size: 12px; font-weight: 700; }
+.cal .cd.today { box-shadow: inset 0 0 0 3px var(--yellow); }
+.cal .cd.past { opacity: .5; }
+.cal .ci { font-size: 11px; font-weight: 700; padding: 3px 4px; line-height: 1.15; hyphens: auto; -webkit-hyphens: auto; overflow: hidden; }
+.cal .ci small { font-weight: 500; opacity: .85; }
+@media (max-width: 560px) { .cal .cd { min-height: 64px; padding: 3px 2px; } .cal .ci { font-size: 9.5px; padding: 2px 3px; } .chip { font-size: 8.5px; } }
 </style>
 </head>
 <body>
@@ -156,6 +177,7 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 
   <section id="asg">
     <h2>Due <span class="sub" id="asgsub"></span></h2>
+    <div class="cal" id="cal"></div>
     <div id="queue"></div>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
@@ -199,7 +221,7 @@ function renderWeek(){
   el('wksub').textContent = MON[weekStart.getMonth()] + ' ' + weekStart.getDate() + ' – ' + MON[we.getMonth()] + ' ' + we.getDate();
   var ss = DATA.sessions.filter(function(s){ return s.week === ws; });
   var lo = 9*60, hi = 23*60;
-  ss.forEach(function(s){ lo = Math.min(lo, s.start_min); hi = Math.max(hi, s.end_min > s.start_min ? s.end_min : 24*60); });
+  ss.forEach(function(s){ lo = Math.min(lo, s.start_min); if (!s.in_progress) hi = Math.max(hi, s.end_min > s.start_min ? s.end_min : 24*60); });
   lo = Math.floor(lo/60)*60; hi = Math.min(24*60, Math.ceil(hi/60)*60);
   var H = window.innerWidth < 560 ? 26 : 32, px = H/60, height = (hi-lo)*px;
   var g = el('week'); g.style.setProperty('--hr', H + 'px');
@@ -208,6 +230,14 @@ function renderWeek(){
     var d = new Date(weekStart); d.setDate(d.getDate() + i);
     html += '<div class="dh' + (iso(d) === iso(today) ? ' today' : '') + '">' + DAYS[i] + '<small>' + d.getDate() + '</small></div>';
   }
+  var anyDue = false, dueRow = '<div class="duelab">due</div>';
+  for (var i = 0; i < 7; i++){
+    var d = new Date(weekStart); d.setDate(d.getDate() + i); var ds = iso(d);
+    var items = DATA.assignments.filter(function(a){ return a.due === ds && !a.done; });
+    if (items.length) anyDue = true;
+    dueRow += '<div class="duecell">' + items.map(function(a){ return '<span class="chip" title="' + esc(a.title) + '"><i class="' + cls(a['class']) + '"></i>' + esc(abbr(a.title)) + '</span>'; }).join('') + '</div>';
+  }
+  if (anyDue) html += dueRow;
   html += '<div class="axis" style="height:' + height + 'px">';
   for (var m = lo + 120; m < hi; m += 120){ var h = (m/60)%24, lab = h === 0 ? '12a' : h < 12 ? h + 'a' : h === 12 ? '12p' : (h-12) + 'p'; html += '<span style="top:' + ((m-lo)*px) + 'px">' + lab + '</span>'; }
   html += '</div>';
@@ -216,7 +246,8 @@ function renderWeek(){
     var d = new Date(weekStart); d.setDate(d.getDate() + i); var ds = iso(d), tot = 0;
     html += '<div class="col" style="height:' + height + 'px">';
     ss.filter(function(s){ return s.date === ds; }).forEach(function(s){
-      var end = s.end_min > s.start_min ? s.end_min : 24*60;
+      var nowMin = new Date().getHours()*60 + new Date().getMinutes();
+      var end = s.in_progress ? (s.date === iso(today) ? Math.max(nowMin, s.start_min + 10) : s.start_min + 30) : (s.end_min > s.start_min ? s.end_min : 24*60);
       var top = (s.start_min - lo)*px, h = Math.max((end - s.start_min)*px, 6);
       tot += s.minutes||0;
       html += '<div class="s ' + cls(s['class']) + '" style="top:' + top + 'px;height:' + h + 'px" title="' + esc(s['class'] + ' ' + s.start + '–' + s.end) + '">' + (h > 22 ? esc(SHORT[s['class']] || s['class']) : '') + '</div>';
@@ -246,16 +277,31 @@ function renderComp(ss){
   function place(it, x, y, w, h){
     var r = document.createElement('div'); r.className = 'r ' + cls(it.c);
     r.style.left = x + '%'; r.style.top = y + '%'; r.style.width = w + '%'; r.style.height = h + '%';
-    var big = w > 18 && h > 22;
-    r.innerHTML = big ? '<b>' + hm(it.m) + '</b><span>' + esc(it.c) + '</span>' : '<span>' + esc(SHORT[it.c] || it.c) + '</span>';
+    var big = w > 22 && h > 30, tiny = w < 9 || h < 14;
+    r.innerHTML = tiny ? '' : big ? '<b>' + hm(it.m) + '</b><span>' + esc(it.c) + '</span>' : '<b class="sm">' + hm(it.m) + '</b><span>' + esc(SHORT[it.c] || it.c) + '</span>';
     box.appendChild(r);
   }
   lay(items, 0, 0, 100, 100, true);
   var none = CLASSES.filter(function(c){ return !by[c]; });
-  el('zero').innerHTML = total && none.length ? 'No time yet: <b>' + none.join('</b>, <b>') + '</b>' : '';
+  el('zero').innerHTML = (total ? '<div class="legend">' + items.map(function(it){ return '<span><i class="' + cls(it.c) + '"></i>' + esc(it.c) + ' <b>' + hm(it.m) + '</b></span>'; }).join('') + '</div>' : '')
+    + (total && none.length ? '<div>No time yet: <b>' + none.join('</b>, <b>') + '</b></div>' : '');
 }
 
+function abbr(t){ return t.replace(/^Problem Set\s*/i,'PS ').replace(/^Homework\s*/i,'HW ').replace(/^Discussion Post/i,'Post').replace(/^Read\s+/i,'').trim(); }
+function renderCal(){
+  var start = sunday(today), html = '';
+  for (var i = 0; i < 7; i++) html += '<div class="ch">' + DAYS[i] + '</div>';
+  for (var i = 0; i < 14; i++){
+    var d = new Date(start); d.setDate(d.getDate() + i); var ds = iso(d);
+    var items = DATA.assignments.filter(function(a){ return a.due === ds && !a.done; });
+    var past = d < today && iso(d) !== iso(today);
+    html += '<div class="cd' + (ds === iso(today) ? ' today' : '') + (past ? ' past' : '') + '"><div class="n">' + (d.getDate() === 1 || i === 0 ? MON[d.getMonth()] + ' ' : '') + d.getDate() + '</div>'
+      + items.map(function(a){ return '<div class="ci ' + cls(a['class']) + '" title="' + esc(a.title) + '">' + esc(window.innerWidth < 560 ? abbr(a.title) : a.title) + (a.time ? ' <small>' + esc(a.time.replace(':00','')) + '</small>' : '') + '</div>'; }).join('') + '</div>';
+  }
+  el('cal').innerHTML = html;
+}
 function renderAssignments(){
+  renderCal();
   var rows = DATA.assignments.map(function(a){
     var due = parse(a.due); return {a:a, due:due, days:Math.round((due - today) / 864e5)};
   });
