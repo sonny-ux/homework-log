@@ -381,6 +381,27 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 .hws { display: flex; flex-direction: column; gap: 2px; min-height: 14px; }
 .hwk { display: block; font: 9px var(--pixel); text-transform: uppercase; text-align: center; padding: 2px 0; white-space: nowrap; overflow: hidden; }
 .hwk.done { opacity: .35; text-decoration: line-through; }
+/* ===== Scene objects: a window, a polaroid, a postcard, a porthole, a little TV, framed paintings. No captions. ===== */
+.scenewin figcaption { display: none; }
+.scenewin.window { justify-content: center; margin: 22px 0 6px !important; }
+.frame.f-window, .frame.f-polaroid, .frame.f-postcard, .frame.f-porthole, .frame.f-tv { margin-top: 0; }
+.scenewin .frame.f-window::before, .scenewin .frame.f-polaroid::after, .scenewin .frame.f-postcard::after, .scenewin .frame.f-porthole::after, .scenewin .frame.f-tv::after { content: none; }
+.scenewin .frame.f-window { --fr: #efe6d2; --fd: #b9ad94; --fl: #fbf7ee; padding: 7px !important; border-bottom: 10px solid #d9cdb0; box-shadow: inset 0 0 0 1px var(--fd), 0 0 0 1px #8a7a6a, 0 4px 0 #b9ad94, 4px 6px 0 rgba(0,0,0,.14) !important; }
+.scenewin .frame.f-window::after { content: '' !important; position: absolute; left: 7px; right: 7px; top: 7px; bottom: 7px; height: auto !important; background: linear-gradient(#efe6d2, #efe6d2) center / 4px 100% no-repeat, linear-gradient(#efe6d2, #efe6d2) center / 100% 4px no-repeat !important; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.scenewin .frame.f-window .curt { position: absolute; top: 2px; bottom: 6px; width: 22px; background: repeating-linear-gradient(90deg, #a8452a 0 4px, #8a3a24 4px 6px); z-index: 2; }
+.scenewin .frame.f-window .curt.l { left: -8px; clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%); } .f-window .curt.r { right: -8px; clip-path: polygon(0 0, 100% 0, 100% 100%, 40% 100%); }
+.scenewin.window:hover .frame { transform: none; }
+.scenewin .frame.f-polaroid { --fr: #fbf7ee; --fd: #e2dccd; --fl: #fbf7ee; padding: 5px 5px 16px !important; transform: rotate(2.5deg); box-shadow: 0 0 0 1px #d6cfbf, 3px 4px 0 rgba(0,0,0,.14) !important; }
+.scenewin .frame.f-polaroid::before { width: 30px !important; height: 10px !important; top: -6px !important; margin-left: -15px !important; background: rgba(233,196,90,.6) !important; box-shadow: none !important; transform: rotate(-4deg); }
+.scenewin .frame.f-postcard { --fr: #fbf7ee; --fd: #c4473a; --fl: #fbf7ee; padding: 6px !important; transform: rotate(-1.5deg); box-shadow: inset 0 0 0 2px #fbf7ee, inset 0 0 0 3px #e8a0b4, 0 0 0 1px #d6cfbf, 3px 4px 0 rgba(0,0,0,.14) !important; }
+.scenewin .frame.f-postcard::before { width: 10px !important; height: 12px !important; left: auto !important; right: 2px; top: 2px !important; margin: 0 !important; background: #2f5f9e !important; outline: 1px dashed #fbf7ee; outline-offset: -2px; box-shadow: none !important; }
+.scenewin .frame.f-porthole { --fr: #b08a3a; --fd: #6b5320; --fl: #e9c45a; padding: 6px !important; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--fd), inset 0 0 0 2px var(--fl), 0 0 0 1px #3b2a24, 3px 4px 0 rgba(0,0,0,.16) !important; }
+.scenewin .frame.f-porthole canvas { border-radius: 50%; }
+.scenewin .frame.f-porthole::before { width: 4px !important; height: 4px !important; top: 2px !important; margin-left: -2px !important; border-radius: 50%; background: #6b5320 !important; box-shadow: 0 calc(100% + 0px) 0 #6b5320 !important; }
+.scenewin .frame.f-tv { --fr: #3a3644; --fd: #151218; --fl: #5a5468; padding: 6px 18px 6px 6px !important; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--fd), inset 0 0 0 2px var(--fl), 3px 4px 0 rgba(0,0,0,.16) !important; }
+.scenewin .frame.f-tv canvas { border-radius: 4px; }
+.scenewin .frame.f-tv::before { left: auto !important; right: 5px; top: 10px !important; margin: 0 !important; width: 6px !important; height: 6px !important; border-radius: 50%; background: #c9a43a !important; box-shadow: 0 10px 0 #9a8f88 !important; }
+.scenewin .frame.f-polaroid, .scenewin .frame.f-postcard { transition: transform .3s; }
 </style>
 </head>
 <body>
@@ -389,7 +410,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   <nav class="seg"><a href="#home" class="on">Home</a><a href="#day">Time</a><a href="#asg">HW</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
 
   <section id="home"><div class="tiles" id="tiles"></div>
-    <figure class="scenewin right" data-scene="4" data-vig="skyline" style="--off:10px"><span class="frame f-gold"><canvas width="124" height="50" style="width:124px;height:50px"></canvas></span><figcaption>the city</figcaption></figure></section>
+    <figure title="out the window" role="button" aria-label="Look out the window: St. Marks" class="scenewin window" data-scene="1" data-vig="street"><span class="frame f-window"><canvas width="80" height="60" style="width:160px;height:120px"></canvas><b class="curt l"></b><b class="curt r"></b></span></figure></section>
 
   <section id="day">
     <div class="subnav"><a href="#day">Today</a><a href="#wk">This week</a></div>
@@ -406,8 +427,8 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <h2 style="margin-top:18px">By class <span class="sub" id="compsub"></span></h2>
     <div class="comp" id="comp"></div>
     <div class="zero" id="zero"></div>
-    <figure class="scenewin left" data-scene="2" data-vig="spring" style="--off:34px"><span class="frame f-gold"><canvas width="54" height="54" style="width:54px;height:54px"></canvas></span><figcaption>the wave</figcaption></figure>
-    <figure class="scenewin left" data-scene="5" data-vig="columbia" style="--off:22px"><span class="frame f-wood"><canvas width="60" height="46" style="width:60px;height:46px"></canvas></span><figcaption>low steps</figcaption></figure>
+    <figure title="the wave" role="button" aria-label="the wave" class="scenewin left" data-scene="2" data-vig="spring" style="--off:34px"><span class="frame f-tv"><canvas width="54" height="54" style="width:54px;height:54px"></canvas></span></figure>
+    <figure title="low steps" role="button" aria-label="low steps" class="scenewin left" data-scene="5" data-vig="columbia" style="--off:22px"><span class="frame f-polaroid"><canvas width="60" height="46" style="width:60px;height:46px"></canvas></span></figure>
     </div>
   </section>
 
@@ -421,7 +442,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
     <div class="fc" id="fc"></div>
     <div id="queue"></div>
-    <figure class="scenewin right" data-scene="1" data-vig="pizza" style="--off:18px"><span class="frame f-dark"><canvas width="58" height="78" style="width:58px;height:78px"></canvas></span><figcaption>st. marks</figcaption></figure>
+    <figure title="the city" role="button" aria-label="the city" class="scenewin right" data-scene="4" data-vig="skyline" style="--off:18px"><span class="frame f-gold"><canvas width="124" height="50" style="width:124px;height:50px"></canvas></span></figure>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
 
@@ -432,15 +453,15 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <div class="cards" id="cards"></div>
     <h2 style="margin-top:18px">Noticed <span class="sub" id="notsub">this week, from your log</span></h2>
     <div class="noticed" id="noticed"></div>
-    <figure class="scenewin left" data-scene="6" data-vig="vangogh" style="--off:16px"><span class="frame f-gold"><canvas width="70" height="56" style="width:70px;height:56px"></canvas></span><figcaption>the windmill</figcaption></figure>
-    <figure class="scenewin right" data-scene="3" data-vig="shell" style="--off:0px"><span class="frame f-pink"><canvas width="104" height="46" style="width:104px;height:46px"></canvas></span><figcaption>the waves</figcaption></figure>
+    <figure title="the windmill" role="button" aria-label="the windmill" class="scenewin left" data-scene="6" data-vig="vangogh" style="--off:16px"><span class="frame f-gold"><canvas width="70" height="56" style="width:70px;height:56px"></canvas></span></figure>
+    <figure title="the waves" role="button" aria-label="the waves" class="scenewin right" data-scene="3" data-vig="shell" style="--off:0px"><span class="frame f-postcard"><canvas width="104" height="46" style="width:104px;height:46px"></canvas></span></figure>
   </section>
 
   <section id="log">
     <div class="wkhead"><h2>Log <span class="sub" id="logsub"></span></h2>
       <div class="arrows"><button id="lprev" aria-label="Earlier week">‹</button><button id="lnow" aria-label="This week">Now</button><button id="lnext" aria-label="Later week">›</button></div></div>
     <div class="topics" id="topics"></div>
-    <figure class="scenewin left" data-scene="0" data-vig="cabin" style="--off:0px"><span class="frame f-wood"><canvas width="92" height="70" style="width:92px;height:70px"></canvas></span><figcaption>the lighthouse keeper</figcaption></figure>
+    <figure title="the lighthouse keeper" role="button" aria-label="the lighthouse keeper" class="scenewin left" data-scene="0" data-vig="cabin" style="--off:0px"><span class="frame f-porthole"><canvas width="72" height="72" style="width:72px;height:72px"></canvas></span></figure>
   </section>
 
   <p class="updated" id="upd"></p>
@@ -1055,7 +1076,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "4cf5600934";
+var APP_BUILD = "7f74f47d0d";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1382,6 +1403,15 @@ function drawStMarks(ctx, W, H, t, st){
     pp.x += pp.dir*pp.v*dt; if (pp.x > W + 24) pp.x = -24; if (pp.x < -24) pp.x = W + 24;
     stPerson(ctx, pp, Math.round(pp.x), lane ? curb - 3 : walk + 16, t); }); });
   seasonParticles(ctx, W, H, t, 0);
+  // seen from inside a café window: sash, curtains, a sill with a mug and a plant
+  ctx.fillStyle = '#e8dcc0'; ctx.fillRect(0, 0, W, 3); ctx.fillRect(0, 0, 3, H); ctx.fillRect(W - 3, 0, 3, H); ctx.fillStyle = '#b9ad94'; ctx.fillRect(3, 3, W - 6, 1); ctx.fillRect(3, 3, 1, H); ctx.fillRect(W - 4, 3, 1, H);
+  var sw = Math.sin(t*0.6)*1.2;
+  [[3, 1], [W - 3, -1]].forEach(function(q){ for (var y = 3; y < Math.round(H*0.72); y++){ var w = Math.round(7 + y*0.03 + sw*(y/H)); for (var k = 0; k < w; k++){ ctx.fillStyle = (k % 3 === 0) ? '#7a3a2a' : '#a8452a'; ctx.fillRect(q[1] > 0 ? q[0] + k : q[0] - 1 - k, y, 1, 1); } } });
+  ctx.fillStyle = '#5a3a2a'; ctx.fillRect(0, 0, W, 2);
+  var sy = H - 8; ctx.fillStyle = '#d9cdb0'; ctx.fillRect(0, sy, W, 8); ctx.fillStyle = '#f3ead3'; ctx.fillRect(0, sy, W, 1); ctx.fillStyle = '#a89c80'; ctx.fillRect(0, sy + 3, W, 1);
+  var mx = Math.round(W*0.78); ctx.fillStyle = '#f3ead3'; ctx.fillRect(mx, sy - 5, 4, 5); ctx.fillRect(mx + 4, sy - 4, 1, 2); ctx.fillStyle = '#3b2a24'; ctx.fillRect(mx, sy - 5, 4, 1);
+  for (var k = 0; k < 2; k++){ var ph = (t*0.6 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(mx + 1 + Math.round(Math.sin(ph*7 + k)), sy - 7 - Math.round(ph*6), 1, 1); }
+  var px = Math.round(W*0.14); ctx.fillStyle = '#b5651d'; ctx.fillRect(px, sy - 4, 5, 4); ctx.fillStyle = '#3d7a55'; ctx.fillRect(px + 2, sy - 9, 1, 5); ctx.fillRect(px, sy - 8, 2, 1); ctx.fillRect(px + 3, sy - 7, 2, 1); ctx.fillStyle = '#6aa874'; ctx.fillRect(px + 1, sy - 10, 2, 1);
 }
 
 
@@ -1568,6 +1598,23 @@ function drawVanGogh(ctx, W, H, t, st){
 
 // ===== Small vignettes for the windows: related to their scene, not copies of it.
 var VIG = {
+  street: function(ctx, W, H, t){ // out the window: the block across the street, neon, people passing, a taxi
+    ctx.fillStyle = '#10153a'; ctx.fillRect(0, 0, W, 10); if (Math.sin(t*1.7) > -.3){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(12, 3, 1, 1); } ctx.fillStyle = '#9aa9c8'; ctx.fillRect(58, 5, 1, 1);
+    var cols = ['#7a3b2e','#5e4a5a','#8a5a3c']; for (var b = 0; b < 3; b++){ var x0 = b*27 - 2, top = 6 + (b % 2)*3; ctx.fillStyle = cols[b]; ctx.fillRect(x0, top, 27, 32 - top);
+      ctx.fillStyle = '#2a1f1a'; ctx.fillRect(x0, top - 1, 27, 2);
+      for (var r = 0; r < 2; r++) for (var c = 0; c < 3; c++){ var wx = x0 + 3 + c*8, wy = top + 4 + r*10, lit = Math.sin(b*7 + r*3 + c*5) > -.3; ctx.fillStyle = '#e8dcc0'; ctx.fillRect(wx - 1, wy - 1, 6, 8); ctx.fillStyle = lit ? (c % 2 ? '#ffd36b' : '#f7b267') : '#221c36'; ctx.fillRect(wx, wy, 4, 6); } }
+    ctx.fillStyle = '#1a1424'; ctx.fillRect(0, 32, W, 12);
+    ptext(ctx, 'PIZZA', 4, 33, 1, Math.sin(t*7) > .85 ? '#4a2a2a' : '#ff5a4e'); ptext(ctx, 'GRUE', 32, 33, 1, (t % 10) > 5 ? '#5ab4ff' : '#5dff9a'); ptext(ctx, 'CAFE', 56, 33, 1, '#9ff0c0');
+    for (var x = 0; x < W; x++){ ctx.fillStyle = (x % 6) < 3 ? ['#c4473a','#24202b','#3d7a55'][Math.min(2, Math.floor(x/27))] : '#f3ead3'; ctx.fillRect(x, 39, 1, 2); }
+    ctx.fillStyle = '#ffcf7a'; ctx.fillRect(3, 41, 18, 3); ctx.fillStyle = '#cfeee0'; ctx.fillRect(30, 41, 18, 3); ctx.fillStyle = '#f6d9a8'; ctx.fillRect(56, 41, 18, 3);
+    ctx.fillStyle = '#5f5866'; ctx.fillRect(0, 44, W, 7); ctx.fillStyle = '#a89c94'; ctx.fillRect(0, 51, W, 1); ctx.fillStyle = '#1d1b26'; ctx.fillRect(0, 52, W, H - 52);
+    [[0, 9, '#24202b', '#3ddc84'], [1, 6, '#2f5f9e', '#5a412f'], [0, -7, '#24202b', '#ff7ad9'], [1, -11, '#d9822b', '#241f1a'], [0, 13, '#8e5fa8', '#e9c45a']].forEach(function(q, i){
+      var x = (((i*19 + t*q[1]) % (W + 8)) + W + 8) % (W + 8) - 4, y = q[0] ? 50 : 47, st = Math.floor(t*6 + i) % 2; x = Math.round(x);
+      ctx.fillStyle = q[3]; ctx.fillRect(x, y - 7, 2, 1); if (q[3] === '#3ddc84' || q[3] === '#ff7ad9') ctx.fillRect(x, y - 8, 1, 1);
+      ctx.fillStyle = '#f0c6a0'; ctx.fillRect(x, y - 6, 2, 1); ctx.fillStyle = q[2]; ctx.fillRect(x - (st ? 0 : 0), y - 5, 2, 3); ctx.fillStyle = '#151218'; ctx.fillRect(x + (st ? 0 : 1), y - 2, 1, 2); ctx.fillRect(x + (st ? 1 : 0), y - 2, 1, 2); });
+    var cx = Math.round(((t*22) % (W + 30)) - 15); ctx.fillStyle = '#e9c45a'; ctx.fillRect(cx, 55, 14, 3); ctx.fillRect(cx + 3, 53, 7, 2); ctx.fillStyle = '#cfe0ff'; ctx.fillRect(cx + 4, 53, 2, 1); ctx.fillRect(cx + 7, 53, 2, 1); ctx.fillStyle = '#0f0d14'; ctx.fillRect(cx + 2, 58, 2, 1); ctx.fillRect(cx + 10, 58, 2, 1);
+    var mh = 40; for (var k = 0; k < 3; k++){ var ph = (t*0.5 + k/3) % 1; ctx.fillStyle = 'rgba(220,220,235,' + (0.4*(1 - ph)) + ')'; ctx.fillRect(mh + Math.round(Math.sin(ph*8 + k)*2), 56 - Math.round(ph*8), 2, 1); }
+  },
   vangogh: function(ctx, W, H, t){ // a few swirls, a field, a windmill turning
     for (var y = 0; y < H*0.55; y += 2) for (var x = (y % 4 ? 0 : 1); x < W; x += 3){ var d = Math.hypot(x - W*0.35, y - H*0.2), a = Math.atan2(y - H*0.2, x - W*0.35) + Math.PI/2; vgStroke(ctx, x, y, d < 14 ? a : Math.sin(x*0.1 + y*0.2)*0.4, 2, Math.sin(d*0.5 - t) > .5 ? '#a9c6ea' : vgHash(x, y) > .5 ? '#2c56a8' : '#1f3f86'); }
     ctx.fillStyle = '#f5c53a'; ctx.fillRect(Math.round(W*0.8), 4, 4, 4);
