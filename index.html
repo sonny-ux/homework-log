@@ -1092,7 +1092,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "dd55b4b0ad";
+var APP_BUILD = "c0280ecd16";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1314,8 +1314,8 @@ function stPerson(ctx, p, x, y, t){
   if (p.tee) U(-1, -25, 3, 2, p.tee);
   if (p.scarf){ U(0, -25, 4, 2, '#1d2a4a'); U(2, -23, 2, 8, '#1d2a4a'); U(1, -23, 1, 6, '#f3ead3'); U(3, -22, 1, 7, '#c4473a'); U(2, -15, 2, 2, '#c4473a'); U(4, -24, 1, 9, '#1d2a4a'); }
   if (p.tote){ U(-3, -25, 1, 1, '#e8dcc0'); U(-4, -24, 1, 8, '#e8dcc0'); U(-6, -17, 4, 6, '#e8dcc0'); U(-6, -17, 4, 1, '#c9b89a'); }
-  if (p.gown){ U(1, -24, 1, 9, '#b8b8c4'); U(-2, -25, 5, 1, '#f3efe6'); U(-2, -22, 1, 1, '#4a6a5a'); U(1, -19, 1, 1, '#4a6a5a'); }
-  if (p.gown && p.sit){ U(-3, -14, 11, 12, '#8a8a96'); U(0, -13, 1, 10, '#b8b8c4'); U(4, -12, 1, 9, '#6a6a76'); U(7, -10, 1, 7, '#b8b8c4'); U(-3, -3, 12, 2, '#7a7a86'); U(-3, -13, 11, 1, '#9a9aa6'); }
+  if (p.gown){ U(1, -24, 1, 9, p.gh || '#b8b8c4'); U(-2, -25, 5, 1, '#f3efe6'); U(-2, -22, 1, 1, p.goldwork ? '#c9a43a' : '#4a6a5a'); U(1, -19, 1, 1, p.goldwork ? '#c9a43a' : '#4a6a5a'); if (p.goldwork){ U(-1, -24, 1, 9, '#c9a43a'); U(0, -16, 1, 1, '#c9a43a'); } }
+  if (p.gown && p.sit){ var gc = p.gc || '#8a8a96', gh = p.gh || '#b8b8c4', gl = p.gl || '#6a6a76'; U(-3, -14, 11, 12, gc); U(0, -13, 1, 10, gh); U(4, -12, 1, 9, gl); U(7, -10, 1, 7, gh); U(-3, -3, 12, 2, gl); U(-3, -13, 11, 1, gh); if (p.goldwork){ [[-1,-11],[2,-8],[5,-6],[1,-5],[6,-11]].forEach(function(q){ U(q[0], q[1], 1, 1, '#c9a43a'); }); } }
   if (p.chemise){ U(-5, -24, 3, 6, '#f3efe6'); U(-5, -19, 3, 1, '#d9d4cc'); }
   if (p.stripes){ for (var k = -23; k < -14; k += 2) U(-1, k, 3, 1, '#2f5f9e'); }
   if (p.fairisle){ for (var k = -1; k < 2; k++){ U(k, -21, 1, 1, k % 2 ? '#3a3a4a' : '#7a3a2a'); U(k, -19, 1, 1, '#3a3a4a'); } U(-1, -16, 3, 1, '#4a5a6a'); }
@@ -1350,6 +1350,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.mask){ U(-2, -32, 6, 2, '#151218'); U(1, -31, 1, 1, '#3a3a4a'); }
   if (p.lips) U(1, -28, 2, 1, p.lips);
   if (p.blush) U(2, -29, 1, 1, '#eaa8a0');
+  if (p.ruff){ U(-4, -27, 9, 2, '#f8f4ec'); for (var k = -4; k < 5; k += 2) U(k, -27, 1, 2, '#d9d4cc'); U(-3, -25, 7, 1, '#e6e0d4'); }
   if (p.glasses){ var gc = p.glassC || '#c9a43a'; U(0, -32, 4, 1, gc); U(0, -31, 1, 1, gc); U(3, -31, 1, 1, gc); U(0, -30, 4, 1, gc); U(1, -31, 2, 1, '#e8eef6'); U(-1, -31, 1, 1, gc); }
   if (p.pencil){ U(-2, -35, 1, 4, '#e9c45a'); U(-2, -36, 1, 1, '#f0a0a0'); }
   if (p.stache){ U(1, -29, 3, 1, p.stache); U(1, -27, 2, 2, p.stache); }
@@ -1376,6 +1377,7 @@ function stPerson(ctx, p, x, y, t){
   else if (p.hair === 'ringlets'){ U(-3, -36, 7, 3, hc); U(-5, -34, 4, 11, hc); U(3, -34, 1, 3, hc); U(-6, -30, 2, 6, hc); [[-5,-33],[-6,-29],[-4,-26],[-6,-25],[1,-36],[-2,-37]].forEach(function(q){ U(q[0], q[1], 1, 1, '#3a2a20'); }); }
   else if (p.hair === 'bob'){ U(-3, -35, 6, 2, hc); U(-4, -33, 3, 7, hc); U(0, -33, 3, 1, hc); U(3, -33, 1, 4, hc); U(-4, -27, 2, 1, hc); }
   else if (p.hair === 'helmet'){ U(-3, -36, 6, 4, '#e6eeff'); U(-1, -39, 3, 3, '#e6eeff'); U(1, -32, 2, 1, '#b9c6e6'); }
+  if (p.pearls){ U(-3, -36, 7, 1, '#3a2a20'); for (var k = -3; k < 4; k += 2) U(k, -36, 1, 1, '#f3efe6'); }
   if (p.knit){ U(-3, -38, 6, 4, p.knit); U(-2, -39, 4, 1, p.knit); U(-3, -35, 7, 1, '#2e2e36'); U(-1, -37, 1, 2, '#2e2e36'); U(1, -37, 1, 2, '#2e2e36'); }
   if (p.bowler){ U(-3, -38, 6, 3, '#6b1e2a'); U(-2, -39, 4, 1, '#6b1e2a'); U(-3, -36, 6, 1, '#2a2a2a'); U(-5, -35, 10, 1, '#5a1a24'); }
   if (p.party){ U(-1, -38, 4, 2, '#d9302a'); U(0, -41, 3, 3, '#d9302a'); U(1, -43, 1, 2, '#d9302a'); U(0, -39, 1, 1, '#f3ead3'); U(2, -41, 1, 1, '#f3ead3'); U(1, -43, 1, 1, '#f3ead3'); }
@@ -2219,35 +2221,45 @@ var ROOMS = {
     return S;
   },
   study: function(ctx, W, H, t, go){
-    var F = roomShell(ctx, W, H, '#4e4234', '#56493a', '#9a8a6a'), S = [];
-    // bookshelf
-    ctx.fillStyle = '#5a3a2a'; ctx.fillRect(7, 12, 22, F - 12); for (var r = 0; r < 5; r++){ var sy = 14 + r*Math.floor((F - 16)/5); ctx.fillStyle = '#3b2a24'; ctx.fillRect(8, sy, 20, Math.floor((F - 16)/5) - 1); for (var x = 9; x < 27; x += 2){ var hh = 5 + ((x*3 + r*5) % 4); ctx.fillStyle = ['#c4473a','#2f5f9e','#e9c45a','#3d7a55','#8e5fa8','#f3ead3'][(x + r) % 6]; ctx.fillRect(x, sy + Math.floor((F - 16)/5) - 1 - hh, 1, hh); } }
-    frameBox(ctx, 33, 10, 26, 16, '#7a5a41', '#9fc0d9'); ctx.fillStyle = '#6aa874'; ctx.fillRect(36, 13, 5, 4); ctx.fillRect(38, 17, 3, 5); ctx.fillRect(45, 12, 6, 3); ctx.fillRect(46, 15, 4, 6); ctx.fillRect(52, 13, 5, 4); ctx.fillRect(53, 20, 3, 2);
-    frameBox(ctx, 36, 30, 12, 9, '#c9a43a', '#fbf7ee'); ctx.fillStyle = '#8a7a6a'; ctx.fillRect(38, 32, 8, 1); ctx.fillRect(39, 34, 6, 1); ctx.fillStyle = '#c4473a'; ctx.fillRect(44, 36, 2, 2);
-    frameBox(ctx, W - 22, 34, 9, 12, '#c9a43a', '#c9d6e6'); ctx.fillStyle = '#e6eef6'; ctx.fillRect(W - 20, 36, 2, 5);
-    // the desk, the lamp's warm cone, you at it
+    // an Elizabethan chamber: plaster and timber above, oak linenfold panelling below, a leaded window, candlelight
+    var F = roomShell(ctx, W, H, '#d9c9a8', '#d9c9a8', '#3b2a1a'), S = [];
+    ctx.fillStyle = '#d9c9a8'; ctx.fillRect(5, 5, W - 10, F - 7); for (var k = 0; k < 40; k++){ ctx.fillStyle = 'rgba(120,100,70,.12)'; ctx.fillRect(5 + (k*37) % (W - 12), 6 + (k*23) % 38, 3, 2); }
+    ctx.fillStyle = '#3b2a1a'; ctx.fillRect(5, 5, W - 10, 3); ctx.fillRect(5, 44, W - 10, 3); for (var x = 5; x < W - 5; x += 44) ctx.fillRect(x, 5, 3, 40);
+    for (var x = 6; x < W - 6; x += 12){ ctx.fillStyle = '#5a3a22'; ctx.fillRect(x, 47, 11, F - 49); ctx.fillStyle = '#4a2e1a'; ctx.fillRect(x + 2, 50, 7, F - 55); ctx.fillStyle = '#6b4a2e'; for (var k = 0; k < 3; k++) ctx.fillRect(x + 3 + k*2, 52, 1, F - 59); }
+    // the leaded window, diamond panes, the moon behind
+    var lw = 34, lwy = 11; ctx.fillStyle = '#3b2a1a'; ctx.fillRect(lw - 2, lwy - 2, 26, 31); for (var y = 0; y < 27; y++) for (var x = 0; x < 22; x++){ ctx.fillStyle = y < 14 ? '#1a2040' : '#232a50'; if ((x - 15)*(x - 15) + (y - 7)*(y - 7) < 10) ctx.fillStyle = '#e8e2c8'; if ((x + y) % 5 === 0 || (x - y + 50) % 5 === 0) ctx.fillStyle = '#5a5a5a'; ctx.fillRect(lw + x, lwy + y, 1, 1); }
+    ctx.fillStyle = '#3b2a1a'; ctx.fillRect(lw + 10, lwy, 2, 27); ctx.fillStyle = '#6b4a2e'; ctx.fillRect(lw - 3, lwy + 27, 28, 2);
+    // shelves of leather-bound books, and a skull on the top shelf
+    ctx.fillStyle = '#3b2a1a'; ctx.fillRect(9, 12, 20, F - 12); for (var r = 0; r < 5; r++){ var sy = 14 + r*Math.floor((F - 16)/5); ctx.fillStyle = '#2a1c10'; ctx.fillRect(10, sy, 18, Math.floor((F - 16)/5) - 1); for (var x = 11; x < 27; x += 2){ if (r === 0 && x > 19) continue; var hh = 5 + ((x*3 + r*5) % 3); ctx.fillStyle = ['#6b2a1a','#3d4a2a','#7a5a2a','#4a1a1a','#5a3a1a'][(x + r) % 5]; ctx.fillRect(x, sy + Math.floor((F - 16)/5) - 1 - hh, 1, hh); if ((x + r) % 3 === 0){ ctx.fillStyle = '#c9a43a'; ctx.fillRect(x, sy + Math.floor((F - 16)/5) - 4, 1, 1); } } }
+    ctx.fillStyle = '#e8e2d0'; ctx.fillRect(21, 15, 5, 4); ctx.fillRect(22, 19, 3, 1); ctx.fillStyle = '#2a1c10'; ctx.fillRect(22, 16, 1, 1); ctx.fillRect(24, 16, 1, 1); ctx.fillRect(23, 18, 1, 1);
+    // the oak table: a candle, a quill in its inkpot, a sheet of parchment, a small hourglass
     var dx = Math.round(W*0.36), dw = Math.round(W*0.24);
-    ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,' + (0.12 + 0.02*Math.sin(t*5)) + ')'; ctx.beginPath(); ctx.moveTo(dx + dw - 9, F - 28); ctx.lineTo(dx + 2, F - 16); ctx.lineTo(dx + dw - 2, F - 16); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = '#7a5a41'; ctx.fillRect(dx, F - 16, dw, 3); ctx.fillStyle = '#5a412f'; ctx.fillRect(dx + 1, F - 13, 2, 13); ctx.fillRect(dx + dw - 3, F - 13, 2, 13); ctx.fillRect(dx + dw - 12, F - 13, 10, 7);
-    ctx.fillStyle = '#241f1a'; ctx.fillRect(dx + dw - 6, F - 28, 1, 12); ctx.fillRect(dx + dw - 10, F - 29, 5, 1); ctx.fillStyle = '#3d7a55'; ctx.fillRect(dx + dw - 12, F - 31, 5, 3); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(dx + dw - 11, F - 28, 3, 1);
-    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(dx + 6, F - 18, 10, 2); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(dx + 11, F - 18, 1, 2); ctx.fillStyle = '#2f5f9e'; ctx.fillRect(dx + 17, F - 18, 4, 2);
-    if (Math.floor(t*0.5) % 4 === 0){ ctx.fillStyle = '#e8dcc0'; ctx.fillRect(dx + 11, F - 19 - (Math.floor(t*4) % 2), 4, 1); }
-    // the roommate: black bob with bangs, tortoiseshell glasses, a green cardigan over a striped shirt, a pencil behind the ear
-    var rm = {sit: 1, v: 0, dir: 1, ph: 2, nocup: 1, posehair: 1, skin: 5, hair: 'ringlets', hc: '#1a1410', lips: '#c45a5a', blush: 1, jacket: '#8a8a96', gown: 1, chemise: 1, pants: '#8a8a96'}; stPerson(ctx, rm, dx - 2, F + 1, t);
-    ctx.fillStyle = '#3b2a24'; ctx.fillRect(dx - 9, F - 18, 2, 18); ctx.fillRect(dx - 9, F - 8, 8, 2);
-    // the windmill painting above the desk
-    var pw = 30, ph = 22, ppx = dx + Math.round(dw/2) - 15, ppy = 9 - (go === 'mill' ? 2 : 0);
-    ctx.fillStyle = '#8a6a1a'; ctx.fillRect(ppx - 3, ppy - 3, pw + 6, ph + 6); ctx.fillStyle = '#c9a43a'; ctx.fillRect(ppx - 2, ppy - 2, pw + 4, ph + 4); vigInto(ctx, 'vangogh', ppx, ppy, pw, ph, t);
-    S.push({x: ppx - 3, y: ppy - 3, w: pw + 6, h: ph + 6, scene: 6, id: 'mill'});
-    // corkboard with notes and the postcard
-    var kx = W - 38, ky = 10; ctx.fillStyle = '#7a5a41'; ctx.fillRect(kx - 1, ky - 1, 30, 22); ctx.fillStyle = '#c4935a'; ctx.fillRect(kx, ky, 28, 20); for (var k = 0; k < 18; k++){ ctx.fillStyle = '#a8784a'; ctx.fillRect(kx + (k*7) % 28, ky + (k*5) % 20, 1, 1); }
-    ctx.fillStyle = '#ffe066'; ctx.fillRect(kx + 2, ky + 2, 6, 6); ctx.fillStyle = '#9fd3f2'; ctx.fillRect(kx + 3, ky + 11, 6, 6); ctx.fillStyle = '#8a7a6a'; ctx.fillRect(kx + 3, ky + 4, 4, 1); ctx.fillRect(kx + 4, ky + 13, 4, 1);
-    var pcy = ky + 4 - (go === 'card' ? 2 : 0); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(kx + 11, pcy, 16, 12); vigInto(ctx, 'mlh', kx + 12, pcy + 1, 14, 9, t); ctx.fillStyle = '#c4473a'; ctx.fillRect(kx + 18, pcy - 1, 2, 2);
-    S.push({x: kx + 10, y: pcy - 1, w: 18, h: 14, scene: 0, id: 'card'});
-    // a wall between the study and the bedroom, with an open doorway
-    var wx = W - 46; ctx.fillStyle = '#3a3026'; ctx.fillRect(wx, 5, 3, F - 5); ctx.fillStyle = '#9a8a6a'; ctx.fillRect(wx - 1, 26, 5, 1); ctx.fillStyle = '#4e4234'; ctx.fillRect(wx, 27, 3, F - 27); ctx.fillStyle = '#2a2420'; ctx.fillRect(wx + 1, 28, 1, F - 28);
-    // the bed, and the cat asleep on it
-    var bx = W - 40, br = Math.sin(t*1.4) > 0 ? 1 : 0; ctx.fillStyle = '#5a3a2a'; ctx.fillRect(bx, F - 12, 34, 12); ctx.fillRect(bx + 30, F - 20, 4, 20); ctx.fillStyle = '#c4473a'; ctx.fillRect(bx, F - 14, 30, 5); ctx.fillStyle = '#e06a5a'; for (var x = bx; x < bx + 30; x += 6) ctx.fillRect(x, F - 14, 3, 5); ctx.fillStyle = '#f3ead3'; ctx.fillRect(bx + 22, F - 17, 8, 3);
+    var cxn = dx + dw - 7, fl = Math.sin(t*9) > 0 ? 1 : 0;
+    ctx.globalCompositeOperation = 'lighter'; for (var r = 16; r > 0; r -= 2){ ctx.fillStyle = 'rgba(110,80,30,' + (0.05 + (fl ? .005 : 0)) + ')'; ctx.beginPath(); ctx.arc(cxn, F - 26, r + fl, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#4a2e1a'; ctx.fillRect(dx, F - 16, dw, 3); ctx.fillStyle = '#3b2a1a'; ctx.fillRect(dx + 2, F - 13, 2, 13); ctx.fillRect(dx + dw - 4, F - 13, 2, 13); ctx.fillStyle = '#5a3a22'; ctx.fillRect(dx + 2, F - 9, 2, 2); ctx.fillRect(dx + dw - 4, F - 9, 2, 2); ctx.fillRect(dx, F - 16, dw, 1);
+    ctx.fillStyle = '#c9a43a'; ctx.fillRect(cxn - 2, F - 17, 5, 1); ctx.fillRect(cxn - 1, F - 18, 3, 1); ctx.fillStyle = '#f3efe6'; ctx.fillRect(cxn, F - 24, 1, 6); ctx.fillStyle = '#ffd36b'; ctx.fillRect(cxn - fl + 0, F - 27, 1, 3); ctx.fillStyle = '#fff3c4'; ctx.fillRect(cxn, F - 26, 1, 1);
+    ctx.fillStyle = '#e8dcbc'; ctx.fillRect(dx + 6, F - 17, 10, 1); ctx.fillStyle = '#8a7a5a'; ctx.fillRect(dx + 7, F - 17, 3, 1); ctx.fillRect(dx + 11, F - 17, 4, 1);
+    ctx.fillStyle = '#151218'; ctx.fillRect(dx + 18, F - 19, 3, 3); ctx.fillStyle = '#f3efe6'; ctx.fillRect(dx + 20, F - 25, 1, 6); ctx.fillRect(dx + 21, F - 26, 1, 3);
+    ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx + 2, F - 21, 3, 1); ctx.fillRect(dx + 2, F - 17, 3, 1); ctx.fillStyle = '#e9c45a'; ctx.fillRect(dx + 3, F - 20, 1, 1); ctx.fillRect(dx + 3, F - 18, 1, 1);
+    // the lady at her writing: ringlets, a lace ruff, a pearl band, a burgundy velvet gown worked in gold
+    var lady = {sit: 1, v: 0, dir: 1, ph: 2, nocup: 1, skin: 5, hair: 'ringlets', hc: '#1a1410', lips: '#c45a5a', blush: 1, ruff: 1, pearls: 1, jacket: '#5a1a2a', gown: 1, gc: '#5a1a2a', gh: '#7a2a3a', gl: '#3a0e1a', goldwork: 1, chemise: 1, pants: '#5a1a2a'};
+    stPerson(ctx, lady, dx - 2, F + 1, t);
+    ctx.fillStyle = '#3b2a1a'; ctx.fillRect(dx - 10, F - 22, 2, 22); ctx.fillRect(dx - 10, F - 8, 8, 2); ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx - 10, F - 23, 2, 1);
+    // the windmill painting, in a carved dark frame
+    var pw = 30, ph = 22, ppx = dx + Math.round(dw/2) - 15, ppy = 11 - (go === 'mill' ? 2 : 0);
+    ctx.fillStyle = '#2a1c10'; ctx.fillRect(ppx - 4, ppy - 4, pw + 8, ph + 8); ctx.fillStyle = '#c9a43a'; ctx.fillRect(ppx - 2, ppy - 2, pw + 4, ph + 4); ctx.fillStyle = '#5a3a22'; for (var x = ppx - 4; x < ppx + pw + 4; x += 3){ ctx.fillRect(x, ppy - 4, 1, 1); ctx.fillRect(x, ppy + ph + 3, 1, 1); }
+    vigInto(ctx, 'vangogh', ppx, ppy, pw, ph, t);
+    S.push({x: ppx - 4, y: ppy - 4, w: pw + 8, h: ph + 8, scene: 6, id: 'mill'});
+    // a wall with a doorway through to the bedchamber
+    var wx = W - 46; ctx.fillStyle = '#3b2a1a'; ctx.fillRect(wx, 5, 3, F - 5); ctx.fillStyle = '#2a1c10'; ctx.fillRect(wx + 1, 28, 1, F - 28);
+    // a small seascape with a lighthouse, gilt-framed, over the bed
+    var kx = W - 34, pcy = 12 - (go === 'card' ? 2 : 0); ctx.fillStyle = '#c9a43a'; ctx.fillRect(kx - 2, pcy - 2, 22, 16); ctx.fillStyle = '#8a6a1a'; ctx.fillRect(kx - 1, pcy - 1, 20, 14); vigInto(ctx, 'mlh', kx, pcy, 18, 12, t);
+    S.push({x: kx - 2, y: pcy - 2, w: 22, h: 16, scene: 0, id: 'card'});
+    // the four-poster: dark posts, a red canopy with gold fringe, the cat asleep on the coverlet
+    var bx = W - 40, br = Math.sin(t*1.4) > 0 ? 1 : 0;
+    ctx.fillStyle = '#2a1c10'; ctx.fillRect(bx, 30, 2, F - 30); ctx.fillRect(bx + 32, 30, 2, F - 30); ctx.fillStyle = '#7a1e2a'; ctx.fillRect(bx - 1, 30, 36, 4); ctx.fillStyle = '#c9a43a'; for (var x = bx; x < bx + 34; x += 2) ctx.fillRect(x, 34, 1, 1);
+    ctx.fillStyle = '#7a1e2a'; ctx.fillRect(bx + 2, 34, 3, 26); ctx.fillRect(bx + 29, 34, 3, 26); ctx.fillStyle = '#5a1420'; ctx.fillRect(bx + 3, 34, 1, 26); ctx.fillRect(bx + 30, 34, 1, 26);
+    ctx.fillStyle = '#4a2e1a'; ctx.fillRect(bx, F - 12, 34, 12); ctx.fillStyle = '#c9b48a'; ctx.fillRect(bx + 2, F - 14, 30, 5); ctx.fillStyle = '#a89470'; for (var x = bx + 2; x < bx + 32; x += 4) ctx.fillRect(x, F - 14, 1, 5); ctx.fillStyle = '#f3efe6'; ctx.fillRect(bx + 22, F - 17, 8, 3);
     ctx.fillStyle = '#d9822b'; ctx.fillRect(bx + 6, F - 18 - br, 9, 4 + br); ctx.fillRect(bx + 14, F - 19, 3, 3); ctx.fillStyle = '#b5651d'; ctx.fillRect(bx + 14, F - 20, 1, 1); ctx.fillRect(bx + 16, F - 20, 1, 1); ctx.fillRect(bx + 4, F - 15, 3, 1); ctx.fillStyle = '#241f1a'; ctx.fillRect(bx + 15, F - 18, 1, 1);
     return S;
   }
