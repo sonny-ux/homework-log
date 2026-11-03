@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "34980ebbc0";
+var APP_BUILD = "b6de65204f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1382,6 +1382,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.mask){ U(-2, -32, 6, 2, '#151218'); U(1, -31, 1, 1, '#3a3a4a'); }
   if (p.lips) U(1, -28, 2, 1, p.lips);
   if (p.blush) U(2, -29, 1, 1, '#eaa8a0');
+  if (p.lashes){ U(1, -32, 2, 1, '#241a14'); U(2, -31, 1, 1, '#241a14'); }
   if (p.freckles){ U(1, -29, 1, 1, '#c98a6a'); U(3, -29, 1, 1, '#c98a6a'); U(2, -30, 1, 1, '#d9a07a'); }
   if (p.ruff){ U(-4, -27, 9, 2, '#f8f4ec'); for (var k = -4; k < 5; k += 2) U(k, -27, 1, 2, '#d9d4cc'); U(-3, -25, 7, 1, '#e6e0d4'); }
   if (p.glasses){ var gc = p.glassC || '#c9a43a'; U(0, -32, 4, 1, gc); U(0, -31, 1, 1, gc); U(3, -31, 1, 1, gc); U(0, -30, 4, 1, gc); U(1, -31, 2, 1, '#e8eef6'); U(-1, -31, 1, 1, gc); }
@@ -1419,6 +1420,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.redhood){ U(-3, -35, 1, 8, '#c4302a'); U(-2, -35, 5, 1, '#c4302a'); U(-2, -27, 6, 2, '#c4302a'); U(1, -25, 2, 10, '#c4302a'); U(1, -15, 1, 1, '#e06a5a'); U(2, -16, 1, 1, '#e06a5a'); }
   if (p.zip){ U(0, -24, 1, 10, '#9a8a6a'); U(-3, -25, 2, 1, '#2a2a32'); U(2, -25, 2, 1, '#2a2a32'); }
   if (p.knit){ U(-3, -38, 6, 4, p.knit); U(-2, -39, 4, 1, p.knit); U(-3, -35, 7, 1, '#2e2e36'); U(-1, -37, 1, 2, '#2e2e36'); U(1, -37, 1, 2, '#2e2e36'); }
+  if (p.longcurls){ U(-4, -26, 3, 5, p.hc); U(-5, -27, 1, 4, p.hc); U(-4, -22, 2, 1, '#8a6a4a'); U(-3, -25, 1, 1, '#8a6a4a'); }
   if (p.bowler){ U(-3, -38, 6, 3, '#6b1e2a'); U(-2, -39, 4, 1, '#6b1e2a'); U(-3, -36, 6, 1, '#2a2a2a'); U(-5, -35, 10, 1, '#5a1a24'); }
   if (p.party){ U(-1, -38, 4, 2, '#d9302a'); U(0, -41, 3, 3, '#d9302a'); U(1, -43, 1, 2, '#d9302a'); U(0, -39, 1, 1, '#f3ead3'); U(2, -41, 1, 1, '#f3ead3'); U(1, -43, 1, 1, '#f3ead3'); }
   // a dog on a leash
@@ -1632,7 +1634,7 @@ function drawSkyline(ctx, W, H, t, st){
 // ===== Scene 6: Columbia at night. Low Library's dome and portico, the steps with people sitting on them,
 // Alma Mater in the middle, and College Walk below with students going to and from Butler.
 // You and your girlfriend: she in the burgundy bowler and floral dress, you in sunglasses and tie-dye.
-function usTwo(){ return [{hair:'curly', hc:'#5a3a24', bowler:1, dress:1, jacket:'#d9dcb0', pants:'#d9dcb0', skin:0, nocup:1},
+function usTwo(){ return [{hair:'curly', hc:'#5a3a24', bowler:1, dress:1, jacket:'#d9dcb0', pants:'#d9dcb0', skin:0, nocup:1, lips:'#c45a6a', blush:1, lashes:1, longcurls:1},
   {hair:'wavy', hc:'#241a14', knit:'#1c1c22', glasses:1, stache:'#3b2a20', goatee:'#3b2a20', jacket:'#a8784a', open:'#d9cdb5', fairisle:1, shearling:'#e6d6b8', redscarf:1, longcoat:1, pants:'#1e2a44', skin:0, nocup:1}]; }
 function heldHands(ctx, x1, x2, y){ ctx.fillStyle = '#f0c6a0'; ctx.fillRect(Math.min(x1, x2), y, Math.abs(x2 - x1) + 1, 1); }
 function tinyHeart(ctx, x, y, a){ ctx.globalAlpha = a; ctx.fillStyle = '#ff7a9a'; ctx.fillRect(x, y, 1, 1); ctx.fillRect(x + 2, y, 1, 1); ctx.fillRect(x, y + 1, 3, 1); ctx.fillRect(x + 1, y + 2, 1, 1); ctx.globalAlpha = 1; }
@@ -2219,8 +2221,8 @@ function drawPastry(ctx, W, H, t, st){
   // Norm's table
   table(seatX + 9, frontY);
   R(seatX + 9, frontY - 16, 28, 2, '#3a2214'); R(seatX + 9, frontY - 14, 28, 1, '#2a1a10'); R(seatX + 30, frontY - 13, 1, 13, '#2a1a10');
-  var meP = {sit: 1, nocup: 1, v: 0, dir: -1, ph: 3, skin: 0, hair: 'wavy', hc: '#241a14', glasses: 1, stache: '#3b2a20', goatee: '#3b2a20', jacket: '#e9c45a', floral: 1, pants: '#6a5a4a'};
-  var sydP = {sit: 1, nocup: 1, v: 0, dir: -1, ph: 5, skin: 0, hair: 'updo', hc: '#5a3a24', pearlstrand: 1, jacket: '#f3ead8', gown: 1, gc: '#f3ead8', gh: '#ffffff', gl: '#d9cdb0', wrapdress: 1, pants: '#f3ead8'};
+  var meP = usTwo()[1]; meP.sit = 1; meP.nocup = 1; meP.v = 0; meP.dir = -1; meP.ph = 3;
+  var sydP = usTwo()[0]; sydP.sit = 1; sydP.nocup = 1; sydP.v = 0; sydP.dir = -1; sydP.ph = 5;
   stPerson(ctx, sydP, seatX + 38, frontY, t); stPerson(ctx, meP, seatX + 26, frontY, t);
   R(seatX + 20, frontY - 19, 3, 3, '#f3efe6'); R(seatX + 31, frontY - 18, 4, 2, '#e8c48a'); R(seatX + 31, frontY - 19, 4, 1, '#f3e8d0');
   if (Math.floor(t/7) % 3 === 1 && nmode === 'sit'){ R(seatX + 22, frontY - 30, 1, 1, '#ff7a9a'); R(seatX + 24, frontY - 30, 1, 1, '#ff7a9a'); R(seatX + 22, frontY - 29, 3, 1, '#ff7a9a'); R(seatX + 23, frontY - 28, 1, 1, '#ff7a9a'); }
