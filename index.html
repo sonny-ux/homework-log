@@ -231,18 +231,23 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .pl .pn { font-weight: 700; color: var(--muted); } .pl i { width: 14px; height: 14px; outline: 1.5px solid var(--ink); }
 .pl small { color: var(--muted); } .pl p { font-size: 13px; color: var(--muted); margin-top: 2px; } .pl .pm { font-weight: 700; }
 .plan .tip { border-top: var(--thin) solid var(--ink); padding: 8px 12px; font-size: 13px; }
+.subnav { display: flex; gap: 0; margin-bottom: 12px; border: var(--thin) solid var(--ink); width: max-content; }
+.subnav a { padding: 5px 14px; font-size: 13px; font-weight: 600; color: inherit; text-decoration: none; }
+.subnav a + a { border-left: var(--thin) solid var(--ink); }
+.part { margin-top: 22px; padding-top: 16px; border-top: var(--rule) solid var(--ink); scroll-margin-top: 60px; }
 </style>
 </head>
 <body>
 <main>
   <div class="bar"><h1>Homework</h1><div class="date" id="today"></div><div class="flag"></div></div>
-  <nav class="seg"><a href="#day" class="on">Calendar</a><a href="#asg">Due</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
+  <nav class="seg"><a href="#day" class="on">Time</a><a href="#asg">Due</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
 
   <section id="day">
+    <div class="subnav"><a href="#day">Today</a><a href="#wk">This week</a></div>
     <h2>Today <span class="sub" id="daysub"></span></h2>
     <div class="band" id="band"></div>
     <div class="list" id="daylist"></div>
-    <div id="wk" style="margin-top:18px">
+    <div id="wk" class="part">
     <div class="wkhead"><h2><span id="wkname">Week</span> <span class="sub" id="wksub"></span></h2>
       <div class="wktools"><div class="arrows"><button id="zout" aria-label="Zoom out">−</button><button id="zin" aria-label="Zoom in">+</button><button id="zfit" aria-label="Fit to worked hours">Fit</button></div>
       <div class="arrows"><button id="prev" aria-label="Previous week">‹</button><button id="next" aria-label="Next week">›</button></div></div></div>
@@ -777,7 +782,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "2c3fc5e98c";
+var APP_BUILD = "4d52320d13";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
