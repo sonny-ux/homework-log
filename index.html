@@ -291,6 +291,20 @@ nav.seg { background-color: var(--note) !important; }
 .cards .card:nth-child(2n)::before { background: var(--blue); } .cards .card:nth-child(3n)::before { background: var(--black); }
 .tile.accent { border-left-width: 6px; }
 section { margin-top: 26px; }
+/* ===== sprites ===== */
+.spr { display: inline-block; vertical-align: -2px; image-rendering: pixelated; margin-left: 4px; }
+.spr .fr { opacity: 0; }
+.spr.n2 .fr0 { animation: f2a 2.4s steps(1) infinite; } .spr.n2 .fr1 { animation: f2b 2.4s steps(1) infinite; }
+@keyframes f2a { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } } @keyframes f2b { 0%, 49% { opacity: 0; } 50%, 100% { opacity: 1; } }
+.spr.n3 .fr0 { animation: f3a 3s steps(1) infinite; } .spr.n3 .fr1 { animation: f3b 3s steps(1) infinite; } .spr.n3 .fr2 { animation: f3c 3s steps(1) infinite; }
+@keyframes f3a { 0%, 32% { opacity: 1; } 33%, 100% { opacity: 0; } } @keyframes f3b { 0%, 32% { opacity: 0; } 33%, 65% { opacity: 1; } 66%, 100% { opacity: 0; } } @keyframes f3c { 0%, 65% { opacity: 0; } 66%, 100% { opacity: 1; } }
+.spr.candle .fr { animation-duration: .9s !important; } .spr.cat .fr { animation-duration: 3.2s !important; } .spr.plant .fr { animation-duration: 4s !important; }
+.catwrap { position: absolute; right: 14px; top: -21px; line-height: 0; }
+.pix .wx .fall { animation: fall 4s linear infinite; } .pix .wx .f1 { animation-delay: -1s; } .pix .wx .f2 { animation-delay: -2s; } .pix .wx .f3 { animation-delay: -3s; }
+@keyframes fall { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(.6px, 3.6px); opacity: 0; } }
+.pix .wx .sun { animation: tw 3s steps(1) infinite; }
+@media (prefers-reduced-motion: reduce) { .spr .fr0 { opacity: 1 !important; animation: none !important; } .spr .fr:not(.fr0) { display: none; } .pix .wx * { animation: none !important; } }
+h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !important; text-transform: none; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -680,6 +694,51 @@ function renderHome(){
     '<a class="tile" href="#asg"><div class="tl">Due soon</div>' + (due || '<div class="tm">Nothing due</div>') + '</a>' +
     (hl ? '<a class="tile wide" href="#ins"><div class="tl">Highlight</div><div class="tm">' + esc(hl) + '</div></a>' : '');
 }
+
+// ===== Pixel sprites. Each is a tiny grid of characters -> SVG rects; frames swap with CSS steps().
+var PX = {k:'#241f1a', w:'#fbf7ee', c:'#e7dcc4', o:'#d9822b', O:'#b5651d', r:'#c4473a', y:'#e9c45a', g:'#3d7a55', G:'#6aa874',
+          b:'#2f5f9e', n:'#7a5a41', N:'#5a412f', s:'#f0c6a0', p:'#e8a0b4', P:'#f6d2dc', l:'#ffe7a1', a:'#9aa9c8', t:'#f3ead3', u:'#c9a43a'};
+function sprite(frames, size, cls, label){
+  var h = frames[0].length, w = frames[0][0].length, out = '';
+  frames.forEach(function(f, i){
+    var r = ''; f.forEach(function(row, y){ for (var x = 0; x < row.length; x++){ var ch = row[x]; if (PX[ch]) r += '<rect x="' + x + '" y="' + y + '" width="1.02" height="1.02" fill="' + PX[ch] + '"/>'; } });
+    out += '<g class="fr fr' + i + '">' + r + '</g>';
+  });
+  return '<svg class="spr ' + cls + ' n' + frames.length + '" viewBox="0 0 ' + w + ' ' + h + '" width="' + size + '" height="' + Math.round(size*h/w) + '" shape-rendering="crispEdges" role="img" aria-label="' + label + '">' + out + '</svg>';
+}
+function season(d){ var m = d.getMonth(), day = d.getDate();
+  if (m === 9 && day >= 24) return 'halloween';
+  if (m === 11 && day >= 18) return 'winterbreak';
+  return m >= 8 && m <= 10 ? 'autumn' : (m === 11 || m <= 1) ? 'winter' : m <= 4 ? 'spring' : 'summer'; }
+var SEASON = season(new Date());
+// sleeping cat (breathing): two frames
+var CAT = [[
+ '..............', '.k..k.........', '.kokk.kkkkkk..', 'koooookoooook.', 'kokkoookoooook', 'koooooooooooOk', '.kkkkkkkkkkkk.'],[
+ '..............', '.k..k.........', '.kokk.........', 'koooookkkkkkk.', 'kokkoooooooook', 'koooooooooooOk', '.kkkkkkkkkkkk.']];
+// hourglass: sand top -> bottom
+var GLASS = [[ 'kkkkkk','kyyyyk','.kyyk.','..kk..','.k..k.','k....k','kkkkkk'],[ 'kkkkkk','k....k','.kyyk.','..kk..','.k..k.','kyyyyk','kkkkkk'],[ 'kkkkkk','k....k','.k..k.','..kk..','.kyyk.','kyyyyk','kkkkkk']];
+// candle flicker
+var CANDLE = [[ '..y..', '.yly.', '..l..', '.ttt.', '.ttt.', '.ttt.', 'kkkkk'],[ '.y...', '.yly.', '.yl..', '.ttt.', '.ttt.', '.ttt.', 'kkkkk'],[ '...y.', '.yly.', '..ly.', '.ttt.', '.ttt.', '.ttt.', 'kkkkk']];
+// seasonal plant (sways)
+var LEAF = {autumn:'o', halloween:'o', winter:'a', winterbreak:'a', spring:'G', summer:'g'}[SEASON], BLOOM = {spring:'p', summer:'y', autumn:'O', halloween:'O', winter:'t', winterbreak:'r'}[SEASON];
+var PLANT = [[ '..'+BLOOM+'....', '.'+LEAF+LEAF+'.'+LEAF+'.', '..'+LEAF+LEAF+LEAF+'.', '...'+LEAF+'..', '.nnnnn', '.NnnnN', '..NNN.'],
+             [ '...'+BLOOM+'...', '..'+LEAF+'.'+LEAF+LEAF, '..'+LEAF+LEAF+LEAF+'.', '...'+LEAF+'..', '.nnnnn', '.NnnnN', '..NNN.']];
+function weatherLayer(){
+  // particles drawn inside the header picture's window (x 2..7, y 2..6)
+  var col = {autumn:'#d9822b', halloween:'#d9822b', winter:'#f6efdf', winterbreak:'#f6efdf', spring:'#f6d2dc', summer:'#ffe7a1'}[SEASON];
+  if (SEASON === 'summer') return '<rect x="5.6" y="2.6" width="1" height="1" fill="' + col + '" class="sun"/>';
+  var out = ''; [[2.6,0],[4.2,.7],[5.8,1.3],[3.4,1.9]].forEach(function(p, i){ out += '<rect class="fall f' + i + '" x="' + p[0] + '" y="2" width=".6" height=".6" fill="' + col + '"/>'; });
+  if (SEASON === 'halloween') out += '<rect x="6.2" y="5.2" width=".9" height=".7" fill="#d9822b"/><rect x="6.5" y="4.9" width=".3" height=".3" fill="#3d7a55"/>';
+  return out;
+}
+function sprinkle(){
+  function put(sel, html, where){ var e = document.querySelector(sel); if (!e || e.querySelector('.spr')) return; e.insertAdjacentHTML(where || 'beforeend', html); }
+  put('#asg h2', ' ' + sprite(GLASS, 16, 'glass', 'hourglass'));
+  put('#log .wkhead h2', ' ' + sprite(CANDLE, 16, 'candle', 'candle'));
+  put('#ins .wkhead h2', ' ' + sprite(PLANT, 24, 'plant', 'plant'));
+  var hl = document.querySelector('#tiles .tile.wide:last-child'); if (hl && !hl.querySelector('.cat')) hl.insertAdjacentHTML('beforeend', '<span class="catwrap">' + sprite(CAT, 44, 'cat', 'sleeping cat') + '</span>');
+  var win = document.querySelector('.pix'); if (win && !win.querySelector('.wx')){ win.insertAdjacentHTML('beforeend', '<g class="wx">' + weatherLayer() + '</g>'); }
+}
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -831,7 +890,7 @@ function renderAssignments(){
 }
 
 function render(){
-  renderToday(); renderPlan(); renderWeek(); renderAssignments(); renderHome();
+  renderToday(); renderPlan(); renderWeek(); renderAssignments(); renderHome(); sprinkle();
   var u = new Date(DATA.updated);
   el('upd').textContent = 'Updated ' + DAYS[u.getDay()] + ' ' + MON[u.getMonth()] + ' ' + u.getDate() + ', ' + u.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + ' · from the coursework log';
 }
@@ -864,7 +923,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "2c01a9eb5a";
+var APP_BUILD = "04a1fdb365";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
