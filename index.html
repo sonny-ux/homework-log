@@ -18,7 +18,7 @@
 <style>
 /* Mondrian: white ground, heavy black rules, red / blue / yellow / black / grey blocks, one per class. */
 :root {
-  --ink: #241f1a; --paper: #fbf7ee; --off: #f3ecdc; --muted: #8b6f52; --rule: 3px; --thin: 1.5px; --gridline: #efe5d0; --onc: #fbf7ee;
+  --ink: #241f1a; --paper: #fbf7ee; --off: #f3ecdc; --muted: #8b6f52; --rule: 1.5px; --thin: 1px; --gridline: #efe5d0; --onc: #fbf7ee;
   --red: #c4473a; --blue: #2f5f9e; --yellow: #e9c45a; --black: #3d7a55; --grey: #f0e6c8;
   --sans: 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color-scheme: light;
@@ -132,7 +132,7 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
   .week .s { font-size: 9px; padding: 1px 2px; }
   .comp { height: 220px; }
   .bar h1 { font-size: 20px; }
-  :root { --rule: 3px; }
+  :root { --rule: 1.5px; }
 }
 .comp .r b.sm { font-size: 14px; }
 .comp .r { padding: 6px 8px; }
@@ -276,6 +276,21 @@ h2 { font-size: 13px; } .tl, .ct, .sg, .gh, .hl span { font-size: 11px; } nav.se
 .updated { font-family: var(--pixel); font-size: 10px; letter-spacing: .04em; }
 .tr + .tr, .noticed p + p { border-top-style: dotted !important; }
 a.tile:active, .pl:active, .cd:active { background: var(--off); }
+/* ===== Café board: a warm, dithered backdrop (cork / dark roast), thin-ruled paper notes pinned on it. ===== */
+:root { --board: #e7d8bb; --board2: #e2d2b2; --note: #fbf7ee; --pin: var(--red); }
+@media (prefers-color-scheme: dark) { :root { --board: #120d08; --board2: #17110b; --note: #1c1611; } }
+html, body { background-color: var(--board) !important;
+  background-image: repeating-conic-gradient(var(--board2) 0 25%, transparent 0 50%) !important; background-size: 6px 6px !important; }
+.bar, nav.seg, .tile, .card, .noticed, .plan, .fc, .as, .topics, .list, .band, .week, .cal, .comp, .hl, .subnav, .arrows { background-color: var(--note); }
+nav.seg { background-color: var(--note) !important; }
+.tile, .card, .hl { position: relative; box-shadow: 2px 2px 0 rgba(0,0,0,.18); }
+.tiles .tile:nth-child(odd) { transform: rotate(-.35deg); } .tiles .tile:nth-child(even) { transform: rotate(.3deg); }
+.tile::before, .card::before { content: ''; position: absolute; top: -5px; left: 50%; width: 8px; height: 8px; margin-left: -4px; background: var(--pin); box-shadow: inset -2px -2px 0 rgba(0,0,0,.25), 0 1px 0 rgba(0,0,0,.3); }
+.tiles .tile:nth-child(3n+2)::before { background: var(--blue); } .tiles .tile:nth-child(3n)::before { background: var(--yellow); }
+.tile.wide::before { width: 46px; height: 12px; margin-left: -23px; top: -7px; background: rgba(243,234,211,.55); box-shadow: none; transform: rotate(-2deg); }
+.cards .card:nth-child(2n)::before { background: var(--blue); } .cards .card:nth-child(3n)::before { background: var(--black); }
+.tile.accent { border-left-width: 6px; }
+section { margin-top: 26px; }
 </style>
 </head>
 <body>
@@ -849,7 +864,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "fa5e6eadea";
+var APP_BUILD = "2c01a9eb5a";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
