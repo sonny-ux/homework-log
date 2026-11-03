@@ -432,6 +432,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <div class="cards" id="cards"></div>
     <h2 style="margin-top:18px">Noticed <span class="sub" id="notsub">this week, from your log</span></h2>
     <div class="noticed" id="noticed"></div>
+    <figure class="scenewin left" data-scene="6" data-vig="vangogh" style="--off:16px"><span class="frame f-gold"><canvas width="70" height="56" style="width:70px;height:56px"></canvas></span><figcaption>the windmill</figcaption></figure>
     <figure class="scenewin right" data-scene="3" data-vig="shell" style="--off:0px"><span class="frame f-pink"><canvas width="104" height="46" style="width:104px;height:46px"></canvas></span><figcaption>the waves</figcaption></figure>
   </section>
 
@@ -443,7 +444,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   </section>
 
   <p class="updated" id="upd"></p>
-<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
+<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
 <div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
 </main>
 <script>
@@ -1054,7 +1055,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "e9c8be5ee2";
+var APP_BUILD = "4cf5600934";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1505,8 +1506,75 @@ function drawColumbia(ctx, W, H, t, st){
   seasonParticles(ctx, W, H, t, 0);
 }
 
+// ===== Scene 7: an autumn windmill in brushstrokes. Every surface is short directional dabs: the sky swirls around two eddies,
+// the field's furrows run to the horizon, a cypress flickers like a flame. A small painter in a straw hat works at an easel.
+function vgStroke(ctx, x, y, a, n, c){ ctx.fillStyle = c; var dx = Math.cos(a), dy = Math.sin(a); for (var i = 0; i < n; i++) ctx.fillRect(Math.round(x + dx*i), Math.round(y + dy*i), 1, 1); }
+function vgHash(x, y){ var q = Math.sin(x*12.9898 + y*78.233)*43758.5453; return q - Math.floor(q); }
+function drawVanGogh(ctx, W, H, t, st){
+  var hz = Math.round(H*0.52), sw = [[W*0.3, H*0.17, 1], [W*0.78, H*0.3, -1]], sun = [W*0.82, H*0.12];
+  ctx.fillStyle = '#1f3f86'; ctx.fillRect(0, 0, W, hz);
+  // sky: strokes follow the eddies; light rings travel outward through them
+  var skyC = ['#1f3f86','#2c56a8','#3f6fc4','#6f9ad8','#a9c6ea','#f2e2a0'];
+  for (var y = 1; y < hz; y += 2) for (var x = (y % 4 ? 0 : 1); x < W; x += 3){
+    var b0 = Math.sin(x*0.07 + y*0.11)*0.35, vx = Math.cos(b0), vy = Math.sin(b0), glow = 0;
+    sw.forEach(function(c){ var dx = x - c[0], dy = y - c[1], d = Math.sqrt(dx*dx + dy*dy) + .01, wgt = Math.min(3, Math.pow(30/d, 2)); vx += -dy/d*c[2]*wgt; vy += dx/d*c[2]*wgt; glow = Math.max(glow, Math.max(0, Math.sin(d*0.45 - t*1.2*c[2]))*Math.min(1, 30/d)); });
+    var a = Math.atan2(vy, vx);
+    var sd = Math.hypot(x - sun[0], y - sun[1]); if (sd < 20){ a = Math.atan2(y - sun[1], x - sun[0]) + Math.PI/2; }
+    var r = vgHash(x, y), k = Math.min(5, Math.floor(r*2.2 + glow*3.2 + (y > hz*0.7 ? 1 : 0)));
+    var col = skyC[k]; if (sd < 20) col = sd < 6 ? '#fff3b0' : (Math.floor(sd*0.6 - t*2) % 2 ? '#f5c53a' : '#ffdf6a'); else if (sd < 26 && r > .5) col = '#e9c45a';
+    vgStroke(ctx, x, y, a, 3, col); }
+  // far hills, warm
+  for (var x = 0; x < W; x++){ var hy = hz - 4 - Math.round(3*Math.sin(x*0.05) + 2*Math.sin(x*0.13 + 1)); for (var y = hy; y < hz + 2; y++){ ctx.fillStyle = (x + y) % 3 ? '#5a6a3a' : '#7a7a3a'; ctx.fillRect(x, y, 1, 1); } }
+  // the field: furrows run toward a vanishing point, bands of ochre, rust, gold and late green
+  var vx = W*0.45, bands = ['#d9a23a','#c4672a','#e9c45a','#a8452a','#8a8a3a','#e0892e'];
+  ctx.fillStyle = '#c4672a'; ctx.fillRect(0, hz + 1, W, H - hz);
+  for (var y = hz + 1; y < H; y += 2) for (var x = (y % 4 ? 0 : 2); x < W; x += 3){
+    var a = Math.atan2(y - hz + 6, x - vx), band = Math.floor(Math.log(y - hz + 2)*3.2 + (x - vx)/(y - hz + 8)*1.4), r = vgHash(x, y);
+    var col = bands[((band % bands.length) + bands.length) % bands.length]; if (r > .86) col = '#f6d27a'; else if (r < .1) col = '#7a3a1a';
+    vgStroke(ctx, x, y, a, 3, col); }
+  // the windmill on its rise, sails turning
+  var mx = Math.round(W*0.7), mb = hz + 3, mh = 30;
+  for (var y = 0; y < 10; y++) for (var x = -18 + y; x < 18 - y; x++){ ctx.fillStyle = (x + y) % 3 ? '#6b7a3a' : '#8a8a42'; ctx.fillRect(mx + x, mb - 2 + Math.round(y*0.4) - 6 + y, 1, 1); }
+  for (var y = 0; y < mh; y++){ var hw = Math.round(4 + y*0.12); for (var x = -hw; x <= hw; x++){ ctx.fillStyle = x === -hw ? '#5a3a2a' : (x + y) % 4 ? '#8a5a3c' : '#a8724a'; ctx.fillRect(mx + x, mb - mh + y, 1, 1); } }
+  ctx.fillStyle = '#3b2a24'; ctx.fillRect(mx - 1, mb - 6, 3, 6); ctx.fillStyle = '#ffd36b'; ctx.fillRect(mx - 1, mb - mh + 10, 2, 2);
+  for (var y = 0; y < 6; y++){ ctx.fillStyle = '#5a3a2a'; ctx.fillRect(mx - 5 + y, mb - mh - 6 + y, 11 - 2*y, 1); }
+  var hubx = mx, huby = mb - mh - 2, ang = t*0.9;
+  for (var k = 0; k < 4; k++){ var a = ang + k*Math.PI/2, ca = Math.cos(a), sa = Math.sin(a), px = -sa, py = ca;
+    for (var i = 2; i <= 18; i++){ ctx.fillStyle = '#3b2a24'; ctx.fillRect(Math.round(hubx + ca*i), Math.round(huby + sa*i), 1, 1);
+      if (i > 4){ for (var j = 1; j <= 4; j++){ ctx.fillStyle = (i % 3 === 0 || j === 4) ? '#5a3a2a' : '#f3ead3'; ctx.fillRect(Math.round(hubx + ca*i + px*j), Math.round(huby + sa*i + py*j), 1, 1); } } } }
+  ctx.fillStyle = '#241f1a'; ctx.fillRect(hubx - 1, huby - 1, 3, 3);
+  // a cypress, a flame of dark greens
+  var cx = Math.round(W*0.12), cb = Math.round(H*0.8), ch = Math.round(H*0.62);
+  for (var y = 0; y < ch; y += 2){ var f = y/ch, w = Math.round(7*Math.sin(Math.min(1, f*1.3)*Math.PI*0.5)*(1 - f*0.35)), sway = Math.round(Math.sin(f*6 + t*0.8)*1.5*f);
+    for (var x = -w; x <= w; x += 2){ var r = vgHash(x + 99, y); vgStroke(ctx, cx + x + sway, cb - ch + y, -Math.PI/2 + x*0.12 + Math.sin(y*0.3 + t)*0.3, 3, r > .7 ? '#3d6a3a' : r > .35 ? '#1f3a2a' : '#2a4d2e'); } }
+  // a maple turning, losing leaves
+  var tx = Math.round(W*0.9), ty = hz - 6; ctx.fillStyle = '#3b2a24'; ctx.fillRect(tx - 1, ty, 3, 24); ctx.fillRect(tx - 5, ty + 4, 4, 1); ctx.fillRect(tx + 2, ty + 2, 4, 1);
+  for (var k = 0; k < 90; k++){ var r1 = vgHash(k, 5), r2 = vgHash(k, 9); ctx.fillStyle = '#5a2a1a'; ctx.fillRect(tx + Math.round((r1 - .5)*26), ty - 2 + Math.round((r2 - .6)*22), 2, 1); }
+  for (var k = 0; k < 120; k++){ var r1 = vgHash(k, 3), r2 = vgHash(k, 7), lx = tx + Math.round((r1 - .5)*22), ly = ty - 3 + Math.round((r2 - .6)*18); ctx.fillStyle = ['#c4472a','#e0892e','#e9c45a','#a8452a'][k % 4]; ctx.fillRect(lx, ly, 2, 1); }
+  for (var k = 0; k < 10; k++){ var ph = (t*0.12 + k/10) % 1, lx = tx - 8 + Math.round(vgHash(k, 1)*16) - Math.round(ph*30) + Math.round(Math.sin(ph*10 + k)*3), ly = ty - 6 + Math.round(ph*(H - ty + 6)); ctx.fillStyle = ['#c4472a','#e0892e','#e9c45a'][k % 3]; ctx.fillRect(lx, ly, 2, 1); }
+  // the painter: straw hat, red beard, blue smock, at his easel; the little canvas holds a little windmill
+  var vx0 = Math.round(W*0.36), vy = H - 6, R = function(dx, dy, w, h, c){ ctx.fillStyle = c; ctx.fillRect(vx0 + dx, vy + dy, w, h); };
+  R(-2, -12, 2, 10, '#5a4a3a'); R(1, -12, 2, 10, '#4e3f30'); R(-3, -3, 3, 3, '#241f1a'); R(1, -3, 3, 3, '#241f1a');
+  R(-4, -25, 8, 14, '#2f5fae'); R(-4, -25, 1, 14, '#244a8a'); for (var y = -24; y < -12; y += 3) R(-2 + (y % 2 ? 1 : 0), y, 2, 1, '#4d7ed0');
+  R(-1, -27, 3, 2, '#f0c6a0');
+  R(-2, -33, 5, 6, '#f0c6a0'); R(-2, -29, 5, 3, '#d9822b'); R(0, -28, 3, 2, '#e0892e'); R(2, -31, 1, 1, '#2f5fae'); R(3, -30, 1, 1, '#e8b48a'); R(-2, -33, 1, 4, '#c4672a');
+  R(-5, -35, 11, 1, '#e9c45a'); R(-3, -37, 7, 2, '#f2d36a'); R(-3, -35, 7, 1, '#c9a43a');
+  R(-6, -22, 3, 2, '#2f5fae'); R(-9, -21, 5, 3, '#c9a07a'); R(-8, -21, 1, 1, '#c4472a'); R(-6, -20, 1, 1, '#2f5fae'); R(-7, -19, 1, 1, '#e9c45a'); R(-5, -21, 1, 1, '#f3ead3');
+  var dab = Math.sin(t*3) > 0 ? 1 : 0, reach = Math.floor(t*0.7) % 3; R(3, -23, 3, 2, '#2f5fae'); R(6, -24 + reach - dab, 3, 1, '#f0c6a0'); R(9, -25 + reach - dab, 2, 1, '#7a5a41'); if (dab) R(11, -25 + reach, 1, 1, '#c4472a');
+  R(12, -30, 1, 30, '#7a5a41'); R(19, -30, 1, 30, '#7a5a41'); R(15, -32, 2, 32, '#6b4a33'); R(11, -14, 10, 1, '#5a412f');
+  R(11, -30, 10, 15, '#f3ead3'); R(12, -29, 8, 6, '#3f6fc4'); R(13, -28, 1, 1, '#f5c53a'); R(17, -27, 2, 1, '#a9c6ea'); R(12, -23, 8, 7, '#d9a23a'); R(12, -21, 8, 1, '#c4672a'); R(16, -26, 2, 4, '#8a5a3c'); R(15, -27, 4, 1, '#f3ead3'); R(16, -28, 1, 3, '#f3ead3');
+  ctx.fillStyle = '#3b2a24'; ctx.fillRect(vx0 - 14, vy - 4, 6, 4); ctx.fillStyle = '#c4472a'; ctx.fillRect(vx0 - 13, vy - 5, 1, 1); ctx.fillStyle = '#e9c45a'; ctx.fillRect(vx0 - 11, vy - 5, 1, 1);
+}
+
 // ===== Small vignettes for the windows: related to their scene, not copies of it.
 var VIG = {
+  vangogh: function(ctx, W, H, t){ // a few swirls, a field, a windmill turning
+    for (var y = 0; y < H*0.55; y += 2) for (var x = (y % 4 ? 0 : 1); x < W; x += 3){ var d = Math.hypot(x - W*0.35, y - H*0.2), a = Math.atan2(y - H*0.2, x - W*0.35) + Math.PI/2; vgStroke(ctx, x, y, d < 14 ? a : Math.sin(x*0.1 + y*0.2)*0.4, 2, Math.sin(d*0.5 - t) > .5 ? '#a9c6ea' : vgHash(x, y) > .5 ? '#2c56a8' : '#1f3f86'); }
+    ctx.fillStyle = '#f5c53a'; ctx.fillRect(Math.round(W*0.8), 4, 4, 4);
+    for (var y = Math.round(H*0.55); y < H; y += 2) for (var x = 0; x < W; x += 3) vgStroke(ctx, x, y, 0.2, 3, ['#d9a23a','#c4672a','#e9c45a'][Math.floor(y/4) % 3]);
+    var mx = Math.round(W*0.68), mb = Math.round(H*0.62); ctx.fillStyle = '#8a5a3c'; ctx.fillRect(mx - 3, mb - 14, 6, 14); var a = t*0.9;
+    for (var k = 0; k < 4; k++){ var c = Math.cos(a + k*Math.PI/2), s2 = Math.sin(a + k*Math.PI/2); for (var i = 1; i < 9; i++){ ctx.fillStyle = '#f3ead3'; ctx.fillRect(Math.round(mx + c*i), Math.round(mb - 15 + s2*i), 1, 1); } }
+  },
   columbia: function(ctx, W, H, t){ // Low Library: dome, columns, warm doors, the steps
     for (var y = 0; y < H; y++){ ctx.fillStyle = y < H*.35 ? '#0f1436' : y < H*.6 ? '#1f2c5a' : '#b9b2a4'; ctx.fillRect(0, y, W, 1); }
     for (var y = Math.round(H*.6); y < H; y += 3){ ctx.fillStyle = '#d6cfbf'; ctx.fillRect(0, y, W, 1); }
@@ -1578,7 +1646,7 @@ var VIG = {
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -1625,9 +1693,10 @@ var VIG = {
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline', 'columbia'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline', 'columbia', 'vangogh'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; drawVanGogh(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'columbia'){ var t = (now - t0)/1000; if (!cityState) cityState = colSetup(W, H); drawColumbia(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'skyline'){ var t = (now - t0)/1000; if (!cityState) cityState = skySetup(W, H); drawSkyline(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'stmarks'){ var t = (now - t0)/1000; if (!cityState) cityState = stSetup(W, H); drawStMarks(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); }
@@ -1635,7 +1704,7 @@ var VIG = {
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city', 'columbia'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city', 'columbia', 'the windmill'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; } rest.classList.add('on'); rest.setAttribute('aria-hidden', 'false'); show(i); }
   function close(){ rest.classList.remove('on'); rest.setAttribute('aria-hidden', 'true'); if (raf) cancelAnimationFrame(raf); raf = null; }
@@ -1653,7 +1722,7 @@ var VIG = {
 document.addEventListener('click', function(e){
   var sp = e.target.closest('.spr, .pixbox'); if (!sp || !window.openRest) return;
   e.preventDefault(); e.stopPropagation();
-  var c = sp.classList, big = c.contains('sine') ? 2 : (c.contains('woolfw') || c.contains('plant')) ? 3 : c.contains('glass') ? 5 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
+  var c = sp.classList, big = c.contains('sine') ? 2 : c.contains('plant') ? 6 : c.contains('woolfw') ? 3 : c.contains('glass') ? 5 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
   openRest(big);
 }, true);
 
