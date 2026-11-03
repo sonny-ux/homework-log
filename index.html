@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "61b6b35a4c";
+var APP_BUILD = "f18d21dc41";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1336,6 +1336,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.choker) U(-1, -26, 3, 1, '#3a4a8a');
   if (p.pearlstrand){ U(-1, -24, 1, 1, '#f3efe6'); U(0, -23, 1, 1, '#f3efe6'); U(1, -24, 1, 1, '#f3efe6'); U(0, -20, 1, 2, '#f3efe6'); }
   if (p.orchids){ U(1, -22, 3, 2, '#f0a0b4'); U(2, -21, 1, 1, '#c4476a'); U(-3, -14, 3, 2, '#f0a0b4'); U(-2, -13, 1, 1, '#c4476a'); U(0, -10, 3, 2, '#e88aa0'); U(1, -9, 1, 1, '#c4476a'); }
+  if (p.plaid){ for (var k = -24; k < -14; k += 3) U(-3, k, 7, 1, 'rgba(255,230,180,.3)'); U(-1, -25, 1, 11, 'rgba(0,0,0,.2)'); U(2, -25, 1, 11, 'rgba(0,0,0,.2)'); }
   if (p.cable){ U(-2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(0, -25, 1, 2, 'rgba(0,0,0,.18)'); for (var k = -22; k < -15; k += 2) U(0, k, 1, 1, 'rgba(255,255,255,.18)'); }
   if (p.bowtie){ U(-1, -25, 3, 3, '#f3efe6'); U(-1, -24, 3, 1, '#151218'); U(0, -23, 1, 6, '#f3efe6'); }
   if (p.camel){ U(-3, -25, 2, 10, '#c9a06a'); U(2, -25, 2, 8, '#c9a06a'); U(-3, -16, 2, 1, '#a8804a'); }
@@ -1351,6 +1352,7 @@ function stPerson(ctx, p, x, y, t){
   // front arm and what it carries
   if (p.books){ U(1, -24, 2, 6, jk); U(2, -19, 4, 2, '#c4473a'); U(2, -21, 5, 2, '#2f5f9e'); U(2, -17, 4, 1, '#e9c45a'); U(2, -18, 1, 2, sk); }
   else if (p.pizza){ U(1, -24, 2, 6, jk); U(3, -20, 2, 2, sk); U(5, -21, 3, 1, '#c9862a'); U(5, -20, 2, 1, '#e9b04a'); U(5, -19, 1, 1, '#e9b04a'); U(6, -20, 1, 1, '#c4473a'); }
+  else if (p.flute){ U(1, -24, 2, 4, jk); U(3, -27, 2, 2, sk); U(0, -27, 2, 2, sk); U(3, -28, 9, 1, '#a8784a'); U(5, -28, 1, 1, '#5a3a2a'); U(7, -28, 1, 1, '#5a3a2a'); U(9, -28, 1, 1, '#5a3a2a'); }
   else if (p.sit && p.posehair){ U(1, -25, 3, 4, '#f3efe6'); U(2, -26, 2, 2, '#ffffff'); U(3, -32, 2, 7, sk); U(3, -34, 2, 2, sk); }
   else if (p.sit && p.nocup && !p.guitar){ var talk = Math.sin(t*1.7 + p.ph*2) > .75; U(1, -24, 2, talk ? 4 : 8, jk); if (talk) U(3, -22, 2, 2, sk); else U(1, -16, 2, 2, sk); }
   else if (p.sit && !p.guitar){ var sip = Math.sin(t*0.9 + p.ph) > .7, cup = function(dx, dy){ if (p.coffee){ U(dx, dy, 3, 4, '#f3ead3'); U(dx, dy, 3, 1, '#5a3a2a'); U(dx + 3, dy + 1, 1, 2, '#f3ead3'); var sp = (t*0.7) % 1; ctx.globalAlpha = .6*(1 - sp); U(dx + 1 + Math.round(Math.sin(sp*8)), dy - 2 - Math.round(sp*5), 1, 1, '#ffffff'); ctx.globalAlpha = 1; } else if (p.ale){ U(dx, dy, 3, 4, '#d9a03a'); U(dx, dy, 3, 1, '#f6f2ea'); U(dx - 1, dy - 1, 4, 1, '#f6f2ea'); U(dx + 3, dy + 1, 1, 2, '#8a7a6a'); U(dx + 1, dy + 1, 1, 3, '#e9c45a'); } else U(dx, dy, 2, 3, '#c9c3b6'); };
@@ -1403,6 +1405,7 @@ function stPerson(ctx, p, x, y, t){
   else if (p.hair === 'bob'){ U(-3, -35, 6, 2, hc); U(-4, -33, 3, 7, hc); U(0, -33, 3, 1, hc); U(3, -33, 1, 4, hc); U(-4, -27, 2, 1, hc); }
   else if (p.hair === 'helmet'){ U(-3, -36, 6, 4, '#e6eeff'); U(-1, -39, 3, 3, '#e6eeff'); U(1, -32, 2, 1, '#b9c6e6'); }
   if (p.pearls){ U(-3, -36, 7, 1, '#3a2a20'); for (var k = -3; k < 4; k += 2) U(k, -36, 1, 1, '#f3efe6'); }
+  if (p.bucket){ U(-3, -37, 7, 3, p.bucket); U(-5, -34, 11, 1, p.bucket); U(-3, -35, 7, 1, 'rgba(0,0,0,.2)'); }
   if (p.knit){ U(-3, -38, 6, 4, p.knit); U(-2, -39, 4, 1, p.knit); U(-3, -35, 7, 1, '#2e2e36'); U(-1, -37, 1, 2, '#2e2e36'); U(1, -37, 1, 2, '#2e2e36'); }
   if (p.bowler){ U(-3, -38, 6, 3, '#6b1e2a'); U(-2, -39, 4, 1, '#6b1e2a'); U(-3, -36, 6, 1, '#2a2a2a'); U(-5, -35, 10, 1, '#5a1a24'); }
   if (p.party){ U(-1, -38, 4, 2, '#d9302a'); U(0, -41, 3, 3, '#d9302a'); U(1, -43, 1, 2, '#d9302a'); U(0, -39, 1, 1, '#f3ead3'); U(2, -41, 1, 1, '#f3ead3'); U(1, -43, 1, 1, '#f3ead3'); }
@@ -2445,8 +2448,8 @@ ROOMS.street = function(ctx, W, H, t, go){
   var tp = Math.round(W*0.35); ctx.fillStyle = '#3a2a20'; ctx.fillRect(tp - 7, curb - 4, 14, 3); ctx.fillStyle = '#4a3a2a'; ctx.fillRect(tp - 7, curb - 4, 14, 1);
   ctx.fillStyle = '#4a3220'; ctx.fillRect(tp, 8, 2, curb - 12); for (var k = 0; k < 26; k++){ ctx.fillStyle = ['#c4472a','#e0892e','#e9c45a','#a8452a'][k % 4]; ctx.fillRect(tp - 8 + (k*7) % 18, 4 + (k*5) % 14, 2, 2); }
   ctx.fillStyle = '#0a0606'; ctx.fillRect(tp + 3, curb - 4, 4, 2); ctx.fillStyle = '#1a1210'; ctx.fillRect(tp + 2, curb - 4, 6, 1);
-  var rc = t % 40;
-  if (rc < 7){ var rx, rmode, ry = curb - 3;
+  var rc = (t % 75) - 42;
+  if (rc >= 0 && rc < 7){ var rx, rmode, ry = curb - 3;
     if (rc < 3){ rx = -10 + (tp - 6 + 10)*(rc/3); rmode = 'run'; } else if (rc < 5){ rx = tp - 6; rmode = 'watch'; } else { rx = tp - 6 + (rc - 5)*6; rmode = 'run'; ry = curb - 3 + Math.round(Math.max(0, rc - 5.6)*28); }
     ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, curb - 2); ctx.clip(); drawRabbit(ctx, Math.round(rx), ry, t, rmode, 1); ctx.restore(); }
   // pigeons pecking
@@ -2492,10 +2495,13 @@ ROOMS.platform = function(ctx, W, H, t, go){
     for (var w = 0; w < L - 6; w += 10){ if (dPos.some(function(d){ return w + 8 > d - 1 && w < d + 12; })) continue; ctx.fillStyle = '#2a2a38'; ctx.fillRect(x0 + w + 2, top + 5, 7, 8); ctx.fillStyle = '#ffe9b8'; ctx.globalAlpha = .55; ctx.fillRect(x0 + w + 2, top + 9, 7, 4); ctx.globalAlpha = 1; }
     dPos.forEach(function(d, i){ var dx = x0 + d, open = Math.round(doors*5);
       ctx.fillStyle = '#ffe9b8'; ctx.fillRect(dx, top + 4, 10, bot - top - 8); ctx.fillStyle = '#c9b48a'; ctx.fillRect(dx, bot - 8, 10, 4); ctx.fillStyle = '#5a5a6a'; ctx.fillRect(dx + 1, top + 6, 1, 18); ctx.fillRect(dx + 8, top + 6, 1, 18);
-      if (i === 1 && doors > .5){ ctx.fillStyle = '#3a3a4a'; ctx.fillRect(dx + 3, top + 9, 4, 3); ctx.fillRect(dx + 3, top + 12, 4, 10); ctx.fillStyle = '#f0c6a0'; ctx.fillRect(dx + 4, top + 9, 2, 3); }
       ctx.fillStyle = '#9aa0ac'; ctx.fillRect(dx - open, top + 4, 5, bot - top - 8); ctx.fillRect(dx + 5 + open, top + 4, 5, bot - top - 8);
       ctx.fillStyle = '#2a2a38'; ctx.fillRect(dx - open + 1, top + 6, 3, 8); ctx.fillRect(dx + 6 + open, top + 6, 3, 8);
       if (doors > .9) S.push({x: dx - 2, y: top, w: 14, h: bot - top, scene: 7, id: 'train'}); });
+    // a flute player sits in the open middle door, busking; notes drift out onto the platform
+    if (doors > .9){ var fx = x0 + dPos[1] + 3, fp = {dir: 1, v: 0, sit: 1, ph: 2, skin: 2, hair: 'short', hc: '#151218', bucket: '#3d6a3a', beard: '#151218', flute: 1, jacket: '#a8452a', plaid: 1, pants: '#3a4a6a'};
+      stPerson(ctx, fp, fx, bot - 2, t);
+      for (var k = 0; k < 3; k++){ var nph = (t*0.45 + k/3) % 1, nx = fx + 12 + Math.round(nph*26), ny = bot - 30 - Math.round(nph*16 + Math.sin(nph*11)*3); ctx.globalAlpha = 1 - nph; ctx.fillStyle = ['#ffe7a1','#9fd3f2','#ff9ad9'][k]; ctx.fillRect(nx, ny, 2, 2); ctx.fillRect(nx + 1, ny - 3, 1, 3); ctx.globalAlpha = 1; } }
     ctx.fillStyle = '#e9c45a'; ctx.fillRect(x0 + 34, top + 4, 7, 7); ctx.fillStyle = '#1a1a1a'; ctx.fillRect(x0 + 36, top + 6, 3, 3); ctx.fillStyle = '#e9c45a'; ctx.fillRect(x0 + 37, top + 7, 1, 1);
     ctx.fillStyle = '#ff4a3a'; ctx.fillRect(x0 + 2, bot - 7, 2, 1); ctx.fillStyle = '#fff3c4'; ctx.fillRect(x0 + L - 3, bot - 7, 2, 2); }
   // the platform: concrete, the yellow edge, columns, fluorescent tubes that flicker
