@@ -326,6 +326,23 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .spr, .pixbox { cursor: pointer; } .spr { transition: transform .15s; } .spr:hover { transform: scale(1.25); }
 .spr:active { transform: scale(.9); }
 #rest canvas.smooth { image-rendering: auto; }
+/* ===== Log: a kept notebook rather than a board. No boxes; one slim ruled page that runs on. ===== */
+#log .topics { border: none !important; background:
+  linear-gradient(to right, transparent 66px, rgba(196,71,58,.45) 66px, rgba(196,71,58,.45) 67px, transparent 67px),
+  repeating-linear-gradient(to bottom, transparent 0 27px, rgba(139,111,82,.22) 27px 28px), var(--note) !important;
+  box-shadow: none !important; max-width: 560px; padding: 6px 0 18px; }
+#log .tg + .tg { border-top: none !important; margin-top: 14px; }
+#log .th { border-bottom: none !important; padding: 8px 12px 2px 78px; font-family: var(--pixel); font-size: 11px; letter-spacing: .08em; color: var(--muted); }
+#log .th i { width: 7px; height: 7px; outline: none; border-radius: 50%; }
+#log .tr { grid-template-columns: 62px 1fr !important; gap: 12px !important; padding: 0 14px 0 0 !important; line-height: 28px !important; font-size: 15px; }
+#log .tr + .tr { border-top: none !important; }
+#log .tr .td { font-size: 10.5px; color: var(--muted); text-align: right; padding: 0 2px 0 0; line-height: 28px; white-space: nowrap; overflow: hidden; }
+#log .tr b { font-weight: 600; }
+#log .tr:nth-child(4n+2) span:last-child { transform: rotate(-.25deg); display: inline-block; }
+#log .th::after { content: ''; flex: 1; border-bottom: 1px dotted var(--muted); opacity: .4; margin-left: 8px; }
+@media (prefers-color-scheme: dark) { #log .topics { background:
+  linear-gradient(to right, transparent 66px, rgba(194,90,76,.5) 66px, rgba(194,90,76,.5) 67px, transparent 67px),
+  repeating-linear-gradient(to bottom, transparent 0 27px, rgba(203,189,155,.12) 27px 28px), #0e0b08 !important; } }
 </style>
 </head>
 <body>
@@ -492,7 +509,7 @@ function renderTopics(ss){
         ? (sub ? '<b>' + esc(sub) + ':</b> ' + esc(body) : esc(body.charAt(0).toUpperCase() + body.slice(1)))
         : (head ? '<b>' + esc(head) + ':</b> ' + esc(body) : esc(t));
       lastHead = headKey;
-      return '<div class="tr"><span class="td">' + DAYS[d.getDay()] + ' ' + esc(s.start) + '</span><span>' + shown + '</span></div>';
+      return '<div class="tr"><span class="td">' + DAYS[d.getDay()].slice(0,2) + ' ' + esc(s.start.replace(/:00/, '').replace(' ', '').toLowerCase()) + '</span><span>' + shown + '</span></div>';
     }).join('') + '</div>';
   }).join('') : '<p class="nz" style="padding:10px 0">No topics logged this week.</p>';
 }
@@ -972,7 +989,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "9454d1c83f";
+var APP_BUILD = "113315b8f3";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
