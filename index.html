@@ -184,6 +184,9 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .tb .tv { font-size: 11px; font-weight: 700; text-align: center; margin-top: 4px; }
 .tb .tw { font-size: 11px; color: var(--muted); text-align: center; }
 .tb.cur .tw { color: inherit; font-weight: 700; }
+.tb .stack .fade { opacity: .28; }
+.tb .tv small { font-weight: 500; color: var(--muted); }
+.trends .tnote { color: var(--muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -318,38 +321,57 @@ function renderTopics(ss){
   }).join('') : '<p class="nz" style="padding:10px 0">No topics logged this week.</p>';
 }
 
-function weekStats(wk){
-  var ss = DATA.sessions.filter(function(s){ return s.week === wk; });
+function statsOf(wk, ss){
   var tot = ss.reduce(function(a,s){ return a+(s.minutes||0); },0);
   var late = ss.filter(function(s){ return s.start_min < 5*60; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
   var days = {}; ss.forEach(function(s){ days[s.date]=1; });
   var by = {}; ss.forEach(function(s){ by[s['class']] = (by[s['class']]||0) + (s.minutes||0); });
   return {wk:wk, ss:ss, tot:tot, late: tot ? late/tot : 0, days:Object.keys(days).length, avg: ss.length ? tot/ss.length : 0, by:by};
 }
+function weekStats(wk, upTo){
+  // upTo: minutes since the start of the week (Sunday 0:00); only sessions started by then count
+  var ws = parse(wk);
+  var ss = DATA.sessions.filter(function(s){
+    if (s.week !== wk) return false;
+    if (upTo == null) return true;
+    var day = Math.round((parse(s.date) - ws) / 864e5);
+    return day*1440 + s.start_min <= upTo;
+  });
+  return statsOf(wk, ss);
+}
 function renderTrends(){
+  var now = new Date(), curWk = iso(sunday(today));
+  var viewingCurrent = iso(weekStart) === curWk;
+  var elapsed = viewingCurrent ? today.getDay()*1440 + now.getHours()*60 + now.getMinutes() : null;
   var weeks = [];
-  for (var i = 5; i >= 0; i--){ var d = new Date(weekStart); d.setDate(d.getDate() - 7*i); weeks.push(weekStats(iso(d))); }
-  weeks = weeks.filter(function(w, i){ return w.tot || weeks.slice(0, i).some(function(x){ return x.tot; }); });
+  for (var i = 5; i >= 0; i--){ var d = new Date(weekStart); d.setDate(d.getDate() - 7*i); var wk = iso(d);
+    weeks.push({full: weekStats(wk), same: weekStats(wk, elapsed)}); }
+  weeks = weeks.filter(function(w, i){ return w.full.tot || weeks.slice(0, i).some(function(x){ return x.full.tot; }); });
   if (weeks.length < 2){ el('trends').innerHTML = '<p class="nz" style="padding:10px 12px">Trends appear once there are two weeks of log.</p>'; return; }
-  var max = Math.max.apply(null, weeks.map(function(w){ return w.tot; })) || 1;
+  var max = Math.max.apply(null, weeks.map(function(w){ return w.full.tot; })) || 1;
+  function segs(st, faded){ return CLASSES.concat(Object.keys(st.by).filter(function(c){ return CLASSES.indexOf(c) < 0; })).filter(function(c){ return st.by[c]; })
+      .map(function(c){ return '<div class="' + cls(c) + (faded ? ' fade' : '') + '" style="height:' + (100*st.by[c]/max) + '%"></div>'; }).join(''); }
   var bars = '<div class="tbars">' + weeks.map(function(w){
-    var d = parse(w.wk), segs = CLASSES.concat(Object.keys(w.by).filter(function(c){ return CLASSES.indexOf(c) < 0; })).filter(function(c){ return w.by[c]; })
-      .map(function(c){ return '<div class="' + cls(c) + '" style="height:' + (100*w.by[c]/max) + '%"></div>'; }).join('');
-    return '<div class="tb' + (w.wk === iso(weekStart) ? ' cur' : '') + '"><div class="stack">' + segs + '</div><div class="tv">' + (w.tot ? hm(w.tot) : '—') + '</div><div class="tw">' + (d.getMonth()+1) + '/' + d.getDate() + '</div></div>';
+    var d = parse(w.full.wk), isCur = w.full.wk === iso(weekStart);
+    var rest = {by:{}}; Object.keys(w.full.by).forEach(function(c){ var r = w.full.by[c] - (w.same.by[c]||0); if (r > 0) rest.by[c] = r; });
+    var stack = (viewingCurrent && !isCur) ? segs(w.same, false) + segs(rest, true) : segs(w.full, false);
+    var label = (viewingCurrent && !isCur) ? '<div class="tv">' + hm(w.same.tot) + '<small> of ' + hm(w.full.tot) + '</small></div>' : '<div class="tv">' + (w.full.tot ? hm(w.full.tot) : '—') + '</div>';
+    return '<div class="tb' + (isCur ? ' cur' : '') + '"><div class="stack">' + stack + '</div>' + label + '<div class="tw">' + (d.getMonth()+1) + '/' + d.getDate() + '</div></div>';
   }).join('') + '</div>';
-  var cur = weeks[weeks.length-1], prev = weeks[weeks.length-2], lines = [];
+  var cur = weeks[weeks.length-1].full, prev = viewingCurrent ? weeks[weeks.length-2].same : weeks[weeks.length-2].full, prevFull = weeks[weeks.length-2].full, lines = [];
   function arrow(a, b){ return a > b ? '↑' : a < b ? '↓' : '→'; }
-  var weekday = new Date(today).getDay(), partial = cur.wk === iso(sunday(today));
-  if (partial){
-    var cut = new Date(parse(prev.wk)); cut.setDate(cut.getDate() + weekday); var cutIso = iso(cut);
-    var prevSoFar = prev.ss.filter(function(s){ return s.date <= cutIso; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
-    lines.push('By this point last week (through ' + DAYS[weekday] + ') you had ' + hm(prevSoFar) + '; this week ' + arrow(cur.tot, prevSoFar) + ' ' + hm(cur.tot) + '. Last week finished at ' + hm(prev.tot) + '.');
+  if (viewingCurrent){
+    var clockNow = now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    lines.push('<span class="tnote">Compared with last week up to the same point: ' + DAYS[today.getDay()] + ' ' + clockNow + '. Solid = by this point; faded = the rest of that week.</span>');
+    lines.push('Hours so far ' + arrow(cur.tot, prev.tot) + ' ' + hm(cur.tot) + ' vs ' + hm(prev.tot) + ' (last week went on to ' + hm(prevFull.tot) + ').');
   } else lines.push('Total ' + arrow(cur.tot, prev.tot) + ' ' + hm(cur.tot) + ' vs ' + hm(prev.tot) + '.');
-  lines.push('Share after midnight ' + arrow(cur.late, prev.late) + ' ' + Math.round(100*cur.late) + '% vs ' + Math.round(100*prev.late) + '%.');
-  lines.push('Average stretch ' + arrow(cur.avg, prev.avg) + ' ' + hm(Math.round(cur.avg)) + ' vs ' + hm(Math.round(prev.avg)) + '.');
+  if (prev.tot){
+    lines.push('Share after midnight ' + arrow(Math.round(100*cur.late), Math.round(100*prev.late)) + ' ' + Math.round(100*cur.late) + '% vs ' + Math.round(100*prev.late) + '%.');
+    lines.push('Average stretch ' + arrow(Math.round(cur.avg), Math.round(prev.avg)) + ' ' + hm(Math.round(cur.avg)) + ' vs ' + hm(Math.round(prev.avg)) + '.');
+  }
   lines.push('Days with study ' + arrow(cur.days, prev.days) + ' ' + cur.days + ' vs ' + prev.days + '.');
   var moved = CLASSES.map(function(c){ return [c, (cur.by[c]||0) - (prev.by[c]||0)]; }).filter(function(x){ return x[1]; }).sort(function(a,b){ return Math.abs(b[1]) - Math.abs(a[1]); });
-  if (moved.length) lines.push('Biggest change: <b>' + moved[0][0] + '</b> ' + (moved[0][1] > 0 ? 'up ' : 'down ') + hm(Math.abs(moved[0][1])) + ' from the week before.');
+  if (moved.length) lines.push('Biggest difference: <b>' + moved[0][0] + '</b> ' + (moved[0][1] > 0 ? 'up ' : 'down ') + hm(Math.abs(moved[0][1])) + (viewingCurrent ? ' compared with this point last week.' : ' from the week before.'));
   el('trends').innerHTML = bars + lines.map(function(t){ return '<p>' + t + '</p>'; }).join('');
 }
 function renderNoticed(ss){
@@ -521,7 +543,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "79322e4222";
+var APP_BUILD = "cba0f22de3";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
