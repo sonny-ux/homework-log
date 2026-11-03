@@ -326,23 +326,6 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .spr, .pixbox { cursor: pointer; } .spr { transition: transform .15s; } .spr:hover { transform: scale(1.25); }
 .spr:active { transform: scale(.9); }
 #rest canvas.smooth { image-rendering: auto; }
-/* ===== Log: a kept notebook rather than a board. No boxes; one slim ruled page that runs on. ===== */
-#log .topics { border: none !important; background:
-  linear-gradient(to right, transparent 66px, rgba(196,71,58,.45) 66px, rgba(196,71,58,.45) 67px, transparent 67px),
-  repeating-linear-gradient(to bottom, transparent 0 27px, rgba(139,111,82,.22) 27px 28px), var(--note) !important;
-  box-shadow: none !important; max-width: 560px; padding: 6px 0 18px; }
-#log .tg + .tg { border-top: none !important; margin-top: 14px; }
-#log .th { border-bottom: none !important; padding: 8px 12px 2px 78px; font-family: var(--pixel); font-size: 11px; letter-spacing: .08em; color: var(--muted); }
-#log .th i { width: 7px; height: 7px; outline: none; border-radius: 50%; }
-#log .tr { grid-template-columns: 62px 1fr !important; gap: 12px !important; padding: 0 14px 0 0 !important; line-height: 28px !important; font-size: 15px; }
-#log .tr + .tr { border-top: none !important; }
-#log .tr .td { font-size: 10.5px; color: var(--muted); text-align: right; padding: 0 2px 0 0; line-height: 28px; white-space: nowrap; overflow: hidden; }
-#log .tr b { font-weight: 600; }
-#log .tr:nth-child(4n+2) span:last-child { transform: rotate(-.25deg); display: inline-block; }
-#log .th::after { content: ''; flex: 1; border-bottom: 1px dotted var(--muted); opacity: .4; margin-left: 8px; }
-@media (prefers-color-scheme: dark) { #log .topics { background:
-  linear-gradient(to right, transparent 66px, rgba(194,90,76,.5) 66px, rgba(194,90,76,.5) 67px, transparent 67px),
-  repeating-linear-gradient(to bottom, transparent 0 27px, rgba(203,189,155,.12) 27px 28px), #0e0b08 !important; } }
 .scenewin { display: flex; flex-direction: row-reverse; align-items: center; gap: 10px; margin: 16px 0 0; cursor: pointer; }
 .scenewin canvas { width: 64px; height: 64px; display: block; image-rendering: pixelated; border: var(--rule) solid var(--ink); background: #0b1026; box-shadow: 2px 2px 0 rgba(0,0,0,.18); }
 .scenewin[data-scene="2"] canvas { image-rendering: auto; }
@@ -350,6 +333,20 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .scenewin figcaption::after { content: ' \2192'; }
 .scenewin:active canvas { transform: scale(.95); }
 #log .scenewin canvas { border-color: var(--muted); }
+/* ===== Log: a living diary. No boxes or decoration; plain lines, newest first. ===== */
+#log .topics { border: none !important; background: none !important; box-shadow: none !important; max-width: 600px; padding: 0; }
+.lday { margin: 18px 0 0; } .lday:first-child { margin-top: 6px; }
+.ldh { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; font-size: 16px; padding-bottom: 6px; border-bottom: 1.5px solid var(--ink); }
+.ldh span { font-weight: 500; font-size: 13px; color: var(--muted); }
+.lrow { display: grid; grid-template-columns: 54px 8px 1fr; gap: 10px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--gridline); font-size: 15px; line-height: 1.4; }
+.lrow .lt { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lrow i { width: 8px; height: 8px; display: block; align-self: center; }
+.lrow em { font-style: normal; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.lrow.live .lt { color: var(--red); font-weight: 600; }
+.lrow.live i { animation: livepulse 1.6s ease-in-out infinite; }
+@keyframes livepulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
+.lday:first-child .lrow:first-child { animation: fadein .6s ease-out; }
+@keyframes fadein { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 </style>
 </head>
 <body>
@@ -720,7 +717,18 @@ function renderLog(){
   var ws = sunday(today); ws.setDate(ws.getDate() + 7*LOG_OFF); var we = addDays(ws, 6);
   el('logsub').textContent = (LOG_OFF === 0 ? 'this week' : LOG_OFF === -1 ? 'last week' : (-LOG_OFF) + ' weeks ago') + ' · ' + MON[ws.getMonth()] + ' ' + ws.getDate() + ' – ' + MON[we.getMonth()] + ' ' + we.getDate();
   el('lnow').classList.toggle('on', LOG_OFF === 0);
-  renderTopics(DATA.sessions.filter(function(s){ return s.week === iso(ws); }));
+  // a living diary: newest first, grouped by day (5 AM day), one plain line per session
+  var ss = DATA.sessions.filter(function(s){ return s.week === iso(ws) || sday(s) >= iso(ws) && sday(s) <= iso(we); });
+  var byDay = {}; ss.forEach(function(s){ (byDay[sday(s)] = byDay[sday(s)] || []).push(s); });
+  var days = Object.keys(byDay).sort().reverse(), nowStudy = sday({date: iso(new Date()), start_min: new Date().getHours()*60 + new Date().getMinutes()});
+  function dayName(d){ var n = Math.round((parse(nowStudy) - parse(d))/864e5), x = parse(d); return n === 0 ? 'Today' : n === 1 ? 'Yesterday' : DAYS[x.getDay()] + ' ' + MON[x.getMonth()] + ' ' + x.getDate(); }
+  el('topics').innerHTML = days.length ? days.map(function(d){
+    var list = byDay[d].sort(function(a,b){ return nightMin(b.start_min) - nightMin(a.start_min); }), tot = list.reduce(function(a,s){ return a+(s.minutes||0); },0);
+    return '<div class="lday"><div class="ldh">' + dayName(d) + '<span>' + hm(tot) + '</span></div>' + list.map(function(s){
+      var tm = s.start.replace(':00','').replace(' ','').toLowerCase();
+      return '<div class="lrow' + (s.in_progress ? ' live' : '') + '"><span class="lt">' + (s.in_progress ? 'now' : tm) + '</span><i class="' + cls(s['class']) + '"></i><span class="lx">' + esc(s.topic || s['class']) + ' <em>' + hm(s.minutes||0) + '</em></span></div>';
+    }).join('') + '</div>';
+  }).join('') : '<p class="nz" style="padding:10px 0">Nothing written this week yet.</p>';
 }
 
 function renderHome(){
@@ -1000,7 +1008,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "6e02e72532";
+var APP_BUILD = "e3446a7db8";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
