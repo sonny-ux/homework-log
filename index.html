@@ -628,7 +628,7 @@ function renderHome(){
     strip += '<div class="sd' + (d === t ? ' now' : '') + '" data-day="' + d + '">' + segs + '<span>' + DAYS[i].charAt(0) + '</span><em>' + (m ? hm(m) : '') + '</em></div>'; }
   var open = DATA.assignments.filter(function(a){ return !a.done && a.due >= t; }).slice(0, 3);
   var due = open.map(function(a){ var n = Math.round((parse(a.due) - today)/864e5);
-    return '<div class="dl" data-day="' + a.due + '"><i class="' + cls(a['class']) + '"></i><span>' + esc(a.title) + '</span><b>' + (n === 0 ? 'today' : n === 1 ? 'tomorrow' : n + 'd') + '</b></div>'; }).join('');
+    return '<div class="dl" data-day="' + a.due + '"><i class="' + cls(a['class']) + '"></i><span>' + esc(abbr(a.title)) + '</span><b>' + (n === 0 ? 'today' : n === 1 ? 'tmrw' : n + 'd') + '</b></div>'; }).join('');
   var next = el('plan').querySelector('.pl'), nextHtml = next ? next.querySelector('b').textContent + ' <small>' + next.querySelector('.pm').textContent + '</small>' : 'Nothing pressing';
   var hl = el('hl').textContent.replace(/^Highlight/, '');
   el('tiles').innerHTML =
@@ -823,7 +823,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "58b2ddec04";
+var APP_BUILD = "ba2d2ca8c2";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
