@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "52865b8f91";
+var APP_BUILD = "34980ebbc0";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2213,7 +2213,7 @@ function drawPastry(ctx, W, H, t, st){
     R(x - 3, y - 18, 3, 2, '#f3efe6'); if (i % 2) R(x + 1, y - 19, 4, 3, 'rgba(160,200,255,.7)'); else R(x + 1, y - 19, 2, 3, 'rgba(220,235,245,.7)'); }
   bk.forEach(function(x, i){ pair(x, backY, i); });
   // while Norm is in the bathroom, a line forms by the door; when he comes out, the first one goes in
-  if (c > 36 && c < 58){ var Q = [{hair: 'long', hc: '#e9c45a', jacket: '#3a3a48', skin: 0}, {hair: 'cap', hc: '#151218', jacket: '#c4473a', skin: 2}, {hair: 'bob', hc: '#241a14', jacket: '#3d6a4a', skin: 3}];
+  if (c > 36 && c < 58){ var Q = st.queue || (st.queue = [{hair: 'messy', hc: '#4a3020', mask: 1, neck: '#151218', jacket: 'leather', pants: '#151218', skin: 0}, {hair: 'curly', hc: '#1a1410', beard: '#1a1410', party: 1, collar: '#c98a4a', jacket: '#2e2e30', pants: '#1a1a2e', skin: 1}, gingerGuy(), {hair: 'short', hc: '#5a3a24', jacket: '#7ab4e0', bag: 1, pants: '#3a3f55', skin: 3}]);
     Q.forEach(function(q, i){ var arrive = 37 + i*2.5; if (c < arrive) return; if (i === 0 && c > 51.5) return; var slot = (c > 51.5 && i > 0) ? i - 1 : i, qx = dX - 12 - slot*10, qin = Math.min(1, (c - arrive)/2);
       q.dir = 1; q.v = qin < 1 ? 1 : (Math.floor(t*1.5 + i) % 4 === 0 ? 1 : 0); q.ph = i; q.pants = '#2a2a32'; stPerson(ctx, q, Math.round(qx - (1 - qin)*30), backY, t); }); }
   // Norm's table
