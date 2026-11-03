@@ -1110,7 +1110,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "78c7f61e72";
+var APP_BUILD = "fa8c3ce1c6";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1316,7 +1316,7 @@ function stPerson(ctx, p, x, y, t){
   }
   // back arm, backpack
   if (p.bag){ U(-6, -24, 3, 9, '#7a3b2e'); U(-6, -24, 3, 1, '#9a5a3c'); }
-  U(-4 + a, -24, 2, 9, jk); U(-4 + a, -24, 2, 9, dark); U(-4 + a, -15, 2, 2, p.lace ? '#d9d4cc' : sd);
+  U(-4 + a, -24, 2, 9, p.bareArms ? sk : jk); U(-4 + a, -24, 2, 9, dark); U(-4 + a, -15, 2, 2, p.lace ? '#d9d4cc' : sd);
   // torso
   if (p.skirt){ U(-3, -16, 7, 4, '#c4473a'); U(-3, -15, 7, 1, '#241f1a'); U(-1, -16, 1, 4, '#241f1a'); U(2, -16, 1, 4, '#241f1a'); }
   U(-3, -25, 7, p.skirt ? 9 : 12, jk);
@@ -1336,6 +1336,9 @@ function stPerson(ctx, p, x, y, t){
   if (p.gown && !p.sit){ var gc2 = p.gc || '#8a8a96', gh2 = p.gh || '#b8b8c4', gl2 = p.gl || '#6a6a76'; U(-4, -14, 9, 14, gc2); U(-5, -6, 11, 6, gc2); U(-1, -13, 1, 13, gh2); U(3, -12, 1, 12, gl2); U(-5, -1, 11, 1, gl2); if (p.goldwork){ [[-2,-11],[1,-8],[4,-5],[-3,-4],[2,-2]].forEach(function(q){ U(q[0], q[1], 1, 1, '#c9a43a'); }); } }
   if (p.gown && p.sit){ var gc = p.gc || '#8a8a96', gh = p.gh || '#b8b8c4', gl = p.gl || '#6a6a76'; U(-3, -14, 11, 12, gc); U(0, -13, 1, 10, gh); U(4, -12, 1, 9, gl); U(7, -10, 1, 7, gh); U(-3, -3, 12, 2, gl); U(-3, -13, 11, 1, gh); if (p.goldwork){ [[-1,-11],[2,-8],[5,-6],[1,-5],[6,-11]].forEach(function(q){ U(q[0], q[1], 1, 1, '#c9a43a'); }); } }
   if (p.chemise){ U(-5, -24, 3, 6, '#f3efe6'); U(-5, -19, 3, 1, '#d9d4cc'); }
+  if (p.choker) U(-1, -26, 3, 1, '#3a4a8a');
+  if (p.pearlstrand){ U(-1, -24, 1, 1, '#f3efe6'); U(0, -23, 1, 1, '#f3efe6'); U(1, -24, 1, 1, '#f3efe6'); U(0, -20, 1, 2, '#f3efe6'); }
+  if (p.orchids){ U(1, -22, 3, 2, '#f0a0b4'); U(2, -21, 1, 1, '#c4476a'); U(-3, -14, 3, 2, '#f0a0b4'); U(-2, -13, 1, 1, '#c4476a'); U(0, -10, 3, 2, '#e88aa0'); U(1, -9, 1, 1, '#c4476a'); }
   if (p.cable){ U(-2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(0, -25, 1, 2, 'rgba(0,0,0,.18)'); for (var k = -22; k < -15; k += 2) U(0, k, 1, 1, 'rgba(255,255,255,.18)'); }
   if (p.bowtie){ U(-1, -25, 3, 3, '#f3efe6'); U(-1, -24, 3, 1, '#151218'); U(0, -23, 1, 6, '#f3efe6'); }
   if (p.camel){ U(-3, -25, 2, 10, '#c9a06a'); U(2, -25, 2, 8, '#c9a06a'); U(-3, -16, 2, 1, '#a8804a'); }
@@ -1361,7 +1364,7 @@ function stPerson(ctx, p, x, y, t){
     if (Math.abs(Math.sin(ang) - 1) < .4){ ctx.fillStyle = '#ffe7a1'; for (var k = 0; k < 4; k++) R(4 + k*2, -12 - k, 1, 1, '#ffe7a1'); } }
   else if (p.guitar){ var st = Math.floor(t*5) % 2; U(-1, -18, 6, 5, '#b5651d'); U(0, -17, 4, 3, '#d9822b'); U(2, -16, 1, 1, '#241f1a'); for (var k = 0; k < 6; k++) U(5 + k, -19 - k, 1, 1, '#5a412f'); U(11, -26, 2, 2, '#3b2a24');
     U(0, -22 + st, 2, 5, jk); U(1, -17 + st, 2, 2, sk); U(-4, -24, 2, 5, jk); U(8, -23, 2, 2, sk); }
-  else { U(1 - a, -24, 2, 9, jk); U(1 - a, -15, 2, 2, p.lace ? '#f3efe6' : sk); if (p.lace) U(1 - a, -16, 2, 1, '#f3efe6'); }
+  else { U(1 - a, -24, 2, 9, p.bareArms ? sk : jk); U(1 - a, -15, 2, 2, p.lace ? '#f3efe6' : sk); if (p.lace) U(1 - a, -16, 2, 1, '#f3efe6'); }
   // head
   U(-1, -26, 2, 1, sd);
   U(-2, -33, 5, 7, sk); U(-2, -33, 1, 7, sd); U(-1, -30, 1, 2, sd);
@@ -1397,6 +1400,7 @@ function stPerson(ctx, p, x, y, t){
   else if (p.hair === 'bangs'){ U(-3, -35, 6, 2, hc); U(0, -33, 4, 1, hc); U(-4, -33, 3, 11, hc); U(3, -32, 1, 7, hc); U(-4, -27, 1, 5, '#c98a4a'); U(3, -27, 1, 2, '#c98a4a'); }
   else if (p.hair === 'messy'){ U(-3, -35, 6, 3, hc); [[-4,-36],[-2,-37],[1,-37],[3,-36],[-4,-33]].forEach(function(q){ U(q[0], q[1], 1, 2, hc); }); U(-4, -32, 2, 5, hc); }
   else if (p.hair === 'bigcurl'){ U(-5, -38, 10, 5, hc); U(-6, -35, 4, 11, hc); U(3, -36, 3, 5, hc); U(4, -31, 1, 3, hc); [[-5,-38],[-2,-39],[1,-39],[4,-37],[-7,-33],[-6,-28],[5,-35],[-4,-25]].forEach(function(q){ U(q[0], q[1], 1, 1, '#d9b47a'); }); }
+  else if (p.hair === 'updo'){ U(-3, -38, 6, 4, hc); U(-2, -40, 4, 2, hc); U(-4, -35, 2, 3, hc); U(3, -35, 1, 2, hc); U(-3, -31, 1, 3, hc); [[-2,-39],[1,-40],[-4,-34],[2,-37]].forEach(function(q){ U(q[0], q[1], 1, 1, '#8a6a4a'); }); }
   else if (p.hair === 'swept'){ U(-3, -36, 7, 3, hc); U(-3, -33, 2, 4, hc); U(3, -35, 2, 2, hc); U(0, -37, 3, 1, hc); U(0, -36, 3, 1, '#e8904a'); U(-2, -34, 1, 1, '#e8904a'); }
   else if (p.hair === 'ringlets'){ U(-3, -36, 7, 3, hc); U(-5, -34, 4, 11, hc); U(3, -34, 1, 3, hc); U(-6, -30, 2, 6, hc); [[-5,-33],[-6,-29],[-4,-26],[-6,-25],[1,-36],[-2,-37]].forEach(function(q){ U(q[0], q[1], 1, 1, '#3a2a20'); }); }
   else if (p.hair === 'bob'){ U(-3, -35, 6, 2, hc); U(-4, -33, 3, 7, hc); U(0, -33, 3, 1, hc); U(3, -33, 1, 4, hc); U(-4, -27, 2, 1, hc); }
@@ -2371,17 +2375,11 @@ ROOMS.penthouse = function(ctx, W, H, t, go){
   ctx.fillStyle = '#7a1e2a'; ctx.fillRect(Math.round(W*0.2), F + 1, Math.round(W*0.5), 3); ctx.fillStyle = '#c9a43a'; for (var x = Math.round(W*0.2); x < Math.round(W*0.7); x += 5) ctx.fillRect(x, F + 2, 2, 1);
   var px = Math.round(W*0.56); ctx.fillStyle = '#151218'; ctx.fillRect(px, F - 18, 34, 6); ctx.fillRect(px + 20, F - 22, 14, 4); ctx.fillRect(px + 1, F - 12, 2, 12); ctx.fillRect(px + 30, F - 12, 2, 12); ctx.fillStyle = '#3a3644'; ctx.fillRect(px, F - 18, 34, 1);
   ctx.fillStyle = '#151218'; for (var k = 0; k < 12; k++) ctx.fillRect(px + 6 + k, F - 19 - Math.round(k*1.2), 1, 1); ctx.fillStyle = '#f3efe6'; ctx.fillRect(px - 1, F - 15, 8, 2); for (var k = 0; k < 4; k++){ ctx.fillStyle = '#151218'; ctx.fillRect(px + k*2, F - 15, 1, 1); }
-  stPerson(ctx, {dir: 1, v: 0, sit: 1, nocup: 1, ph: 3, skin: 0, jacket: '#5a1a3a', pants: '#151218', hair: 'short', hc: '#c9c3b6'}, px - 8, F + 1, t);
+  var pianist = bowtieMe(); pianist.dir = 1; pianist.v = 0; pianist.sit = 1; pianist.nocup = 1; stPerson(ctx, pianist, px - 8, F + 1, t);
   for (var k = 0; k < 3; k++){ var ph = (t*0.4 + k/3) % 1; ctx.globalAlpha = 1 - ph; ctx.fillStyle = '#2a2430'; var nx = px + 8 + Math.round(ph*20), ny = F - 24 - Math.round(ph*24 + Math.sin(ph*10)*2); ctx.fillRect(nx, ny, 2, 2); ctx.fillRect(nx + 1, ny - 3, 1, 3); ctx.globalAlpha = 1; }
   // a woman in a gown by the window with champagne
-  var g = {dir: -1, v: 0, ph: 5, skin: 3, jacket: '#1d4a5a', pants: '#1d4a5a', dress: 1, hair: 'long', hc: '#e9c45a'}; stPerson(ctx, g, Math.round(W*0.2), F + 1, t);
+  var g = {dir: -1, v: 0, ph: 5, skin: 0, hair: 'updo', hc: '#5a3a24', bareArms: 1, choker: 1, pearlstrand: 1, orchids: 1, jacket: '#f2c4bc', gown: 1, gc: '#f2c4bc', gh: '#fbe0da', gl: '#d9a49c', pants: '#f2c4bc'}; stPerson(ctx, g, Math.round(W*0.2), F + 1, t);
   ctx.fillStyle = '#ffe7a1'; ctx.fillRect(Math.round(W*0.2) - 6, F - 22, 2, 3); ctx.fillStyle = '#e8eef6'; ctx.fillRect(Math.round(W*0.2) - 5, F - 19, 1, 2);
-  // you in the bow tie: in from the left, over to the far window, a while looking out at the city, then away
-  var pc = t % 70, me2 = bowtieMe(), tx2 = xs[2] + 6, mx3 = null;
-  if (pc < 8){ mx3 = -10 + (tx2 + 10)*(pc/8); me2.v = 1; me2.dir = 1; }
-  else if (pc < 52){ mx3 = tx2; me2.v = 0; me2.dir = 1; }
-  else if (pc < 60){ mx3 = tx2 - (tx2 + 12)*((pc - 52)/8); me2.v = 1; me2.dir = -1; }
-  if (mx3 !== null){ stPerson(ctx, me2, Math.round(mx3), F + 1, t); if (pc >= 8 && pc < 52){ ctx.fillStyle = '#f0c6a0'; ctx.fillRect(Math.round(mx3) + 3, F - 22, 2, 2); ctx.fillStyle = '#7a1e2a'; ctx.fillRect(Math.round(mx3) + 5, F - 26, 2, 10); } }
   // a fiddle-leaf fig
   var fx = W - 12; ctx.fillStyle = '#e8e4dc'; ctx.fillRect(fx - 3, F - 7, 7, 7); for (var k = 0; k < 7; k++){ ctx.fillStyle = k % 2 ? '#3d7a55' : '#2a5a3a'; ctx.fillRect(fx - 4 + (k % 3)*3, F - 28 + k*3, 4, 3); } ctx.fillStyle = '#5a412f'; ctx.fillRect(fx, F - 26, 1, 20);
   return S;
