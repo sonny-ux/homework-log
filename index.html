@@ -347,6 +347,12 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 @keyframes livepulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
 .lday:first-child .lrow:first-child { animation: fadein .6s ease-out; }
 @keyframes fadein { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.scenewin { margin-top: calc(14px + var(--off, 0px)) !important; }
+.scenewin.left { flex-direction: row !important; margin-left: var(--off, 0px); }
+.scenewin.right { flex-direction: row-reverse !important; margin-right: var(--off, 0px); }
+.scenewin canvas { width: auto; height: auto; }
+.scenewin[data-vig="spring"] canvas { border-width: 3px; }
+.scenewin[data-vig="shell"] canvas { border-color: #e8a0b4; }
 </style>
 </head>
 <body>
@@ -371,7 +377,7 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
     <h2 style="margin-top:18px">By class <span class="sub" id="compsub"></span></h2>
     <div class="comp" id="comp"></div>
     <div class="zero" id="zero"></div>
-    <figure class="scenewin" data-scene="2"><canvas width="64" height="64"></canvas><figcaption>the wave</figcaption></figure>
+    <figure class="scenewin left" data-scene="2" data-vig="spring" style="--off:34px"><canvas width="54" height="54" style="width:54px;height:54px"></canvas><figcaption>the wave</figcaption></figure>
     </div>
   </section>
 
@@ -385,7 +391,7 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
     <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
     <div class="fc" id="fc"></div>
     <div id="queue"></div>
-    <figure class="scenewin" data-scene="1"><canvas width="64" height="64"></canvas><figcaption>homework square</figcaption></figure>
+    <figure class="scenewin right" data-scene="1" data-vig="pizza" style="--off:18px"><canvas width="58" height="78" style="width:58px;height:78px"></canvas><figcaption>st. marks</figcaption></figure>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
 
@@ -396,14 +402,14 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
     <div class="cards" id="cards"></div>
     <h2 style="margin-top:18px">Noticed <span class="sub" id="notsub">this week, from your log</span></h2>
     <div class="noticed" id="noticed"></div>
-    <figure class="scenewin" data-scene="3"><canvas width="64" height="64"></canvas><figcaption>the waves</figcaption></figure>
+    <figure class="scenewin right" data-scene="3" data-vig="shell" style="--off:0px"><canvas width="104" height="46" style="width:104px;height:46px"></canvas><figcaption>the waves</figcaption></figure>
   </section>
 
   <section id="log">
     <div class="wkhead"><h2>Log <span class="sub" id="logsub"></span></h2>
       <div class="arrows"><button id="lprev" aria-label="Earlier week">‹</button><button id="lnow" aria-label="This week">Now</button><button id="lnext" aria-label="Later week">›</button></div></div>
     <div class="topics" id="topics"></div>
-    <figure class="scenewin" data-scene="0"><canvas width="64" height="64"></canvas><figcaption>to the lighthouse</figcaption></figure>
+    <figure class="scenewin left" data-scene="0" data-vig="cabin" style="--off:0px"><canvas width="92" height="70" style="width:92px;height:70px"></canvas><figcaption>the lighthouse keeper</figcaption></figure>
   </section>
 
   <p class="updated" id="upd"></p>
@@ -1008,7 +1014,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "e3446a7db8";
+var APP_BUILD = "626e667cbe";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1163,13 +1169,148 @@ function drawWoolfWaves(ctx, W, H, t){
   var gx = (t*8) % (W + 20) - 10, gy = H*0.25 + Math.sin(t)*4; ctx.fillStyle = '#3a2a63'; ctx.fillRect(Math.round(gx), Math.round(gy), 1, 1); ctx.fillRect(Math.round(gx) - 1, Math.round(gy) - (Math.floor(t*4) % 2), 1, 1); ctx.fillRect(Math.round(gx) + 1, Math.round(gy) - (Math.floor(t*4) % 2), 1, 1);
 }
 
+
+// ===== Scene 2: a busy East Village block at night (St. Marks Place in spirit): tenements, shops, a pizza place, people.
+function stSetup(W, H){
+  var seed = 11; function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
+  var bricks = ['#7a3b2e','#6b4a3a','#8a5a3c','#5e3a3a','#7b5b4a'], b = [], x = 0;
+  while (x < W){ var w = Math.round(34 + rnd()*22); b.push({x:x, w:w, h: Math.round(H*(0.42 + rnd()*0.18)), c: bricks[b.length % bricks.length], seed: rnd()}); x += w; }
+  var people = []; for (var i = 0; i < 9; i++) people.push({x: rnd()*W, v: (rnd() < .5 ? -1 : 1)*(6 + rnd()*9), shirt: ['#c4473a','#2f5f9e','#e9c45a','#3d7a55','#f3ead3','#8e5fa8','#d9822b'][i % 7], hair: ['#241f1a','#5a412f','#e9c45a','#7a3b2e'][i % 4], skin: ['#f0c6a0','#c48a5c','#8a5a3c','#e8b48a'][i % 4], box: i === 2, lane: i % 2});
+  var wins = []; for (var i = 0; i < 400; i++) wins.push([rnd(), rnd()]);
+  return {b: b, people: people, wins: wins};
+}
+function drawStMarks(ctx, W, H, t, st){
+  var D = boardData(), street = Math.round(H*0.80), walk = Math.round(H*0.72);
+  // night sky and distant towers
+  for (var y = 0; y < H; y++){ ctx.fillStyle = y < H*.2 ? '#0a0d22' : y < H*.4 ? '#121838' : '#1c2350'; ctx.fillRect(0, y, W, 1); }
+  for (var i = 0; i < W; i += 9){ var hh = 30 + ((i*37) % 40); ctx.fillStyle = '#161b3a'; ctx.fillRect(i, walk - hh - 60, 8, hh + 60); if ((i*7 + Math.floor(t)) % 5 === 0){ ctx.fillStyle = '#3a3f6a'; ctx.fillRect(i + 3, walk - hh - 50, 1, 1); } }
+  // tenements
+  st.b.forEach(function(b, bi){
+    var top = walk - b.h; ctx.fillStyle = b.c; ctx.fillRect(b.x, top, b.w, b.h);
+    for (var y = top; y < walk; y += 3) for (var x = b.x + ((y/3) % 2 ? 0 : 2); x < b.x + b.w; x += 5){ ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(x, y, 1, 1); }
+    ctx.fillStyle = '#2a1f1a'; ctx.fillRect(b.x - 1, top - 3, b.w + 2, 3); ctx.fillStyle = '#c9b89a'; ctx.fillRect(b.x, top - 1, b.w, 1);
+    // windows: rows of 3, warm or dark, some flicker
+    var cols = Math.max(2, Math.floor((b.w - 6)/10));
+    for (var r = 0; r < Math.floor((b.h - 34)/14); r++) for (var c = 0; c < cols; c++){
+      var wx = b.x + 4 + c*Math.floor((b.w - 6)/cols), wy = top + 6 + r*14, k = st.wins[(bi*31 + r*7 + c) % st.wins.length];
+      var lit = k[0] > .4 || (k[1] > .85 && Math.sin(t + k[0]*30) > 0);
+      ctx.fillStyle = '#1a1424'; ctx.fillRect(wx, wy, 6, 8); ctx.fillStyle = lit ? (k[1] > .5 ? '#ffd36b' : '#f7b267') : '#26203a'; ctx.fillRect(wx + 1, wy + 1, 4, 6);
+      if (lit && k[1] > .7){ ctx.fillStyle = '#a8556b'; ctx.fillRect(wx + 1, wy + 1, 1, 6); }
+    }
+    // fire escape on every other building
+    if (bi % 2 === 0){ ctx.fillStyle = '#0f0d14'; for (var r = 0; r < Math.floor((b.h - 34)/14); r++){ var fy = top + 15 + r*14; ctx.fillRect(b.x + 3, fy, b.w - 6, 1); for (var x = b.x + 3; x < b.x + b.w - 3; x += 2) ctx.fillRect(x, fy - 3, 1, 3); }
+      ctx.fillRect(b.x + 3, top + 15, 1, b.h - 50); }
+  });
+  // storefronts along the street level
+  var shops = [
+    {name:'PIZZA', aw:'#c4473a', glow:'#ffcf7a', neon:'#ff5a4e'},
+    {name:'CAFE', aw:'#3d7a55', glow:'#f6d9a8', neon:'#9ff0c0'},
+    {name:'RECORDS', aw:'#2f5f9e', glow:'#cfe0ff', neon:'#ff7ad9'},
+    {name:'DELI', aw:'#e9c45a', glow:'#fff0b8', neon:'#ffe066'}];
+  var sw = W / shops.length;
+  shops.forEach(function(sp, i){
+    var x0 = Math.round(i*sw) + 2, w = Math.round(sw) - 4, y0 = walk - 30;
+    ctx.fillStyle = '#1a1424'; ctx.fillRect(x0, y0, w, 30);
+    ctx.fillStyle = sp.glow; ctx.fillRect(x0 + 3, y0 + 8, w - 14, 18);
+    ctx.fillStyle = '#3a2a22'; ctx.fillRect(x0 + w - 9, y0 + 10, 6, 20);
+    for (var x = x0; x < x0 + w; x++){ ctx.fillStyle = ((x - x0) % 6) < 3 ? sp.aw : '#f3ead3'; ctx.fillRect(x, y0, 1, 5); }
+    var on = !(i === 0 && Math.sin(t*7) > .85);
+    var nw = textW(sp.name, 1); ptext(ctx, sp.name, x0 + Math.round((w - nw)/2), y0 - 7, 1, on ? sp.neon : '#4a2a2a');
+    if (i === 0){ // pizza in the window, cook tossing dough
+      for (var k = 0; k < 3; k++){ var px0 = x0 + 6 + k*8; ctx.fillStyle = '#e9b04a'; ctx.fillRect(px0, y0 + 20, 6, 3); ctx.fillStyle = '#c4473a'; ctx.fillRect(px0 + 1, y0 + 20, 1, 1); ctx.fillRect(px0 + 4, y0 + 21, 1, 1); }
+      var dy = Math.round(Math.abs(Math.sin(t*2.2))*6); ctx.fillStyle = '#f3ead3'; ctx.fillRect(x0 + w - 24, y0 + 11 - dy, 7, 2);
+      ctx.fillStyle = '#f0c6a0'; ctx.fillRect(x0 + w - 22, y0 + 15, 3, 3); ctx.fillStyle = '#ffffff'; ctx.fillRect(x0 + w - 23, y0 + 18, 5, 6);
+    }
+    if (i === 1){ // a chalkboard outside with today's numbers
+      var cx = x0 + w - 18, cy = walk - 12; ctx.fillStyle = '#5a412f'; ctx.fillRect(cx - 1, cy - 1, 17, 13); ctx.fillStyle = '#1e2a22'; ctx.fillRect(cx, cy, 15, 11);
+      ptext(ctx, (D.today || '').replace('h','H').replace('m','').slice(0,4), cx + 1, cy + 1, 1, '#f3ead3');
+    }
+    if (i === 3){ for (var k = 0; k < 6; k++){ ctx.fillStyle = ['#c4473a','#e9c45a','#3d7a55','#d9822b'][k % 4]; ctx.fillRect(x0 + 4 + k*3, walk - 6, 2, 2); } ctx.fillStyle = '#5a412f'; ctx.fillRect(x0 + 3, walk - 4, 20, 4); }
+  });
+  // sidewalk, curb, street
+  ctx.fillStyle = '#6b6370'; ctx.fillRect(0, walk, W, street - walk); for (var x = 0; x < W; x += 12){ ctx.fillStyle = '#5a5360'; ctx.fillRect(x, walk, 1, street - walk); }
+  ctx.fillStyle = '#9a8f88'; ctx.fillRect(0, street - 1, W, 1); ctx.fillStyle = '#1d1b26'; ctx.fillRect(0, street, W, H - street);
+  for (var x = (-(t*30) % 24); x < W; x += 24){ ctx.fillStyle = '#e9c45a'; ctx.fillRect(Math.round(x), Math.round(H*0.9), 10, 1); }
+  // street lamps
+  [0.25, 0.75].forEach(function(f){ var lx = Math.round(W*f) - 1; ctx.fillStyle = '#0f0d14'; ctx.fillRect(lx, walk - 46, 1, 46); ctx.fillRect(lx, walk - 46, 6, 1);
+    ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.35)'; for (var y = walk - 44; y < street; y++){ var r = (y - (walk - 44))*0.35; ctx.fillRect(lx + 5 - r, y, r*2, 1); } ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#ffe7a1'; ctx.fillRect(lx + 4, walk - 45, 3, 2); });
+  // a car now and then
+  var cx = ((t*28) % (W + 80)) - 40; ctx.fillStyle = '#2f5f9e'; ctx.fillRect(Math.round(cx), street + 6, 26, 6); ctx.fillRect(Math.round(cx) + 5, street + 2, 14, 4);
+  ctx.fillStyle = '#cfe0ff'; ctx.fillRect(Math.round(cx) + 7, street + 3, 4, 2); ctx.fillRect(Math.round(cx) + 13, street + 3, 4, 2); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(Math.round(cx) + 25, street + 7, 1, 2);
+  ctx.fillStyle = '#0f0d14'; ctx.fillRect(Math.round(cx) + 4, street + 12, 4, 2); ctx.fillRect(Math.round(cx) + 18, street + 12, 4, 2);
+  // people walking
+  st.people.forEach(function(pp, i){
+    pp.x = ((pp.x + pp.v*0.07) % (W + 20) + (W + 20)) % (W + 20); var x = Math.round(pp.x) - 10, y = walk + 4 + pp.lane*6, step = Math.floor(t*6 + i) % 2;
+    ctx.fillStyle = pp.hair; ctx.fillRect(x, y - 12, 3, 1); ctx.fillStyle = pp.skin; ctx.fillRect(x, y - 11, 3, 3);
+    ctx.fillStyle = pp.shirt; ctx.fillRect(x - 1, y - 8, 5, 5);
+    ctx.fillStyle = '#241f1a'; ctx.fillRect(x + (step ? 0 : 1), y - 3, 1, 3); ctx.fillRect(x + (step ? 2 : 1), y - 3, 1, 3);
+    if (pp.box){ ctx.fillStyle = '#f3ead3'; ctx.fillRect(x + (pp.v > 0 ? 3 : -4), y - 7, 4, 2); ctx.fillStyle = '#c4473a'; ctx.fillRect(x + (pp.v > 0 ? 4 : -3), y - 7, 1, 1); }
+  });
+  // someone sitting on a stoop
+  var sx = Math.round(W*0.5) - 3; ctx.fillStyle = '#9a8f88'; ctx.fillRect(sx - 2, walk - 3, 10, 3); ctx.fillStyle = '#241f1a'; ctx.fillRect(sx + 1, walk - 13, 3, 1); ctx.fillStyle = '#c48a5c'; ctx.fillRect(sx + 1, walk - 12, 3, 3); ctx.fillStyle = '#8e5fa8'; ctx.fillRect(sx, walk - 9, 5, 5);
+  if (Math.sin(t*1.3) > 0){ ctx.fillStyle = '#c9c3b6'; ctx.fillRect(sx + 5, walk - 14 - Math.floor(t*3) % 3, 1, 1); }
+  seasonParticles(ctx, W, H, t, 0);
+}
+
+// ===== Small vignettes for the windows: related to their scene, not copies of it.
+var VIG = {
+  cabin: function(ctx, W, H, t){ // inside the lighthouse: someone with coffee by a round window, the beam passing
+    ctx.fillStyle = '#5a412f'; ctx.fillRect(0, 0, W, H); for (var y = 0; y < H; y += 6){ ctx.fillStyle = '#4e3524'; ctx.fillRect(0, y, W, 1); }
+    var cx = Math.round(W*0.68), cy = Math.round(H*0.34), r = Math.round(Math.min(W, H)*0.2);
+    for (var y = -r - 2; y <= r + 2; y++) for (var x = -r - 2; x <= r + 2; x++){ var d = x*x + y*y; if (d <= (r+2)*(r+2)){ ctx.fillStyle = d > r*r ? '#c9a43a' : (y > 2 ? '#1b2a4f' : '#0b1026'); ctx.fillRect(cx + x, cy + y, 1, 1); } }
+    if (Math.sin(t*2) > .3){ ctx.fillStyle = '#4d77b3'; ctx.fillRect(cx - r + 3, cy + 4, r, 1); }
+    var sweep = (Math.sin(t*0.9) + 1)/2; ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,90,42,' + (0.5*Math.max(0, 1 - Math.abs(sweep - .5)*3)) + ')'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#3a2a22'; ctx.fillRect(0, Math.round(H*0.74), W, 3);
+    var px = Math.round(W*0.2), py = Math.round(H*0.42); ctx.fillStyle = '#3b2a24'; ctx.fillRect(px, py, 8, 3); ctx.fillStyle = '#f0c6a0'; ctx.fillRect(px + 1, py + 3, 6, 5); ctx.fillStyle = '#241f1a'; ctx.fillRect(px + 2, py + 5, 1, 1); ctx.fillRect(px + 5, py + 5, 1, 1);
+    ctx.fillStyle = '#2f5f9e'; ctx.fillRect(px - 1, py + 8, 10, 10);
+    var lift = Math.sin(t*0.8) > .6 ? 3 : 0; ctx.fillStyle = '#f3ead3'; ctx.fillRect(px + 8, py + 9 - lift, 4, 4); ctx.fillStyle = '#6b4a33'; ctx.fillRect(px + 9, py + 9 - lift, 2, 1);
+    if (Math.floor(t*2) % 2){ ctx.fillStyle = '#c9c3b6'; ctx.fillRect(px + 10, py + 6 - lift, 1, 1); } else { ctx.fillStyle = '#c9c3b6'; ctx.fillRect(px + 9, py + 5 - lift, 1, 1); }
+  },
+  pizza: function(ctx, W, H, t){ // inside the pizza shop window: the cook tossing dough over the counter
+    ctx.fillStyle = '#1a1424'; ctx.fillRect(0, 0, W, H);
+    ptext(ctx, 'PIZZA', Math.round((W - textW('PIZZA', 1))/2), 2, 1, Math.sin(t*7) > .85 ? '#4a2a2a' : '#ff5a4e');
+    for (var x = 2; x < W - 2; x++){ ctx.fillStyle = (x % 6) < 3 ? '#c4473a' : '#f3ead3'; ctx.fillRect(x, 9, 1, 4); }
+    ctx.fillStyle = '#ffcf7a'; ctx.fillRect(3, 13, W - 6, H - 16);
+    ctx.fillStyle = '#e8b45c'; for (var y = 16; y < H*0.6; y += 5) for (var x = 4 + (y % 10 ? 2 : 0); x < W - 4; x += 4) ctx.fillRect(x, y, 2, 2);
+    ctx.fillStyle = '#7a3b2a'; ctx.fillRect(W - 16, 18, 10, 8); ctx.fillStyle = '#ff8a3a'; if (Math.sin(t*5) > -.2) ctx.fillRect(W - 14, 22, 6, 3);
+    var cx = Math.round(W*0.38), base = Math.round(H*0.66);
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(cx - 2, base - 26, 6, 3);
+    ctx.fillStyle = '#f0c6a0'; ctx.fillRect(cx - 1, base - 23, 5, 5); ctx.fillStyle = '#241f1a'; ctx.fillRect(cx, base - 21, 1, 1); ctx.fillRect(cx + 2, base - 21, 1, 1);
+    ctx.fillStyle = '#f3ead3'; ctx.fillRect(cx - 3, base - 18, 9, 10); ctx.fillStyle = '#c4473a'; ctx.fillRect(cx - 3, base - 18, 9, 1);
+    var dy = Math.round(Math.abs(Math.sin(t*2.4))*12), up = dy > 3;
+    ctx.fillStyle = '#f0c6a0'; ctx.fillRect(cx - 4, base - (up ? 22 : 17), 1, up ? 5 : 3); ctx.fillRect(cx + 6, base - (up ? 22 : 17), 1, up ? 5 : 3);
+    ctx.fillStyle = '#f6e3b0'; ctx.fillRect(cx - 4, base - 30 - dy, 11, 2); ctx.fillStyle = '#ffffff'; ctx.fillRect(cx - 2, base - 31 - dy, 7, 1);
+    ctx.fillStyle = '#5a3a2a'; ctx.fillRect(3, base - 8, W - 6, 2); ctx.fillStyle = '#3b2a24'; ctx.fillRect(3, base - 6, W - 6, H - base + 3);
+    for (var k = 0; k < 2; k++){ var x0 = 7 + k*Math.round((W - 14)/2); ctx.fillStyle = '#e9b04a'; ctx.fillRect(x0, base - 11, 12, 3); ctx.fillStyle = '#c4473a'; ctx.fillRect(x0 + 2, base - 11, 1, 1); ctx.fillRect(x0 + 6, base - 10, 1, 1); ctx.fillRect(x0 + 9, base - 11, 1, 1); }
+    ctx.fillStyle = '#f3ead3'; ctx.fillRect(6, H - 10, 10, 1); ctx.fillStyle = '#ffcf7a'; ptext(ctx, '$1', 7, H - 8, 1, '#ffcf7a');
+  },
+  spring: function(ctx, W, H, t){ // a mass on a spring over a neon grid: the oscillation behind every wave
+    var g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b0620'); g.addColorStop(1, '#3a1450'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,79,139,.5)'; ctx.lineWidth = 1; for (var i = 0; i < 6; i++){ var y = H*0.72 + i*i*2.2; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+    for (var i = -4; i <= 4; i++){ ctx.beginPath(); ctx.moveTo(W/2, H*0.72); ctx.lineTo(W/2 + i*W*0.25, H); ctx.stroke(); }
+    var top = 6, y = H*0.42 + Math.cos(t*2.6)*H*0.16, n = 9;
+    ctx.strokeStyle = '#7fe0ff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(W/2, top);
+    for (var i = 1; i <= n; i++) ctx.lineTo(W/2 + (i % 2 ? 6 : -6), top + (y - top)*i/(n + 1));
+    ctx.lineTo(W/2, y); ctx.stroke(); ctx.fillStyle = '#ffd36b'; ctx.fillRect(W/2 - 7, y, 14, 10);
+    ctx.fillStyle = '#ff4f8b'; ctx.fillRect(W/2 - 12, top - 2, 24, 2);
+  },
+  shell: function(ctx, W, H, t){ // the tide washing over a shell at dawn
+    for (var y = 0; y < H; y++){ var f = y/H; ctx.fillStyle = f < .3 ? '#f5c3c9' : f < .42 ? '#fbe4f0' : f < .6 ? '#7fb7d9' : '#ead9bd'; ctx.fillRect(0, y, W, 1); }
+    ctx.fillStyle = '#fff3c4'; ctx.fillRect(Math.round(W*0.7), Math.round(H*0.22), 6, 3);
+    var reach = Math.round(H*0.6 + (Math.sin(t*0.9) + 1)*H*0.14);
+    for (var y = Math.round(H*0.6); y < reach; y++){ ctx.fillStyle = y > reach - 2 ? '#ffffff' : '#a9d3ea'; ctx.fillRect(0, y, W, 1); }
+    var sx = Math.round(W*0.32), sy = Math.round(H*0.82); ctx.fillStyle = '#f6d2dc'; ctx.fillRect(sx, sy, 7, 4); ctx.fillRect(sx + 1, sy - 1, 5, 1); ctx.fillStyle = '#e8a0b4'; ctx.fillRect(sx + 2, sy, 1, 4); ctx.fillRect(sx + 4, sy, 1, 4);
+  }
+};
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'city' ? 440 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 300 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -1216,10 +1357,10 @@ function drawWoolfWaves(ctx, W, H, t){
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'city', 'wave', 'woolf'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
-    if (SCENES[scene] === 'city'){ var t = (now - t0)/1000; if (!cityState) cityState = citySetup(W, H); drawCity(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); }
+    if (SCENES[scene] === 'stmarks'){ var t = (now - t0)/1000; if (!cityState) cityState = stSetup(W, H); drawStMarks(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); }
     else draw(now);
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
@@ -1266,12 +1407,7 @@ function miniLighthouse(ctx, W, H, t){
   else wins.forEach(function(w){ visible.add(w); });
   function tick(){
     var t = (performance.now() - t0)/1000;
-    visible.forEach(function(w){ var c = w.querySelector('canvas'), x = c.getContext('2d'), n = +w.dataset.scene;
-      if (n === 0) miniLighthouse(x, 64, 64, t);
-      else if (n === 1){ if (!st) st = citySetup(64, 64); if (DATA) drawCity(x, 64, 64, t, st); }
-      else if (n === 2){ var dpr = devicePixelRatio; c.width = 64*dpr; c.height = 64*dpr; var old = devicePixelRatio; drawWaveTank(x, c.width, c.height, t, true); }
-      else drawWoolfWaves(x, 64, 64, t);
-    });
+    visible.forEach(function(w){ var c = w.querySelector('canvas'); VIG[w.dataset.vig](c.getContext('2d'), c.width, c.height, t); });
     setTimeout(function(){ requestAnimationFrame(tick); }, 110);
   }
   tick();
