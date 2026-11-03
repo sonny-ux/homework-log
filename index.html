@@ -40,7 +40,7 @@ main { max-width: 900px; margin: 0 auto; }
 .bar h1 { font-size: 22px; font-weight: 700; letter-spacing: .02em; padding: 10px 14px; }
 .bar .date { padding: 10px 14px; border-left: var(--rule) solid var(--ink); font-weight: 600; display: flex; align-items: center; }
 .bar .flag { width: 46px; background: var(--red); border-left: var(--rule) solid var(--ink); }
-nav.seg { display: grid; grid-template-columns: repeat(4, 1fr); border: var(--rule) solid var(--ink); border-top: none; position: sticky; top: 0; z-index: 5; background: var(--paper); }
+nav.seg { display: grid; grid-template-columns: repeat(5, 1fr); border: var(--rule) solid var(--ink); border-top: none; position: sticky; top: 0; z-index: 5; background: var(--paper); }
 nav.seg a { text-align: center; padding: 10px 4px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: .04em; text-transform: uppercase; font-size: 13px; }
 nav.seg a + a { border-left: var(--rule) solid var(--ink); }
 nav.seg a.on { background: var(--ink); color: var(--paper); }
@@ -235,12 +235,29 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .subnav a { padding: 5px 14px; font-size: 13px; font-weight: 600; color: inherit; text-decoration: none; }
 .subnav a + a { border-left: var(--thin) solid var(--ink); }
 .part { margin-top: 22px; padding-top: 16px; border-top: var(--rule) solid var(--ink); scroll-margin-top: 60px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { border: var(--rule) solid var(--ink); padding: 12px; color: inherit; text-decoration: none; min-height: 110px; display: flex; flex-direction: column; }
+.tile.wide { grid-column: 1 / -1; min-height: 0; }
+.tile.accent { border-left: 10px solid var(--red); }
+.tl { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--muted); }
+.tb { font-size: 38px; font-weight: 700; line-height: 1.1; margin-top: auto; }
+.tm { font-size: 17px; font-weight: 600; margin-top: 8px; line-height: 1.3; } .tm small { color: var(--muted); font-weight: 500; }
+.mbar { display: flex; height: 10px; margin-top: 8px; outline: var(--thin) solid var(--ink); } .mbar i { display: block; }
+.strip { display: flex; gap: 6px; margin-top: 8px; height: 80px; }
+.sd { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; outline: var(--thin) solid var(--ink); position: relative; }
+.sd em { position: absolute; bottom: -18px; left: 0; right: 0; text-align: center; font-size: 10px; font-style: normal; color: var(--muted); }
+.strip { margin-bottom: 16px; } .sd.now { outline: 3px solid var(--yellow); }
+.sd span { position: absolute; top: 4px; left: 0; right: 0; text-align: center; font-size: 11px; font-weight: 700; color: var(--muted); }
+.dl { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; margin-top: 8px; font-size: 14px; font-weight: 600; }
+.dl i { width: 12px; height: 12px; outline: 1.5px solid var(--ink); } .dl span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
 </head>
 <body>
 <main>
   <div class="bar"><h1>Homework</h1><div class="date" id="today"></div><div class="flag"></div></div>
-  <nav class="seg"><a href="#day" class="on">Time</a><a href="#asg">Due</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
+  <nav class="seg"><a href="#home" class="on">Home</a><a href="#day">Time</a><a href="#asg">Due</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
+
+  <section id="home"><div class="tiles" id="tiles"></div></section>
 
   <section id="day">
     <div class="subnav"><a href="#day">Today</a><a href="#wk">This week</a></div>
@@ -598,6 +615,30 @@ function renderLog(){
   el('lnow').classList.toggle('on', LOG_OFF === 0);
   renderTopics(DATA.sessions.filter(function(s){ return s.week === iso(ws); }));
 }
+
+function renderHome(){
+  var t = iso(today), todayMin = DATA.sessions.filter(function(s){ return s.date === t; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+  var ws = iso(sunday(today)), wk = DATA.sessions.filter(function(s){ return s.week === ws; });
+  var wkMin = wk.reduce(function(a,s){ return a+(s.minutes||0); },0), by = {};
+  wk.forEach(function(s){ by[s['class']] = (by[s['class']]||0) + (s.minutes||0); });
+  var bar = CLASSES.filter(function(c){ return by[c]; }).map(function(c){ return '<i class="' + cls(c) + '" style="flex:' + by[c] + '"></i>'; }).join('');
+  var strip = '';
+  for (var i = 0; i < 7; i++){ var d = iso(addDays(sunday(today), i)), m = wk.filter(function(s){ return s.date === d; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+    var segs = CLASSES.map(function(c){ var cm = wk.filter(function(s){ return s.date === d && s['class'] === c; }).reduce(function(a,s){ return a+(s.minutes||0); },0); return cm ? '<div class="' + cls(c) + '" style="height:' + Math.min(100, cm/3) + '%"></div>' : ''; }).join('');
+    strip += '<div class="sd' + (d === t ? ' now' : '') + '" data-day="' + d + '">' + segs + '<span>' + DAYS[i].charAt(0) + '</span><em>' + (m ? hm(m) : '') + '</em></div>'; }
+  var open = DATA.assignments.filter(function(a){ return !a.done && a.due >= t; }).slice(0, 3);
+  var due = open.map(function(a){ var n = Math.round((parse(a.due) - today)/864e5);
+    return '<div class="dl" data-day="' + a.due + '"><i class="' + cls(a['class']) + '"></i><span>' + esc(a.title) + '</span><b>' + (n === 0 ? 'today' : n === 1 ? 'tomorrow' : n + 'd') + '</b></div>'; }).join('');
+  var next = el('plan').querySelector('.pl'), nextHtml = next ? next.querySelector('b').textContent + ' <small>' + next.querySelector('.pm').textContent + '</small>' : 'Nothing pressing';
+  var hl = el('hl').textContent.replace(/^Highlight/, '');
+  el('tiles').innerHTML =
+    '<a class="tile" href="#day"><div class="tl">Today</div><div class="tb">' + hm(todayMin) + '</div></a>' +
+    '<a class="tile" href="#wk"><div class="tl">This week</div><div class="tb">' + hm(wkMin) + '</div><div class="mbar">' + bar + '</div></a>' +
+    '<a class="tile wide" href="#wk"><div class="tl">Your week</div><div class="strip">' + strip + '</div></a>' +
+    '<a class="tile accent" href="#asg"><div class="tl">Next up</div><div class="tm">' + nextHtml + '</div></a>' +
+    '<a class="tile" href="#asg"><div class="tl">Due soon</div>' + (due || '<div class="tm">Nothing due</div>') + '</a>' +
+    (hl ? '<a class="tile wide" href="#ins"><div class="tl">Highlight</div><div class="tm">' + esc(hl) + '</div></a>' : '');
+}
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -749,7 +790,7 @@ function renderAssignments(){
 }
 
 function render(){
-  renderToday(); renderPlan(); renderWeek(); renderAssignments();
+  renderToday(); renderPlan(); renderWeek(); renderAssignments(); renderHome();
   var u = new Date(DATA.updated);
   el('upd').textContent = 'Updated ' + DAYS[u.getDay()] + ' ' + MON[u.getMonth()] + ' ' + u.getDate() + ', ' + u.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + ' · from the coursework log';
 }
@@ -782,7 +823,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "4d52320d13";
+var APP_BUILD = "58b2ddec04";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
