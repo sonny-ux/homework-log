@@ -520,6 +520,15 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   }
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
+
+var APP_BUILD = "605b850a5a";
+(function(){
+  if (APP_BUILD === "dev") return;
+  fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
+    var m = t.match(/var APP_BUILD = "([^"]+)"/);
+    if (m && m[1] !== APP_BUILD) location.replace(location.pathname + '?v=' + m[1]);
+  }).catch(function(){});
+})();
 fetch('data.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(d){
   DATA = d; weekStart = sunday(today); render();
 }).catch(function(){ el('band').innerHTML = '<div class="empty">Could not load data.json.</div>'; });
