@@ -1092,7 +1092,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "eef28c9f9c";
+var APP_BUILD = "18a20bc0c2";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2280,10 +2280,16 @@ ROOMS.penthouse = function(ctx, W, H, t, go){
   // the chandelier
   var cx = Math.round(W*0.32); ctx.fillStyle = '#c9a43a'; ctx.fillRect(cx, 6, 1, 8); ctx.fillRect(cx - 7, 14, 15, 1); ctx.fillRect(cx - 5, 16, 11, 1); for (var k = -7; k <= 7; k += 2){ ctx.fillStyle = Math.sin(t*4 + k) > -.3 ? '#fff3c4' : '#ffd36b'; ctx.fillRect(cx + k, 12, 1, 2); }
   ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.12)'; ctx.beginPath(); ctx.moveTo(cx - 7, 16); ctx.lineTo(cx - 28, F); ctx.lineTo(cx + 28, F); ctx.lineTo(cx + 7, 16); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
-  var mx2 = Math.round((xs[0] + ww + xs[1])/2) - 9, my2 = 22, mw = 18, mh = 34; ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.fillRect(mx2 + 1, my2 + 1, mw, mh); ctx.fillStyle = '#f3efe6'; ctx.fillRect(mx2, my2, mw, mh);
-  ctx.fillStyle = '#c4302a'; ctx.fillRect(mx2, my2, 11, 18); ctx.fillStyle = '#2a4aa0'; ctx.fillRect(mx2, my2 + 26, 6, 8); ctx.fillStyle = '#f0c63a'; ctx.fillRect(mx2 + 15, my2 + 29, 3, 5);
-  ctx.fillStyle = '#151218'; ctx.fillRect(mx2 + 11, my2, 1, mh); ctx.fillRect(mx2, my2 + 18, mw, 1); ctx.fillRect(mx2 + 6, my2 + 18, 1, 16); ctx.fillRect(mx2, my2 + 26, 11, 1); ctx.fillRect(mx2 + 14, my2 + 18, 1, 16); ctx.fillRect(mx2 + 14, my2 + 28, 4, 1); ctx.fillRect(mx2, my2, mw, 1); ctx.fillRect(mx2, my2 + mh - 1, mw, 1); ctx.fillRect(mx2, my2, 1, mh); ctx.fillRect(mx2 + mw - 1, my2, 1, mh);
-  ctx.fillStyle = '#c9a43a'; ctx.fillRect(mx2 + 5, my2 + mh + 3, 8, 1);
+  // one great picture between the windows: the great wave, in big pixels, in a heavy gilt frame
+  var gw = 22, gh = 16, gx = Math.round((xs[0] + ww + xs[1])/2) - 11, gy = 24;
+  ctx.fillStyle = 'rgba(0,0,0,.22)'; ctx.fillRect(gx - 2, gy - 2, gw + 5, gh + 5); ctx.fillStyle = '#8a6a1a'; ctx.fillRect(gx - 3, gy - 3, gw + 6, gh + 6); ctx.fillStyle = '#c9a43a'; ctx.fillRect(gx - 2, gy - 2, gw + 4, gh + 4);
+  var WAVE = ['cccccccccccccccccccccc','cccccccccccccccccccccc','cccccwwwccccccccccccc c','cccwbbbbwwcccccccccccc','ccwbbddbbbwcccccccccc ','cwbdbbbbbdbwccccccfccc','cwbdccwbbbdbcccccffwcc','cbdcccwwbbbdbcccfffffc','cbdccccwbbbbdbccbbbbbc','cbdcccccbbbbbddbbdbbbb','bddcccccbbbbbbbbbbbbdb','bdccccccbbdbbbbbbdbbbb','ddcccccbbbbbbbbbbbbbbb','dbbbbbbbbbbdbbbbbbbbbb','bbbbbbbbbbbbbbbbbbbbbb','dddddddddddddddddddddd'];
+  var WC = {c: '#ead9b4', w: '#f8f4ec', b: '#2a4a7a', d: '#1a2a4a', f: '#7a8aa8'};
+  WAVE.forEach(function(row, y){ for (var x = 0; x < gw; x++){ var ch = row[x] || 'c'; ctx.fillStyle = WC[ch] || WC.c; ctx.fillRect(gx + x, gy + y, 1, 1); } });
+  var foam = Math.floor(t*1.5) % 2; ctx.fillStyle = '#f8f4ec'; ctx.fillRect(gx + 9 + foam, gy + 5, 1, 1); ctx.fillRect(gx + 11, gy + 6 + foam, 1, 1);
+  // a marble bust on a column
+  var bx2 = Math.round(W*0.39); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(bx2 - 3, F - 18, 7, 18); ctx.fillStyle = '#d6d0c4'; ctx.fillRect(bx2 - 4, F - 19, 9, 2); ctx.fillRect(bx2 - 4, F - 2, 9, 2); for (var k = -2; k < 4; k += 2){ ctx.fillStyle = '#c9c3b6'; ctx.fillRect(bx2 + k, F - 17, 1, 15); }
+  ctx.fillStyle = '#f3efe6'; ctx.fillRect(bx2 - 4, F - 24, 9, 5); ctx.fillRect(bx2 - 1, F - 26, 3, 2); ctx.fillRect(bx2 - 2, F - 33, 6, 7); ctx.fillStyle = '#d6d0c4'; ctx.fillRect(bx2 - 2, F - 33, 1, 7); ctx.fillRect(bx2 + 3, F - 29, 1, 1); ctx.fillRect(bx2 - 3, F - 34, 7, 2); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(bx2 - 2, F - 35, 5, 1); ctx.fillRect(bx2 + 1, F - 30, 1, 1);
   // the rug, the grand piano and the pianist in a velvet jacket; notes drift up
   ctx.fillStyle = '#7a1e2a'; ctx.fillRect(Math.round(W*0.2), F + 1, Math.round(W*0.5), 3); ctx.fillStyle = '#c9a43a'; for (var x = Math.round(W*0.2); x < Math.round(W*0.7); x += 5) ctx.fillRect(x, F + 2, 2, 1);
   var px = Math.round(W*0.56); ctx.fillStyle = '#151218'; ctx.fillRect(px, F - 18, 34, 6); ctx.fillRect(px + 20, F - 22, 14, 4); ctx.fillRect(px + 1, F - 12, 2, 12); ctx.fillRect(px + 30, F - 12, 2, 12); ctx.fillStyle = '#3a3644'; ctx.fillRect(px, F - 18, 34, 1);
@@ -2458,7 +2464,7 @@ function drawRabbit(ctx, x, y, t, mode, dir){
 (function(){
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var c = document.createElement('canvas'), sc = 3, W = Math.ceil(innerWidth/sc), H = 40; c.width = W; c.height = H;
-  c.style.cssText = 'position:fixed;left:0;bottom:max(18px,env(safe-area-inset-bottom));width:' + (W*sc) + 'px;height:' + (H*sc) + 'px;image-rendering:pixelated;pointer-events:none;z-index:40;transition:opacity .6s';
+  c.style.cssText = 'position:fixed;left:0;bottom:max(18px,env(safe-area-inset-bottom));width:' + (W*sc) + 'px;height:' + (H*sc) + 'px;image-rendering:pixelated;pointer-events:none;z-index:40;transition:opacity .6s;filter:drop-shadow(3px 0 0 #241f1a) drop-shadow(-3px 0 0 #241f1a) drop-shadow(0 3px 0 #241f1a) drop-shadow(0 -3px 0 #241f1a) drop-shadow(4px 6px 0 rgba(0,0,0,.25))';
   document.body.appendChild(c); var x = c.getContext('2d'), t0 = performance.now();
   function f(){ var t = (performance.now() - t0)/1000; x.clearRect(0, 0, W, H);
     var mid = Math.round(W*0.45), px, mode;
