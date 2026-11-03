@@ -1091,7 +1091,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "0f02c65f9e";
+var APP_BUILD = "ba4196806f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1763,7 +1763,7 @@ function drawConey(ctx, W, H, t, st){
   for (var y = sea + 2; y < H; y += 2){ ctx.globalAlpha = .3; R(wx - 2 + Math.round(Math.sin(y + t*2)*2), y, 5, 1, ['#ff5a4e','#ffe7a1','#5ab4ff'][Math.floor(t*3 + y) % 3]); ctx.globalAlpha = 1; }
   // past the boardwalk: steps down to the open beach, dunes and beach grass, and you asleep in a sleeping bag with your guitar
   if (B){ var bx0 = P;
-    for (var y = bw - 30; y < sea; y++){ ctx.fillStyle = y < bw ? (y % 2 ? '#8a3a6a' : '#5a2c66') : '#8a3a6a'; ctx.fillRect(bx0, y, B, 1); }
+    for (var y = bw; y < sea; y++){ ctx.fillStyle = (y + Math.floor(y/2)) % 2 ? '#8a3a6a' : '#7a3468'; ctx.fillRect(bx0, y, B, 1); }
     for (var k = 0; k < 6; k++){ var lx2 = bx0 + 30 + k*22; if (Math.sin(t*0.8 + k*2) > .2){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(lx2, bw + 4 - (k % 3)*3, 1, 1); } }
     for (var k = 0; k < 6; k++) R(bx0 + k*3, bw + k*3, 4, 3, k % 2 ? '#5a3a28' : '#6b4a33');
     for (var x = bx0; x < P + B; x++){ var top = sand - 6 + Math.round(Math.sin((x - bx0)*0.05)*3 + Math.sin((x - bx0)*0.13)*1.5); for (var y = top; y < sea; y++) R(x, y, 1, 1, ((x*7 + y*3) % 11) ? (y < top + 2 ? '#7a6a7a' : '#4e4258') : '#6a5a6a'); }
