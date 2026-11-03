@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T22:45:11+00:00",
+ "updated": "2026-11-03T22:47:58+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -510,8 +510,8 @@
    "start": "4:29 PM",
    "end": "now",
    "start_min": 989,
-   "end_min": 1065,
-   "minutes": 76,
+   "end_min": 1067,
+   "minutes": 78,
    "in_progress": true,
    "topic": "Topology HW7: read all six questions; open and closed maps.",
    "refs": [
