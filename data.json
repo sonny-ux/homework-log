@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T08:19:17+00:00",
+ "updated": "2026-11-03T08:36:23+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -512,7 +512,8 @@
    "detail": "Essay. The Reminders date (Fri 10/30) is the late cutoff, not the due date; you plan to submit late, by 10/30. Submitted Thu 10/29.",
    "done": true,
    "source": "hand",
-   "key": ""
+   "key": "",
+   "about": ""
   },
   {
    "due": "2026-10-27",
@@ -522,7 +523,8 @@
    "detail": "Problem Set 5 (20 pts; Canvas, not yet submitted). Plan: turn in one day late, Wed 10/28",
    "done": false,
    "source": "hand",
-   "key": "problem set 5"
+   "key": "problem set 5",
+   "about": "French 5-8 and 5-16: pendulum equilibrium; two coupled pendulums (equations, normal modes, frequencies); a driven chain of N oscillators. 20 pts, Canvas."
   },
   {
    "due": "2026-11-01",
@@ -532,7 +534,8 @@
    "detail": "Problem Set 6 (30 pts; Canvas). Not submitted as of Mon 11/2 (Canvas: No Submission); working on it late.",
    "done": false,
    "source": "hand",
-   "key": "problem set 6"
+   "key": "problem set 6",
+   "about": "King 5-2, 5-3, 5-6 (travelling waves). 1: write a wave's equation from amplitude, frequency, speed and start. 2: show functions solve the 1D and 3D wave equation. 3: convert wavelength and frequency for light and sound. 30 pts, one merged PDF on Gradescope, reasoning written beside the math."
   },
   {
    "due": "2026-11-04",
@@ -542,7 +545,8 @@
    "detail": "Homework 7 (30 pts; Canvas; open until Thu 11/5, 11:59 PM)",
    "done": false,
    "source": "hand",
-   "key": "homework 7"
+   "key": "homework 7",
+   "about": "30 pts on Canvas, due 11:59 PM; open until Thu 11/5. Problems not yet seen here; send the PDF for a breakdown."
   },
   {
    "due": "2026-11-06",
@@ -552,7 +556,8 @@
    "detail": "Paper 2 (time and prompt to confirm)",
    "done": false,
    "source": "hand",
-   "key": "paper 2"
+   "key": "paper 2",
+   "about": "Drama paper, 750–1000 words, 12 pt, double-spaced, with a real title. Argue how stagecraft (acting, staging, props, audience) is necessary to one scene's meaning, from Hamlet, Hedda Gabler, or Death and the King's Horseman. Your plan: Hamlet 3.4, the Ghost that Gertrude cannot see, with the other Ghost scenes as a 'play within the play'."
   },
   {
    "due": "2026-11-08",
@@ -562,7 +567,8 @@
    "detail": "",
    "done": false,
    "source": "reminders",
-   "key": "discussion post"
+   "key": "discussion post",
+   "about": "Weekly discussion post for Approaches to Literary Study; prompt not yet seen here."
   },
   {
    "due": "2026-11-08",
@@ -572,7 +578,8 @@
    "detail": "Problem Set 7 (50 pts; Canvas; locked as of 11/2). Physics sets are now due weekly, Sundays at 9:00 AM.",
    "done": false,
    "source": "hand",
-   "key": "problem set 7"
+   "key": "problem set 7",
+   "about": "50 pts, on Canvas; still locked, so contents not yet known. Sets are due Sundays at 9 AM."
   },
   {
    "due": "2026-11-11",
@@ -582,7 +589,8 @@
    "detail": "",
    "done": false,
    "source": "reminders",
-   "key": "midterm 2"
+   "key": "midterm 2",
+   "about": "Second midterm. Midterm 1 was 28.5/60, so reviewing the homework since then (quotient maps, subspace topology, and later sections) is the priority."
   }
  ]
 }

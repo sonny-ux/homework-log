@@ -211,6 +211,20 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .hbal .bar { position: relative; height: 12px; outline: var(--thin) solid var(--ink); } .hbal .bar i { position: absolute; left: 0; top: 0; bottom: 0; }
 .hbal .bar b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); } .hbal em { font-style: normal; text-align: right; }
 .hbal .hk { font-size: 10px; color: var(--muted); margin-top: 4px; }
+[data-day] { cursor: pointer; }
+.a .about { display: none; font-weight: 400; font-size: 13px; margin-top: 6px; line-height: 1.4; }
+.a.open .about { display: block; }
+.sheetbg { position: fixed; inset: 0; background: rgba(0,0,0,.4); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 30; }
+.sheetbg.on { opacity: 1; pointer-events: auto; }
+.sheet { position: fixed; left: 50%; bottom: 0; transform: translate(-50%, 105%); width: min(640px, 100%); max-height: 78vh; overflow-y: auto; background: var(--paper); border: var(--rule) solid var(--ink); border-bottom: none; z-index: 31; padding: 0 16px max(18px, env(safe-area-inset-bottom)); transition: transform .25s; }
+.sheet.on { transform: translate(-50%, 0); }
+.sh { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 8px; position: sticky; top: 0; background: var(--paper); font-size: 19px; }
+.sx { background: none; border: none; color: inherit; font-size: 26px; cursor: pointer; line-height: 1; }
+.sg { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; font-weight: 700; color: var(--muted); margin: 10px 0 4px; }
+.si { display: grid; grid-template-columns: 14px 1fr; gap: 10px; padding: 8px 0; border-top: var(--thin) solid var(--ink); }
+.si i { width: 14px; height: 14px; margin-top: 4px; outline: 1.5px solid var(--ink); }
+.si small { color: var(--muted); } .si p { font-size: 14px; margin-top: 4px; line-height: 1.4; } .si p.sm { color: var(--muted); font-size: 13px; }
+.sheet .none { color: var(--muted); font-size: 14px; padding: 4px 0; }
 </style>
 </head>
 <body>
@@ -254,6 +268,7 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
   </section>
 
   <p class="updated" id="upd"></p>
+<div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
 </main>
 <script>
 var CLASSES = ['Topology', 'Physics III', 'Phil of Sci', 'Lit Study', 'Woolf'];
@@ -309,14 +324,14 @@ function renderWeek(){
   var html = '<div class="corner"></div>';
   for (var i = 0; i < 7; i++){
     var d = new Date(weekStart); d.setDate(d.getDate() + i);
-    html += '<div class="dh' + (iso(d) === iso(today) ? ' today' : '') + '">' + DAYS[i] + '<small>' + d.getDate() + '</small></div>';
+    html += '<div class="dh' + (iso(d) === iso(today) ? ' today' : '') + '" data-day="' + iso(d) + '">' + DAYS[i] + '<small>' + d.getDate() + '</small></div>';
   }
   var anyDue = false, dueRow = '<div class="duelab">due</div>';
   for (var i = 0; i < 7; i++){
     var d = new Date(weekStart); d.setDate(d.getDate() + i); var ds = iso(d);
     var items = DATA.assignments.filter(function(a){ return a.due === ds && !a.done; });
     if (items.length) anyDue = true;
-    dueRow += '<div class="duecell">' + items.map(function(a){ return '<span class="chip" title="' + esc(a.title) + '"><i class="' + cls(a['class']) + '"></i>' + esc(abbr(a.title)) + '</span>'; }).join('') + '</div>';
+    dueRow += '<div class="duecell" data-day="' + ds + '">' + items.map(function(a){ return '<span class="chip" title="' + esc(a.title) + '"><i class="' + cls(a['class']) + '"></i>' + esc(abbr(a.title)) + '</span>'; }).join('') + '</div>';
   }
   if (anyDue) html += dueRow;
   html += '<div class="axis" style="height:' + height + 'px">';
@@ -503,6 +518,30 @@ function renderHealth(){
   el('cards').innerHTML = cards.map(function(c){ return '<div class="card"><div class="ct">' + c.t + '</div>' + (c.big ? '<div class="cbig">' + c.big + ' <small>' + c.unit + '</small></div>' : '') + (c.note ? '<div class="cn">' + c.note + '</div>' : '') + (c.chart || '') + '</div>'; }).join('');
 }
 document.addEventListener('click', function(e){ var b = e.target.closest('.rng button'); if (!b) return; RANGE = b.dataset.r; document.querySelectorAll('.rng button').forEach(function(x){ x.classList.toggle('on', x === b); }); renderHealth(); });
+
+function openDay(ds){
+  var d = parse(ds), html = '<div class="sh"><b>' + DAYS[d.getDay()] + ' ' + MON[d.getMonth()] + ' ' + d.getDate() + '</b><button class="sx" aria-label="Close">×</button></div>';
+  var due = DATA.assignments.filter(function(a){ return a.due === ds; });
+  html += '<div class="sg">Due</div>' + (due.length ? due.map(function(a){
+    var t = a.key ? typicalMinutes(a) : null, done = a.key ? spentOn(a) : 0, left = t ? Math.max(0, Math.round((t.m - done)/15)*15) : null;
+    return '<div class="si"><i class="' + cls(a['class']) + '"></i><div><b>' + esc(a.title) + '</b> <small>' + esc(a['class']) + (a.time ? ' · ' + esc(a.time) : '') + (a.done ? ' · done' : '') + '</small>'
+      + (a.about ? '<p>' + esc(a.about) + '</p>' : '') + (a.key && !a.done ? '<p class="sm">' + (done ? hm(done) + ' logged so far · ' : '') + (left ? 'about ' + hm(left) + ' left (estimate)' : 'about done') + '</p>' : '') + '</div></div>';
+  }).join('') : '<p class="none">Nothing due.</p>');
+  var ss = DATA.sessions.filter(function(s){ return sday(s) === ds; }).sort(function(a,b){ return nightMin(a.start_min) - nightMin(b.start_min); });
+  var tot = ss.reduce(function(a,s){ return a+(s.minutes||0); },0);
+  html += '<div class="sg">Studied' + (tot ? ' · ' + hm(tot) : '') + '</div>' + (ss.length ? ss.map(function(s){
+    return '<div class="si"><i class="' + cls(s['class']) + '"></i><div><b>' + esc(s['class']) + '</b> <small>' + esc(s.start) + '–' + esc(s.in_progress ? 'now' : s.end) + ' · ' + hm(s.minutes||0) + '</small>' + (s.topic ? '<p>' + esc(s.topic) + '</p>' : '') + '</div></div>';
+  }).join('') : '<p class="none">No study logged.</p>');
+  el('sheet').innerHTML = html; el('sheet').classList.add('on'); el('sheetbg').classList.add('on');
+}
+function closeDay(){ el('sheet').classList.remove('on'); el('sheetbg').classList.remove('on'); }
+document.addEventListener('click', function(e){
+  if (e.target.closest('.sx') || e.target.id === 'sheetbg'){ closeDay(); return; }
+  if (e.target.closest('#sheet')) return;
+  var a = e.target.closest('.a[data-day]'); if (a){ a.classList.toggle('open'); return; }
+  var t = e.target.closest('[data-day]'); if (t) openDay(t.dataset.day);
+});
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeDay(); });
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -617,7 +656,7 @@ function renderCal(){
     var d = new Date(start); d.setDate(d.getDate() + i); var ds = iso(d);
     var items = DATA.assignments.filter(function(a){ return a.due === ds; });
     var past = d < today && iso(d) !== iso(today);
-    html += '<div class="cd' + (ds === iso(today) ? ' today' : '') + (past ? ' past' : '') + '"><div class="n">' + (d.getDate() === 1 || i === 0 ? MON[d.getMonth()] + ' ' : '') + d.getDate() + '</div>'
+    html += '<div class="cd' + (ds === iso(today) ? ' today' : '') + (past ? ' past' : '') + '" data-day="' + ds + '"><div class="n">' + (d.getDate() === 1 || i === 0 ? MON[d.getMonth()] + ' ' : '') + d.getDate() + '</div>'
       + items.map(function(a){ return '<div class="ci ' + cls(a['class']) + '" title="' + esc(a.title) + '">' + esc(window.innerWidth < 560 ? abbr(a.title) : a.title) + (a.time ? ' <small>' + esc(a.time.replace(':00','')) + '</small>' : '') + '</div>'; }).join('') + '</div>';
   }
   el('cal').innerHTML = html;
@@ -643,7 +682,7 @@ function renderAssignments(){
   }
   function row(r){
     var st = r.a.done ? 'done' : r.days < 0 ? 'over' : r.days <= 2 ? 'soon' : '';
-    return '<div class="a ' + st + '"><div class="sw ' + cls(r.a['class']) + '"></div><div class="ti">' + esc(r.a.title) + '<small>' + esc(r.a['class']) + '</small></div><div class="when">' + when(r) + '</div></div>';
+    return '<div class="a ' + st + '" data-day="' + r.a.due + '"><div class="sw ' + cls(r.a['class']) + '"></div><div class="ti">' + esc(r.a.title) + '<small>' + esc(r.a['class']) + '</small>' + (r.a.about ? '<div class="about">' + esc(r.a.about) + '</div>' : '') + '</div><div class="when">' + when(r) + '</div></div>';
   }
   el('queue').innerHTML = groups.filter(function(g){ return g.items.length; }).map(function(g){
     return '<div class="grp ' + g.key + '"><div class="gh">' + g.name + ' <span>' + g.items.length + '</span></div><div class="as">' + g.items.map(row).join('') + '</div>' + (g.note ? '<p class="note">' + g.note + '</p>' : '') + '</div>';
@@ -684,7 +723,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "7c909362bf";
+var APP_BUILD = "59cb0d831a";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
