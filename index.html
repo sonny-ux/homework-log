@@ -474,7 +474,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
     <div class="fc" id="fc"></div>
     <div id="queue"></div>
-    <figure class="room" data-room="sydney" aria-label="Sydney's room: light blue walls, a kitchen island under the window, a fireplace with a crowded mantle, lace curtains, a blue-flowered quilt with her beaver, and the stick insects in the corner"><canvas></canvas></figure>
+    <figure class="room" data-room="entry" aria-label="The kitchen and front door: she reads at the table, the city painting on the wall"><canvas></canvas></figure>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
 
@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "0dc285deb4";
+var APP_BUILD = "deba21ac2c";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2121,13 +2121,64 @@ function rooftopBand(ctx, x, roof, t){
   for (var k = 0; k < 3; k++){ var nph = (t*0.4 + k/3) % 1; ctx.globalAlpha = 1 - nph; ctx.fillStyle = '#f3ead3'; var nx = x + 6 + k*12 + Math.round(Math.sin(nph*6 + k)*3), ny = roof - 42 - Math.round(nph*20); ctx.fillRect(nx, ny, 2, 2); ctx.fillRect(nx + 1, ny - 3, 1, 3); ctx.globalAlpha = 1; }
 }
 
+// ===== Scene 9: inside the Hungarian Pastry Shop. Brick on one side, a wall of framed book covers, lamps, the pastry case,
+// small marble tables; at the front table a man in a houndstooth jacket faces us, typing, a mug and a glass of water beside him.
+function drawPastry(ctx, W, H, t){
+  var floorY = Math.round(H*0.62);
+  ctx.fillStyle = '#3a2418'; ctx.fillRect(0, 0, W, H);
+  var bw = Math.round(W*0.34);
+  for (var y = 0; y < floorY; y += 4) for (var x = (y/4) % 2 ? 0 : 4; x < bw; x += 8){ var r = Math.sin(x*3.1 + y*1.7); ctx.fillStyle = r > .4 ? '#a8604a' : r > -.3 ? '#8a4a3a' : '#c9a08a'; ctx.fillRect(x, y, 7, 3); }
+  for (var y = 3; y < floorY; y += 4){ ctx.fillStyle = '#d6c8b0'; ctx.fillRect(0, y, bw, 1); }
+  ctx.fillStyle = '#4a2e1a'; ctx.fillRect(bw, 0, W - bw, floorY); for (var x = bw; x < W; x += 9){ ctx.fillStyle = '#3a2214'; ctx.fillRect(x, 0, 1, floorY); }
+  for (var r = 0; r < 5; r++) for (var c = 0; c < Math.floor((W - bw - 6)/11); c++){ var fx = bw + 4 + c*11, fy = 10 + r*15, k = r*7 + c;
+    ctx.fillStyle = '#c9a43a'; ctx.fillRect(fx, fy, 9, 12); ctx.fillStyle = ['#c4473a','#2f5f9e','#e9c45a','#3d7a55','#f3ead3','#8e5fa8','#151218','#d9822b'][k % 8]; ctx.fillRect(fx + 1, fy + 1, 7, 10);
+    ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(fx + 2, fy + 3, 5, 1); ctx.fillRect(fx + 2, fy + 8, 3, 1); }
+  for (var k = 0; k < 3; k++){ var lx = Math.round(W*(0.2 + k*0.3)), ly = 18 + (k % 2)*6; ctx.fillStyle = '#151218'; ctx.fillRect(lx, 0, 1, ly); ctx.fillStyle = '#e9b04a'; ctx.fillRect(lx - 3, ly, 7, 3); ctx.fillStyle = '#fff3c4'; ctx.fillRect(lx - 1, ly + 3, 3, 1);
+    ctx.globalCompositeOperation = 'lighter'; for (var rr = 18; rr > 0; rr -= 3){ ctx.fillStyle = 'rgba(90,60,20,.05)'; ctx.beginPath(); ctx.arc(lx, ly + 4, rr, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+  var cx0 = Math.round(W*0.52), cw = W - cx0 - 2, cy0 = floorY - 22;
+  ctx.fillStyle = '#5a3a22'; ctx.fillRect(cx0, cy0 + 8, cw, 14); ctx.fillStyle = '#7a5a3a'; ctx.fillRect(cx0, cy0 + 8, cw, 1);
+  ctx.fillStyle = 'rgba(200,230,240,.35)'; ctx.fillRect(cx0 + 2, cy0, cw - 4, 9); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(cx0 + 2, cy0 + 8, cw - 4, 1);
+  for (var k = 0; k < Math.floor((cw - 6)/8); k++){ var px = cx0 + 4 + k*8; if (k % 3 === 0){ for (var l = 0; l < 4; l++){ ctx.fillStyle = l % 2 ? '#3a2010' : '#e9c45a'; ctx.fillRect(px, cy0 + 4 + l, 6, 1); } ctx.fillStyle = '#c98a3a'; ctx.fillRect(px, cy0 + 3, 6, 1); } else if (k % 3 === 1){ ctx.fillStyle = '#e8c48a'; ctx.fillRect(px, cy0 + 5, 6, 3); ctx.fillStyle = '#f3efe6'; ctx.fillRect(px + 1, cy0 + 4, 4, 1); } else { ctx.fillStyle = '#f3efe6'; ctx.fillRect(px + 1, cy0 + 4, 4, 4); ctx.fillStyle = '#c4302a'; ctx.fillRect(px + 2, cy0 + 3, 2, 1); } }
+  ctx.fillStyle = '#9a9a9a'; ctx.fillRect(W - 14, cy0 - 8, 10, 8); ctx.fillStyle = '#5a5a5a'; ctx.fillRect(W - 12, cy0 - 1, 2, 2); for (var k = 0; k < 2; k++){ var ph = (t*0.7 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(W - 10 + Math.round(Math.sin(ph*8)), cy0 - 10 - Math.round(ph*8), 1, 1); }
+  stPerson(ctx, {dir: -1, v: 0, ph: 1, skin: 3, hair: 'bob', hc: '#5a3a24', jacket: '#f3efe6', pants: '#2a2a32'}, cx0 + Math.round(cw*0.45), cy0 + 8, t);
+  ctx.fillStyle = '#5a3a22'; ctx.fillRect(cx0, cy0 + 8, cw, 14); ctx.fillStyle = 'rgba(200,230,240,.35)'; ctx.fillRect(cx0 + 2, cy0, cw - 4, 9);
+  for (var y = floorY; y < H; y++){ ctx.fillStyle = (Math.floor(y/5) % 2) ? '#5a3a24' : '#4e321e'; ctx.fillRect(0, y, W, 1); }
+  for (var y = floorY; y < H; y += 5) for (var x = (y/5) % 2 ? 0 : 10; x < W; x += 20){ ctx.fillStyle = '#3a2416'; ctx.fillRect(x, y, 1, 5); }
+  function table(tx, ty, tw){ ctx.fillStyle = '#e8e4dc'; ctx.fillRect(tx - tw, ty, tw*2 + 1, 3); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(tx - tw, ty + 3, tw*2 + 1, 1); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(tx - tw + 3, ty + 1, 4, 1); ctx.fillStyle = '#151218'; ctx.fillRect(tx, ty + 4, 1, 14); ctx.fillRect(tx - 4, ty + 17, 9, 1); }
+  table(Math.round(W*0.18), floorY + 8, 7); stPerson(ctx, {dir: 1, v: 0, sit: 1, nocup: 1, ph: 2, skin: 0, hair: 'long', hc: '#241a14', jacket: '#3d6a4a', pants: '#2a2a32'}, Math.round(W*0.18) - 10, floorY + 26, t);
+  ctx.fillStyle = '#f3ead3'; ctx.fillRect(Math.round(W*0.18) - 3, floorY + 6, 6, 2);
+  table(Math.round(W*0.72), floorY + 10, 7); stPerson(ctx, {dir: -1, v: 0, sit: 1, nocup: 1, ph: 4, skin: 2, hair: 'short', hc: '#151218', glasses: 1, jacket: '#8a5a3c', pants: '#3a3f55'}, Math.round(W*0.72) + 10, floorY + 28, t);
+  ctx.fillStyle = '#f3efe6'; ctx.fillRect(Math.round(W*0.72) - 2, floorY + 6, 3, 4);
+  // the man at the front table, facing us
+  var mx = Math.round(W*0.5), T = H - 30;
+  for (var y = T - 26; y < T; y++) for (var x = mx - 12; x <= mx + 12; x++){ ctx.fillStyle = ((x + y) % 2) ? '#7a7a7e' : ((x*3 + y) % 5 ? '#a8a8ac' : '#5a5a5e'); ctx.fillRect(x, y, 1, 1); }
+  ctx.fillStyle = '#151218'; ctx.fillRect(mx - 4, T - 25, 9, 25); ctx.fillStyle = '#5a5a5e'; ctx.fillRect(mx - 6, T - 25, 2, 12); ctx.fillRect(mx + 5, T - 25, 2, 12);
+  ctx.fillStyle = '#c48a6a'; ctx.fillRect(mx - 2, T - 29, 5, 4);
+  ctx.fillStyle = '#d9a982'; ctx.fillRect(mx - 6, T - 44, 13, 15); ctx.fillStyle = '#c48a6a'; ctx.fillRect(mx - 6, T - 44, 1, 15); ctx.fillRect(mx + 6, T - 44, 1, 15); ctx.fillRect(mx - 7, T - 39, 1, 4); ctx.fillRect(mx + 7, T - 39, 1, 4);
+  ctx.fillStyle = '#2a2a2a'; ctx.fillRect(mx - 6, T - 48, 13, 5); ctx.fillRect(mx - 7, T - 46, 2, 7); ctx.fillRect(mx + 6, T - 46, 2, 7); ctx.fillStyle = '#8a8a8a'; ctx.fillRect(mx - 4, T - 48, 2, 1); ctx.fillRect(mx + 1, T - 47, 3, 1); ctx.fillRect(mx - 7, T - 43, 1, 2); ctx.fillRect(mx + 7, T - 44, 1, 2);
+  ctx.fillStyle = '#b07a5a'; ctx.fillRect(mx - 3, T - 42, 7, 1);
+  ctx.fillStyle = '#3a2a1a'; ctx.fillRect(mx - 6, T - 38, 6, 1); ctx.fillRect(mx + 1, T - 38, 6, 1); ctx.fillRect(mx - 6, T - 35, 6, 1); ctx.fillRect(mx + 1, T - 35, 6, 1); ctx.fillRect(mx - 6, T - 38, 1, 4); ctx.fillRect(mx + 6, T - 38, 1, 4); ctx.fillRect(mx, T - 37, 1, 1);
+  ctx.fillStyle = 'rgba(232,238,246,.45)'; ctx.fillRect(mx - 5, T - 37, 4, 2); ctx.fillRect(mx + 2, T - 37, 4, 2);
+  ctx.fillStyle = '#241a14'; ctx.fillRect(mx - 3, T - 35, 1, 1); ctx.fillRect(mx + 3, T - 35, 1, 1);
+  ctx.fillStyle = '#c48a6a'; ctx.fillRect(mx, T - 34, 1, 3); ctx.fillStyle = '#9a5a4a'; ctx.fillRect(mx - 2, T - 31, 5, 1); ctx.fillRect(mx - 3, T - 32, 1, 1); ctx.fillRect(mx + 3, T - 32, 1, 1);
+  ctx.fillStyle = '#e8e4dc'; ctx.fillRect(mx - 26, T, 53, 4); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(mx - 26, T + 4, 53, 1); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(mx - 20, T + 1, 6, 1); ctx.fillRect(mx + 10, T + 2, 5, 1);
+  ctx.fillStyle = '#151218'; ctx.fillRect(mx, T + 5, 2, H - T - 7); ctx.fillRect(mx - 8, H - 3, 18, 2);
+  ctx.fillStyle = '#2a2a32'; ctx.fillRect(mx - 9, T - 9, 19, 9); ctx.fillStyle = '#3a3a44'; ctx.fillRect(mx - 9, T - 9, 19, 1); ctx.fillStyle = 'rgba(160,200,255,.25)'; ctx.fillRect(mx - 9, T - 10, 19, 1);
+  ctx.fillStyle = '#151218'; ctx.fillRect(mx - 10, T - 1, 21, 2);
+  for (var k = 0; k < 2; k++){ var hxk = mx - 8 + k*11, tap = Math.floor(t*8 + k*1.5) % 2; ctx.fillStyle = '#7a7a7e'; ctx.fillRect(hxk - 2, T - 6, 4, 5); ctx.fillStyle = '#d9a982'; ctx.fillRect(hxk, T - 2 - tap, 5, 2); ctx.fillStyle = '#c48a6a'; ctx.fillRect(hxk + 1 + tap*2, T - 1, 1, 1); }
+  ctx.fillStyle = '#f3efe6'; ctx.fillRect(mx - 22, T - 6, 5, 6); ctx.fillRect(mx - 17, T - 5, 1, 3); ctx.fillStyle = '#5a3a22'; ctx.fillRect(mx - 22, T - 6, 5, 1);
+  for (var k = 0; k < 2; k++){ var ph = (t*0.6 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(mx - 20 + Math.round(Math.sin(ph*7 + k)), T - 8 - Math.round(ph*8), 1, 1); }
+  ctx.fillStyle = 'rgba(220,235,245,.6)'; ctx.fillRect(mx + 15, T - 10, 5, 10); ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.fillRect(mx + 15, T - 10, 1, 10); ctx.fillStyle = '#e8822a'; for (var k = 0; k < 12; k++) ctx.fillRect(mx + 17 + Math.floor(k/4), T - 2 - k, 1, 1); ctx.fillStyle = '#e9c45a'; ctx.fillRect(mx + 12, T - 1, 9, 1);
+  seasonParticles && 0;
+}
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 190 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -2189,10 +2240,11 @@ function rooftopBand(ctx, x, roof, t){
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; drawPastry(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawVanGogh(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'columbia'){ var t = (now - t0)/1000; if (!cityState) cityState = colSetup(W, H); drawColumbia(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
@@ -2202,7 +2254,7 @@ function rooftopBand(ctx, x, roof, t){
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
@@ -2325,99 +2377,45 @@ var ROOMS = {
     ctx.fillStyle = '#fbf7ee'; ctx.fillRect(fx + 6, F - 27, 6, 7); ctx.fillStyle = '#8a7a6a'; ctx.fillRect(fx + 7, F - 25, 4, 1); ctx.fillRect(fx + 7, F - 23, 3, 1);
     return S;
   },
-  sydney: function(ctx, W, H, t, go){
-    // Sydney's room: light blue walls, a fireplace and mantle, lace at the windows, her quilt and her beaver, the stick insects in the corner
-    var F = roomShell(ctx, W, H, '#a9cde6', '#a1c5df', '#f6f3ec'), S = [];
-    function lace(x, y, w, h){
-      nightWindow(ctx, x, y, w, h, t);
-      ctx.fillStyle = '#c9a43a'; ctx.fillRect(x - 6, y - 5, w + 12, 1); ctx.fillRect(x - 7, y - 6, 2, 3); ctx.fillRect(x + w + 5, y - 6, 2, 3);
-      var pw = Math.round(w*0.38), ph = h + 9;
-      [x - 4, x + w + 4 - pw].forEach(function(px, side){
-        for (var yy = 0; yy < ph; yy++){ var sh = Math.round(Math.sin(t*0.9 + yy*0.2 + side)*0.7*yy/ph), g = side ? Math.round(yy/ph*3) : -Math.round(yy/ph*3);
-          for (var xx = 0; xx < pw; xx++){
-            if ((xx % 4 === 1 && yy % 4 === 1) || (xx % 4 === 3 && yy % 4 === 3)) continue;
-            if (yy === ph - 1 && xx % 3 === 1) continue;
-            ctx.fillStyle = xx % 3 === 0 ? 'rgba(226,222,212,.9)' : 'rgba(255,255,255,.78)'; ctx.fillRect(px + xx + sh + Math.round(g*(side ? -1 : 1)*0), y - 4 + yy, 1, 1); } }
-        ctx.fillStyle = '#e8a0b4'; ctx.fillRect(side ? px : px + pw - 2, y + Math.round(h*0.62), 2, 1); });
-    }
-    function pile(x, y, cols){ ctx.fillStyle = cols[0]; ctx.fillRect(x, y - 2, 11, 2); ctx.fillRect(x + 10, y - 1, 2, 1); ctx.fillStyle = cols[1]; ctx.fillRect(x + 1, y - 4, 8, 2); ctx.fillRect(x - 1, y - 3, 2, 2); ctx.fillStyle = cols[2]; ctx.fillRect(x + 3, y - 6, 5, 2); ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fillRect(x + 1, y - 2, 9, 1); ctx.fillRect(x + 2, y - 4, 6, 1); }
-    // two big windows with lace curtains
-    lace(13, 13, 22, 33);
-    var bw = 48, bx = W - 20 - bw;
-    // the kitchen island under the window: butcher-block top, white cabinets, two stools, a fruit bowl and a mug
-    var ix = 9, iw = 30, it = F - 15;
-    ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fillRect(ix + 1, it + 1, iw, 15);
-    ctx.fillStyle = '#f3efe6'; ctx.fillRect(ix + 1, it + 2, iw - 2, 13); ctx.fillStyle = '#d9d2c2'; ctx.fillRect(ix + 1, it + 2, iw - 2, 1); ctx.fillRect(ix + Math.round(iw/2), it + 3, 1, 12);
-    ctx.fillStyle = '#9a948a'; ctx.fillRect(ix + Math.round(iw/2) - 3, it + 6, 2, 1); ctx.fillRect(ix + Math.round(iw/2) + 2, it + 6, 2, 1);
-    ctx.fillStyle = '#b5844f'; ctx.fillRect(ix - 1, it, iw + 2, 2); ctx.fillStyle = '#d0a06a'; ctx.fillRect(ix - 1, it, iw + 2, 1); ctx.fillStyle = '#9a6a3a'; for (var x = ix + 2; x < ix + iw; x += 5) ctx.fillRect(x, it + 1, 1, 1);
-    ctx.fillStyle = '#2f5f9e'; ctx.fillRect(ix + 3, it - 2, 7, 2); ctx.fillStyle = '#c4473a'; ctx.fillRect(ix + 4, it - 4, 2, 2); ctx.fillStyle = '#e9c45a'; ctx.fillRect(ix + 6, it - 4, 3, 2); ctx.fillStyle = '#3d7a55'; ctx.fillRect(ix + 5, it - 5, 1, 1);
-    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(ix + 21, it - 3, 3, 3); ctx.fillRect(ix + 24, it - 2, 1, 1); ctx.fillStyle = '#c4473a'; ctx.fillRect(ix + 21, it - 2, 3, 1);
-    for (var k = 0; k < 2; k++){ var ph = (t*0.5 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.5*(1 - ph)) + ')'; ctx.fillRect(ix + 22 + Math.round(Math.sin(ph*7 + k)), it - 4 - Math.round(ph*6), 1, 1); }
-    [ix + 4, ix + iw - 9].forEach(function(sx){ ctx.fillStyle = '#3b2a24'; ctx.fillRect(sx, F - 8, 6, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(sx + 1, F - 6, 1, 6); ctx.fillRect(sx + 4, F - 6, 1, 6); ctx.fillRect(sx + 1, F - 3, 4, 1); });
-    lace(bx + 13, 12, 22, 22);
-    // the fireplace, its glow on the room
-    var fx = Math.max(46, Math.round((40 + bx)/2) - 18), fl = Math.sin(t*7);
-    ctx.globalCompositeOperation = 'lighter'; for (var r = 22; r > 2; r -= 4){ ctx.fillStyle = 'rgba(120,60,20,' + (0.05 + 0.01*fl) + ')'; ctx.beginPath(); ctx.arc(fx + 18, F - 8, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fillRect(fx + 1, F - 29, 36, 29);
-    ctx.fillStyle = '#efe6d2'; ctx.fillRect(fx, F - 30, 36, 30); ctx.fillStyle = '#d9cdb0'; ctx.fillRect(fx, F - 30, 1, 30); ctx.fillRect(fx + 35, F - 30, 1, 30); ctx.fillRect(fx + 4, F - 26, 28, 1);
-    ctx.fillStyle = '#b98a6a'; ctx.fillRect(fx + 6, F - 22, 24, 22); ctx.fillStyle = '#1a1416'; ctx.fillRect(fx + 8, F - 20, 20, 20);
-    ctx.fillStyle = '#5a3a28'; ctx.fillRect(fx + 11, F - 4, 14, 2); ctx.fillStyle = '#7a5a41'; ctx.fillRect(fx + 13, F - 5, 10, 1);
-    for (var k = 0; k < 6; k++){ var fh = 5 + Math.round(3*Math.abs(Math.sin(t*6 + k*1.7))), cx = fx + 11 + k*2 + (k > 2 ? 1 : 0);
-      ctx.fillStyle = '#c4473a'; ctx.fillRect(cx, F - 4 - fh, 2, fh); ctx.fillStyle = '#ff9a3a'; ctx.fillRect(cx, F - 4 - fh + 2, 2, fh - 3); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(cx + (k % 2), F - 6, 1, 2); }
-    ctx.fillStyle = '#241f1a'; for (var x = fx + 10; x < fx + 27; x += 3) ctx.fillRect(x, F - 3, 1, 3); ctx.fillRect(fx + 9, F - 2, 18, 1);
-    ctx.fillStyle = '#8a7a6a'; ctx.fillRect(fx - 3, F - 1, 42, 2); ctx.fillStyle = '#a89a8a'; ctx.fillRect(fx - 3, F - 1, 42, 1);
-    // the mantle and its knickknacks
-    var my = F - 32; ctx.fillStyle = '#7a5a41'; ctx.fillRect(fx - 4, my, 44, 3); ctx.fillStyle = '#9a7a5a'; ctx.fillRect(fx - 4, my, 44, 1); ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.fillRect(fx - 3, my + 3, 42, 1);
-    [[-2,1,4,'#f3efe6',function(x){ ctx.fillStyle = '#ffd36b'; ctx.fillRect(x, my - 5 - (Math.sin(t*9) > 0 ? 1 : 0), 1, 1); }],
-     [1,3,4,'#c4473a',function(x){ ctx.fillStyle = '#e9c45a'; ctx.fillRect(x, my - 6, 1, 1); ctx.fillRect(x + 2, my - 7, 1, 1); ctx.fillStyle = '#3d7a55'; ctx.fillRect(x + 1, my - 6, 1, 2); }],
-     [5,5,6,'#2f5f9e',function(x){ ctx.fillStyle = '#f3ead3'; ctx.fillRect(x + 1, my - 5, 3, 4); ctx.fillStyle = '#e8a0b4'; ctx.fillRect(x + 2, my - 4, 1, 2); }],
-     [11,4,4,'#e9c45a',function(x){ ctx.fillStyle = '#fbf7ee'; ctx.fillRect(x + 1, my - 3, 2, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(x + 2, my - 3, 1, 1); }],
-     [16,2,3,'#3d7a55',function(x){ ctx.fillRect(x, my - 4, 2, 1); }],
-     [19,3,2,'#e8a0b4',function(x){ ctx.fillStyle = '#f6c6d4'; ctx.fillRect(x + 1, my - 3, 1, 1); }],
-     [23,6,5,'#fbf7ee',function(x){ ctx.fillStyle = '#7fb7d9'; ctx.fillRect(x + 1, my - 4, 4, 3); ctx.fillStyle = '#3d7a55'; ctx.fillRect(x + 1, my - 2, 4, 1); }],
-     [30,4,3,'#d9822b',function(x){ ctx.fillStyle = '#d9822b'; ctx.fillRect(x + 4, my - 2, 1, 1); ctx.fillRect(x + 1, my - 4, 2, 1); }],
-     [35,3,5,'#8e5fa8',function(x){ ctx.fillStyle = '#c9a0d8'; ctx.fillRect(x + 1, my - 4, 1, 3); }]
-    ].forEach(function(o){ var x = fx + o[0]; ctx.fillStyle = o[3]; ctx.fillRect(x, my - o[2], o[1], o[2]); o[4](x); });
-    // the sea painting over the mantle (it opens the sea), and little frames all around it
-    var spx = fx + 7, spy = my - 25 - (go === 'sea' ? 2 : 0);
-    ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.fillRect(spx + 1, spy + 1, 24, 16); ctx.fillStyle = '#c9a43a'; ctx.fillRect(spx, spy, 24, 16); ctx.fillStyle = '#8a6a1a'; ctx.fillRect(spx + 1, spy + 1, 22, 14);
-    vigInto(ctx, 'shell', spx + 2, spy + 2, 20, 12, t);
-    S.push({x: spx, y: spy, w: 24, h: 16, scene: 3, id: 'sea'});
-    frameBox(ctx, fx - 3, spy + 1, 7, 9, '#e8a0b4', '#f3ead3'); ctx.fillStyle = '#5a3a24'; ctx.fillRect(fx - 1, spy + 3, 3, 3); ctx.fillStyle = '#c4473a'; ctx.fillRect(fx - 1, spy + 6, 3, 2);
-    frameBox(ctx, fx, spy + 12, 5, 5, '#2f5f9e', '#e9c45a');
-    frameBox(ctx, fx + 33, spy - 1, 8, 7, '#241f1a', '#9fc0d9'); ctx.fillStyle = '#3d7a55'; ctx.fillRect(fx + 34, spy + 3, 6, 2);
-    frameBox(ctx, fx + 32, spy + 8, 6, 8, '#3d7a55', '#fbf7ee'); ctx.fillStyle = '#c4473a'; ctx.fillRect(fx + 34, spy + 10, 2, 2);
-    frameBox(ctx, fx + 13, spy - 7, 6, 5, '#d9822b', '#f6c6d4');
-    // the bed: a white quilt of blue flowers, the pillow, the beaver
-    ctx.fillStyle = '#5a3a28'; ctx.fillRect(bx + bw - 3, F - 27, 3, 27); ctx.fillRect(bx + bw - 4, F - 28, 5, 1); ctx.fillRect(bx + 1, F - 4, 2, 4); ctx.fillRect(bx, F - 7, bw - 2, 3);
-    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + bw - 13, F - 18, 9, 4); ctx.fillStyle = '#e2dccd'; ctx.fillRect(bx + bw - 13, F - 15, 9, 1);
-    ctx.fillStyle = '#f6f4ee'; ctx.fillRect(bx, F - 14, bw - 4, 4); ctx.fillRect(bx - 1, F - 11, bw - 3, 6); ctx.fillStyle = '#dcd8ce'; ctx.fillRect(bx - 1, F - 11, bw - 3, 1); ctx.fillRect(bx - 1, F - 6, bw - 3, 1);
-    for (var yy = F - 13, row = 0; yy < F - 6; yy += 4, row++) for (var x = bx + 2 + (row % 2)*3; x < bx + bw - 6; x += 6){ ctx.fillStyle = '#4d7ed0'; ctx.fillRect(x - 1, yy, 3, 1); ctx.fillRect(x, yy - 1, 1, 3); ctx.fillStyle = '#e9c45a'; ctx.fillRect(x, yy, 1, 1); ctx.fillStyle = '#9ab8e8'; ctx.fillRect(x + 1, yy + 1, 1, 1); }
-    var bv = bx + bw - 20, nod = Math.sin(t*0.6) > .85 ? 1 : 0;
-    ctx.fillStyle = '#4a3a2e'; ctx.fillRect(bv + 6, F - 17, 4, 3); ctx.fillStyle = '#3a2c22'; ctx.fillRect(bv + 7, F - 16, 1, 1); ctx.fillRect(bv + 9, F - 16, 1, 1);
-    ctx.fillStyle = '#8a5a34'; ctx.fillRect(bv, F - 20, 7, 6); ctx.fillStyle = '#a8784a'; ctx.fillRect(bv + 1, F - 18, 3, 3);
-    ctx.fillStyle = '#8a5a34'; ctx.fillRect(bv - 1, F - 25 + nod, 6, 5); ctx.fillStyle = '#6b4226'; ctx.fillRect(bv - 1, F - 26 + nod, 1, 1); ctx.fillRect(bv + 4, F - 26 + nod, 1, 1);
-    ctx.fillStyle = '#a8784a'; ctx.fillRect(bv - 2, F - 22 + nod, 3, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(bv - 2, F - 22 + nod, 1, 1); ctx.fillRect(bv + 1, F - 24 + nod, 1, 1); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bv - 1, F - 20 + nod, 1, 1);
-    // a sweater left over the foot of the bed
-    ctx.fillStyle = '#c4473a'; ctx.fillRect(bx + 4, F - 15, 8, 2); ctx.fillRect(bx + 1, F - 13, 3, 6); ctx.fillStyle = '#a8352c'; ctx.fillRect(bx + 1, F - 9, 3, 1); ctx.fillRect(bx + 5, F - 15, 1, 2);
-    // Sydney, sitting on the end of the bed with a book
-    var her = usTwo()[0]; her.sit = 1; her.v = 0; her.dir = -1; her.ph = 1; stPerson(ctx, her, bx + 16, F - 1, t);
-    ctx.fillStyle = '#7fb7d9'; ctx.fillRect(bx + 7, F - 15, 5, 2); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 7, F - 16, 2, 1); ctx.fillRect(bx + 10, F - 16, 2, 1);
-    // the stick insects' tank in the corner, on its stand
-    var kx = W - 19, ky = F - 30;
-    ctx.fillStyle = '#5a3a28'; ctx.fillRect(kx, F - 13, 14, 2); ctx.fillRect(kx + 1, F - 11, 1, 11); ctx.fillRect(kx + 12, F - 11, 1, 11); ctx.fillRect(kx + 1, F - 4, 12, 1);
-    ctx.fillStyle = 'rgba(190,230,210,.45)'; ctx.fillRect(kx, ky, 14, 17); ctx.fillStyle = '#6b4a33'; ctx.fillRect(kx + 1, ky + 14, 12, 3);
-    ctx.fillStyle = '#7a5a3a'; for (var k = 0; k < 11; k++){ ctx.fillRect(kx + 2 + k, ky + 13 - k, 1, 1); } for (var k = 0; k < 6; k++) ctx.fillRect(kx + 10 - k, ky + 14 - Math.round(k*1.6), 1, 1);
-    ctx.fillStyle = '#3d7a55'; [[3,4],[4,3],[8,5],[9,4],[10,6],[5,9],[6,8],[11,2]].forEach(function(q){ ctx.fillRect(kx + q[0], ky + q[1], 2, 1); }); ctx.fillStyle = '#5a9a6a'; ctx.fillRect(kx + 9, ky + 5, 1, 1); ctx.fillRect(kx + 4, ky + 4, 1, 1);
-    var sw = Math.round(Math.sin(t*0.7)*0.8);
-    ctx.fillStyle = '#9aa84a'; for (var k = 0; k < 6; k++) ctx.fillRect(kx + 4 + k + (k > 2 ? sw : 0), ky + 9 - k, 1, 1); ctx.fillStyle = '#7a8a3a'; ctx.fillRect(kx + 5, ky + 9, 1, 1); ctx.fillRect(kx + 7, ky + 7, 1, 1); ctx.fillRect(kx + 9 + sw, ky + 3, 1, 1);
-    ctx.fillStyle = '#8a7a4a'; for (var k = 0; k < 5; k++) ctx.fillRect(kx + 11 - Math.round(k*0.4), ky + 8 + k, 1, 1); ctx.fillRect(kx + 12, ky + 10, 1, 1); ctx.fillRect(kx + 10, ky + 11, 1, 1);
-    ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fillRect(kx + 2, ky + 1, 1, 8);
-    ctx.fillStyle = '#3a3644'; ctx.fillRect(kx, ky, 1, 17); ctx.fillRect(kx + 13, ky, 1, 17); ctx.fillRect(kx, ky + 16, 14, 1); ctx.fillStyle = '#5a5468'; ctx.fillRect(kx - 1, ky - 1, 16, 2); ctx.fillStyle = '#8a8a98'; for (var x = kx; x < kx + 14; x += 2) ctx.fillRect(x, ky - 1, 1, 1);
-    // clothes on the floor: a pile under the window, a pile in front of the bed, one sock
-    pile(fx - 14, F + 7, ['#2f5f9e', '#e9c45a', '#f3ead3']);
-    pile(bx + 22, F + 7, ['#3a3644', '#e8a0b4', '#3d7a55']);
-    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 37, F + 5, 3, 1); ctx.fillRect(bx + 39, F + 4, 1, 2);
+  entry: function(ctx, W, H, t, go){
+    var F = roomShell(ctx, W, H, '#33463d', '#3a4e44', '#8a9a7a'), S = [];
+    // kitchen: cabinets, counter, kettle steaming
+    ctx.fillStyle = '#c9b89a'; ctx.fillRect(7, 10, 34, 14); ctx.fillStyle = '#a8977a'; ctx.fillRect(23, 10, 1, 14); ctx.fillRect(7, 23, 34, 1); ctx.fillStyle = '#5a412f'; ctx.fillRect(20, 16, 1, 3); ctx.fillRect(26, 16, 1, 3);
+    ctx.fillStyle = '#e8dcc0'; ctx.fillRect(7, F - 20, 34, 2); ctx.fillStyle = '#c9b89a'; ctx.fillRect(7, F - 18, 34, 18); ctx.fillStyle = '#a8977a'; ctx.fillRect(23, F - 18, 1, 18); ctx.fillStyle = '#5a412f'; ctx.fillRect(20, F - 14, 1, 3); ctx.fillRect(26, F - 14, 1, 3);
+    ctx.fillStyle = '#c4473a'; ctx.fillRect(12, F - 25, 6, 5); ctx.fillRect(18, F - 24, 2, 1); ctx.fillStyle = '#241f1a'; ctx.fillRect(14, F - 26, 2, 1);
+    for (var k = 0; k < 3; k++){ var ph = (t*0.6 + k/3) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(19 + Math.round(Math.sin(ph*8 + k)*1.5), F - 26 - Math.round(ph*10), 1, 1); }
+    // the table, her at it with tea and a book
+    var tx = Math.round(W*0.38); ctx.fillStyle = '#7a5a41'; ctx.fillRect(tx, F - 15, 22, 2); ctx.fillRect(tx + 2, F - 13, 1, 13); ctx.fillRect(tx + 19, F - 13, 1, 13);
+    ctx.fillStyle = '#f3ead3'; ctx.fillRect(tx + 15, F - 18, 3, 3); var bl = go === 'book' ? 2 : 0; ctx.fillStyle = '#7fb7d9'; ctx.fillRect(tx + 3, F - 18 - bl, 11, 3); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(tx + 4, F - 19 - bl, 4, 1); ctx.fillRect(tx + 9, F - 19 - bl, 4, 1); ctx.fillStyle = '#e8a0b4'; ctx.fillRect(tx + 8, F - 19 - bl, 1, 2);
+
+    var her = usTwo()[0]; her.sit = 1; her.v = 0; her.dir = 1; her.ph = 1; stPerson(ctx, her, tx - 3, F + 1, t);
+    // she is daydreaming: a thought cloud with the sea in it rises above her
+    var bob = Math.round(Math.sin(t*1.2)), bx = tx - 18, by = F - 66 + bob, lift = go === 'dream' ? 2 : 0;
+    [[tx - 2, F - 38, 1], [tx - 5, F - 43, 2], [tx - 8, F - 49, 2]].forEach(function(c){ ctx.fillStyle = '#fbf7ee'; ctx.fillRect(c[0], c[1] + bob, c[2] + 1, c[2] + 1); });
+    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 2, by - lift, 26, 15); ctx.fillRect(bx, by + 2 - lift, 30, 11); ctx.fillRect(bx + 5, by - 2 - lift, 8, 2); ctx.fillRect(bx + 16, by - 2 - lift, 8, 2); ctx.fillRect(bx + 4, by + 15 - lift, 10, 1);
+    vigInto(ctx, 'shell', bx + 3, by + 2 - lift, 24, 11, t);
+    S.push({x: tx - 20, y: F - 70, w: 38, h: 70, scene: 3, id: 'dream'});
+    ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tx - 8, F - 16, 2, 16);
+    // a wall clock, the real time
+    var ck = Math.round(W*0.5), cy2 = 18, now = new Date(), hA = ((now.getHours() % 12) + now.getMinutes()/60)/12*Math.PI*2 - Math.PI/2, mA = now.getMinutes()/60*Math.PI*2 - Math.PI/2;
+    for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ var d = x*x + y*y; if (d <= 36){ ctx.fillStyle = d > 25 ? '#3b2a24' : '#fbf7ee'; ctx.fillRect(ck + x, cy2 + y, 1, 1); } }
+    ctx.fillStyle = '#241f1a'; for (var k = 1; k < 5; k++) ctx.fillRect(ck + Math.round(Math.cos(mA)*k), cy2 + Math.round(Math.sin(mA)*k), 1, 1); for (var k = 1; k < 4; k++) ctx.fillRect(ck + Math.round(Math.cos(hA)*k), cy2 + Math.round(Math.sin(hA)*k), 1, 1);
+    ctx.fillStyle = '#c4473a'; ctx.fillRect(ck, cy2, 1, 1);
+    frameBox(ctx, ck + 12, 9, 13, 16, '#c9b89a', '#fbf7ee'); ctx.fillStyle = '#c4473a'; ctx.fillRect(ck + 13, 10, 11, 3); for (var r2 = 0; r2 < 4; r2++) for (var c2 = 0; c2 < 5; c2++){ ctx.fillStyle = (r2*5 + c2) === (new Date().getDate() % 20) ? '#c4473a' : '#b9ad94'; ctx.fillRect(ck + 14 + c2*2, 15 + r2*2, 1, 1); }
+    ctx.fillStyle = '#7a5a41'; ctx.fillRect(ck + 6, 38, 22, 1); [['#c4473a',7],['#e9c45a',11],['#3d7a55',15],['#d9822b',19],['#f3ead3',23]].forEach(function(j){ ctx.fillStyle = j[0]; ctx.fillRect(ck + j[1], 34, 3, 4); ctx.fillStyle = '#5a412f'; ctx.fillRect(ck + j[1], 33, 3, 1); });
+    var fp = ck + 30; frameBox(ctx, fp, 9, 14, 11, '#241f1a', '#e9c45a'); ctx.fillStyle = '#2f5f9e'; ctx.fillRect(fp + 2, 11, 5, 7); ctx.fillStyle = '#c4473a'; ctx.fillRect(fp + 8, 14, 4, 4);
+    ctx.fillStyle = '#b5651d'; ctx.fillRect(30, 6, 5, 4); ctx.fillStyle = '#3d7a55'; ctx.fillRect(29, 3, 2, 3); ctx.fillRect(32, 2, 2, 4); ctx.fillRect(34, 4, 2, 2);
+    ctx.fillStyle = '#3a3644'; ctx.fillRect(8, 26, 1, 3); ctx.fillRect(6, 29, 6, 4); ctx.fillStyle = '#5a5468'; ctx.fillRect(6, 29, 6, 1);
+    // the coat rack: a leather jacket, a scarf, the burgundy bowler on top
+    var rx = W - 44; ctx.fillStyle = '#3b2a24'; ctx.fillRect(rx, F - 44, 1, 44); ctx.fillRect(rx - 3, F - 1, 7, 1); ctx.fillRect(rx - 3, F - 42, 7, 1);
+    ctx.fillStyle = '#24202b'; ctx.fillRect(rx - 4, F - 41, 4, 14); ctx.fillStyle = '#c4473a'; ctx.fillRect(rx + 1, F - 41, 2, 10); ctx.fillStyle = '#6b1e2a'; ctx.fillRect(rx - 2, F - 47, 5, 3); ctx.fillRect(rx - 3, F - 44, 7, 1);
+    // the front door
+    var dx = W - 32, dy = F - 46, dw = 20, dh = 46;
+    ctx.fillStyle = '#e8dcc0'; ctx.fillRect(dx - 2, dy - 2, dw + 4, dh + 2);
+    { ctx.fillStyle = '#5a3a2a'; ctx.fillRect(dx, dy, dw, dh); ctx.fillStyle = '#4e3224'; ctx.fillRect(dx + 3, dy + 4, 14, 16); ctx.fillRect(dx + 3, dy + 24, 14, 18); ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx + 16, dy + 24, 2, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(dx + 9, dy + 12, 2, 1);
+      if (Math.sin(t*0.7) > .5){ ctx.fillStyle = 'rgba(255,207,122,.6)'; ctx.fillRect(dx, dy + dh - 1, dw, 1); } }
+    // a pair of Converse by the door
+    ctx.fillStyle = '#151218'; ctx.fillRect(dx - 12, F - 3, 5, 3); ctx.fillRect(dx - 6, F - 3, 5, 3); ctx.fillStyle = '#f3ead3'; ctx.fillRect(dx - 12, F - 1, 5, 1); ctx.fillRect(dx - 6, F - 1, 5, 1); ctx.fillRect(dx - 8, F - 3, 1, 1); ctx.fillRect(dx - 2, F - 3, 1, 1);
     return S;
   },
   study: function(ctx, W, H, t, go){
@@ -2554,15 +2552,25 @@ ROOMS.street = function(ctx, W, H, t, go){
  ctx.fillStyle = '#5ab4ff'; for (var k = 0; k < 14; k++) ctx.fillRect(gx + textW(word, 2) + 5 + k, gy + 10 + (k % 3 === 0 ? 1 : 0), 1, 1);
   // sidewalk and curb
   ctx.fillStyle = '#5f5866'; ctx.fillRect(0, walk, W, curb - walk); for (var x = 0; x < W; x += 16){ ctx.fillStyle = '#4e4856'; ctx.fillRect(x, walk, 1, curb - walk); } ctx.fillStyle = '#a89c94'; ctx.fillRect(0, curb, W, 2); ctx.fillStyle = '#1d1b26'; ctx.fillRect(0, curb + 2, W, H - curb - 2);
-  // against the wall: a man asleep in a cardboard box with a sleeping bag; his dog curled at his feet; a cup, a cart of bags
-  var bx = 8, by = walk + 6; ctx.fillStyle = '#b5865a'; ctx.fillRect(bx, by - 2, 44, 3); ctx.fillStyle = '#c9a07a'; ctx.fillRect(bx + 18, by - 14, 26, 12); ctx.fillStyle = '#a8784a'; ctx.fillRect(bx + 18, by - 14, 26, 1); ctx.fillRect(bx + 18, by - 14, 1, 12); ctx.fillStyle = '#8a5a3a'; ctx.fillRect(bx + 20, by - 12, 23, 10);
-  var br = Math.sin(t*0.9) > 0 ? 1 : 0; ctx.fillStyle = '#3d6a3a'; ctx.fillRect(bx + 6, by - 6 - br, 34, 5 + br); ctx.fillStyle = '#4e7a4a'; ctx.fillRect(bx + 6, by - 6 - br, 34, 1);
-  ctx.fillStyle = '#8a5a3c'; ctx.fillRect(bx + 1, by - 7, 6, 5); ctx.fillStyle = '#5a3a6a'; ctx.fillRect(bx, by - 9, 7, 3); ctx.fillStyle = '#7a7a7a'; ctx.fillRect(bx + 2, by - 3, 4, 1);
-  ctx.fillStyle = '#c9a07a'; ctx.fillRect(bx + 44, by - 4, 7, 3); ctx.fillRect(bx + 49, by - 6, 2, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(bx + 50, by - 6, 1, 1); ctx.fillStyle = '#a8784a'; ctx.fillRect(bx + 43, by - 3 - (Math.floor(t*3) % 2), 1, 1);
-  ctx.fillStyle = '#f3ead3'; ctx.fillRect(bx + 54, by - 4, 3, 4); ctx.fillStyle = '#c9a43a'; ctx.fillRect(bx + 55, by - 3, 1, 1);
-  for (var k = 0; k < 3; k++){ var ph = (t*0.3 + k/3) % 1; pz(ctx, bx + 2 + Math.round(ph*6) + k, by - 14 - Math.round(ph*12), 1 - ph); }
-  var cx = Math.round(W*0.68); ctx.fillStyle = '#9aa0ac'; ctx.fillRect(cx, walk - 4, 16, 1); ctx.fillRect(cx, walk - 4, 1, 9); ctx.fillRect(cx + 15, walk - 4, 1, 9); ctx.fillRect(cx, walk + 4, 16, 1); for (var x = cx + 2; x < cx + 15; x += 3) ctx.fillRect(x, walk - 3, 1, 7);
-  ctx.fillStyle = '#2a2a3a'; ctx.fillRect(cx + 2, walk - 10, 6, 7); ctx.fillStyle = '#5a6a7a'; ctx.fillRect(cx + 8, walk - 9, 6, 6); ctx.fillStyle = '#151218'; ctx.fillRect(cx + 2, walk + 6, 2, 2); ctx.fillRect(cx + 13, walk + 6, 2, 2); ctx.fillRect(cx + 15, walk - 7, 3, 1);
+  // the Hungarian Pastry Shop: a painted icon-mural facade, a warm window with gold lettering, a door, a little sidewalk table
+  var sx0 = 4, sw0 = Math.round(W*0.3) - 8, sTop = 6, sBot = walk, day0 = isDay();
+  ctx.fillStyle = '#2a1a2a'; ctx.fillRect(sx0, sTop, sw0, sBot - sTop);
+  var panels = Math.max(2, Math.floor(sw0/16)), pw = Math.floor(sw0/panels);
+  for (var k = 0; k < panels; k++){ var px = sx0 + k*pw, py = sTop + 2;
+    ctx.fillStyle = ['#2f4a8a','#8a2a2a','#3d6a4a','#7a4a8a'][k % 4]; ctx.fillRect(px + 1, py, pw - 2, 24);
+    ctx.fillStyle = '#c9a43a'; ctx.fillRect(px + 1, py, pw - 2, 1); ctx.fillRect(px + 1, py + 23, pw - 2, 1);
+    var hx = px + Math.floor(pw/2); for (var yy = -3; yy <= 3; yy++) for (var xx = -3; xx <= 3; xx++) if (xx*xx + yy*yy <= 9 && xx*xx + yy*yy >= 4){ ctx.fillStyle = '#e9c45a'; ctx.fillRect(hx + xx, py + 6 + yy, 1, 1); }
+    ctx.fillStyle = '#e8c4a0'; ctx.fillRect(hx - 1, py + 5, 3, 3); ctx.fillStyle = ['#c4302a','#2f5f9e','#e9c45a','#3d7a55'][(k + 1) % 4]; ctx.fillRect(hx - 3, py + 9, 7, 11); ctx.fillStyle = '#f3ead3'; ctx.fillRect(hx, py + 10, 1, 9); }
+  var wy0 = sTop + 30, wh0 = sBot - wy0 - 6, ww0 = sw0 - 14;
+  ctx.fillStyle = '#c9a43a'; ctx.fillRect(sx0 + 1, wy0 - 1, ww0 + 2, wh0 + 2);
+  ctx.fillStyle = day0 ? '#b88a58' : '#ffcf7a'; ctx.fillRect(sx0 + 2, wy0, ww0, wh0);
+  ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx0 + 2, wy0, ww0, 5); for (var k = 0; k < ww0; k += 3){ ctx.fillStyle = ['#c4473a','#2f5f9e','#e9c45a','#3d7a55','#8e5fa8'][(k/3) % 5]; ctx.fillRect(sx0 + 2 + k, wy0 + 1, 2, 3); }
+  [[6, 0], [ww0 - 10, 1]].forEach(function(q){ var hx = sx0 + 2 + q[0], hy = wy0 + wh0 - 2; ctx.fillStyle = '#3b2a24'; ctx.fillRect(hx, hy - 11, 4, 4); ctx.fillRect(hx - 1, hy - 7, 6, 7); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(hx + 5, hy - 4, 6, 1); });
+  ptext(ctx, 'PASTRY', sx0 + 2 + Math.max(0, Math.round((ww0 - textW('PASTRY', 1))/2)), wy0 + 7, 1, '#6a2a1a');
+  var dx0 = sx0 + ww0 + 4; ctx.fillStyle = '#3b2a24'; ctx.fillRect(dx0, wy0 - 2, 9, sBot - wy0 + 2); ctx.fillStyle = day0 ? '#8a6a48' : '#e9b04a'; ctx.fillRect(dx0 + 2, wy0 + 1, 5, 9); ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx0 + 7, wy0 + 14, 1, 2);
+  if (go === 'pastry'){ ctx.fillStyle = 'rgba(255,230,170,.4)'; ctx.fillRect(sx0 + 2, wy0, ww0, wh0); }
+  ctx.fillStyle = '#e8e4dc'; ctx.fillRect(sx0 + 8, walk + 4, 7, 1); ctx.fillStyle = '#3b2a24'; ctx.fillRect(sx0 + 11, walk + 5, 1, 5); ctx.fillRect(sx0 + 9, walk + 9, 5, 1); ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx0 + 16, walk + 5, 1, 5); ctx.fillRect(sx0 + 16, walk + 5, 4, 1); ctx.fillStyle = '#f3ead3'; ctx.fillRect(sx0 + 10, walk + 2, 2, 2);
+  S.push({x: sx0, y: wy0 - 2, w: sw0, h: sBot - wy0 + 2, scene: 8, id: 'pastry'});
   // a tree pit with a rabbit hole; the White Rabbit hurries along now and then, checks his watch, and goes down it
   var tp = Math.round(W*0.35); ctx.fillStyle = '#3a2a20'; ctx.fillRect(tp - 7, curb - 4, 14, 3); ctx.fillStyle = '#4a3a2a'; ctx.fillRect(tp - 7, curb - 4, 14, 1);
   ctx.fillStyle = '#4a3220'; ctx.fillRect(tp, 8, 2, curb - 12); for (var k = 0; k < 26; k++){ ctx.fillStyle = ['#c4472a','#e0892e','#e9c45a','#a8452a'][k % 4]; ctx.fillRect(tp - 8 + (k*7) % 18, 4 + (k*5) % 14, 2, 2); }
@@ -2698,7 +2706,10 @@ ROOMS.block = function(ctx, W, H, t, go){
   for (var k = 0; k < nw; k++){ var wx = fx + 10 + k*26, wy = 16, lit = !day && (k % 2 === 0 || Math.sin(t*0.2 + k) > .6);
     ctx.fillStyle = '#c9b89a'; ctx.fillRect(wx - 2, wy - 3, 18, 2); ctx.fillStyle = '#e8dcc0'; ctx.fillRect(wx - 1, wy - 1, 16, 30);
     ctx.fillStyle = lit ? '#ffd36b' : (day ? '#8fb4d0' : '#221c36'); ctx.fillRect(wx, wy, 14, 28); ctx.fillStyle = '#e8dcc0'; ctx.fillRect(wx + 7, wy, 1, 28); ctx.fillRect(wx, wy + 13, 14, 1);
-    if (lit && k % 3 === 0){ ctx.fillStyle = '#3b2a3a'; ctx.fillRect(wx + 2, wy + 16, 4, 12); ctx.fillRect(wx + 2, wy + 12, 4, 4); }
+    if (k === 1){ ctx.fillStyle = '#ffcf7a'; ctx.fillRect(wx, wy, 14, 28); ctx.fillStyle = '#e8dcc0'; ctx.fillRect(wx + 7, wy, 1, 28); ctx.fillRect(wx, wy + 13, 14, 1);
+      ctx.fillStyle = '#3b2a3a'; ctx.fillRect(wx + 2, wy + 15, 5, 13); ctx.fillRect(wx + 3, wy + 10, 4, 5); ctx.fillRect(wx + 2, wy + 8, 6, 3); ctx.fillRect(wx + 4, wy + 7, 2, 1);
+      ctx.fillRect(wx + 9, wy + 23, 4, 3); ctx.fillRect(wx + 12, wy + 21, 2, 2); if (Math.floor(t*3) % 2) ctx.fillRect(wx + 8, wy + 22, 1, 2); }
+    else if (lit && k % 3 === 0){ ctx.fillStyle = '#3b2a3a'; ctx.fillRect(wx + 2, wy + 16, 4, 12); ctx.fillRect(wx + 2, wy + 12, 4, 4); }
     if (day){ ctx.fillStyle = '#cfe4f2'; ctx.fillRect(wx + 1, wy + 1, 2, 4); }
     ctx.fillStyle = '#8a7a6a'; ctx.fillRect(wx - 1, wy + 29, 16, 1); }
   var ex = fx + 6; ctx.fillStyle = '#151218'; ctx.fillRect(ex, 50, W - ex - 8, 1); ctx.fillRect(ex, 46, W - ex - 8, 1); for (var x = ex; x < W - 8; x += 2) ctx.fillRect(x, 46, 1, 4); for (var y = 0; y < 40; y++) ctx.fillRect(W - 16 + Math.floor(y*0.3), 51 + y, 1, 1);
