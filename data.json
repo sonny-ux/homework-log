@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T08:10:19+00:00",
+ "updated": "2026-11-03T08:10:46+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -12,7 +12,7 @@
    "end_min": 1220,
    "minutes": 102,
    "in_progress": false,
-   "topic": "HW5: quotient topology",
+   "topic": "HW5 prep: learned quotient maps and quotient topology; did Q1.",
    "refs": [
     "homework 6",
     "homework 5"
@@ -29,7 +29,7 @@
    "end_min": 1384,
    "minutes": 101,
    "in_progress": false,
-   "topic": "HW5: quotient maps, continuity",
+   "topic": "Worked through why a sum map is continuous; started Q2.",
    "refs": []
   },
   {
@@ -43,7 +43,7 @@
    "end_min": 1440,
    "minutes": 36,
    "in_progress": false,
-   "topic": "HW5: preimages vs. open maps",
+   "topic": "Continuity via preimages vs. open maps; redid the worked example.",
    "refs": []
   },
   {
@@ -57,7 +57,7 @@
    "end_min": 153,
    "minutes": 153,
    "in_progress": false,
-   "topic": "HW5 Q2: sections, reverse direction",
+   "topic": "Wrote and checked Q2(a) and Q2(b) using a section map.",
    "refs": [
     "homework"
    ]
@@ -73,7 +73,7 @@
    "end_min": 1035,
    "minutes": 41,
    "in_progress": false,
-   "topic": "HW5 Q3: subspace topology",
+   "topic": "Learned subspace topology ideas needed for Q3; set up Q3(a).",
    "refs": [
     "homework 5"
    ]
@@ -89,7 +89,7 @@
    "end_min": 1158,
    "minutes": 32,
    "in_progress": false,
-   "topic": "HW5 Q3: non-quotient maps",
+   "topic": "Checked Q3(a) sketches; method for showing a map is not quotient.",
    "refs": []
   },
   {
@@ -103,7 +103,7 @@
    "end_min": 1207,
    "minutes": 24,
    "in_progress": false,
-   "topic": "HW5 Q3(b): preimages, neighborhoods",
+   "topic": "Finished Q3(a) sketches; counted preimages for Q3(b).",
    "refs": []
   },
   {
@@ -117,7 +117,7 @@
    "end_min": 1298,
    "minutes": 55,
    "in_progress": false,
-   "topic": "HW5 Q3(b): open saturated set",
+   "topic": "Solved Q3(b) by building an open saturated set.",
    "refs": []
   },
   {
@@ -131,7 +131,7 @@
    "end_min": 1350,
    "minutes": 41,
    "in_progress": false,
-   "topic": "HW5 Q4: finer topologies",
+   "topic": "Read and unpacked Q4(a): comparing two topologies.",
    "refs": []
   },
   {
@@ -145,7 +145,7 @@
    "end_min": 1439,
    "minutes": 75,
    "in_progress": false,
-   "topic": "HW5 Q4–Q5, submitted",
+   "topic": "Finished Q4 and Q5 under time pressure; submitted HW5.",
    "refs": [
     "homework 5"
    ]
@@ -161,7 +161,7 @@
    "end_min": 74,
    "minutes": 13,
    "in_progress": false,
-   "topic": "Reading Fantomina",
+   "topic": "Started reading Fantomina.",
    "refs": []
   },
   {
@@ -175,7 +175,7 @@
    "end_min": 114,
    "minutes": 31,
    "in_progress": false,
-   "topic": "Fantomina, reflection",
+   "topic": "Read more Fantomina and wrote a reflection.",
    "refs": []
   },
   {
@@ -189,7 +189,7 @@
    "end_min": 173,
    "minutes": 23,
    "in_progress": false,
-   "topic": "Reading To the Lighthouse",
+   "topic": "Read To the Lighthouse.",
    "refs": []
   },
   {
@@ -203,7 +203,7 @@
    "end_min": 913,
    "minutes": 128,
    "in_progress": false,
-   "topic": "Paper 1: sources, first draft",
+   "topic": "Chose prompt 6; read Russell, Cartwright, Maudlin; wrote a first draft.",
    "refs": [
     "paper 1"
    ]
@@ -219,7 +219,7 @@
    "end_min": 1002,
    "minutes": 5,
    "in_progress": false,
-   "topic": "Reading Fantomina",
+   "topic": "Read Fantomina.",
    "refs": []
   },
   {
@@ -233,7 +233,7 @@
    "end_min": 1098,
    "minutes": 63,
    "in_progress": false,
-   "topic": "PS5: torque, pendulum setup",
+   "topic": "Set up PS5 Problem 1: force diagram and torque about the pivot.",
    "refs": [
     "problem set 5"
    ]
@@ -249,7 +249,7 @@
    "end_min": 1140,
    "minutes": 14,
    "in_progress": false,
-   "topic": "PS5: building the guide",
+   "topic": "Built the PS5 walk-through guide.",
    "refs": [
     "problem set 5"
    ]
@@ -265,7 +265,7 @@
    "end_min": 1210,
    "minutes": 70,
    "in_progress": false,
-   "topic": "PS5: working through problems",
+   "topic": "Worked through PS5 with the guide; nearly finished.",
    "refs": [
     "problem set 5",
     "homework"
@@ -282,7 +282,7 @@
    "end_min": 1339,
    "minutes": 42,
    "in_progress": false,
-   "topic": "Paper 1: thesis; Goodman",
+   "topic": "Shaped a thesis and plan for Paper 1; read Goodman.",
    "refs": [
     "paper 1"
    ]
@@ -298,7 +298,7 @@
    "end_min": 1070,
    "minutes": 47,
    "in_progress": false,
-   "topic": "Paper 1: Hume on cause",
+   "topic": "Found Hume's two definitions of cause and added them to the paper.",
    "refs": [
     "paper 1"
    ]
@@ -314,7 +314,7 @@
    "end_min": 1110,
    "minutes": 29,
    "in_progress": false,
-   "topic": "Paper 1: Goodman, laws",
+   "topic": "Brought in Goodman on laws and prediction; planned word budget.",
    "refs": [
     "paper 1"
    ]
@@ -330,7 +330,7 @@
    "end_min": 1166,
    "minutes": 43,
    "in_progress": false,
-   "topic": "Paper 1: drafting",
+   "topic": "Wrote the Goodman paragraph; moved the draft to Pages.",
    "refs": [
     "paper 1"
    ]
@@ -346,7 +346,7 @@
    "end_min": 1440,
    "minutes": 105,
    "in_progress": false,
-   "topic": "Paper 1: Cartwright, Maudlin",
+   "topic": "Added Cartwright and Maudlin; wrote the conclusion.",
    "refs": [
     "paper 1"
    ]
@@ -362,7 +362,7 @@
    "end_min": 38,
    "minutes": 38,
    "in_progress": false,
-   "topic": "Paper 1: final checks",
+   "topic": "Final accuracy and grammar checks on Paper 1.",
    "refs": []
   },
   {
@@ -376,7 +376,7 @@
    "end_min": 129,
    "minutes": 65,
    "in_progress": false,
-   "topic": "Reading Fantomina",
+   "topic": "Read Fantomina.",
    "refs": []
   },
   {
@@ -390,7 +390,7 @@
    "end_min": 981,
    "minutes": 50,
    "in_progress": false,
-   "topic": "Paper 1: citations, submitted",
+   "topic": "Checked citations and Works Cited; submitted Paper 1.",
    "refs": [
     "paper 1"
    ]
@@ -406,7 +406,7 @@
    "end_min": 960,
    "minutes": 19,
    "in_progress": false,
-   "topic": "Damping rate γ",
+   "topic": "Learned what the damping rate γ is and how amplitude decays.",
    "refs": []
   },
   {
@@ -420,7 +420,7 @@
    "end_min": 1096,
    "minutes": 28,
    "in_progress": false,
-   "topic": "Woolf reading",
+   "topic": "Woolf reading.",
    "refs": []
   },
   {
@@ -434,7 +434,7 @@
    "end_min": 1176,
    "minutes": 77,
    "in_progress": false,
-   "topic": "Paper 2: Hamlet's Ghost",
+   "topic": "Chose Hamlet's Ghost for Paper 2; wrote a working note and plan.",
    "refs": [
     "paper 2"
    ]
@@ -450,7 +450,7 @@
    "end_min": 1344,
    "minutes": 90,
    "in_progress": false,
-   "topic": "PS6 1: writing a wave",
+   "topic": "Solved PS6 Problem 1: wrote the equation of a travelling wave.",
    "refs": [
     "problem set 6"
    ]
@@ -466,7 +466,7 @@
    "end_min": 1399,
    "minutes": 38,
    "in_progress": false,
-   "topic": "PS6 2: wave equation (i)–(iii)",
+   "topic": "PS6 Problem 2: showed (i)–(iii) solve the wave equation.",
    "refs": [
     "problem set 6"
    ]
@@ -482,7 +482,7 @@
    "end_min": 98,
    "minutes": 45,
    "in_progress": false,
-   "topic": "Goodman: grue, entrenchment",
+   "topic": "Read Goodman: the grue riddle and entrenchment; built a term list.",
    "refs": []
   },
   {
@@ -496,7 +496,7 @@
    "end_min": 165,
    "minutes": 61,
    "in_progress": false,
-   "topic": "Travelling waves, phase, trig",
+   "topic": "Why waves move: x − vt, phase, wave speed, sine and cosine.",
    "refs": [
     "problem set 6",
     "problem set"
