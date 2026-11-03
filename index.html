@@ -402,6 +402,16 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 .scenewin .frame.f-tv canvas { border-radius: 4px; }
 .scenewin .frame.f-tv::before { left: auto !important; right: 5px; top: 10px !important; margin: 0 !important; width: 6px !important; height: 6px !important; border-radius: 50%; background: #c9a43a !important; box-shadow: 0 10px 0 #9a8f88 !important; }
 .scenewin .frame.f-polaroid, .scenewin .frame.f-postcard { transition: transform .3s; }
+/* ===== The subway doors, and how each hint reacts when tapped ===== */
+.scenewin .frame.f-door { --fr: #6b6f7a; --fd: #3a3e48; --fl: #9aa0ac; padding: 4px 4px 0 !important; margin-top: 0; border-radius: 6px 6px 0 0; box-shadow: inset 0 0 0 1px var(--fd), 0 0 0 1px #2a2c34, 0 3px 0 #3a3e48, 3px 5px 0 rgba(0,0,0,.14) !important; }
+.scenewin .frame.f-door::before, .scenewin .frame.f-door::after { content: none; }
+.scenewin .f-window .curt { transition: transform .4s cubic-bezier(.5,0,.3,1); }
+.scenewin.go .f-window .curt.l { transform: translateX(-16px) scaleX(.6); } .scenewin.go .f-window .curt.r { transform: translateX(16px) scaleX(.6); }
+.scenewin.go .frame.f-gold, .scenewin.go .frame.f-wood, .scenewin.go .frame.f-dark { transform: scale(1.12) rotate(0deg) !important; }
+.scenewin.go .frame.f-polaroid, .scenewin.go .frame.f-postcard { transform: scale(1.15) rotate(0deg) !important; }
+.scenewin.go .frame.f-porthole { transform: rotate(180deg) scale(1.1) !important; transition: transform .45s; }
+.scenewin.go .frame.f-tv canvas { animation: tvon .4s ease-out; } @keyframes tvon { 0% { filter: brightness(1); } 40% { filter: brightness(3) contrast(.5); transform: scaleY(.1); } 100% { filter: brightness(1.4); transform: scaleY(1); } }
+.scenewin .frame { transition: transform .4s cubic-bezier(.5,0,.3,1); }
 </style>
 </head>
 <body>
@@ -442,6 +452,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
     <div class="fc" id="fc"></div>
     <div id="queue"></div>
+    <figure title="Q to coney island" role="button" aria-label="Q train to Coney Island" class="scenewin left" data-scene="7" data-vig="subway" style="--off:6px"><span class="frame f-door"><canvas width="44" height="52" style="width:88px;height:104px"></canvas></span></figure>
     <figure title="the city" role="button" aria-label="the city" class="scenewin right" data-scene="4" data-vig="skyline" style="--off:18px"><span class="frame f-gold"><canvas width="124" height="50" style="width:124px;height:50px"></canvas></span></figure>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
@@ -465,7 +476,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   </section>
 
   <p class="updated" id="upd"></p>
-<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
+<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
 <div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
 </main>
 <script>
@@ -1076,7 +1087,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "b470d17549";
+var APP_BUILD = "ffc1590ebc";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1285,7 +1296,8 @@ function stPerson(ctx, p, x, y, t){
   // front arm and what it carries
   if (p.books){ U(1, -24, 2, 6, jk); U(2, -19, 4, 2, '#c4473a'); U(2, -21, 5, 2, '#2f5f9e'); U(2, -17, 4, 1, '#e9c45a'); U(2, -18, 1, 2, sk); }
   else if (p.pizza){ U(1, -24, 2, 6, jk); U(3, -20, 2, 2, sk); U(5, -21, 3, 1, '#c9862a'); U(5, -20, 2, 1, '#e9b04a'); U(5, -19, 1, 1, '#e9b04a'); U(6, -20, 1, 1, '#c4473a'); }
-  else if (p.sit){ var sip = Math.sin(t*0.9 + p.ph) > .7; U(1, -24, 2, sip ? 4 : 8, jk); if (sip){ U(3, -27, 2, 3, '#c9c3b6'); U(2, -24, 2, 2, sk); } else { U(1, -16, 2, 2, sk); U(3, -15, 2, 3, '#c9c3b6'); } }
+  else if (p.sit){ var sip = Math.sin(t*0.9 + p.ph) > .7, cup = function(dx, dy){ if (p.ale){ U(dx, dy, 3, 4, '#d9a03a'); U(dx, dy, 3, 1, '#f6f2ea'); U(dx - 1, dy - 1, 4, 1, '#f6f2ea'); U(dx + 3, dy + 1, 1, 2, '#8a7a6a'); U(dx + 1, dy + 1, 1, 3, '#e9c45a'); } else U(dx, dy, 2, 3, '#c9c3b6'); };
+    U(1, -24, 2, sip ? 4 : 8, jk); if (sip){ cup(3, -28); U(2, -24, 2, 2, sk); } else { U(1, -16, 2, 2, sk); cup(3, -16); } }
   else if (p.guitar && p.mill){ var ang = t*7, sx0 = 1, sy0 = -23 + bob;
     U(-1, -18, 6, 5, '#151218'); U(0, -17, 4, 3, '#c4473a'); U(2, -16, 1, 1, '#f3ead3'); for (var k = 0; k < 7; k++) U(5 + k, -19 - k, 1, 1, '#c9c3b6'); U(12, -27, 2, 2, '#151218'); U(-4, -24, 2, 5, jk); U(9, -24, 2, 2, sk);
     for (var k = 0; k <= 7; k++){ var ax = Math.round(sx0 + Math.cos(ang)*k), ay = Math.round(sy0 + Math.sin(ang)*k); R(ax, ay, 2, 2, k > 6 ? sk : jk); }
@@ -1298,6 +1310,7 @@ function stPerson(ctx, p, x, y, t){
   U(-2, -33, 5, 7, sk); U(-2, -33, 1, 7, sd); U(-1, -30, 1, 2, sd);
   var blink = Math.sin(t*1.3 + p.ph*3) > .96; U(1, -31, 1, 1, blink ? sd : '#241f1a'); U(3, -30, 1, 1, sk); U(1, -28, 2, 1, sd);
   if (p.punk){ U(-1, -28, 1, 1, '#e6e6ee'); U(2, -31, 1, 1, '#241f1a'); }
+  if (p.beard){ U(-1, -29, 4, 4, p.beard); U(0, -26, 3, 1, p.beard); U(1, -28, 2, 1, '#8a5a4a'); }
   if (p.kiss){ U(-1, -33, 4, 7, '#f6f2ea'); U(0, -32, 3, 3, '#151218'); U(1, -33, 1, 1, '#151218'); U(1, -29, 1, 1, '#151218'); U(-1, -31, 1, 1, '#151218'); U(1, -31, 1, 1, '#f6f2ea'); U(1, -28, 2, 1, '#c4473a'); }
   // hair
   var hc = p.hc;
@@ -1445,6 +1458,10 @@ function drawSkyline(ctx, W, H, t, st){
     if (b.k > .7){ R(b.x + 1, top - 2, b.w - 2, 2, b.tone); } if (b.k > .9){ R(b.x + Math.floor(b.w/2), top - 7, 1, 5, '#3a3a5a'); if (Math.sin(t*3 + bi) > .5) R(b.x + Math.floor(b.w/2), top - 8, 1, 1, '#ff5a4e'); }
     for (var y = top + 2; y < shore - 1; y += 2) for (var x = b.x + 1; x < b.x + b.w - 1; x += 2){ var q = Math.sin(x*12.9898 + y*78.233)*43758.5453, r = q - Math.floor(q);
       if (r > .62){ var tw = Math.sin(t*(0.3 + r) + x*1.7 + y) > -.7; if (tw) R(x, y, 1, 1, r > .95 ? '#ffffff' : r > .82 ? '#ffe7a1' : r > .7 ? '#e9b04a' : '#9fc0ff'); } } });
+  // tiny aircraft-warning lights on rooftops, each on its own slow rhythm, and a few white strobes
+  st.bl.forEach(function(b, bi){ if (b.k < .45 || b.x - off > W || b.x + b.w - off < 0) return; var ph = (t*(0.5 + b.k*0.4) + b.k*7) % 1;
+    if (ph < .12) R(b.x + Math.floor(b.w/2), shore - b.h - (b.k > .7 ? 3 : 1), 1, 1, '#ff3b30');
+    if (b.k > .8 && ((t*1.3 + bi*0.37) % 2.2) < .07) R(b.x + 1, shore - b.h - 1, 1, 1, '#ffffff'); });
   // Empire State
   var ex = Math.round(P*0.36), cc = todayColour();
   R(ex - 8, shore - 74, 17, 74, '#2a2a4e'); R(ex - 6, shore - 86, 13, 12, '#2a2a4e'); R(ex - 4, shore - 98, 9, 12, '#2e2e54'); R(ex - 2, shore - 106, 5, 8, '#33335a');
@@ -1610,8 +1627,90 @@ function drawVanGogh(ctx, W, H, t, st){
   ctx.fillStyle = '#3b2a24'; ctx.fillRect(vx0 - 14, vy - 4, 6, 4); ctx.fillStyle = '#c4472a'; ctx.fillRect(vx0 - 13, vy - 5, 1, 1); ctx.fillStyle = '#e9c45a'; ctx.fillRect(vx0 - 11, vy - 5, 1, 1);
 }
 
+// ===== Scene 8: Coney Island at night. The wheel turning with chasing lights, a wooden coaster with its car running,
+// the boardwalk with stands and people, the beach, and real waves rolling in and breaking.
+function coneySetup(W, H){
+  var seed = 21; function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
+  var P = Math.max(W + 40, 300);
+  var cast = [
+    {hair:'long', hc:'#241f1a', jacket:'#c4473a', pants:'#2b2f45', skin:1, cotton:1},
+    {hair:'short', hc:'#5a412f', jacket:'#2f5f9e', pants:'#3a3f55', skin:0},
+    {hair:'pink', hc:'#ff7ad9', jacket:'leather', skirt:1, skin:3, punk:1},
+    {hair:'cap', hc:'#c9c3b6', jacket:'#3d7a55', pants:'#4a4a55', skin:2, hotdog:1},
+    {hair:'beanie', hc:'#e9c45a', jacket:'#8e5fa8', pants:'#24202b', skin:0, balloon:'#5dff9a'},
+    {hair:'mohawk', hc:'#ff5a4e', jacket:'leather', pants:'#1a1820', skin:1, punk:1}];
+  var people = cast.map(function(c, i){ c.dir = i % 2 ? -1 : 1; c.v = 4 + rnd()*4; c.x = rnd()*P; c.ph = i*1.9; c.lane = i % 2; return c; });
+  return {P: P, people: people, last: 0};
+}
+function drawConey(ctx, W, H, t, st){
+  var P = st.P, dt = st.last ? Math.min(.2, t - st.last) : 0; st.last = t;
+  var off = Math.round(Math.max(0, Math.min(P - W, P*0.64 - W/2 + Math.sin(t*0.03)*(P - W)*0.6))), bw = Math.round(H*0.66), sand = Math.round(H*0.72), sea = Math.round(H*0.8);
+  var sky = ['#0a0a24','#12123a','#1e1650','#33205e','#5a2c66','#8a3a6a'];
+  for (var y = 0; y < bw; y++){ var f = y/bw*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
+  for (var k = 0; k < 26; k++){ var sx = ((k*71) % P) - off*0.4, sy = (k*31) % Math.round(H*0.25); if (sx >= 0 && sx < W && Math.sin(t*1.5 + k) > -.3){ ctx.fillStyle = k % 4 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
+  ctx.save(); ctx.translate(-off, 0);
+  function R(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
+  // the parachute tower, lattice lit red
+  var pj = Math.round(P*0.1), pt = Math.round(H*0.12);
+  for (var y = pt + 8; y < bw; y++){ var hw = Math.round(2 + (y - pt)*0.06); R(pj - hw, y, 1, 1, '#c4473a'); R(pj + hw, y, 1, 1, '#c4473a'); if (y % 5 === 0) for (var x = -hw; x <= hw; x++) R(pj + x, y, 1, 1, '#8a2a2a'); }
+  for (var a = 0; a < 12; a++){ var ang = Math.PI + a*Math.PI/11, x = pj + Math.round(Math.cos(ang)*12), y = pt + 6 + Math.round(Math.sin(ang)*5); R(x, y, 1, 1, '#e06a5a'); R(pj, pt + 6, 1, 1, '#e06a5a'); if ((a + Math.floor(t*3)) % 4 === 0) R(x, y, 1, 1, '#ffe7a1'); }
+  for (var a = 0; a < 12; a++){ var ang = Math.PI + a*Math.PI/11; for (var d = 0; d < 12; d += 3) R(pj + Math.round(Math.cos(ang)*d), pt + 6 + Math.round(Math.sin(ang)*d*0.4), 1, 1, '#8a2a2a'); }
+  R(pj, pt, 1, 6, '#c4473a'); if (Math.floor(t*1.5) % 2) R(pj, pt - 1, 1, 1, '#ff3b30');
+  // the wooden coaster: white lattice, hills, a car running the track
+  var c0 = Math.round(P*0.16), c1 = Math.round(P*0.46), ground = bw;
+  function trackY(x){ var u = (x - c0)/(c1 - c0); return ground - 6 - Math.round(Math.abs(Math.sin(u*Math.PI*2.5))*(46 - u*26)); }
+  for (var x = c0; x < c1; x++){ var ty = trackY(x); if (x % 4 === 0){ for (var y = ty + 2; y < ground; y++) R(x, y, 1, 1, '#c9c2b2'); } if (x % 8 === 0){ for (var d = 0; d < Math.min(8, ground - ty - 2); d++){ R(x + Math.round(d/2), ty + 2 + d, 1, 1, '#9a948a'); } }
+    R(x, ty, 1, 1, '#f3ead3'); R(x, ty + 1, 1, 1, '#b9b2a4'); if ((x + Math.floor(t*6)) % 9 === 0) R(x, ty - 1, 1, 1, '#ffe7a1'); }
+  for (var y = 0; y < 3; y++) R(c0, ground - y*12 - 4, c1 - c0, 1, 'rgba(201,194,178,.35)');
+  var u = (t*0.12) % 1, carX = Math.round(c0 + 2 + u*(c1 - c0 - 10)), carY = trackY(carX); R(carX, carY - 3, 8, 3, '#c4473a'); R(carX + 1, carY - 5, 1, 2, '#f0c6a0'); R(carX + 4, carY - 5, 1, 2, '#c48a5c'); R(carX + 1, carY - 6, 1, 1, '#241f1a'); R(carX + 4, carY - 6, 1, 1, '#e9c45a'); R(carX + 7, carY - 2, 1, 1, '#ffe7a1');
+  // the wheel: rim lights chasing, spokes, eight cars hanging level
+  var wx = Math.round(P*0.64), wy = Math.round(H*0.36), wr = Math.min(38, Math.round(H*0.2)), rot = t*0.12;
+  for (var y = wy; y < bw; y++){ var sp = Math.round((y - wy)*0.45); R(wx - sp, y, 1, 1, '#6b5f8a'); R(wx + sp, y, 1, 1, '#6b5f8a'); if (y % 6 === 0) for (var x = -sp; x <= sp; x += 2) R(wx + x, y, 1, 1, '#4a4268'); }
+  for (var k = 0; k < 16; k++){ var a = rot + k*Math.PI/8; for (var d = 3; d < wr; d += 2) R(wx + Math.round(Math.cos(a)*d), wy + Math.round(Math.sin(a)*d), 1, 1, '#4a4268'); }
+  var rimN = 72; for (var k = 0; k < rimN; k++){ var a = rot + k*2*Math.PI/rimN, x = wx + Math.round(Math.cos(a)*wr), y = wy + Math.round(Math.sin(a)*wr), x2 = wx + Math.round(Math.cos(a)*(wr - 4)), y2 = wy + Math.round(Math.sin(a)*(wr - 4));
+    var c = ['#ff5a4e','#ffe7a1','#5ab4ff','#ff7ad9'][Math.floor(k/3 + t*5) % 4]; R(x, y, 1, 1, c); R(x2, y2, 1, 1, (k + Math.floor(t*4)) % 6 === 0 ? '#ffffff' : '#6b5f8a'); }
+  for (var k = 0; k < 8; k++){ var a = rot + k*Math.PI/4, x = wx + Math.round(Math.cos(a)*wr), y = wy + Math.round(Math.sin(a)*wr); R(x, y, 1, 3, '#241f1a'); R(x - 3, y + 3, 7, 5, ['#c4473a','#2f5f9e','#e9c45a','#3d7a55'][k % 4]); R(x - 2, y + 4, 2, 2, '#ffe7a1'); R(x + 1, y + 4, 2, 2, '#ffe7a1'); }
+  R(wx - 2, wy - 2, 5, 5, '#e9c45a'); R(wx - 1, wy - 1, 3, 3, '#ffffff');
+  // the boardwalk: planks, railing, lamps, stands
+  R(0, bw, P, sand - bw, '#6b4a33'); for (var x = 0; x < P; x += 3) R(x, bw, 1, sand - bw, '#5a3a28'); R(0, bw, P, 1, '#8a6a4a');
+  for (var x = 0; x < P; x += 8){ R(x, sand - 1, 1, 6, '#3b2a24'); }
+  R(0, bw - 6, P, 1, '#c9c2b2'); for (var x = 0; x < P; x += 4) R(x, bw - 6, 1, 6, '#9a948a');
+  [['HOT DOGS', '#ffe066', Math.round(P*0.3)], ['CLAMS', '#9ff0c0', Math.round(P*0.5)], ['ARCADE', '#ff7ad9', Math.round(P*0.8)]].forEach(function(q, i){ var x0 = q[2], w = textW(q[0], 1) + 8;
+    R(x0, bw - 22, w, 16, '#1a1424'); R(x0 + 2, bw - 13, w - 4, 7, i === 2 ? '#3a2a5a' : '#ffcf7a'); var on = !(i === 2 && Math.sin(t*6) > .8); ptext(ctx, q[0], x0 + 4, bw - 20, 1, on ? q[1] : '#3a2a3a');
+    for (var x = x0; x < x0 + w; x++) R(x, bw - 14, 1, 2, (x % 4) < 2 ? ['#c4473a','#3d7a55','#8e5fa8'][i] : '#f3ead3');
+    if (i === 2) for (var k = 0; k < 3; k++) R(x0 + 4 + k*6, bw - 12, 4, 5, ['#5ab4ff','#ff5a4e','#5dff9a'][(k + Math.floor(t*3)) % 3]); });
+  for (var x = 20; x < P; x += 46){ R(x, bw - 26, 1, 20, '#241f1a'); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.3)'; for (var y = -4; y <= 4; y++) for (var xx = -4; xx <= 4; xx++) if (xx*xx + y*y < 17) ctx.fillRect(x + xx, bw - 27 + y, 1, 1); ctx.globalCompositeOperation = 'source-over'; R(x - 1, bw - 28, 3, 2, '#fff3c4'); }
+  // sand, then the sea: waves roll in, steepen and break into foam on the beach
+  R(0, sand + 4, P, sea - sand - 4, '#3a3048'); for (var x = 0; x < P; x += 2) if (Math.sin(x*3.3) > .4) R(x, sand + 5 + (x % 3), 1, 1, '#4e4258');
+  R(0, sand, P, 4, '#2a1f1a');
+  for (var y = sea; y < H; y++) R(0, y, P, 1, y < sea + 4 ? '#1a1a44' : '#121234');
+  for (var k = 0; k < 5; k++){ var ph = (t*0.18 + k/5) % 1, yy = Math.round(H - ph*(H - sea)), amp = 1 + Math.round(ph*2);
+    for (var x = 0; x < P; x++){ var y = yy + Math.round(Math.sin(x*0.12 + k*1.7)*amp); if (Math.sin(x*0.3 + k + t) > (ph > .85 ? -0.6 : 0.2)) R(x, y, 1, 1, ph > .85 ? '#ffffff' : '#6a7ab0'); } }
+  for (var x = 0; x < P; x++){ var fy = sea - 1 + Math.round(Math.sin(t*1.2 + x*0.05)*1.5); if (Math.sin(x*0.5 + t*2) > -.2) R(x, fy, 1, 1, '#e6eeff'); }
+  for (var y = sea + 2; y < H; y += 2){ ctx.globalAlpha = .3; R(wx - 2 + Math.round(Math.sin(y + t*2)*2), y, 5, 1, ['#ff5a4e','#ffe7a1','#5ab4ff'][Math.floor(t*3 + y) % 3]); ctx.globalAlpha = 1; }
+  // people on the boardwalk
+  [0, 1].forEach(function(lane){ st.people.forEach(function(pp){ if (pp.lane !== lane) return; pp.x += pp.dir*pp.v*dt; if (pp.x > P + 20) pp.x = -20; if (pp.x < -20) pp.x = P + 20;
+    var x = Math.round(pp.x), y = lane ? sand - 1 : bw + 5; stPerson(ctx, pp, x, y, t);
+    var R2 = function(dx, dy, w, h, c){ ctx.fillStyle = c; ctx.fillRect(pp.dir < 0 ? x - dx - w + 1 : x + dx, y + dy, w, h); };
+    if (pp.cotton){ R2(3, -24, 1, 9, '#f3ead3'); R2(1, -29, 5, 5, '#ff9ad9'); R2(2, -30, 3, 1, '#ffc2ea'); }
+    if (pp.hotdog){ R2(3, -17, 5, 2, '#e9c48a'); R2(4, -17, 3, 1, '#c4472a'); R2(4, -18, 3, 1, '#ffe066'); }
+    if (pp.balloon){ var bob = Math.round(Math.sin(t*1.5 + pp.ph)); for (var k = 0; k < 14; k++) R2(2 + Math.round(Math.sin(k*0.5 + t)*0.6), -16 - k, 1, 1, '#c9c3b6'); R2(-1, -36 + bob, 6, 6, pp.balloon); R2(0, -37 + bob, 4, 1, pp.balloon); R2(0, -35 + bob, 1, 2, '#ffffff'); } }); });
+  ctx.restore();
+  seasonParticles(ctx, W, H, t, 0);
+}
+
 // ===== Small vignettes for the windows: related to their scene, not copies of it.
 var VIG = {
+  subway: function(ctx, W, H, t, go){ // a subway car's doors; between them, the boardwalk's glow; tapped, they slide open
+    ctx.fillStyle = '#9aa0ac'; ctx.fillRect(0, 0, W, H); for (var y = 2; y < H; y += 4){ ctx.fillStyle = '#b9bfca'; ctx.fillRect(0, y, W, 1); }
+    ctx.fillStyle = '#7a3a6a'; ctx.fillRect(0, 4, W, 2);
+    var dw = Math.round(W*0.6), dx0 = Math.round((W - dw)/2), dy0 = 9, dh = H - 11, slide = go ? Math.min(dw/2, Math.round(dw/2)) : Math.round(Math.max(0, Math.sin(t*0.5) - .85)*20);
+    for (var y = dy0; y < dy0 + dh; y++){ var f = (y - dy0)/dh; ctx.fillStyle = f < .4 ? '#2a1650' : f < .6 ? '#5a2c66' : '#3a2a22'; ctx.fillRect(dx0, y, dw, 1); }
+    for (var k = 0; k < 20; k++){ var a = t*0.4 + k*Math.PI/10, x = Math.round(W/2 + Math.cos(a)*8), y = Math.round(dy0 + 12 + Math.sin(a)*8); ctx.fillStyle = ['#ff5a4e','#ffe7a1','#5ab4ff','#ff7ad9'][(k + Math.floor(t*4)) % 4]; ctx.fillRect(x, y, 1, 1); }
+    [[dx0, -1], [dx0 + dw/2, 1]].forEach(function(q){ var x = Math.round(q[0] + q[1]*slide); ctx.fillStyle = '#b9bfca'; ctx.fillRect(x, dy0, Math.round(dw/2), dh); ctx.fillStyle = '#8a909c'; ctx.fillRect(x, dy0, 1, dh); ctx.fillRect(x + Math.round(dw/2) - 1, dy0, 1, dh);
+      ctx.fillStyle = '#1a1424'; ctx.fillRect(x + 3, dy0 + 4, Math.round(dw/2) - 6, 12); ctx.fillStyle = '#ffcf7a'; ctx.globalAlpha = .35; ctx.fillRect(x + 3, dy0 + 10, Math.round(dw/2) - 6, 6); ctx.globalAlpha = 1; });
+    ctx.fillStyle = '#e9c45a'; ctx.fillRect(W - 10, 10, 7, 7); ctx.fillStyle = '#241f1a'; ctx.fillRect(W - 8, 12, 3, 3); ctx.fillStyle = '#e9c45a'; ctx.fillRect(W - 7, 13, 1, 1); ctx.fillStyle = '#241f1a'; ctx.fillRect(W - 6, 15, 1, 1);
+  },
   street: function(ctx, W, H, t){ // out the window: the block across the street, neon, people passing, a taxi
     ctx.fillStyle = '#10153a'; ctx.fillRect(0, 0, W, 10); if (Math.sin(t*1.7) > -.3){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(12, 3, 1, 1); } ctx.fillStyle = '#9aa9c8'; ctx.fillRect(58, 5, 1, 1);
     var cols = ['#7a3b2e','#5e4a5a','#8a5a3c']; for (var b = 0; b < 3; b++){ var x0 = b*27 - 2, top = 6 + (b % 2)*3; ctx.fillStyle = cols[b]; ctx.fillRect(x0, top, 27, 32 - top);
@@ -1661,8 +1760,8 @@ var VIG = {
     ctx.fillStyle = '#3a2a22'; ctx.fillRect(0, Math.round(H*0.74), W, 3);
     var px = Math.round(W*0.2), py = Math.round(H*0.42); ctx.fillStyle = '#3b2a24'; ctx.fillRect(px, py, 8, 3); ctx.fillStyle = '#f0c6a0'; ctx.fillRect(px + 1, py + 3, 6, 5); ctx.fillStyle = '#241f1a'; ctx.fillRect(px + 2, py + 5, 1, 1); ctx.fillRect(px + 5, py + 5, 1, 1);
     ctx.fillStyle = '#2f5f9e'; ctx.fillRect(px - 1, py + 8, 10, 10);
-    var lift = Math.sin(t*0.8) > .6 ? 3 : 0; ctx.fillStyle = '#f3ead3'; ctx.fillRect(px + 8, py + 9 - lift, 4, 4); ctx.fillStyle = '#6b4a33'; ctx.fillRect(px + 9, py + 9 - lift, 2, 1);
-    if (Math.floor(t*2) % 2){ ctx.fillStyle = '#c9c3b6'; ctx.fillRect(px + 10, py + 6 - lift, 1, 1); } else { ctx.fillStyle = '#c9c3b6'; ctx.fillRect(px + 9, py + 5 - lift, 1, 1); }
+    var lift = Math.sin(t*0.8) > .6 ? 3 : 0; ctx.fillStyle = '#d9a03a'; ctx.fillRect(px + 8, py + 9 - lift, 4, 5); ctx.fillStyle = '#f6f2ea'; ctx.fillRect(px + 7, py + 8 - lift, 6, 2); ctx.fillStyle = '#8a7a6a'; ctx.fillRect(px + 12, py + 10 - lift, 1, 3);
+    ctx.fillStyle = '#c9c3b6'; ctx.fillRect(px + 1, py + 6, 6, 2); ctx.fillRect(px + 2, py + 8, 4, 1);
   },
   pizza: function(ctx, W, H, t){ // inside the pizza shop window: the cook tossing dough over the counter
     ctx.fillStyle = '#1a1424'; ctx.fillRect(0, 0, W, H);
@@ -1707,7 +1806,7 @@ var VIG = {
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'coney' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -1751,12 +1850,20 @@ var VIG = {
       for (var y = -spread; y <= spread; y++) px(lx + dir*d, ly + y, Math.abs(y) < spread*.5 ? '#6e5a2a' : '#4a3c1c'); }
     ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
     if (Math.abs(a) < .18){ ctx.globalAlpha = .6; for (var y = -4; y <= 4; y++) for (var x = -4; x <= 4; x++) if (x*x+y*y < 14) px(lx + x, ly + y, '#fff3c4'); ctx.globalAlpha = 1; }
+    // the keeper: on a near rock, oilskin and watch cap, a tankard of ale, his lantern beside him
+    var kx = Math.round(W*0.2), ky = H - 6;
+    for (var x = -18; x < 26; x++){ var rt = ky - 6 + Math.round(Math.abs(x)*0.12 + Math.sin(x*0.7)*1.2); for (var y = rt; y < H; y++) px(kx + x, y, y === rt ? '#5a412f' : ((x + y) % 3 ? '#1d1914' : '#2a231c')); }
+    for (var x = -20; x < 30; x++) if (Math.sin(t*2.2 + x*0.5) > .3) px(kx + x, H - 2 + Math.round(Math.sin(t*2 + x*0.3)), '#f6efdf');
+    stPerson(ctx, {dir:1, v:0, sit:1, ph:1, skin:0, jacket:'#e9c45a', pants:'#2b2f45', hair:'beanie', hc:'#2f5f9e', beard:'#c9c3b6', ale:1}, kx, ky - 4, t);
+    var lnx = kx + 14, lny = ky - 11; ctx.globalCompositeOperation = 'lighter'; for (var y = -9; y <= 9; y++) for (var x = -9; x <= 9; x++){ var d = x*x + y*y; if (d < 81){ ctx.globalAlpha = .22*(1 - d/81)*(0.85 + 0.15*Math.sin(t*9)); px(lnx + x, lny + y, '#6e5a2a'); } } ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    px(lnx - 1, lny - 4, '#241f1a'); px(lnx, lny - 4, '#241f1a'); px(lnx + 1, lny - 4, '#241f1a'); ctx.fillStyle = '#241f1a'; ctx.fillRect(lnx - 2, lny - 3, 5, 1); ctx.fillRect(lnx - 2, lny + 2, 5, 2); ctx.fillStyle = '#ffd36b'; ctx.fillRect(lnx - 1, lny - 2, 3, 4); ctx.fillStyle = '#fff3c4'; ctx.fillRect(lnx, lny - 1, 1, 2);
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline', 'columbia', 'vangogh'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; drawVanGogh(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'columbia'){ var t = (now - t0)/1000; if (!cityState) cityState = colSetup(W, H); drawColumbia(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'skyline'){ var t = (now - t0)/1000; if (!cityState) cityState = skySetup(W, H); drawSkyline(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
@@ -1765,10 +1872,14 @@ var VIG = {
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city', 'columbia', 'the windmill'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
-  function open(i){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; } rest.classList.add('on'); rest.setAttribute('aria-hidden', 'false'); show(i); }
-  function close(){ rest.classList.remove('on'); rest.setAttribute('aria-hidden', 'true'); if (raf) cancelAnimationFrame(raf); raf = null; }
+  function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
+    var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
+    rest.style.transition = 'none'; rest.style.clipPath = 'circle(' + (r ? Math.max(12, Math.min(r.width, r.height)/2) : 0) + 'px at ' + cx + 'px ' + cy + 'px)'; rest.style.opacity = '1';
+    rest.classList.add('on'); rest.setAttribute('aria-hidden', 'false'); show(i); void rest.offsetWidth;
+    rest.style.transition = 'clip-path .75s cubic-bezier(.65,0,.25,1)'; rest.style.clipPath = 'circle(150% at ' + cx + 'px ' + cy + 'px)'; }
+  function close(){ rest.style.transition = ''; rest.style.clipPath = ''; rest.style.opacity = ''; rest.classList.remove('on'); rest.setAttribute('aria-hidden', 'true'); if (raf) cancelAnimationFrame(raf); raf = null; }
   var sx = null, sy = null;
   document.addEventListener('touchstart', function(e){ var tt = e.touches[0]; sx = tt.clientX; sy = tt.clientY; }, {passive:true});
   document.addEventListener('touchend', function(e){ if (sx === null) return; var tt = e.changedTouches[0], dx = tt.clientX - sx, dy = tt.clientY - sy; sx = null;
@@ -1784,7 +1895,7 @@ document.addEventListener('click', function(e){
   var sp = e.target.closest('.spr, .pixbox'); if (!sp || !window.openRest) return;
   e.preventDefault(); e.stopPropagation();
   var c = sp.classList, big = c.contains('sine') ? 2 : c.contains('plant') ? 6 : c.contains('woolfw') ? 3 : c.contains('glass') ? 5 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
-  openRest(big);
+  openRest(big, sp);
 }, true);
 
 // ===== Scene windows: small live versions of each scene, placed through the app. Tap to enter.
@@ -1807,11 +1918,12 @@ function miniLighthouse(ctx, W, H, t){
   else wins.forEach(function(w){ visible.add(w); });
   function tick(){
     var t = (performance.now() - t0)/1000;
-    visible.forEach(function(w){ var c = w.querySelector('canvas'); VIG[w.dataset.vig](c.getContext('2d'), c.width, c.height, t); });
+    visible.forEach(function(w){ var c = w.querySelector('canvas'); VIG[w.dataset.vig](c.getContext('2d'), c.width, c.height, t, w.classList.contains('go')); });
     setTimeout(function(){ requestAnimationFrame(tick); }, 110);
   }
   tick();
-  wins.forEach(function(w){ w.addEventListener('click', function(){ openRest(+w.dataset.scene); }); });
+  wins.forEach(function(w){ w.addEventListener('click', function(){ if (w.classList.contains('go')) return; w.classList.add('go'); var c = w.querySelector('canvas'); VIG[w.dataset.vig](c.getContext('2d'), c.width, c.height, (performance.now() - t0)/1000, true);
+    setTimeout(function(){ openRest(+w.dataset.scene, w); setTimeout(function(){ w.classList.remove('go'); }, 900); }, 420); }); });
 })();
 fetch('data.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(d){
   DATA = d; weekStart = sunday(today); render();
