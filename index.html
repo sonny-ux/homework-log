@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "deba21ac2c";
+var APP_BUILD = "9d2188c7ed";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2172,13 +2172,48 @@ function drawPastry(ctx, W, H, t){
   seasonParticles && 0;
 }
 
+// ===== Channel 2: an original anime-style fantasy show. A hilltop castle at dusk, a lantern-lit town, petals falling,
+// and two travellers: a mage with a glowing staff and a swordsman, facing each other on the old road.
+var TVCH = 0; try { TVCH = +(localStorage.getItem('hw-tvch') || 0) || 0; } catch(e){}
+var TV_STATIC = 0;
+function drawAnime(ctx, W, H, t){
+  var hz = Math.round(H*0.6), sky = ['#1a2a6a','#3a3a8a','#7a4a9a','#d9607a','#f59a6a','#ffd38a'];
+  for (var y = 0; y < hz; y++){ var f = y/hz*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
+  for (var k = 0; k < 3; k++){ var cx = ((t*(1 + k*0.4) + k*60) % (W + 60)) - 30, cy = 18 + k*16; ctx.fillStyle = '#f3c4d4'; ctx.fillRect(Math.round(cx), cy, 28, 4); ctx.fillRect(Math.round(cx) + 6, cy - 3, 14, 3); ctx.fillStyle = '#fff3e0'; ctx.fillRect(Math.round(cx) + 6, cy - 3, 14, 1); ctx.fillRect(Math.round(cx), cy, 28, 1); }
+  for (var k = 0; k < 14; k++){ var sx = (k*37) % W, sy = (k*13) % Math.round(hz*0.4); if (Math.sin(t*2 + k) > .2){ ctx.fillStyle = '#ffffff'; ctx.fillRect(sx, sy, 1, 1); if (k % 5 === 0){ ctx.fillRect(sx - 1, sy, 3, 1); ctx.fillRect(sx, sy - 1, 1, 3); } } }
+  var mx = Math.round(W*0.78), my = Math.round(H*0.14); for (var y = -9; y <= 9; y++) for (var x = -9; x <= 9; x++) if (x*x + y*y <= 81){ ctx.fillStyle = x*x + y*y > 64 ? '#ffe0c0' : '#fff6e8'; ctx.fillRect(mx + x, my + y, 1, 1); }
+  var hx = Math.round(W*0.3); for (var x = 0; x < W; x++){ var hy = hz - 18 - Math.round(16*Math.exp(-Math.pow((x - hx)/(W*0.22), 2))); for (var y = hy; y < hz; y++){ ctx.fillStyle = '#3a2a5a'; ctx.fillRect(x, y, 1, 1); } }
+  var cb = hz - 34; ctx.fillStyle = '#2a1e46'; ctx.fillRect(hx - 12, cb - 14, 24, 14); [[-12, 8], [-2, 14], [8, 10]].forEach(function(q){ ctx.fillRect(hx + q[0], cb - 14 - q[1], 5, q[1]); ctx.fillStyle = '#c44a6a'; ctx.fillRect(hx + q[0] - 1, cb - 16 - q[1], 7, 2); ctx.fillRect(hx + q[0] + 1, cb - 18 - q[1], 3, 2); ctx.fillStyle = '#2a1e46'; });
+  for (var k = 0; k < 6; k++){ ctx.fillStyle = Math.sin(t + k) > -.5 ? '#ffd36b' : '#c99a4a'; ctx.fillRect(hx - 9 + k*4, cb - 9 + (k % 2)*3, 1, 2); }
+  for (var k = 0; k < Math.ceil(W/14); k++){ var rx = k*14 - 4, rh = 12 + (k*7) % 10, ry = hz - rh; ctx.fillStyle = ['#e8d8c0','#d6c4a8','#e0ccb0'][k % 3]; ctx.fillRect(rx, ry, 13, rh); ctx.fillStyle = ['#c4472a','#d9822b','#a8452a'][k % 3]; for (var yy = 0; yy < 5; yy++) ctx.fillRect(rx - 1 + yy, ry - 5 + yy, 15 - yy*2, 1);
+    ctx.fillStyle = Math.sin(t*0.6 + k) > -.3 ? '#ffd36b' : '#7a5a3a'; ctx.fillRect(rx + 4, ry + 4, 3, 4); }
+  for (var x = 0; x < W; x++){ var ly = hz - 16 + Math.round(Math.sin(x/W*Math.PI)*5); ctx.fillStyle = '#3b2a24'; ctx.fillRect(x, ly, 1, 1); if (x % 9 === 4){ ctx.fillStyle = ['#ff7a5a','#ffd36b','#ff9ad9'][x % 3]; ctx.fillRect(x - 1, ly + 1, 3, 3); } }
+  for (var y = hz; y < H; y++){ ctx.fillStyle = y < hz + 3 ? '#8a6a7a' : '#6a5468'; ctx.fillRect(0, y, W, 1); }
+  for (var y = hz + 4; y < H; y += 4) for (var x = (y/4) % 2 ? 0 : 4; x < W; x += 8){ ctx.fillStyle = '#5a4458'; ctx.fillRect(x, y, 7, 1); ctx.fillRect(x, y, 1, 3); }
+  var tx = W - 18; ctx.fillStyle = '#4a2e2a'; ctx.fillRect(tx, hz - 30, 3, 34 + (H - hz) - 20); for (var k = 0; k < 70; k++){ ctx.fillStyle = ['#ffb3c8','#ff9ab8','#ffd0dc'][k % 3]; ctx.fillRect(tx - 12 + (k*7) % 26, hz - 46 + (k*5) % 18, 2, 2); }
+  for (var k = 0; k < 16; k++){ var ph = (t*0.15 + k/16) % 1, px = Math.round(W - ph*(W + 20) + Math.sin(ph*12 + k)*6), py = Math.round(hz - 40 + ph*(H - hz + 40) + Math.sin(k)*8); ctx.fillStyle = '#ffc4d4'; ctx.fillRect(px, py, 2, 1); }
+  var gy = H - 14, mage = {dir: 1, v: 0, ph: 1, skin: 0, hair: 'long', hc: '#e8506a', jacket: '#2f4a8a', pants: '#2f4a8a', dress: 1}, sword = {dir: -1, v: 0, ph: 3, skin: 0, hair: 'spikes', hc: '#2a3a6a', jacket: '#3d7a4a', pants: '#2a2a32'};
+  var ax = Math.round(W*0.34), bx = Math.round(W*0.62);
+  stPerson(ctx, mage, ax, gy, t); stPerson(ctx, sword, bx, gy, t);
+  ctx.fillStyle = '#7a5a3a'; ctx.fillRect(ax + 5, gy - 34, 1, 32); var glow = 0.5 + 0.5*Math.sin(t*3);
+  ctx.globalCompositeOperation = 'lighter'; for (var r = 7; r > 0; r--){ ctx.fillStyle = 'rgba(80,160,255,' + (0.06 + glow*0.04) + ')'; ctx.beginPath(); ctx.arc(ax + 5, gy - 36, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = '#bfe6ff'; ctx.fillRect(ax + 4, gy - 37, 3, 3);
+  for (var k = 0; k < 8; k++){ var a = t*1.5 + k*Math.PI/4; ctx.fillStyle = '#9fd3ff'; ctx.fillRect(ax + 5 + Math.round(Math.cos(a)*9), gy - 36 + Math.round(Math.sin(a)*4), 1, 1); }
+  ctx.fillStyle = '#d6dbe4'; for (var k = 0; k < 12; k++) ctx.fillRect(bx - 6 - k, gy - 16 - Math.round(k*0.3), 1, 1); ctx.fillStyle = '#c9a43a'; ctx.fillRect(bx - 5, gy - 18, 1, 4); ctx.fillStyle = '#ffffff'; if (Math.floor(t*2) % 3 === 0) ctx.fillRect(bx - 14, gy - 20, 1, 1);
+}
+VIG.anime = function(ctx, W, H, t){ var sky = ['#3a3a8a','#d9607a','#ffd38a']; for (var y = 0; y < H; y++){ ctx.fillStyle = sky[Math.min(2, Math.floor(y/H*3))]; ctx.fillRect(0, y, W, 1); }
+  ctx.fillStyle = '#2a1e46'; ctx.fillRect(3, H - 9, 7, 5); ctx.fillRect(4, H - 12, 2, 3); ctx.fillRect(8, H - 11, 2, 2); ctx.fillStyle = '#6a5468'; ctx.fillRect(0, H - 4, W, 4);
+  ctx.fillStyle = '#e8506a'; ctx.fillRect(Math.round(W*0.6), H - 10, 2, 2); ctx.fillStyle = '#2f4a8a'; ctx.fillRect(Math.round(W*0.6), H - 8, 2, 4); ctx.fillStyle = '#bfe6ff'; if (Math.sin(t*3) > 0) ctx.fillRect(Math.round(W*0.6) + 3, H - 12, 1, 1);
+  for (var k = 0; k < 4; k++){ var ph = (t*0.3 + k/4) % 1; ctx.fillStyle = '#ffc4d4'; ctx.fillRect(Math.round(W - ph*W), Math.round(ph*H*0.8) + k, 1, 1); } };
+VIG.static = function(ctx, W, H){ for (var y = 0; y < H; y++) for (var x = 0; x < W; x++){ var v = Math.floor(Math.random()*200) + 40; ctx.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')'; ctx.fillRect(x, y, 1, 1); } };
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 190 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 190 : sc === 'anime' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -2240,10 +2275,11 @@ function drawPastry(ctx, W, H, t){
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'anime'){ var t = (now - t0)/1000; drawAnime(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; drawPastry(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawVanGogh(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
@@ -2254,7 +2290,7 @@ function drawPastry(ctx, W, H, t){
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
@@ -2342,7 +2378,7 @@ var ROOMS = {
     // TV glow on the room
     var tvx = Math.round(W*0.64), glow = 0.12 + 0.05*Math.sin(t*3) + (go === 'tv' ? .2 : 0);
     ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(90,70,150,' + glow + ')'; ctx.beginPath(); ctx.moveTo(tvx + 4, F - 26); ctx.lineTo(Math.round(W*0.18), F + 8); ctx.lineTo(tvx + 4, F + 8); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
-    // rug, couch, the sleeper under a blanket, breathing
+    // Nico's room. Rug, couch, Nico asleep under a blanket, breathing
     var cx0 = Math.round(W*0.25), cw = Math.round(W*0.34);
     ctx.fillStyle = '#8a5a3c'; ctx.fillRect(cx0 - 4, F + 2, cw + 8, 3); ctx.fillStyle = '#c4473a'; for (var x = cx0 - 4; x < cx0 + cw + 4; x += 4) ctx.fillRect(x, F + 3, 2, 1);
     ctx.fillStyle = '#6a3226'; ctx.fillRect(cx0, F - 24, cw, 11); ctx.fillStyle = '#7a3b2e'; ctx.fillRect(cx0, F - 13, cw, 8); ctx.fillStyle = '#5e2b20'; ctx.fillRect(cx0 - 3, F - 18, 4, 13); ctx.fillRect(cx0 + cw - 1, F - 18, 4, 13);
@@ -2367,10 +2403,11 @@ var ROOMS = {
     // the TV on its stand, the wave on its screen
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(tvx - 2, F - 10, 32, 10); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tvx - 2, F - 10, 32, 1); ctx.fillRect(tvx + 12, F - 8, 1, 7);
     ctx.fillStyle = '#3a3644'; ctx.fillRect(tvx, F - 33, 28, 23); ctx.fillStyle = '#5a5468'; ctx.fillRect(tvx, F - 33, 28, 1);
-    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else vigInto(ctx, 'film', tvx + 2, F - 31, 20, 19, t);
+    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else vigInto(ctx, performance.now() < TV_STATIC ? 'static' : (TVCH ? 'anime' : 'film'), tvx + 2, F - 31, 20, 19, t);
     ctx.fillStyle = '#c9a43a'; ctx.fillRect(tvx + 24, F - 29, 2, 2); ctx.fillStyle = '#9a8f88'; ctx.fillRect(tvx + 24, F - 24, 2, 2);
     ctx.fillStyle = '#241f1a'; for (var k = 0; k < 7; k++){ ctx.fillRect(tvx + 10 - k, F - 34 - k, 1, 1); ctx.fillRect(tvx + 16 + k, F - 34 - k, 1, 1); }
-    S.push({x: tvx - 2, y: F - 41, w: 32, h: 41, scene: 2, id: 'tv'});
+    S.push({x: tvx + 22, y: F - 31, w: 6, h: 11, channel: 1, id: 'knob'});
+    S.push({x: tvx - 2, y: F - 41, w: 32, h: 41, scene: TVCH ? 9 : 2, id: 'tv'});
     // the fridge behind, humming, magnets on the door
     var fx = W - 27; ctx.fillStyle = '#d6d0c4'; ctx.fillRect(fx, F - 48, 19, 48); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(fx, F - 48, 17, 48); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(fx, F - 32, 17, 1); ctx.fillStyle = '#9a948a'; ctx.fillRect(fx + 2, F - 44, 1, 8); ctx.fillRect(fx + 2, F - 28, 1, 12);
     [[6,-44,'#c4473a'],[11,-40,'#2f5f9e'],[8,-24,'#e9c45a'],[12,-20,'#3d7a55']].forEach(function(m){ ctx.fillStyle = m[2]; ctx.fillRect(fx + m[0], F + m[1], 2, 2); });
@@ -2734,6 +2771,7 @@ ROOMS.block = function(ctx, W, H, t, go){
   rooms.forEach(function(r){
     r.addEventListener('mousemove', function(e){ r.style.cursor = hit(r, e) ? 'pointer' : 'default'; });
     r.addEventListener('click', function(e){ var s = hit(r, e); if (!s || r._go) return;
+      if (s.channel){ TVCH = TVCH ? 0 : 1; TV_STATIC = performance.now() + 450; try { localStorage.setItem('hw-tvch', TVCH); } catch(e){} return; }
       if (s.down){ var tg = document.querySelector('[data-room="' + s.down + '"]'); if (tg) tg.scrollIntoView({behavior: 'smooth', block: 'center'}); return; }
       r._go = s.id;
       var c = r.querySelector('canvas'), b = c.getBoundingClientRect(), sc = b.width / c.width, src = {getBoundingClientRect: function(){ return {left: b.left + s.x*sc, top: b.top + s.y*sc, width: s.w*sc, height: s.h*sc}; }};
