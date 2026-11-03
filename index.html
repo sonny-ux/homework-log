@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "4777e159d0";
+var APP_BUILD = "84a3b22c01";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2146,10 +2146,11 @@ function drawPastry(ctx, W, H, t){
   function R(x, y, w, h, col){ ctx.fillStyle = col; ctx.fillRect(x, y, w, h); }
   // warm walls, a red wainscot, the floor
   R(0, 0, P, wallB, '#f2e2c4'); for (var k = 0; k < 90; k++) R((k*37) % P, (k*23) % wallB, 2, 1, 'rgba(160,120,70,.08)');
-  R(0, 0, P, 6, '#e6d2ae'); R(0, 6, P, 1, '#d6bf96');
+  var DY = 26; for (var y = 0; y < DY; y++) R(0, y, P, 1, y < 8 ? '#cdb48a' : y < 18 ? '#dcc49c' : '#e6d0a8'); R(0, DY, P, 2, '#d6bf96'); R(0, DY + 2, P, 1, '#c9ae82'); for (var x = 40; x < P; x += 70) R(x, 0, 3, DY, '#c9ae82');
   R(cw, wallB - 16, P - cw, 16, '#9a2a24'); R(cw, wallB - 17, P - cw, 1, '#e8d4b0'); R(cw, wallB - 1, P - cw, 1, '#6a1e1a');
   for (var y = wallB; y < H; y++) R(0, y, P, 1, (Math.floor((y - wallB)/5) % 2) ? '#7a5032' : '#6e482c');
   for (var y = wallB; y < H; y += 5) for (var x = ((y - wallB)/5 % 2) ? 0 : 12; x < P; x += 24) R(x, y, 1, 5, '#5a3820');
+  ctx.save(); ctx.translate(0, DY);
   // bright speckled prints in black frames
   for (var k = 0; k < Math.floor((dX - cw - 20)/30); k++){ var px = cw + 12 + k*30, py = 18 + (k % 2)*4, pw = 14 + (k % 3)*3, ph = 18;
     R(px - 1, py - 1, pw + 2, ph + 2, '#1a1414'); R(px, py, pw, ph, ['#f6e8d0','#f2dcd8','#e4ecd8'][k % 3]);
@@ -2159,12 +2160,14 @@ function drawPastry(ctx, W, H, t){
     R(lx, ly, 1, 3, '#8a6a3a'); for (var i = 0; i < 6; i++) R(lx + i, ly - 1 + Math.round(i*i*0.15), 1, 1, '#8a6a3a');
     var hx = lx + 6, hy = ly + 5; R(hx - 2, hy, 5, 3, dim < 1 ? '#c9a878' : '#ffe8b8'); R(hx - 1, hy + 3, 3, 2, dim < 1 ? '#d9b888' : '#fff0c8'); R(hx, hy + 5, 1, 1, '#ffffff');
     ctx.globalCompositeOperation = 'lighter'; for (var r = 16; r > 0; r -= 2){ ctx.fillStyle = 'rgba(110,70,20,' + (0.05*dim) + ')'; ctx.beginPath(); ctx.arc(hx, hy + 3, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+  ctx.restore();
   // the bathroom door at the back right, sliding open on a yellow room
   var dW = 16, dTop = wallB - 46; R(dX - 2, dTop - 2, dW + 4, 46, '#d6bf96');
   R(dX, dTop, dW, 44, '#f5d65a'); R(dX + 2, dTop + 8, 6, 8, '#d6eef6'); R(dX + 2, dTop + 8, 6, 1, '#c9a43a'); R(dX + 9, dTop + 22, 6, 3, '#f8f4ec'); R(dX + 11, dTop + 20, 1, 2, '#9a9a9a'); R(dX, dTop + 40, dW, 4, '#e8c04a');
   var norm = {dir: ndir, v: nmode === 'walk' ? 1 : 0, sit: nmode === 'sit' ? 1 : 0, nocup: 1, ph: 2, skin: 0, hair: 'short', hc: '#2a2a2a', glasses: 1, glassC: '#3a2a1a', jacket: '#8a8a8e', hounds: 1, tee: '#151218', pants: '#5a5a62'};
   if (inside && door > 0.4) stPerson(ctx, {dir: ndir, v: 0, ph: 1, skin: 0, hair: 'short', hc: '#2a2a2a', glasses: 1, glassC: '#3a2a1a', jacket: '#8a8a8e', hounds: 1, tee: '#151218', pants: '#5a5a62'}, dX + 8, dTop + 44, t);
   var slide = Math.round(door*dW); R(dX + slide, dTop, dW, 44, '#f8f4ec'); R(dX + slide, dTop, 1, 44, '#d6bf96'); R(dX + slide + 2, dTop + 20, 1, 6, '#9a948a'); R(dX - 2, dTop - 3, dW*2 + 4, 2, '#9a948a');
+  ctx.save(); ctx.translate(0, DY);
   // behind the counter: a rainbow painted panel, menu boards, shelves of tins and bags, the old register, flowers, the tip jar
   var rb = ['#6a3a9a','#d9304a','#2f5fc4','#3d9a4a','#e9c43a','#e8822a']; for (var i = 0; i < 6; i++) R(4, 10 + i*7, 20, 7, rb[i]);
   R(4, 10, 20, 1, '#151218'); ctx.fillStyle = '#f3e0a8'; ptext(ctx, 'EXPECT', 5, 12, 1, '#f3e0a8'); R(12, 40, 3, 3, '#e8c4a0'); R(11, 43, 5, 8, '#e8e4dc'); R(8, 43, 3, 1, '#e8e4dc'); R(16, 43, 3, 1, '#e8e4dc');
@@ -2173,6 +2176,7 @@ function drawPastry(ctx, W, H, t){
   R(58, 46, 12, 8, '#d6d0c4'); R(59, 47, 10, 3, '#b9b2a4'); R(60, 51, 1, 1, '#151218'); R(64, 51, 1, 1, '#151218');
   R(92, 46, 3, 8, '#5a8a6a'); for (var k = 0; k < 6; k++) R(89 + (k*3) % 8, 41 + (k % 3)*2, 3, 2, ['#ff4a7a','#e83a5a','#ff7a9a'][k % 3]);
   R(104, 49, 5, 6, 'rgba(220,235,245,.6)'); R(105, 51, 3, 1, '#3a6a3a');
+  ctx.restore();
   // the servers behind the long counter
   [[40, {skin: 2, hair: 'curly', hc: '#151218', jacket: '#b02a24', pants: '#2a2a32', dir: 1}], [82, {skin: 3, hair: 'bob', hc: '#5a3a24', jacket: '#f3efe6', pants: '#2a2a32', dir: -1}]].forEach(function(w, i){ var pp = w[1]; pp.v = 0; pp.ph = i*2; stPerson(ctx, pp, w[0], wallB - 4, t); });
   if (Math.sin(t*0.8) > .4){ R(86, wallB - 22, 7, 1, '#f3efe6'); R(87, wallB - 24, 5, 2, '#e9c45a'); }
