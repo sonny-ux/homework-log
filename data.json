@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T07:59:00+00:00",
+ "updated": "2026-11-03T08:00:04+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -12,7 +12,11 @@
    "end_min": 1220,
    "minutes": 102,
    "in_progress": false,
-   "topic": "HW6 prep (file hw6.pdf, header reads \"Homework 5\"; due Mon 10/26, 11:59 PM), Munkres §22: definition of…"
+   "topic": "HW6 prep (file hw6.pdf, header reads \"Homework 5\"; due Mon 10/26, 11:59 PM), Munkres §22: definition of…",
+   "refs": [
+    "homework 6",
+    "homework 5"
+   ]
   },
   {
    "date": "2026-10-25",
@@ -25,7 +29,8 @@
    "end_min": 1384,
    "minutes": 101,
    "in_progress": false,
-   "topic": "Read the iPad Concept C transcript (worked example p(x,y) = x + y)"
+   "topic": "Read the iPad Concept C transcript (worked example p(x,y) = x + y)",
+   "refs": []
   },
   {
    "date": "2026-10-25",
@@ -38,7 +43,8 @@
    "end_min": 1440,
    "minutes": 36,
    "in_progress": false,
-   "topic": "Continuity defined via preimages (backward) vs. open maps (forward); worked example p(x,y) = x + y redone in…"
+   "topic": "Continuity defined via preimages (backward) vs. open maps (forward); worked example p(x,y) = x + y redone in…",
+   "refs": []
   },
   {
    "date": "2026-10-26",
@@ -51,7 +57,10 @@
    "end_min": 153,
    "minutes": 153,
    "in_progress": false,
-   "topic": "Step 3 via the section j(s) = (s,0): why j is continuous (interactive figures), j⁻¹(p⁻¹(U)) = U, (p∘j)⁻¹ =…"
+   "topic": "Step 3 via the section j(s) = (s,0): why j is continuous (interactive figures), j⁻¹(p⁻¹(U)) = U, (p∘j)⁻¹ =…",
+   "refs": [
+    "homework"
+   ]
   },
   {
    "date": "2026-10-26",
@@ -64,7 +73,10 @@
    "end_min": 1035,
    "minutes": 41,
    "in_progress": false,
-   "topic": "Q3 prep"
+   "topic": "Q3 prep",
+   "refs": [
+    "homework 5"
+   ]
   },
   {
    "date": "2026-10-26",
@@ -77,7 +89,8 @@
    "end_min": 1158,
    "minutes": 32,
    "in_progress": false,
-   "topic": "Q3(a) sketches checked (A correct; B: square sides should be dashed, and the strip between square and segment…"
+   "topic": "Q3(a) sketches checked (A correct; B: square sides should be dashed, and the strip between square and segment…",
+   "refs": []
   },
   {
    "date": "2026-10-26",
@@ -90,7 +103,8 @@
    "end_min": 1207,
    "minutes": 24,
    "in_progress": false,
-   "topic": "Q3(a) sketches finished (B fixed: dashed sides, empty gap; shade both squares; B also has a solid top)"
+   "topic": "Q3(a) sketches finished (B fixed: dashed sides, empty gap; shade both squares; B also has a solid top)",
+   "refs": []
   },
   {
    "date": "2026-10-26",
@@ -103,7 +117,8 @@
    "end_min": 1298,
    "minutes": 55,
    "in_progress": false,
-   "topic": "Q3(b) worked out: why {(0,0)} is not open in A (every disk meets the square near the corner, e.g. (r/2,…"
+   "topic": "Q3(b) worked out: why {(0,0)} is not open in A (every disk meets the square near the corner, e.g. (r/2,…",
+   "refs": []
   },
   {
    "date": "2026-10-26",
@@ -116,7 +131,8 @@
    "end_min": 1350,
    "minutes": 41,
    "in_progress": false,
-   "topic": "Q4(a) read and unpacked in this chat (subspace vs. quotient topology on the image A; \"finer\" = every…"
+   "topic": "Q4(a) read and unpacked in this chat (subspace vs. quotient topology on the image A; \"finer\" = every…",
+   "refs": []
   },
   {
    "date": "2026-10-26",
@@ -129,7 +145,10 @@
    "end_min": 1439,
    "minutes": 75,
    "in_progress": false,
-   "topic": "Q4(a) (general method: proving one topology is finer than another), Q4(b) (existence proof: B = f(X) with the…"
+   "topic": "Q4(a) (general method: proving one topology is finer than another), Q4(b) (existence proof: B = f(X) with the…",
+   "refs": [
+    "homework 5"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -142,7 +161,8 @@
    "end_min": 74,
    "minutes": 13,
    "in_progress": false,
-   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina"
+   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina",
+   "refs": []
   },
   {
    "date": "2026-10-27",
@@ -155,7 +175,8 @@
    "end_min": 114,
    "minutes": 31,
    "in_progress": false,
-   "topic": "Reading Eliza Haywood, Fantomina, then writing a reflection (1:45–1:54)"
+   "topic": "Reading Eliza Haywood, Fantomina, then writing a reflection (1:45–1:54)",
+   "refs": []
   },
   {
    "date": "2026-10-27",
@@ -168,7 +189,8 @@
    "end_min": 173,
    "minutes": 23,
    "in_progress": false,
-   "topic": "Virginia Woolf: reading To the Lighthouse (syllabus for 10/27 and 10/29)"
+   "topic": "Virginia Woolf: reading To the Lighthouse (syllabus for 10/27 and 10/29)",
+   "refs": []
   },
   {
    "date": "2026-10-27",
@@ -181,7 +203,10 @@
    "end_min": 913,
    "minutes": 128,
    "in_progress": false,
-   "topic": "Paper 1 (two pages; due 10/27, submitting late by Fri 10/30)"
+   "topic": "Paper 1 (two pages; due 10/27, submitting late by Fri 10/30)",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -194,7 +219,8 @@
    "end_min": 1002,
    "minutes": 5,
    "in_progress": false,
-   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina (due Fri 10/30)"
+   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina (due Fri 10/30)",
+   "refs": []
   },
   {
    "date": "2026-10-27",
@@ -207,7 +233,10 @@
    "end_min": 1098,
    "minutes": 63,
    "in_progress": false,
-   "topic": "Problem Set 5 (20 pts; Canvas; was due Tue 10/27 9:00 AM, turning in late Wed 10/28)"
+   "topic": "Problem Set 5 (20 pts; Canvas; was due Tue 10/27 9:00 AM, turning in late Wed 10/28)",
+   "refs": [
+    "problem set 5"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -220,7 +249,10 @@
    "end_min": 1140,
    "minutes": 14,
    "in_progress": false,
-   "topic": "Problem Set 5: set up a link for the guide (published to the vibrations-waves-guide site, ps5/) and rebuilt…"
+   "topic": "Problem Set 5: set up a link for the guide (published to the vibrations-waves-guide site, ps5/) and rebuilt…",
+   "refs": [
+    "problem set 5"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -233,7 +265,11 @@
    "end_min": 1210,
    "minutes": 70,
    "in_progress": false,
-   "topic": "Working through Problem Set 5 with the guide, from Problem 1(a)"
+   "topic": "Working through Problem Set 5 with the guide, from Problem 1(a)",
+   "refs": [
+    "problem set 5",
+    "homework"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -246,7 +282,10 @@
    "end_min": 1339,
    "minutes": 42,
    "in_progress": false,
-   "topic": "Paper 1 (prompt 6: laws, causation, counterfactuals; late cutoff Fri 10/30)"
+   "topic": "Paper 1 (prompt 6: laws, causation, counterfactuals; late cutoff Fri 10/30)",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-10-28",
@@ -259,7 +298,10 @@
    "end_min": 1070,
    "minutes": 47,
    "in_progress": false,
-   "topic": "Paper 1 (prompt 6: laws, causation, counterfactuals; late cutoff Fri 10/30)"
+   "topic": "Paper 1 (prompt 6: laws, causation, counterfactuals; late cutoff Fri 10/30)",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-10-28",
@@ -272,7 +314,10 @@
    "end_min": 1110,
    "minutes": 29,
    "in_progress": false,
-   "topic": "Paper 1 (prompt 6), continuing from the Hume passage"
+   "topic": "Paper 1 (prompt 6), continuing from the Hume passage",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-10-28",
@@ -285,7 +330,10 @@
    "end_min": 1166,
    "minutes": 43,
    "in_progress": false,
-   "topic": "Paper 1 (prompt 6): lawlike vs. law (a law is a true lawlike statement); chain Hume → Goodman → laws →…"
+   "topic": "Paper 1 (prompt 6): lawlike vs. law (a law is a true lawlike statement); chain Hume → Goodman → laws →…",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-10-28",
@@ -298,7 +346,10 @@
    "end_min": 1440,
    "minutes": 105,
    "in_progress": false,
-   "topic": "Paper 1 (prompt 6), drafting in Pages"
+   "topic": "Paper 1 (prompt 6), drafting in Pages",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-10-29",
@@ -311,7 +362,8 @@
    "end_min": 38,
    "minutes": 38,
    "in_progress": false,
-   "topic": "Jackson kept the length (fits at 11 pt)"
+   "topic": "Jackson kept the length (fits at 11 pt)",
+   "refs": []
   },
   {
    "date": "2026-10-29",
@@ -324,7 +376,8 @@
    "end_min": 129,
    "minutes": 65,
    "in_progress": false,
-   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina (due Fri 10/30)"
+   "topic": "Approaches to Literary Study: reading Eliza Haywood, Fantomina (due Fri 10/30)",
+   "refs": []
   },
   {
    "date": "2026-10-29",
@@ -337,7 +390,10 @@
    "end_min": 981,
    "minutes": 50,
    "in_progress": false,
-   "topic": "Paper 1 (prompt 6; late cutoff Fri 10/30): final sweep (Cartwright on truth of laws, Russell's laws carrying…"
+   "topic": "Paper 1 (prompt 6; late cutoff Fri 10/30): final sweep (Cartwright on truth of laws, Russell's laws carrying…",
+   "refs": [
+    "paper 1"
+   ]
   },
   {
    "date": "2026-11-02",
@@ -350,7 +406,8 @@
    "end_min": 960,
    "minutes": 19,
    "in_progress": false,
-   "topic": "Chapter 3, damped and driven oscillator (reviewing own notes)"
+   "topic": "Chapter 3, damped and driven oscillator (reviewing own notes)",
+   "refs": []
   },
   {
    "date": "2026-11-02",
@@ -363,7 +420,8 @@
    "end_min": 1096,
    "minutes": 28,
    "in_progress": false,
-   "topic": "Virginia Woolf session"
+   "topic": "Virginia Woolf session",
+   "refs": []
   },
   {
    "date": "2026-11-02",
@@ -376,7 +434,10 @@
    "end_min": 1176,
    "minutes": 77,
    "in_progress": false,
-   "topic": "Approaches to Literary Study: Paper 2 (drama; due Fri 11/6; prompt saved to School/syllabi)"
+   "topic": "Approaches to Literary Study: Paper 2 (drama; due Fri 11/6; prompt saved to School/syllabi)",
+   "refs": [
+    "paper 2"
+   ]
   },
   {
    "date": "2026-11-02",
@@ -389,7 +450,10 @@
    "end_min": 1344,
    "minutes": 90,
    "in_progress": false,
-   "topic": "Problem Set 6 (King 5-2, 5-3, 5-6; was due Sun 11/1, Gradescope; doing it late)"
+   "topic": "Problem Set 6 (King 5-2, 5-3, 5-6; was due Sun 11/1, Gradescope; doing it late)",
+   "refs": [
+    "problem set 6"
+   ]
   },
   {
    "date": "2026-11-02",
@@ -402,7 +466,10 @@
    "end_min": 1399,
    "minutes": 38,
    "in_progress": false,
-   "topic": "Problem Set 6, Problem 2 (King 5-3): (i), (ii), (iii) shown to satisfy the wave equation by substitution u =…"
+   "topic": "Problem Set 6, Problem 2 (King 5-3): (i), (ii), (iii) shown to satisfy the wave equation by substitution u =…",
+   "refs": [
+    "problem set 6"
+   ]
   },
   {
    "date": "2026-11-03",
@@ -415,7 +482,8 @@
    "end_min": 98,
    "minutes": 45,
    "in_progress": false,
-   "topic": "Nelson Goodman, Fact, Fiction, and Forecast: Ch. 3 (\"The New Riddle of Induction\") key terms reviewed (old…"
+   "topic": "Nelson Goodman, Fact, Fiction, and Forecast: Ch. 3 (\"The New Riddle of Induction\") key terms reviewed (old…",
+   "refs": []
   },
   {
    "date": "2026-11-03",
@@ -428,7 +496,11 @@
    "end_min": 165,
    "minutes": 61,
    "in_progress": false,
-   "topic": "Concepts behind PS6 Problem 2: why f(x − vt) moves toward +x (following a crest; x catching up with vt;…"
+   "topic": "Concepts behind PS6 Problem 2: why f(x − vt) moves toward +x (following a crest; x catching up with vt;…",
+   "refs": [
+    "problem set 6",
+    "problem set"
+   ]
   }
  ],
  "assignments": [
@@ -439,7 +511,8 @@
    "title": "Essay",
    "detail": "Essay. The Reminders date (Fri 10/30) is the late cutoff, not the due date; Jackson plans to submit late, by 10/30. Submitted Thu 10/29.",
    "done": true,
-   "source": "hand"
+   "source": "hand",
+   "key": ""
   },
   {
    "due": "2026-10-27",
@@ -448,7 +521,8 @@
    "title": "Problem Set 5",
    "detail": "Problem Set 5 (20 pts; Canvas, not yet submitted). Plan: turn in one day late, Wed 10/28",
    "done": false,
-   "source": "hand"
+   "source": "hand",
+   "key": "problem set 5"
   },
   {
    "due": "2026-11-01",
@@ -457,7 +531,8 @@
    "title": "Problem Set 6",
    "detail": "Problem Set 6 (30 pts; Canvas). Not submitted as of Mon 11/2 (Canvas: No Submission); working on it late.",
    "done": false,
-   "source": "hand"
+   "source": "hand",
+   "key": "problem set 6"
   },
   {
    "due": "2026-11-04",
@@ -466,7 +541,8 @@
    "title": "Homework 7",
    "detail": "Homework 7 (30 pts; Canvas; open until Thu 11/5, 11:59 PM)",
    "done": false,
-   "source": "hand"
+   "source": "hand",
+   "key": "homework 7"
   },
   {
    "due": "2026-11-06",
@@ -475,7 +551,8 @@
    "title": "Paper 2",
    "detail": "Paper 2 (time and prompt to confirm)",
    "done": false,
-   "source": "hand"
+   "source": "hand",
+   "key": "paper 2"
   },
   {
    "due": "2026-11-08",
@@ -484,7 +561,8 @@
    "title": "Discussion Post",
    "detail": "",
    "done": false,
-   "source": "reminders"
+   "source": "reminders",
+   "key": "discussion post"
   },
   {
    "due": "2026-11-08",
@@ -493,7 +571,8 @@
    "title": "Problem Set 7",
    "detail": "Problem Set 7 (50 pts; Canvas; locked as of 11/2). Physics sets are now due weekly, Sundays at 9:00 AM.",
    "done": false,
-   "source": "hand"
+   "source": "hand",
+   "key": "problem set 7"
   },
   {
    "due": "2026-11-11",
@@ -502,7 +581,8 @@
    "title": "Midterm 2",
    "detail": "",
    "done": false,
-   "source": "reminders"
+   "source": "reminders",
+   "key": "midterm 2"
   }
  ]
 }

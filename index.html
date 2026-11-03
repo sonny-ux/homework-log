@@ -166,6 +166,15 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .tr .td { color: var(--muted); font-size: 12px; padding-top: 2px; }
 .row .t .tp { font-size: 13px; color: var(--muted); margin-top: 2px; }
 @media (max-width: 560px) { .tr { grid-template-columns: 72px 1fr; } }
+.fc { border: var(--rule) solid var(--ink); margin-bottom: 14px; }
+.fsum { padding: 10px 12px; border-bottom: var(--thin) solid var(--ink); font-size: 15px; }
+.fsum b { font-size: 18px; }
+.fr { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; align-items: center; padding: 8px 12px; }
+.fr + .fr { border-top: var(--thin) solid var(--ink); }
+.fr i { width: 14px; height: 14px; outline: 1.5px solid var(--ink); }
+.ft { font-weight: 600; font-size: 15px; } .ft small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+.fl { font-weight: 700; white-space: nowrap; }
+.fnote { font-size: 12px; color: var(--muted); padding: 8px 12px; border-top: var(--thin) solid var(--ink); }
 </style>
 </head>
 <body>
@@ -195,6 +204,8 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
   <section id="asg">
     <h2>Due <span class="sub" id="asgsub"></span></h2>
     <div class="cal" id="cal"></div>
+    <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
+    <div class="fc" id="fc"></div>
     <div id="queue"></div>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
@@ -363,6 +374,35 @@ function renderComp(ss){
 }
 
 function abbr(t){ return t.replace(/^Problem Set\s*/i,'PS ').replace(/^Homework\s*/i,'HW ').replace(/^Discussion Post/i,'Post').replace(/^Read\s+/i,'').trim(); }
+
+var DEFAULT_H = {'problem set':3, 'homework':8, 'paper':6, 'discussion post':1, 'midterm':8};
+function kindOf(key){ return (key||'').replace(/\s*\d+$/,''); }
+function spentOn(a){ return DATA.sessions.filter(function(s){ return s['class']===a['class'] && (s.refs||[]).indexOf(a.key) >= 0; }).reduce(function(t,s){ return t+(s.minutes||0); },0); }
+function typicalMinutes(a){
+  var kind = kindOf(a.key), seen = {};
+  DATA.sessions.forEach(function(s){ (s.refs||[]).forEach(function(r, i){
+    if (i===0 && kindOf(r)===kind && /\d$/.test(r) && r !== a.key && (kind==='paper' || s['class']===a['class'])) seen[r] = (seen[r]||0) + (s.minutes||0);
+  }); });
+  var vals = Object.keys(seen).map(function(k){ return seen[k]; });
+  var learned = vals.length ? vals.reduce(function(x,y){return x+y;},0)/vals.length : 0;
+  var def = (DEFAULT_H[kind] || 2) * 60;
+  return {m: Math.max(learned, def), learned: learned, n: vals.length};
+}
+function renderForecast(){
+  var end = new Date(today); end.setDate(end.getDate()+7);
+  var items = DATA.assignments.filter(function(a){ return !a.done && a.key && parse(a.due) <= end && parse(a.due) >= new Date(today.getTime()-14*864e5); });
+  if (!items.length){ el('fc').innerHTML = '<p class="nz" style="padding:10px 12px">Nothing due in the next 7 days.</p>'; return; }
+  var total = 0, rows = items.map(function(a){
+    var t = typicalMinutes(a), done = spentOn(a), left = Math.max(0, Math.round((t.m - done)/15)*15);
+    total += left;
+    var basis = (t.n && t.learned >= t.m - 1) ? 'your past ' + kindOf(a.key) + 's took ~' + hm(Math.round(t.learned)) : 'typical ' + kindOf(a.key) + ' ~' + hm(t.m);
+    return '<div class="fr"><i class="' + cls(a['class']) + '"></i><div class="ft">' + esc(a.title) + '<small>' + (done ? hm(done) + ' done · ' : '') + basis + '</small></div><div class="fl">' + (left ? '~' + hm(left) : 'about done') + '</div></div>';
+  });
+  var lastDue = items.reduce(function(m,a){ return a.due > m ? a.due : m; }, iso(today));
+  var daysLeft = Math.max(1, Math.round((parse(lastDue) - today)/864e5) + 1);
+  el('fc').innerHTML = '<div class="fsum"><b>~' + hm(total) + '</b> of work left · about <b>' + hm(Math.round(total/daysLeft/15)*15) + '</b> a day for ' + daysLeft + ' days</div>' + rows.join('')
+    + '<p class="fnote">Estimates use how long similar assignments took in your log (or a typical figure when there is no history), minus the time already logged on each.</p>';
+}
 function renderCal(){
   var start = sunday(today), html = '';
   for (var i = 0; i < 7; i++) html += '<div class="ch">' + DAYS[i] + '</div>';
@@ -376,7 +416,7 @@ function renderCal(){
   el('cal').innerHTML = html;
 }
 function renderAssignments(){
-  renderCal();
+  renderCal(); renderForecast();
   var rows = DATA.assignments.map(function(a){
     var due = parse(a.due); return {a:a, due:due, days:Math.round((due - today) / 864e5)};
   });
