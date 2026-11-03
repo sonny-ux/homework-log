@@ -365,12 +365,28 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .f-gold { --fr: #c9a43a; --fd: #8a6a1a; --fl: #f0d27a; }
 .f-pink { --fr: #e8a0b4; --fd: #b9708a; --fl: #f6d2dc; }
 .scenewin:hover .frame { transform: rotate(-1deg); } .scenewin .frame { transition: transform .3s; transform-origin: 50% -14px; }
+/* ===== Home, reordered: what happened last, what to do next ===== */
+.tl { font-size: 12px !important; color: var(--ink) !important; opacity: .78; }
+h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color: var(--ink) !important; opacity: .7; }
+.ls, .nx { display: grid; grid-template-columns: 12px 1fr; gap: 10px; margin-top: 8px; }
+.ls i, .nx i { width: 12px; height: 12px; margin-top: 4px; outline: 1.5px solid var(--ink); }
+.ls b, .nx b { font-size: 17px; font-weight: 600; } .ls small, .nx small { color: var(--muted); font-size: 13px; }
+.ls p, .nx p { margin: 4px 0 0; font-size: 14px; line-height: 1.4; color: var(--ink); opacity: .85; }
+.nx.second { margin-top: 10px; padding-top: 8px; border-top: 1px dotted var(--ink); } .nx.second b { font-size: 15px; font-weight: 500; }
+.tsub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.strip2 { display: flex; gap: 6px; margin-top: 8px; }
+.sdw { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.sdw .sd { flex: none; height: 70px; } .sdw.now .sd { outline: 3px solid var(--yellow); }
+.sdw > em { font-size: 10px; font-style: normal; color: var(--muted); text-align: center; height: 14px; margin-top: 3px; }
+.hws { display: flex; flex-direction: column; gap: 2px; min-height: 14px; }
+.hwk { display: block; font: 9px var(--pixel); text-transform: uppercase; text-align: center; padding: 2px 0; white-space: nowrap; overflow: hidden; }
+.hwk.done { opacity: .35; text-decoration: line-through; }
 </style>
 </head>
 <body>
 <main>
   <div class="bar"><h1>Homework</h1><div class="date" id="today"></div><div class="flag pixbox" title="Open the lighthouse"><svg class="pix" viewBox="0 0 24 24" shape-rendering="crispEdges" role="img" aria-label="Someone reading at a desk"><rect width="24" height="24" fill="#1c2540"/><rect x="2" y="2" width="5" height="4" fill="#26355c"/><rect x="2" y="2" width="5" height="4" fill="none" stroke="#3d4f7d" stroke-width=".4"/><rect x="4" y="3" width=".6" height=".6" fill="#ffe7a1" class="star"/><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd36b" stop-opacity=".45"/><stop offset="1" stop-color="#ffd36b" stop-opacity="0"/></linearGradient></defs><polygon points="16,5 22,5 24,19 12,19" fill="url(#lg)"/><rect x="18" y="1" width="1.02" height="1.02" fill="#22212a"/><rect x="18" y="2" width="1.02" height="1.02" fill="#22212a"/><rect x="16" y="3" width="1.02" height="1.02" fill="#e9c45a"/><rect x="17" y="3" width="1.02" height="1.02" fill="#e9c45a"/><rect x="18" y="3" width="1.02" height="1.02" fill="#e9c45a"/><rect x="19" y="3" width="1.02" height="1.02" fill="#e9c45a"/><rect x="20" y="3" width="1.02" height="1.02" fill="#e9c45a"/><rect x="15" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="16" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="17" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="18" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="19" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="20" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="21" y="4" width="1.02" height="1.02" fill="#e9c45a"/><rect x="8" y="5" width="1.02" height="1.02" fill="#3b2a24"/><rect x="9" y="5" width="1.02" height="1.02" fill="#3b2a24"/><rect x="10" y="5" width="1.02" height="1.02" fill="#3b2a24"/><rect x="11" y="5" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="6" width="1.02" height="1.02" fill="#3b2a24"/><rect x="8" y="6" width="1.02" height="1.02" fill="#3b2a24"/><rect x="9" y="6" width="1.02" height="1.02" fill="#3b2a24"/><rect x="10" y="6" width="1.02" height="1.02" fill="#3b2a24"/><rect x="11" y="6" width="1.02" height="1.02" fill="#3b2a24"/><rect x="12" y="6" width="1.02" height="1.02" fill="#3b2a24"/><rect x="6" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="8" y="7" width="1.02" height="1.02" fill="#52392f"/><rect x="9" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="10" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="11" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="12" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="13" y="7" width="1.02" height="1.02" fill="#3b2a24"/><rect x="6" y="8" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="8" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="8" y="8" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="9" y="8" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="10" y="8" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="11" y="8" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="12" y="8" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="13" y="8" width="1.02" height="1.02" fill="#3b2a24"/><rect x="6" y="9" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="12" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="13" y="9" width="1.02" height="1.02" fill="#3b2a24"/><rect x="6" y="10" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="10" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="8" y="10" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="9" y="10" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="10" y="10" width="1.02" height="1.02" fill="#d9a982"/><rect x="11" y="10" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="12" y="10" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="13" y="10" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="11" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="8" y="11" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="9" y="11" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="10" y="11" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="11" y="11" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="12" y="11" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="8" y="12" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="9" y="12" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="10" y="12" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="11" y="12" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="5" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="6" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="7" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="8" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="9" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="10" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="11" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="12" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="13" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="14" y="13" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="4" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="5" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="6" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="7" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="8" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="9" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="10" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="11" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="12" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="13" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="14" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="15" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="1" y="15" width="1.02" height="1.02" fill="#c9a43a"/><rect x="2" y="15" width="1.02" height="1.02" fill="#52392f"/><rect x="3" y="15" width="1.02" height="1.02" fill="#52392f"/><rect x="4" y="15" width="1.02" height="1.02" fill="#c9a43a"/><rect x="6" y="15" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="7" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="8" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="9" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="10" y="15" width="1.02" height="1.02" fill="#c4473a"/><rect x="11" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="12" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="13" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="14" y="15" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="0" y="16" width="1.02" height="1.02" fill="#e9c45a"/><rect x="1" y="16" width="1.02" height="1.02" fill="#e9c45a"/><rect x="2" y="16" width="1.02" height="1.02" fill="#e9c45a"/><rect x="3" y="16" width="1.02" height="1.02" fill="#e9c45a"/><rect x="4" y="16" width="1.02" height="1.02" fill="#e9c45a"/><rect x="6" y="16" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="7" y="16" width="1.02" height="1.02" fill="#f5eedb"/><rect x="8" y="16" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="9" y="16" width="1.02" height="1.02" fill="#f5eedb"/><rect x="10" y="16" width="1.02" height="1.02" fill="#c4473a"/><rect x="11" y="16" width="1.02" height="1.02" fill="#f5eedb"/><rect x="12" y="16" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="13" y="16" width="1.02" height="1.02" fill="#f5eedb"/><rect x="14" y="16" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="1" y="17" width="1.02" height="1.02" fill="#e9c45a"/><rect x="2" y="17" width="1.02" height="1.02" fill="#e9c45a"/><rect x="3" y="17" width="1.02" height="1.02" fill="#e9c45a"/><rect x="4" y="17" width="1.02" height="1.02" fill="#e9c45a"/><rect x="6" y="17" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="7" y="17" width="1.02" height="1.02" fill="#f5eedb"/><rect x="8" y="17" width="1.02" height="1.02" fill="#f5eedb"/><rect x="9" y="17" width="1.02" height="1.02" fill="#f5eedb"/><rect x="10" y="17" width="1.02" height="1.02" fill="#c4473a"/><rect x="11" y="17" width="1.02" height="1.02" fill="#f5eedb"/><rect x="12" y="17" width="1.02" height="1.02" fill="#f5eedb"/><rect x="13" y="17" width="1.02" height="1.02" fill="#f5eedb"/><rect x="14" y="17" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="1" y="18" width="1.02" height="1.02" fill="#c9a43a"/><rect x="2" y="18" width="1.02" height="1.02" fill="#c9a43a"/><rect x="3" y="18" width="1.02" height="1.02" fill="#c9a43a"/><rect x="4" y="18" width="1.02" height="1.02" fill="#c9a43a"/><rect x="6" y="18" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="7" y="18" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="8" y="18" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="9" y="18" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="10" y="18" width="1.02" height="1.02" fill="#c4473a"/><rect x="11" y="18" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="12" y="18" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="13" y="18" width="1.02" height="1.02" fill="#d9cfb3"/><rect x="14" y="18" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="0" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="1" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="2" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="3" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="4" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="5" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="6" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="7" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="8" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="9" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="10" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="11" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="12" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="13" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="14" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="15" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="16" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="17" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="18" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="19" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="20" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="21" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="22" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="23" y="19" width="1.02" height="1.02" fill="#7a5a41"/><rect x="0" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="1" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="2" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="3" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="4" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="5" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="6" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="7" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="8" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="9" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="10" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="11" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="12" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="13" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="14" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="15" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="16" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="17" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="18" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="19" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="20" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="21" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="22" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="23" y="20" width="1.02" height="1.02" fill="#5a412f"/><rect x="2" y="21" width="1.02" height="1.02" fill="#5a412f"/><rect x="3" y="21" width="1.02" height="1.02" fill="#5a412f"/><rect x="20" y="21" width="1.02" height="1.02" fill="#5a412f"/><rect x="21" y="21" width="1.02" height="1.02" fill="#5a412f"/><rect x="2" y="22" width="1.02" height="1.02" fill="#5a412f"/><rect x="3" y="22" width="1.02" height="1.02" fill="#5a412f"/><rect x="20" y="22" width="1.02" height="1.02" fill="#5a412f"/><rect x="21" y="22" width="1.02" height="1.02" fill="#5a412f"/><rect x="2" y="23" width="1.02" height="1.02" fill="#5a412f"/><rect x="3" y="23" width="1.02" height="1.02" fill="#5a412f"/><rect x="20" y="23" width="1.02" height="1.02" fill="#5a412f"/><rect x="21" y="23" width="1.02" height="1.02" fill="#5a412f"/><g class="eo"><rect x="6" y="9" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="8" y="9" width="1.02" height="1.02" fill="#22212a"/><rect x="9" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="10" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="11" y="9" width="1.02" height="1.02" fill="#22212a"/><rect x="12" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="13" y="9" width="1.02" height="1.02" fill="#3b2a24"/></g><g class="es"><rect x="6" y="9" width="1.02" height="1.02" fill="#3b2a24"/><rect x="7" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="8" y="9" width="1.02" height="1.02" fill="#d9a982"/><rect x="9" y="9" width="1.02" height="1.02" fill="#d9a982"/><rect x="10" y="9" width="1.02" height="1.02" fill="#f0c6a0"/><rect x="11" y="9" width="1.02" height="1.02" fill="#d9a982"/><rect x="12" y="9" width="1.02" height="1.02" fill="#d9a982"/><rect x="13" y="9" width="1.02" height="1.02" fill="#3b2a24"/></g><g class="pt"><rect x="4" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="5" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="6" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="7" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="8" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="9" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="10" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="11" y="14" width="1.02" height="1.02" fill="#f5eedb"/><rect x="12" y="14" width="1.02" height="1.02" fill="#f5eedb"/><rect x="13" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="14" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="15" y="14" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="1" y="15" width="1.02" height="1.02" fill="#c9a43a"/><rect x="2" y="15" width="1.02" height="1.02" fill="#52392f"/><rect x="3" y="15" width="1.02" height="1.02" fill="#52392f"/><rect x="4" y="15" width="1.02" height="1.02" fill="#c9a43a"/><rect x="6" y="15" width="1.02" height="1.02" fill="#2f5f9e"/><rect x="7" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="8" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="9" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="10" y="15" width="1.02" height="1.02" fill="#c4473a"/><rect x="11" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="12" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="13" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="14" y="15" width="1.02" height="1.02" fill="#f5eedb"/><rect x="15" y="15" width="1.02" height="1.02" fill="#f5eedb"/></g><g class="s1"><rect x="3" y="11" width="1.02" height="1.02" fill="#c9c3b6"/><rect x="2" y="12" width="1.02" height="1.02" fill="#c9c3b6"/><rect x="3" y="13" width="1.02" height="1.02" fill="#c9c3b6"/></g><g class="s2"><rect x="2" y="11" width="1.02" height="1.02" fill="#c9c3b6"/><rect x="3" y="12" width="1.02" height="1.02" fill="#c9c3b6"/><rect x="2" y="13" width="1.02" height="1.02" fill="#c9c3b6"/></g></svg></div></div>
-  <nav class="seg"><a href="#home" class="on">Home</a><a href="#day">Time</a><a href="#asg">Due</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
+  <nav class="seg"><a href="#home" class="on">Home</a><a href="#day">Time</a><a href="#asg">HW</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
 
   <section id="home"><div class="tiles" id="tiles"></div>
     <figure class="scenewin right" data-scene="4" data-vig="skyline" style="--off:10px"><span class="frame f-gold"><canvas width="124" height="50" style="width:124px;height:50px"></canvas></span><figcaption>the city</figcaption></figure></section>
@@ -391,13 +407,14 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
     <div class="comp" id="comp"></div>
     <div class="zero" id="zero"></div>
     <figure class="scenewin left" data-scene="2" data-vig="spring" style="--off:34px"><span class="frame f-gold"><canvas width="54" height="54" style="width:54px;height:54px"></canvas></span><figcaption>the wave</figcaption></figure>
+    <figure class="scenewin left" data-scene="5" data-vig="columbia" style="--off:22px"><span class="frame f-wood"><canvas width="60" height="46" style="width:60px;height:46px"></canvas></span><figcaption>low steps</figcaption></figure>
     </div>
   </section>
 
   <section id="asg">
     <h2>Suggested for today <span class="sub" id="plansub"></span></h2>
     <div class="plan" id="plan"></div>
-    <h2 style="margin-top:18px">Due <span class="sub" id="asgsub"></span></h2>
+    <h2 style="margin-top:18px">HW <span class="sub" id="asgsub"></span></h2>
     <div class="wkhead"><h2 style="margin:0"><span id="calname">This week and next</span> <span class="sub" id="calsub"></span></h2>
       <div class="arrows"><button id="cprev" aria-label="Earlier weeks">‹</button><button id="cnow" aria-label="Back to this week">Now</button><button id="cnext" aria-label="Later weeks">›</button></div></div>
     <div class="cal" id="cal"></div>
@@ -426,7 +443,7 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
   </section>
 
   <p class="updated" id="upd"></p>
-<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
+<div id="rest" aria-hidden="true"><canvas id="restc"></canvas><div class="resthint">to the lighthouse</div><div class="rdots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div><div class="rctl"><button data-go="p" aria-label="Previous scene">‹</button><button data-go="x" aria-label="Close">close</button><button data-go="n" aria-label="Next scene">›</button></div></div>
 <div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
 </main>
 <script>
@@ -765,13 +782,23 @@ function renderHome(){
     return '<div class="dl" data-day="' + a.due + '"><i class="' + cls(a['class']) + '"></i><span>' + esc(abbr(a.title)) + '</span><b>' + (n === 0 ? 'today' : n === 1 ? 'tmrw' : n + 'd') + '</b></div>'; }).join('');
   var next = el('plan').querySelector('.pl'), nextHtml = next ? next.querySelector('b').textContent + ' <small>' + next.querySelector('.pm').textContent + '</small>' : 'Nothing pressing';
   var hl = el('hl').textContent.replace(/^Highlight/, '');
+  // the week strip also shows homework due on each day
+  var strip2 = '';
+  for (var i = 0; i < 7; i++){ var d = iso(addDays(sunday(today), i)), m = wk.filter(function(s){ return s.date === d; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+    var segs = CLASSES.map(function(c){ var cm = wk.filter(function(s){ return s.date === d && s['class'] === c; }).reduce(function(a,s){ return a+(s.minutes||0); },0); return cm ? '<div class="' + cls(c) + '" style="height:' + Math.min(100, cm/3) + '%"></div>' : ''; }).join('');
+    var hw = DATA.assignments.filter(function(a){ return a.due === d; }).map(function(a){ return '<b class="hwk ' + cls(a['class']) + (a.done ? ' done' : '') + '" title="' + esc(a.title) + '">' + esc(abbr(a.title).split(' ')[0].slice(0, 5)) + '</b>'; }).join('');
+    strip2 += '<div class="sdw' + (d === t ? ' now' : '') + '" data-day="' + d + '"><div class="sd">' + segs + '<span>' + DAYS[i].charAt(0) + '</span></div><em>' + (m ? hm(m) : '') + '</em><div class="hws">' + hw + '</div></div>'; }
+  var past = DATA.sessions.filter(function(s){ return s.date <= t; }).slice().sort(function(a, b){ return a.date === b.date ? nightMin(b.start_min) - nightMin(a.start_min) : (a.date < b.date ? 1 : -1); })[0];
+  var lastHtml = '<div class="tm">Nothing logged yet</div>';
+  if (past){ var ago = past.in_progress ? 'happening now' : past.date === t ? 'today' : past.date === iso(addDays(today, -1)) ? 'yesterday' : DAYS[parse(past.date).getDay()] + ' ' + MON[parse(past.date).getMonth()] + ' ' + parse(past.date).getDate();
+    lastHtml = '<div class="ls"><i class="' + cls(past['class']) + '"></i><div><b>' + esc(past['class']) + '</b> <small>' + esc(ago) + ', ' + esc(past.start) + '–' + esc(past.in_progress ? 'now' : past.end) + ' · ' + hm(past.minutes || 0) + '</small>' + (past.topic ? '<p>' + esc(past.topic) + '</p>' : '') + '</div></div>'; }
+  var nexts = [].slice.call(el('plan').querySelectorAll('.pl')).slice(0, 2).map(function(pl, i){ return '<div class="nx' + (i ? ' second' : '') + '"><i class="' + pl.querySelector('i').className + '"></i><div><b>' + esc(pl.querySelector('b').textContent) + '</b> <small>' + esc(pl.querySelector('.pm').textContent) + '</small>' + (i ? '' : '<p>' + esc(pl.querySelector('p').textContent) + '</p>') + '</div></div>'; }).join('');
   el('tiles').innerHTML =
-    '<a class="tile" href="#day"><div class="tl">Today</div><div class="tb">' + hm(todayMin) + '</div></a>' +
-    '<a class="tile" href="#wk"><div class="tl">This week</div><div class="tb">' + hm(wkMin) + '</div><div class="mbar">' + bar + '</div></a>' +
-    '<a class="tile wide" href="#wk"><div class="tl">Your week</div><div class="strip">' + strip + '</div></a>' +
-    '<a class="tile accent" href="#asg"><div class="tl">Next up</div><div class="tm">' + nextHtml + '</div></a>' +
-    '<a class="tile" href="#asg"><div class="tl">Due soon</div>' + (due || '<div class="tm">Nothing due</div>') + '</a>' +
-    (hl ? '<a class="tile wide" href="#ins"><div class="tl">Highlight</div><div class="tm">' + esc(hl) + '</div></a>' : '');
+    '<a class="tile wide last" href="#log" data-day="' + (past ? past.date : t) + '"><div class="tl">Last session</div>' + lastHtml + '</a>' +
+    '<a class="tile wide accent" href="#asg"><div class="tl">Next up</div>' + (nexts || '<div class="tm">Nothing pressing</div>') + '</a>' +
+    '<a class="tile" href="#day"><div class="tl">Today</div><div class="tb">' + hm(todayMin) + '</div><small class="tsub">' + hm(wkMin) + ' this week</small></a>' +
+    '<a class="tile" href="#asg"><div class="tl">HW</div>' + (due || '<div class="tm">Nothing due</div>') + '</a>' +
+    '<a class="tile wide week" href="#wk"><div class="tl">Your week</div><div class="strip2">' + strip2 + '</div></a>';
 }
 
 // ===== Pixel sprites. Each is a tiny grid of characters -> SVG rects; frames swap with CSS steps().
@@ -820,7 +847,7 @@ function sprinkle(){
   put('#ins .wkhead h2', ' ' + sprite(PLANT, 24, 'plant', 'plant'));
   put('#wk .wkhead h2', ' ' + sprite(SINE, 22, 'sine', 'a travelling wave'));
   var nt = document.querySelector('#ins h2:not(.wkhead h2)'); var ntH = [].slice.call(document.querySelectorAll('#ins h2')).filter(function(h){ return /Noticed/.test(h.textContent); })[0]; if (ntH && !ntH.querySelector('.spr')) ntH.insertAdjacentHTML('beforeend', ' ' + sprite(WAVES, 22, 'woolfw', 'the waves'));
-  var hl = document.querySelector('#tiles .tile.wide:last-child'); if (hl && !hl.querySelector('.cat')) hl.insertAdjacentHTML('beforeend', '<span class="catwrap">' + sprite(CAT, 44, 'cat', 'sleeping cat') + '</span>');
+  var hl = document.querySelector('#tiles .tile.week'); if (hl && !hl.querySelector('.cat')) hl.insertAdjacentHTML('beforeend', '<span class="catwrap">' + sprite(CAT, 44, 'cat', 'sleeping cat') + '</span>');
   var win = document.querySelector('.pix'); if (win && !win.querySelector('.wx')){ win.insertAdjacentHTML('beforeend', '<g class="wx">' + weatherLayer() + '</g>'); }
 }
 
@@ -1027,7 +1054,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "2d83681793";
+var APP_BUILD = "e9c8be5ee2";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1237,6 +1264,10 @@ function stPerson(ctx, p, x, y, t){
   if (p.books){ U(1, -24, 2, 6, jk); U(2, -19, 4, 2, '#c4473a'); U(2, -21, 5, 2, '#2f5f9e'); U(2, -17, 4, 1, '#e9c45a'); U(2, -18, 1, 2, sk); }
   else if (p.pizza){ U(1, -24, 2, 6, jk); U(3, -20, 2, 2, sk); U(5, -21, 3, 1, '#c9862a'); U(5, -20, 2, 1, '#e9b04a'); U(5, -19, 1, 1, '#e9b04a'); U(6, -20, 1, 1, '#c4473a'); }
   else if (p.sit){ var sip = Math.sin(t*0.9 + p.ph) > .7; U(1, -24, 2, sip ? 4 : 8, jk); if (sip){ U(3, -27, 2, 3, '#c9c3b6'); U(2, -24, 2, 2, sk); } else { U(1, -16, 2, 2, sk); U(3, -15, 2, 3, '#c9c3b6'); } }
+  else if (p.guitar && p.mill){ var ang = t*7, sx0 = 1, sy0 = -23 + bob;
+    U(-1, -18, 6, 5, '#151218'); U(0, -17, 4, 3, '#c4473a'); U(2, -16, 1, 1, '#f3ead3'); for (var k = 0; k < 7; k++) U(5 + k, -19 - k, 1, 1, '#c9c3b6'); U(12, -27, 2, 2, '#151218'); U(-4, -24, 2, 5, jk); U(9, -24, 2, 2, sk);
+    for (var k = 0; k <= 7; k++){ var ax = Math.round(sx0 + Math.cos(ang)*k), ay = Math.round(sy0 + Math.sin(ang)*k); R(ax, ay, 2, 2, k > 6 ? sk : jk); }
+    if (Math.abs(Math.sin(ang) - 1) < .4){ ctx.fillStyle = '#ffe7a1'; for (var k = 0; k < 4; k++) R(4 + k*2, -12 - k, 1, 1, '#ffe7a1'); } }
   else if (p.guitar){ var st = Math.floor(t*5) % 2; U(-1, -18, 6, 5, '#b5651d'); U(0, -17, 4, 3, '#d9822b'); U(2, -16, 1, 1, '#241f1a'); for (var k = 0; k < 6; k++) U(5 + k, -19 - k, 1, 1, '#5a412f'); U(11, -26, 2, 2, '#3b2a24');
     U(0, -22 + st, 2, 5, jk); U(1, -17 + st, 2, 2, sk); U(-4, -24, 2, 5, jk); U(8, -23, 2, 2, sk); }
   else { U(1 - a, -24, 2, 9, jk); U(1 - a, -15, 2, 2, sk); }
@@ -1245,6 +1276,7 @@ function stPerson(ctx, p, x, y, t){
   U(-2, -33, 5, 7, sk); U(-2, -33, 1, 7, sd); U(-1, -30, 1, 2, sd);
   var blink = Math.sin(t*1.3 + p.ph*3) > .96; U(1, -31, 1, 1, blink ? sd : '#241f1a'); U(3, -30, 1, 1, sk); U(1, -28, 2, 1, sd);
   if (p.punk){ U(-1, -28, 1, 1, '#e6e6ee'); U(2, -31, 1, 1, '#241f1a'); }
+  if (p.kiss){ U(-1, -33, 4, 7, '#f6f2ea'); U(0, -32, 3, 3, '#151218'); U(1, -33, 1, 1, '#151218'); U(1, -29, 1, 1, '#151218'); U(-1, -31, 1, 1, '#151218'); U(1, -31, 1, 1, '#f6f2ea'); U(1, -28, 2, 1, '#c4473a'); }
   // hair
   var hc = p.hc;
   if (p.hair === 'mohawk'){ U(-2, -33, 4, 1, sd); [5, 7, 6, 4].forEach(function(h, i){ U(-2 + i, -33 - h, 1, h + 1, hc); }); U(-1, -39, 1, 1, '#fbf7ee'); }
@@ -1340,13 +1372,12 @@ function drawStMarks(ctx, W, H, t, st){
   var rec = st.b.filter(function(b){ return b.shop === 'RECORDS'; })[0];
   var bx = rec ? rec.x + 10 : Math.round(W*0.3);
   ctx.fillStyle = '#3b2a24'; ctx.fillRect(bx + 8, walk + 13, 12, 3); ctx.fillStyle = '#8e5fa8'; ctx.fillRect(bx + 9, walk + 13, 10, 1); if (Math.sin(t*3) > .6){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(bx + 12, walk + 14, 1, 1); }
-  stPerson(ctx, {dir:1, v:0, ph:2, skin:2, jacket:'#3a3f55', pants:'#24202b', hair:'long', hc:'#e9c45a', guitar:1}, bx, walk + 12, t);
   for (var k = 0; k < 3; k++){ var ph4 = (t*0.35 + k/3) % 1, nx = bx + 6 + Math.round(ph4*22), ny = walk - 14 - Math.round(ph4*30 + Math.sin(ph4*12)*3);
     ctx.globalAlpha = 1 - ph4; ctx.fillStyle = '#f3ead3'; ctx.fillRect(nx, ny, 2, 2); ctx.fillRect(nx + 1, ny - 4, 1, 4); ctx.fillRect(nx + 2, ny - 4, 1, 1); ctx.globalAlpha = 1; }
   // someone sitting against the wall by the door
   var sitB = st.b[2] || st.b[0]; stPerson(ctx, {dir:-1, v:0, sit:1, ph:4, skin:1, jacket:'leather', pants:'#2b2f45', hair:'spikes', hc:'#9fd3f2', punk:1}, sitB.x + sitB.w - 6, walk + 3, t);
   // the walkers: back lane first, then front
-  [0, 1].forEach(function(lane){ st.people.forEach(function(pp){ if (pp.lane !== lane) return;
+  [0, 1].forEach(function(lane){ if (lane === 1){ stPerson(ctx, {dir:1, v:0, ph:2, skin:0, jacket:'leather', pants:'#24202b', hair:'long', hc:'#151218', guitar:1, mill:1, kiss:1, punk:1}, bx, walk + 12, t); } st.people.forEach(function(pp){ if (pp.lane !== lane) return;
     pp.x += pp.dir*pp.v*dt; if (pp.x > W + 24) pp.x = -24; if (pp.x < -24) pp.x = W + 24;
     stPerson(ctx, pp, Math.round(pp.x), lane ? curb - 3 : walk + 16, t); }); });
   seasonParticles(ctx, W, H, t, 0);
@@ -1415,8 +1446,75 @@ function drawSkyline(ctx, W, H, t, st){
   seasonParticles(ctx, W, H, t, 0);
 }
 
+// ===== Scene 6: Columbia at night. Low Library's dome and portico, the steps with people sitting on them,
+// Alma Mater in the middle, and College Walk below with students going to and from Butler.
+function colSetup(W, H){
+  var seed = 3; function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
+  var walkers = [
+    {hair:'short', hc:'#5a412f', jacket:'#2f5f9e', pants:'#3a3f55', skin:0, books:1, bag:1},
+    {hair:'long', hc:'#e9c45a', jacket:'#c4473a', pants:'#2b2f45', skin:3},
+    {hair:'beanie', hc:'#3d7a55', jacket:'#7a5a41', pants:'#2b2f45', skin:2, books:1},
+    {hair:'pink', hc:'#241f1a', jacket:'#8e5fa8', pants:'#24202b', skin:1, bag:1}].map(function(c, i){ c.dir = i % 2 ? -1 : 1; c.v = 5 + rnd()*4; c.x = rnd()*W; c.ph = i*2.3; c.lane = i % 2; return c; });
+  var sitters = [
+    {dir:1, v:0, sit:1, ph:1, skin:0, jacket:'#3d7a55', pants:'#3a3f55', hair:'short', hc:'#241f1a', laptop:1},
+    {dir:-1, v:0, sit:1, ph:3, skin:2, jacket:'#d9822b', pants:'#2b2f45', hair:'long', hc:'#241f1a'},
+    {dir:1, v:0, sit:1, ph:5, skin:3, jacket:'#2f5f9e', pants:'#24202b', hair:'cap', hc:'#5a412f'}];
+  return {walkers: walkers, sitters: sitters, last: 0};
+}
+function drawColumbia(ctx, W, H, t, st){
+  var dt = st.last ? Math.min(.2, t - st.last) : 0; st.last = t;
+  var cx = Math.round(W/2), base = Math.round(H*0.5), bw = Math.min(W - 6, 150), x0 = cx - Math.floor(bw/2), stepsEnd = Math.round(H*0.8);
+  var sky = ['#0a0d22','#0f1436','#16204a','#1f2c5a','#2a3762'];
+  for (var y = 0; y < base; y++){ var f = y/base*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
+  for (var k = 0; k < 22; k++){ var sx = (k*61) % W, sy = (k*23) % Math.round(H*0.22); if (Math.sin(t*1.4 + k) > -.3){ ctx.fillStyle = k % 5 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(sx, sy, 1, 1); } }
+  // trees at the sides
+  [[-4, 0], [W - 14, 1]].forEach(function(q){ for (var y = 0; y < 34; y++) for (var x = 0; x < 20; x++){ var dx = x - 10, dy = y - 16; if (dx*dx/100 + dy*dy/260 < 1 && Math.sin(x*3.1 + y*2.3) > -.6){ ctx.fillStyle = ((x + y) % 3) ? '#1d3a2e' : '#2a4d3a'; ctx.fillRect(q[0] + x, base - 40 + y, 1, 1); } } });
+  // the dome, drum and lantern
+  var r = Math.round(bw*0.24), dy0 = base - 44;
+  ctx.fillStyle = '#b9b2a4'; ctx.fillRect(cx - r - 2, dy0 - 10, 2*r + 4, 10);
+  for (var x = cx - r; x < cx + r; x += 4){ ctx.fillStyle = '#8a8478'; ctx.fillRect(x, dy0 - 9, 1, 8); }
+  for (var y = -r; y <= 0; y++) for (var x = -r; x <= r; x++){ if (x*x + y*y <= r*r){ ctx.fillStyle = x < -r*0.3 ? '#8e8a80' : x < r*0.4 ? '#a8a294' : '#c9c2b2'; if (x % 6 === 0) ctx.fillStyle = '#7a766c'; ctx.fillRect(cx + x, dy0 - 10 + y, 1, 1); } }
+  ctx.fillStyle = '#c9c2b2'; ctx.fillRect(cx - 2, dy0 - 10 - r - 5, 5, 5); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(cx - 1, dy0 - 10 - r - 4, 3, 2);
+  // the portico: entablature with the inscription band, columns, the lit doors behind
+  var py = base - 34; ctx.fillStyle = '#c9c2b2'; ctx.fillRect(x0 - 4, py, bw + 8, 34); ctx.fillStyle = '#e2dccd'; ctx.fillRect(x0 - 4, py, bw + 8, 2); ctx.fillStyle = '#a8a294'; ctx.fillRect(x0 - 4, py + 7, bw + 8, 1);
+  for (var x = x0; x < x0 + bw; x += 3){ ctx.fillStyle = '#8a8478'; ctx.fillRect(x, py + 3, 2, 1); ctx.fillRect(x + 1, py + 5, 1, 1); }
+  ctx.fillStyle = '#3a2a22'; ctx.fillRect(x0, py + 9, bw, 25);
+  var glow = 0.75 + 0.25*Math.sin(t*0.7); ctx.globalAlpha = glow; ctx.fillStyle = '#ffcf7a'; for (var k = 0; k < 3; k++) ctx.fillRect(cx - 12 + k*9, py + 14, 6, 20); ctx.globalAlpha = 1;
+  var nc = Math.max(6, Math.floor(bw/10)), gap = bw/(nc - 1);
+  for (var k = 0; k < nc; k++){ var x = Math.round(x0 + k*gap) - 2; ctx.fillStyle = '#e2dccd'; ctx.fillRect(x, py + 9, 4, 25); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(x + 3, py + 9, 1, 25); ctx.fillStyle = '#f3ead3'; ctx.fillRect(x - 1, py + 8, 6, 2); ctx.fillRect(x - 1, py + 32, 6, 2); }
+  // the steps, widening as they come down, globe lamps along them
+  var nsteps = 14;
+  for (var k = 0; k < nsteps; k++){ var y = base + Math.round(k*(stepsEnd - base)/nsteps), hh = Math.ceil((stepsEnd - base)/nsteps), ext = Math.round(k*W/(nsteps*1.2)); ctx.fillStyle = k % 2 ? '#a8a294' : '#b9b2a4'; ctx.fillRect(x0 - 6 - ext, y, bw + 12 + 2*ext, hh); ctx.fillStyle = '#d6cfbf'; ctx.fillRect(x0 - 6 - ext, y, bw + 12 + 2*ext, 1); }
+  [x0 - 2, x0 + bw + 1].forEach(function(lx, i){ var ly = base + 18; ctx.fillStyle = '#241f1a'; ctx.fillRect(lx, ly - 14, 1, 14); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.35)'; for (var y = -5; y <= 5; y++) for (var x = -5; x <= 5; x++) if (x*x + y*y < 26) ctx.fillRect(lx + x, ly - 17 + y, 1, 1); ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff3c4'; ctx.fillRect(lx - 1, ly - 18, 3, 3); });
+  // Alma Mater: bronze, seated, arms out, on her granite pedestal
+  var ay = base + Math.round((stepsEnd - base)*0.62), ax = cx;
+  ctx.fillStyle = '#6b6a70'; ctx.fillRect(ax - 7, ay - 8, 15, 10); ctx.fillStyle = '#85848a'; ctx.fillRect(ax - 7, ay - 8, 15, 1);
+  ctx.fillStyle = '#4e4430'; ctx.fillRect(ax - 4, ay - 17, 9, 9); ctx.fillRect(ax - 5, ay - 11, 11, 3); ctx.fillRect(ax - 1, ay - 21, 3, 4);
+  ctx.fillRect(ax - 8, ay - 18, 4, 1); ctx.fillRect(ax + 5, ay - 18, 4, 1); ctx.fillRect(ax + 8, ay - 24, 1, 9);
+  ctx.fillStyle = '#c9a43a'; ctx.fillRect(ax + 8, ay - 25, 1, 1); ctx.fillRect(ax - 1, ay - 22, 3, 1); if (Math.sin(t*1.1) > .7){ ctx.fillStyle = '#fff3c4'; ctx.fillRect(ax + 2, ay - 16, 1, 1); }
+  ctx.fillStyle = '#6b5a3a'; ctx.fillRect(ax + 3, ay - 17, 1, 8);
+  // people sitting on the steps
+  var spots = [[0.18, 0.35], [0.8, 0.5], [0.3, 0.86]];
+  st.sitters.forEach(function(p, i){ var sx = Math.round(W*spots[i][0]), sy = base + Math.round((stepsEnd - base)*spots[i][1]) + 6; stPerson(ctx, p, sx, sy, t);
+    if (p.laptop){ ctx.fillStyle = '#c9ccd6'; ctx.fillRect(sx + 3, sy - 12, 6, 1); ctx.fillStyle = '#9fd3f2'; ctx.globalAlpha = .8 + .2*Math.sin(t*3); ctx.fillRect(sx + 3, sy - 17, 1, 5); ctx.globalAlpha = 1; } });
+  // College Walk: brick, lamps, students going past
+  ctx.fillStyle = '#5a3a30'; ctx.fillRect(0, stepsEnd, W, H - stepsEnd);
+  for (var y = stepsEnd; y < H; y += 3) for (var x = (y/3) % 2 ? 0 : 3; x < W; x += 6){ ctx.fillStyle = '#4a2e26'; ctx.fillRect(x, y, 1, 3); }
+  ctx.fillStyle = '#7a5a48'; ctx.fillRect(0, stepsEnd, W, 1);
+  st.walkers.forEach(function(pp){ pp.x += pp.dir*pp.v*dt; if (pp.x > W + 24) pp.x = -24; if (pp.x < -24) pp.x = W + 24; stPerson(ctx, pp, Math.round(pp.x), pp.lane ? H - 4 : H - 14, t); });
+  seasonParticles(ctx, W, H, t, 0);
+}
+
 // ===== Small vignettes for the windows: related to their scene, not copies of it.
 var VIG = {
+  columbia: function(ctx, W, H, t){ // Low Library: dome, columns, warm doors, the steps
+    for (var y = 0; y < H; y++){ ctx.fillStyle = y < H*.35 ? '#0f1436' : y < H*.6 ? '#1f2c5a' : '#b9b2a4'; ctx.fillRect(0, y, W, 1); }
+    for (var y = Math.round(H*.6); y < H; y += 3){ ctx.fillStyle = '#d6cfbf'; ctx.fillRect(0, y, W, 1); }
+    var cx = Math.round(W/2), b = Math.round(H*.6), r = 9; ctx.fillStyle = '#a8a294'; for (var y = -r; y <= 0; y++) for (var x = -r; x <= r; x++) if (x*x + y*y <= r*r) ctx.fillRect(cx + x, b - 22 + y, 1, 1);
+    ctx.fillStyle = '#c9c2b2'; ctx.fillRect(cx - 18, b - 22, 36, 22); ctx.fillStyle = '#3a2a22'; ctx.fillRect(cx - 16, b - 17, 32, 17); ctx.fillStyle = '#ffcf7a'; ctx.globalAlpha = .7 + .3*Math.sin(t); ctx.fillRect(cx - 6, b - 13, 12, 13); ctx.globalAlpha = 1;
+    for (var k = 0; k < 6; k++){ ctx.fillStyle = '#e2dccd'; ctx.fillRect(cx - 16 + k*6, b - 17, 2, 17); }
+    ctx.fillStyle = '#4e4430'; ctx.fillRect(cx - 2, b + 6, 5, 5);
+  },
   skyline: function(ctx, W, H, t){ // a small skyline painting: silhouettes, a few windows twinkling, the Empire State lit
     for (var y = 0; y < H; y++){ ctx.fillStyle = y < H*.3 ? '#0c1030' : y < H*.55 ? '#1a1846' : y < H*.72 ? '#3a2257' : '#0e112a'; ctx.fillRect(0, y, W, 1); }
     var sh = Math.round(H*0.72), hs = [10,16,12,22,30,18,26,14,20,12,34,16,10,14,24,12];
@@ -1480,7 +1578,7 @@ var VIG = {
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -1527,16 +1625,17 @@ var VIG = {
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline', 'columbia'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'columbia'){ var t = (now - t0)/1000; if (!cityState) cityState = colSetup(W, H); drawColumbia(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'skyline'){ var t = (now - t0)/1000; if (!cityState) cityState = skySetup(W, H); drawSkyline(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'stmarks'){ var t = (now - t0)/1000; if (!cityState) cityState = stSetup(W, H); drawStMarks(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); }
     else draw(now);
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city', 'columbia'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; } rest.classList.add('on'); rest.setAttribute('aria-hidden', 'false'); show(i); }
   function close(){ rest.classList.remove('on'); rest.setAttribute('aria-hidden', 'true'); if (raf) cancelAnimationFrame(raf); raf = null; }
@@ -1554,7 +1653,7 @@ var VIG = {
 document.addEventListener('click', function(e){
   var sp = e.target.closest('.spr, .pixbox'); if (!sp || !window.openRest) return;
   e.preventDefault(); e.stopPropagation();
-  var c = sp.classList, big = c.contains('sine') ? 2 : (c.contains('woolfw') || c.contains('plant')) ? 3 : c.contains('glass') ? 4 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
+  var c = sp.classList, big = c.contains('sine') ? 2 : (c.contains('woolfw') || c.contains('plant')) ? 3 : c.contains('glass') ? 5 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
   openRest(big);
 }, true);
 
