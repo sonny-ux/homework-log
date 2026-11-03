@@ -313,6 +313,14 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .pixbox { cursor: pointer; }
 .rdots { position: absolute; top: max(14px, env(safe-area-inset-top)); left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
 .rdots i { width: 6px; height: 6px; background: rgba(243,234,211,.3); } .rdots i.on { background: #f3ead3; }
+.usetl { border: var(--rule) solid var(--ink); background: var(--note); padding: 6px 12px; }
+.ub { display: grid; grid-template-columns: 64px 12px 1fr; gap: 10px; align-items: start; padding: 6px 0; }
+.ub .ut, .ubr .ut { font-size: 12px; color: var(--muted); padding-top: 2px; }
+.ub i { width: 12px; display: block; outline: 1.5px solid var(--ink); }
+.ub small { display: block; color: var(--muted); font-size: 13px; }
+.ubr { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 0 0 0 0; }
+.ubr em { font-style: normal; font-size: 12px; color: var(--muted); border-left: 1.5px dotted var(--muted); padding-left: 14px; margin-left: 5px; }
+.usetl .tip { border-top: var(--thin) dotted var(--ink); padding: 8px 0 4px; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -327,6 +335,8 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
     <h2>Today <span class="sub" id="daysub"></span></h2>
     <div class="band" id="band"></div>
     <div class="list" id="daylist"></div>
+    <h2 style="margin-top:16px">Use the rest of today <span class="sub" id="usesub"></span></h2>
+    <div class="usetl" id="usetl"></div>
     <div id="wk" class="part">
     <div class="wkhead"><h2><span id="wkname">Week</span> <span class="sub" id="wksub"></span></h2>
       <div class="wktools"><div class="arrows"><button id="zout" aria-label="Zoom out">−</button><button id="zin" aria-label="Zoom in">+</button><button id="zfit" class="on" aria-label="Fit to worked hours">Fit</button></div>
@@ -748,6 +758,26 @@ function sprinkle(){
   var hl = document.querySelector('#tiles .tile.wide:last-child'); if (hl && !hl.querySelector('.cat')) hl.insertAdjacentHTML('beforeend', '<span class="catwrap">' + sprite(CAT, 44, 'cat', 'sleeping cat') + '</span>');
   var win = document.querySelector('.pix'); if (win && !win.querySelector('.wx')){ win.insertAdjacentHTML('beforeend', '<g class="wx">' + weatherLayer() + '</g>'); }
 }
+
+function renderUse(){
+  // Lay today's suggestions onto the clock: start at the next quarter hour, short breaks between blocks.
+  var items = [].slice.call(el('plan').querySelectorAll('.pl')).map(function(pl){
+    var m = pl.querySelector('.pm').textContent, mins = 0, mh = m.match(/(\d+)h/), mm = m.match(/(\d+)m/);
+    if (mh) mins += 60*+mh[1]; if (mm) mins += +mm[1];
+    return {title: pl.querySelector('b').textContent, cls: pl.querySelector('i').className, day: pl.dataset.day, mins: mins};
+  });
+  var now = new Date(), hr = now.getHours(), late = hr >= 2 && hr < 9;
+  var start = late ? 10*60 : Math.ceil((hr*60 + now.getMinutes() + 5)/15)*15, t = start, rows = [];
+  if (late) rows.push('<p class="tip" style="border-top:none;padding-top:2px">It is ' + (hr < 5 ? 'very late' : 'early') + '. Here is the same plan starting after some sleep.</p>');
+  function clockOf(m){ var h = Math.floor(m/60) % 24, mm = m % 60, ap = h < 12 ? 'AM' : 'PM'; return (h % 12 || 12) + ':' + String(mm).padStart(2,'0') + ' ' + ap; }
+  items.forEach(function(it, i){
+    rows.push('<div class="ub" data-day="' + it.day + '"><span class="ut">' + clockOf(t) + '</span><i class="' + it.cls + '" style="height:' + Math.max(18, Math.min(70, it.mins/3)) + 'px"></i><div><b>' + esc(it.title) + '</b><small>' + hm(it.mins) + ' · until ' + clockOf(t + it.mins) + '</small></div></div>');
+    t += it.mins;
+    if (i < items.length - 1){ rows.push('<div class="ubr"><span class="ut"></span><em>10m break</em></div>'); t += 10; }
+  });
+  el('usesub').textContent = items.length ? 'from ' + clockOf(start) + ' to about ' + clockOf(t) : '';
+  el('usetl').innerHTML = rows.length ? rows.join('') + (t >= 26*60 ? '<p class="tip">That runs past 2 AM; it may be better to stop at a natural break and pick up tomorrow.</p>' : '') : '<p class="nz" style="padding:10px 12px">Nothing pressing. Use the time to get ahead or review.</p>';
+}
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -899,7 +929,7 @@ function renderAssignments(){
 }
 
 function render(){
-  renderToday(); renderPlan(); renderWeek(); renderAssignments(); renderHome(); sprinkle();
+  renderToday(); renderPlan(); renderUse(); renderWeek(); renderAssignments(); renderHome(); sprinkle();
   var u = new Date(DATA.updated);
   el('upd').textContent = 'Updated ' + DAYS[u.getDay()] + ' ' + MON[u.getMonth()] + ' ' + u.getDate() + ', ' + u.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + ' · from the coursework log';
 }
@@ -932,7 +962,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "fbbc7bfc69";
+var APP_BUILD = "3630c8f851";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
