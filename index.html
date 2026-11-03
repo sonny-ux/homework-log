@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "f9eb4a8600";
+var APP_BUILD = "b8d0a23798";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1417,6 +1417,8 @@ function stPerson(ctx, p, x, y, t){
   if (p.pearls){ U(-3, -36, 7, 1, '#3a2a20'); for (var k = -3; k < 4; k += 2) U(k, -36, 1, 1, '#f3efe6'); }
   if (p.bucket){ U(-3, -37, 7, 3, p.bucket); U(-5, -34, 11, 1, p.bucket); U(-3, -35, 7, 1, 'rgba(0,0,0,.2)'); }
   if (p.bobby){ U(-3, -39, 6, 5, '#1a2040'); U(-2, -41, 4, 2, '#1a2040'); U(-1, -42, 2, 1, '#2a3050'); U(-4, -35, 8, 1, '#141a34'); U(0, -38, 2, 2, '#c9c3b6'); U(-3, -14, 7, 1, '#141a34'); for (var k = -23; k < -15; k += 3) U(0, k, 1, 1, '#c9c3b6'); }
+  if (p.creature){ U(-4, -38, 8, 4, '#151218'); U(-5, -35, 10, 1, '#151218'); U(-6, -34, 2, 7, '#7a9a4a'); U(4, -34, 2, 7, '#7a9a4a'); U(-6, -31, 1, 1, '#e9c45a'); U(5, -32, 1, 1, '#f3ead3'); U(4, -29, 1, 1, '#e9c45a'); U(3, -30, 1, 1, '#151218'); }
+  if (p.tweed){ for (var yy = -24; yy < -14; yy += 2) for (var xx = -3; xx < 4; xx += 2) U(xx + ((yy/2) % 2 ? 1 : 0), yy, 1, 1, ['#c4473a','#2f5f9e','#e9c45a','#9a9aa8'][(xx + yy + 40) % 4]); U(1, -23, 3, 3, '#f0a0b4'); U(2, -22, 1, 1, '#c4476a'); U(-3, -14, 7, 1, '#8a5a3a'); U(0, -14, 1, 1, '#c9a43a'); }
   if (p.pillowhat){ U(-5, -38, 12, 3, '#e8e4dc'); U(-3, -40, 8, 2, '#f3efe6'); U(-6, -37, 2, 2, '#d6d0c4'); U(5, -37, 2, 2, '#d6d0c4'); U(-1, -40, 3, 1, '#ffffff'); }
   if (p.redhood){ U(-3, -35, 1, 8, '#c4302a'); U(-2, -35, 5, 1, '#c4302a'); U(-2, -27, 6, 2, '#c4302a'); U(1, -25, 2, 10, '#c4302a'); U(1, -15, 1, 1, '#e06a5a'); U(2, -16, 1, 1, '#e06a5a'); }
   if (p.zip){ U(0, -24, 1, 10, '#9a8a6a'); U(-3, -25, 2, 1, '#2a2a32'); U(2, -25, 2, 1, '#2a2a32'); }
@@ -2309,6 +2311,83 @@ function drawBelow(ctx, W, h, t, off, P){
   ctx.restore();
 }
 
+// ===== Scene 11: the rainforest inside the stick insects' tank. Layers of canopy and mist, sunbeams, a waterfall and a river,
+// parrots, a toucan, a sloth, frogs, blue butterflies, giant stick insects; monkeys swinging on vines (each a pendulum) with
+// the faces of friends; and Sydney in her creature costume, sitting on a log among small forest creatures.
+function monkeyFace(ctx, x, y, f){
+  function R(dx, dy, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x + dx, y + dy, w, h); }
+  R(-3, -3, 7, 7, '#6a4428'); R(-2, -1, 5, 4, f.skin || '#e8c4a0'); R(-1, 0, 1, 1, '#151218'); R(2, 0, 1, 1, '#151218'); R(0, 2, 2, 1, '#a06a50');
+  if (f.glasses){ R(-2, -1, 2, 2, 'rgba(201,164,58,.9)'); R(1, -1, 2, 2, 'rgba(201,164,58,.9)'); R(-1, 0, 1, 1, '#151218'); R(2, 0, 1, 1, '#151218'); }
+  if (f.beard) R(-1, 3, 4, 1, f.beard);
+  if (f.hair === 'long'){ R(-4, -4, 9, 2, f.hc); R(-4, -2, 2, 7, f.hc); R(4, -2, 1, 6, f.hc); }
+  else if (f.hair === 'curly'){ R(-4, -5, 9, 3, f.hc); R(-5, -3, 2, 7, f.hc); R(4, -3, 2, 6, f.hc); R(-3, -5, 1, 1, '#8a6a4a'); R(2, -5, 1, 1, '#8a6a4a'); }
+  else if (f.hair === 'ginger'){ R(-3, -5, 8, 3, f.hc); R(3, -6, 3, 2, f.hc); R(0, -5, 3, 1, '#e8904a'); R(0, 1, 1, 1, '#c98a6a'); R(2, 1, 1, 1, '#c98a6a'); }
+  else if (f.hair === 'big'){ R(-6, -7, 13, 5, f.hc); R(-7, -4, 3, 8, f.hc); R(5, -4, 3, 7, f.hc); R(-5, -7, 1, 1, '#d9b47a'); R(3, -7, 1, 1, '#d9b47a'); }
+  else if (f.hair === 'slick'){ R(-3, -5, 7, 3, f.hc); R(-1, -5, 2, 1, '#9a9a9a'); }
+  if (f.bowler){ R(-4, -7, 9, 2, '#6b1e2a'); R(-3, -9, 7, 2, '#6b1e2a'); R(-3, -7, 7, 1, '#2a2a2a'); }
+  if (f.pillow){ R(-5, -7, 11, 3, '#e8e4dc'); R(-3, -9, 7, 2, '#f3efe6'); R(-4, -4, 1, 6, '#c4302a'); R(4, -4, 1, 6, '#c4302a'); R(-2, 4, 5, 1, '#c4302a'); }
+  if (f.gnome){ R(-2, -9, 6, 4, '#d9302a'); R(-1, -12, 4, 3, '#d9302a'); R(0, -14, 2, 2, '#d9302a'); R(0, -8, 1, 1, '#f3ead3'); R(2, -11, 1, 1, '#f3ead3'); }
+}
+function drawJungle(ctx, W, H, t, st){
+  var P = Math.max(W + 60, 260); st = st || {};
+  var off = Math.round((P - W)*(0.5 - 0.5*Math.cos(t*0.04)));
+  var day = isDay(), g = day ? ['#2a6a4a','#3a8a5a','#5aa868','#8ac878','#c4e0a0'] : ['#0e2a24','#163a2e','#1e4a38','#2a5a44','#3a6a50'];
+  for (var y = 0; y < H; y++){ var f = y/H*(g.length - 1), i = Math.floor(f), fr = f - i; ctx.fillStyle = ((y % 2) && fr > .5) ? g[Math.min(i + 1, g.length - 1)] : g[i]; ctx.fillRect(0, y, W, 1); }
+  ctx.save(); ctx.translate(-off, 0); function R(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
+  // far trunks and mist, then sunbeams
+  for (var k = 0; k < Math.ceil(P/18); k++){ var tx = k*18 + (k*7) % 9; R(tx, 0, 4 + (k % 3), H, day ? 'rgba(40,70,50,.5)' : 'rgba(10,25,20,.6)'); }
+  for (var k = 0; k < 4; k++){ var my = Math.round(H*(0.3 + k*0.15)); R(0, my, P, 3, day ? 'rgba(220,240,220,.18)' : 'rgba(150,180,170,.08)'); }
+  if (day){ ctx.globalCompositeOperation = 'lighter'; for (var k = 0; k < 4; k++){ var bx = 30 + k*70; ctx.fillStyle = 'rgba(90,80,40,' + (0.12 + 0.04*Math.sin(t + k)) + ')'; ctx.beginPath(); ctx.moveTo(bx, 0); ctx.lineTo(bx + 12, 0); ctx.lineTo(bx + 46, H); ctx.lineTo(bx + 26, H); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+  // the canopy at the top, thick and dark
+  for (var x = 0; x < P; x++){ var ch = 16 + Math.round(6*Math.sin(x*0.13) + 4*Math.sin(x*0.37)); for (var y = 0; y < ch; y++) if (((x*7 + y*3) % 5) || y < ch - 3){ ctx.fillStyle = (x + y) % 4 ? (day ? '#1e5a3a' : '#0a2018') : (day ? '#3a8a4a' : '#12302a'); ctx.fillRect(x, y, 1, 1); } }
+  // a waterfall on the right falling into the river
+  var wf = P - 46, ry = Math.round(H*0.86); for (var y = 18; y < ry; y++) for (var x = wf; x < wf + 12; x++) if (Math.sin(y*0.8 - t*12 + x) > -.3){ ctx.fillStyle = (x + y + Math.floor(t*10)) % 3 ? '#cfe8f2' : '#ffffff'; ctx.fillRect(x, y, 1, 1); }
+  R(wf - 8, 18, 8, ry - 18, day ? '#4a5a4a' : '#1a2420'); R(wf + 12, 18, 8, ry - 18, day ? '#4a5a4a' : '#1a2420');
+  for (var y = ry; y < H; y++) R(0, y, P, 1, day ? (y < ry + 3 ? '#7ac0c8' : '#4a98a8') : '#1a3a48');
+  for (var k = 0; k < 30; k++){ var rx = ((k*41 + t*8) % P), rr = ry + 2 + (k*3) % (H - ry - 2); if (Math.sin(t*2 + k) > 0) R(Math.round(rx), rr, 3, 1, day ? '#cfeaf0' : '#3a6a78'); }
+  for (var k = 0; k < 6; k++){ var sp = (t*0.8 + k/6) % 1; R(wf + 2 + k*2, ry - Math.round(sp*6), 1, 1, '#ffffff'); }
+  // big trunks and branches the vines hang from
+  [[20, 7], [P*0.4, 8], [P*0.7, 7]].forEach(function(q){ var tx = Math.round(q[0]); R(tx, 0, q[1], ry, day ? '#5a3a22' : '#241810'); R(tx + 1, 0, 1, ry, day ? '#7a5a3a' : '#3a2818'); for (var y = 30; y < ry; y += 14) R(tx + q[1], y, 2, 4, day ? '#3d7a4a' : '#1a3a28'); });
+  var brY = 34; R(0, brY, P, 3, day ? '#6a4a2a' : '#2a1c12'); R(0, brY, P, 1, day ? '#8a6a3a' : '#3a2818');
+  // the sloth, upside down, very slowly
+  var sx = Math.round(P*0.55 + Math.sin(t*0.05)*8); R(sx - 1, brY + 3, 1, 3, '#3b2a20'); R(sx + 8, brY + 3, 1, 3, '#3b2a20'); R(sx - 2, brY + 6, 12, 6, '#8a7a5a'); R(sx + 8, brY + 8, 5, 5, '#a8987a'); R(sx + 9, brY + 9, 3, 2, '#e8dcc0'); R(sx + 9, brY + 9, 1, 1, '#3a2a20'); R(sx + 11, brY + 9, 1, 1, '#3a2a20'); R(sx + 10, brY + 11, 1, 1, '#5a4a3a');
+  // monkeys swinging on vines: each vine a pendulum, x = L sin(theta), y = L cos(theta)
+  var faces = [
+    {hair: 'long', hc: '#241a14', glasses: 1, beard: '#3b2a20'}, {hair: 'curly', hc: '#5a3a24', bowler: 1}, {hair: 'ginger', hc: '#c4652a'},
+    {hair: 'big', hc: '#7a5a3a'}, {hair: 'slick', hc: '#2a2a2a', glasses: 1, skin: '#d9a982'}, {hair: 'slick', hc: '#241a14', pillow: 1}, {hair: 'curly', hc: '#1a1410', beard: '#1a1410', gnome: 1, skin: '#c48a5c'}];
+  faces.forEach(function(f, i){ var px = 24 + i*Math.round((P - 60)/faces.length), L = 30 + (i % 3)*10, th = 0.55*Math.sin(t*(2.6/Math.sqrt(L/30)) + i*1.3), mx = Math.round(px + Math.sin(th)*L), my = Math.round(brY + 3 + Math.cos(th)*L);
+    ctx.strokeStyle = day ? '#3a6a2a' : '#1a3a1a'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(px + .5, brY + 3); ctx.lineTo(mx + .5, my - 6); ctx.stroke();
+    R(mx - 2, my - 7, 2, 4, '#6a4428'); R(mx + 1, my - 7, 2, 4, '#6a4428');
+    R(mx - 3, my - 3, 7, 8, '#6a4428'); R(mx - 1, my - 1, 3, 5, '#a8784a'); R(mx - 3, my + 5, 2, 4, '#6a4428'); R(mx + 2, my + 5, 2, 4, '#6a4428');
+    for (var k = 0; k < 6; k++) R(mx + 4 + Math.round(Math.sin(k*0.9 + t*3)*1), my + 3 + k, 1, 1, '#6a4428'); R(mx + 5, my + 9, 2, 1, '#6a4428');
+    monkeyFace(ctx, mx, my - 9, f); });
+  // birds: a toucan on the branch, scarlet parrots flying across
+  var tx2 = Math.round(P*0.25); R(tx2, brY - 6, 5, 6, '#151218'); R(tx2 + 1, brY - 7, 3, 2, '#151218'); R(tx2 + 1, brY - 5, 2, 2, '#f3e8a8'); R(tx2 + 4, brY - 6, 5, 2, '#f08a2a'); R(tx2 + 8, brY - 5, 1, 1, '#c4302a'); R(tx2 + 2, brY - 6, 1, 1, '#ffffff');
+  for (var k = 0; k < 3; k++){ var bx2 = ((t*(14 + k*4) + k*90) % (P + 40)) - 20, by2 = Math.round(H*(0.18 + k*0.1) + Math.sin(t*3 + k)*3), fl = Math.floor(t*8 + k) % 2;
+    R(Math.round(bx2), by2, 6, 3, '#d9302a'); R(Math.round(bx2) + 5, by2 - 1, 2, 2, '#d9302a'); R(Math.round(bx2) + 7, by2, 1, 1, '#e9c45a'); R(Math.round(bx2) + 1, by2 - (fl ? 3 : -2), 4, 2, fl ? '#2f6ad0' : '#e9c45a'); R(Math.round(bx2) - 4, by2 + 1, 4, 1, '#2f6ad0'); }
+  // blue butterflies
+  for (var k = 0; k < 5; k++){ var bfx = Math.round(P*(0.1 + k*0.2) + Math.sin(t*0.7 + k*2)*20), bfy = Math.round(H*0.55 + Math.sin(t*1.1 + k)*14), w2 = Math.floor(t*10 + k) % 2; R(bfx - (w2 ? 2 : 1), bfy, w2 ? 2 : 1, 2, '#3a8ae8'); R(bfx + 1, bfy, w2 ? 2 : 1, 2, '#3a8ae8'); R(bfx, bfy, 1, 2, '#151218'); }
+  // the forest floor: a log by the river, Sydney as the creature on it, the little creatures around her
+  var gy = ry - 1; for (var x = 0; x < wf - 8; x++){ var gt = gy - 6 - Math.round(Math.sin(x*0.2)*1.5); R(x, gt, 1, gy - gt + 1, day ? '#4a6a2a' : '#1a2a14'); }
+  var lx = Math.round(P*0.32); R(lx - 16, gy - 12, 34, 6, '#6a4a2a'); R(lx - 16, gy - 12, 34, 1, '#8a6a4a'); R(lx + 17, gy - 12, 3, 6, '#c9a878'); R(lx + 18, gy - 10, 1, 2, '#8a6a4a'); R(lx - 10, gy - 6, 2, 6, '#5a3a22'); R(lx + 10, gy - 6, 2, 6, '#5a3a22');
+  var cre = {dir: 1, v: 0, sit: 1, nocup: 1, ph: 2, skin: 0, hair: 'curly', hc: '#5a3a24', creature: 1, jacket: '#6a6a78', tweed: 1, pants: '#151218'};
+  stPerson(ctx, cre, lx, gy - 11, t);
+  R(lx + 7, gy - 34, 1, 22, '#8a6a4a'); R(lx + 6, gy - 35, 3, 2, '#6a4a2a');
+  var crs = [['#f0a0c4', -24], ['#9fd38a', 22], ['#9fc8f0', 32], ['#f3d36a', -34]];
+  crs.forEach(function(q, i){ var hop = Math.abs(Math.sin(t*2.4 + i*1.7))*4, cx = Math.round(lx + q[1] + Math.sin(t*0.6 + i)*3), cy = Math.round(gy - 1 - hop);
+    R(cx - 3, cy - 6, 7, 6, q[0]); R(cx - 2, cy - 7, 5, 1, q[0]); R(cx - 4, cy - 9, 2, 3, '#5a9a5a'); R(cx + 3, cy - 9, 2, 3, '#5a9a5a');
+    R(cx - 2, cy - 5, 2, 2, '#ffffff'); R(cx + 1, cy - 5, 2, 2, '#ffffff'); R(cx - 1, cy - 4, 1, 1, '#151218'); R(cx + 2, cy - 4, 1, 1, '#151218'); R(cx, cy - 2, 1, 1, '#c4473a'); });
+  // giant stick insects on a twig, and a red frog on a leaf
+  var sg = Math.round(P*0.5), sgy = gy - 30; R(sg, sgy, 30, 1, '#6a4a2a'); var sw = Math.round(Math.sin(t*0.6)*1);
+  for (var k = 0; k < 2; k++){ var bx3 = sg + 4 + k*13 + sw; R(bx3, sgy - 2, 9, 1, '#9aa84a'); R(bx3 + 9, sgy - 3, 2, 1, '#9aa84a'); [1, 4, 7].forEach(function(lg){ R(bx3 + lg, sgy - 1, 1, 1, '#7a8a3a'); R(bx3 + lg - 1, sgy - 4, 1, 2, '#7a8a3a'); }); }
+  var fx = Math.round(P*0.12); R(fx - 6, gy - 9, 12, 3, '#3d8a4a'); R(fx - 4, gy - 10, 8, 1, '#5aa868'); var jump = (t % 6) < 0.4 ? 3 : 0; R(fx - 2, gy - 12 - jump, 4, 2, '#d9302a'); R(fx - 2, gy - 13 - jump, 1, 1, '#151218'); R(fx + 1, gy - 13 - jump, 1, 1, '#151218'); R(fx - 3, gy - 10 - jump, 1, 1, '#2f6ad0'); R(fx + 2, gy - 10 - jump, 1, 1, '#2f6ad0');
+  // big leaves across the front
+  for (var k = 0; k < Math.ceil(P/26); k++){ var lfx = k*26 + (k % 2)*9, lfy = H - 4, sway = Math.round(Math.sin(t*0.9 + k)*1.5);
+    for (var q = 0; q < 10; q++){ ctx.fillStyle = q % 3 ? (day ? '#2a7a3a' : '#0e2a1c') : (day ? '#3a9a4a' : '#163a28'); ctx.fillRect(lfx + sway + q - Math.floor(q/2), lfy - q*2, 8 - Math.floor(q/2), 2); } }
+  ctx.restore();
+  seasonParticles && 0;
+}
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
@@ -2316,7 +2395,7 @@ function drawBelow(ctx, W, h, t, off, P){
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
     if (sc === 'pastry' && innerHeight > innerWidth*1.1){ W = 150; H = Math.round(150*innerHeight/innerWidth); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -2378,10 +2457,11 @@ function drawBelow(ctx, W, h, t, off, P){
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'jungle'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawJungle(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'anime'){ var t = (now - t0)/1000; drawAnime(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; if (H > 170){ var band = 140, top = Math.round((H - band)/2); ctx.fillStyle = '#1a120c'; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.translate(0, top); drawPastry(ctx, W, band, t, cityState); ctx.restore(); var PP = Math.max(W + 60, 300), o2 = Math.round(cityState.off || 0); drawAbove(ctx, W, top, t, o2, PP); ctx.save(); ctx.translate(0, top + band); drawBelow(ctx, W, H - top - band, t, o2, PP); ctx.restore(); } else drawPastry(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
@@ -2393,7 +2473,7 @@ function drawBelow(ctx, W, h, t, off, P){
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
@@ -2649,7 +2729,7 @@ var ROOMS = {
     var her = usTwo()[0]; her.sit = 1; her.v = 0; her.dir = -1; her.ph = 1; stPerson(ctx, her, bx + 16, F - 1, t);
     ctx.fillStyle = '#7fb7d9'; ctx.fillRect(bx + 7, F - 15, 5, 2); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 7, F - 16, 2, 1); ctx.fillRect(bx + 10, F - 16, 2, 1);
     // the stick insects' tank in the corner, on its stand
-    var kx = W - 19, ky = F - 30;
+    var kx = W - 19, ky = F - 30; S.push({x: kx - 1, y: ky - 1, w: 16, h: 29, scene: 11, id: 'tank'});
     ctx.fillStyle = '#5a3a28'; ctx.fillRect(kx, F - 13, 14, 2); ctx.fillRect(kx + 1, F - 11, 1, 11); ctx.fillRect(kx + 12, F - 11, 1, 11); ctx.fillRect(kx + 1, F - 4, 12, 1);
     ctx.fillStyle = 'rgba(190,230,210,.45)'; ctx.fillRect(kx, ky, 14, 17); ctx.fillStyle = '#6b4a33'; ctx.fillRect(kx + 1, ky + 14, 12, 3);
     ctx.fillStyle = '#7a5a3a'; for (var k = 0; k < 11; k++){ ctx.fillRect(kx + 2 + k, ky + 13 - k, 1, 1); } for (var k = 0; k < 6; k++) ctx.fillRect(kx + 10 - k, ky + 14 - Math.round(k*1.6), 1, 1);
