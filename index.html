@@ -1110,7 +1110,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "335751dabd";
+var APP_BUILD = "78c7f61e72";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1333,6 +1333,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.scarf){ U(0, -25, 4, 2, '#1d2a4a'); U(2, -23, 2, 8, '#1d2a4a'); U(1, -23, 1, 6, '#f3ead3'); U(3, -22, 1, 7, '#c4473a'); U(2, -15, 2, 2, '#c4473a'); U(4, -24, 1, 9, '#1d2a4a'); }
   if (p.tote){ U(-3, -25, 1, 1, '#e8dcc0'); U(-4, -24, 1, 8, '#e8dcc0'); U(-6, -17, 4, 6, '#e8dcc0'); U(-6, -17, 4, 1, '#c9b89a'); }
   if (p.gown){ U(1, -24, 1, 9, p.gh || '#b8b8c4'); U(-2, -25, 5, 1, '#f3efe6'); U(-2, -22, 1, 1, p.goldwork ? '#c9a43a' : '#4a6a5a'); U(1, -19, 1, 1, p.goldwork ? '#c9a43a' : '#4a6a5a'); if (p.goldwork){ U(-1, -24, 1, 9, '#c9a43a'); U(0, -16, 1, 1, '#c9a43a'); } }
+  if (p.gown && !p.sit){ var gc2 = p.gc || '#8a8a96', gh2 = p.gh || '#b8b8c4', gl2 = p.gl || '#6a6a76'; U(-4, -14, 9, 14, gc2); U(-5, -6, 11, 6, gc2); U(-1, -13, 1, 13, gh2); U(3, -12, 1, 12, gl2); U(-5, -1, 11, 1, gl2); if (p.goldwork){ [[-2,-11],[1,-8],[4,-5],[-3,-4],[2,-2]].forEach(function(q){ U(q[0], q[1], 1, 1, '#c9a43a'); }); } }
   if (p.gown && p.sit){ var gc = p.gc || '#8a8a96', gh = p.gh || '#b8b8c4', gl = p.gl || '#6a6a76'; U(-3, -14, 11, 12, gc); U(0, -13, 1, 10, gh); U(4, -12, 1, 9, gl); U(7, -10, 1, 7, gh); U(-3, -3, 12, 2, gl); U(-3, -13, 11, 1, gh); if (p.goldwork){ [[-1,-11],[2,-8],[5,-6],[1,-5],[6,-11]].forEach(function(q){ U(q[0], q[1], 1, 1, '#c9a43a'); }); } }
   if (p.chemise){ U(-5, -24, 3, 6, '#f3efe6'); U(-5, -19, 3, 1, '#d9d4cc'); }
   if (p.cable){ U(-2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(0, -25, 1, 2, 'rgba(0,0,0,.18)'); for (var k = -22; k < -15; k += 2) U(0, k, 1, 1, 'rgba(255,255,255,.18)'); }
@@ -1495,7 +1496,7 @@ function drawStMarks(ctx, W, H, t, st){
   // someone sitting against the wall by the door
   var sitB = st.b[2] || st.b[0]; stPerson(ctx, {dir:-1, v:0, sit:1, ph:4, skin:1, jacket:'leather', pants:'#2b2f45', hair:'spikes', hc:'#9fd3f2', punk:1}, sitB.x + sitB.w - 6, walk + 3, t);
   // the walkers: back lane first, then front
-  var u2 = t % 55; if (u2 < (W + 60)/7){ st.duo2 = st.duo2 || [bowtieMe(), gingerGuy()]; var x2 = W + 30 - u2*7; st.duo2.forEach(function(p, k){ p.dir = -1; p.v = 1; stPerson(ctx, p, Math.round(x2) + (k ? 7 : -3), walk + 15, t); }); }
+  var u2 = t % 55; if (u2 < (W + 60)/7){ st.duo2 = st.duo2 || [{hair: 'ringlets', hc: '#1a1410', skin: 5, lips: '#c45a5a', blush: 1, ruff: 1, pearls: 1, jacket: '#5a1a2a', gown: 1, gc: '#5a1a2a', gh: '#7a2a3a', gl: '#3a0e1a', goldwork: 1, chemise: 1, pants: '#5a1a2a', ph: 3}, gingerGuy()]; var x2 = W + 30 - u2*7; st.duo2.forEach(function(p, k){ p.dir = -1; p.v = 1; stPerson(ctx, p, Math.round(x2) + (k ? 7 : -3), walk + 15, t); }); }
   // the two of you, ambling down the near sidewalk, one with a bag of groceries
   if (st.duo){ var dx = ((t*6) % (W + 70)) - 35; st.duo.forEach(function(p, k){ p.dir = 1; p.v = 1; p.ph = k*2.6; stPerson(ctx, p, Math.round(dx) + (k ? 6 : -6), curb - 6, t); });
     var hx = Math.round(dx) + 7, hy = curb - 6; ctx.fillStyle = '#f3ead3'; ctx.fillRect(hx + 1, hy - 14, 1, 3); ctx.fillRect(hx, hy - 11, 5, 6); ctx.fillStyle = '#9aa0ac'; ctx.fillRect(hx, hy - 9, 5, 1); ctx.fillRect(hx + 2, hy - 11, 1, 6);
@@ -2375,6 +2376,12 @@ ROOMS.penthouse = function(ctx, W, H, t, go){
   // a woman in a gown by the window with champagne
   var g = {dir: -1, v: 0, ph: 5, skin: 3, jacket: '#1d4a5a', pants: '#1d4a5a', dress: 1, hair: 'long', hc: '#e9c45a'}; stPerson(ctx, g, Math.round(W*0.2), F + 1, t);
   ctx.fillStyle = '#ffe7a1'; ctx.fillRect(Math.round(W*0.2) - 6, F - 22, 2, 3); ctx.fillStyle = '#e8eef6'; ctx.fillRect(Math.round(W*0.2) - 5, F - 19, 1, 2);
+  // you in the bow tie: in from the left, over to the far window, a while looking out at the city, then away
+  var pc = t % 70, me2 = bowtieMe(), tx2 = xs[2] + 6, mx3 = null;
+  if (pc < 8){ mx3 = -10 + (tx2 + 10)*(pc/8); me2.v = 1; me2.dir = 1; }
+  else if (pc < 52){ mx3 = tx2; me2.v = 0; me2.dir = 1; }
+  else if (pc < 60){ mx3 = tx2 - (tx2 + 12)*((pc - 52)/8); me2.v = 1; me2.dir = -1; }
+  if (mx3 !== null){ stPerson(ctx, me2, Math.round(mx3), F + 1, t); if (pc >= 8 && pc < 52){ ctx.fillStyle = '#f0c6a0'; ctx.fillRect(Math.round(mx3) + 3, F - 22, 2, 2); ctx.fillStyle = '#7a1e2a'; ctx.fillRect(Math.round(mx3) + 5, F - 26, 2, 10); } }
   // a fiddle-leaf fig
   var fx = W - 12; ctx.fillStyle = '#e8e4dc'; ctx.fillRect(fx - 3, F - 7, 7, 7); for (var k = 0; k < 7; k++){ ctx.fillStyle = k % 2 ? '#3d7a55' : '#2a5a3a'; ctx.fillRect(fx - 4 + (k % 3)*3, F - 28 + k*3, 4, 3); } ctx.fillStyle = '#5a412f'; ctx.fillRect(fx, F - 26, 1, 20);
   return S;
