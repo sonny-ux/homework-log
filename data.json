@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T05:39:58+00:00",
+ "updated": "2026-11-03T05:52:55+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -401,15 +401,6 @@
    "detail": "Problem Set 6 (30 pts; Canvas). Not submitted as of Mon 11/2 (Canvas: No Submission); working on it late.",
    "done": false,
    "source": "hand"
-  },
-  {
-   "due": "2026-11-04",
-   "time": null,
-   "class": "Topology",
-   "title": "Problem Set",
-   "detail": "",
-   "done": false,
-   "source": "reminders"
   },
   {
    "due": "2026-11-04",
