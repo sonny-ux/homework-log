@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "d6e003e072";
+var APP_BUILD = "ac873a92a0";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2253,6 +2253,7 @@ VIG.static = function(ctx, W, H){ for (var y = 0; y < H; y++) for (var x = 0; x 
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
+    if (sc === 'pastry' && innerHeight > innerWidth*1.1){ W = 150; H = Math.round(150*innerHeight/innerWidth); cv.width = W; cv.height = H; return; }
     H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
@@ -2320,7 +2321,7 @@ VIG.static = function(ctx, W, H){ for (var y = 0; y < H; y++) for (var x = 0; x 
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
     if (SCENES[scene] === 'anime'){ var t = (now - t0)/1000; drawAnime(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
-    if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawPastry(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
+    if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; if (H > 170){ var band = 140, top = Math.round((H - band)/2); ctx.fillStyle = '#1a120c'; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.translate(0, top); drawPastry(ctx, W, band, t, cityState); ctx.restore(); ctx.fillStyle = '#c9a43a'; ctx.fillRect(10, top - 4, W - 20, 1); ctx.fillRect(10, top + band + 3, W - 20, 1); var nm = 'THE HUNGARIAN PASTRY SHOP', tw = textW(nm, 1); ptext(ctx, nm, Math.round((W - tw)/2), top - 14, 1, '#e9c45a'); } else drawPastry(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawVanGogh(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'columbia'){ var t = (now - t0)/1000; if (!cityState) cityState = colSetup(W, H); drawColumbia(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
