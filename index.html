@@ -475,7 +475,6 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
       <div class="arrows"><button id="lprev" aria-label="Earlier week">‹</button><button id="lnow" aria-label="This week">Now</button><button id="lnext" aria-label="Later week">›</button></div></div>
     <div class="topics" id="topics"></div>
     <figure class="room square" data-room="studio" data-size="square" aria-label="A bare studio: you on a mattress playing guitar"><canvas></canvas></figure>
-    <figure title="the lighthouse keeper" role="button" aria-label="the lighthouse keeper" class="scenewin left" data-scene="0" data-vig="cabin" style="--off:0px"><span class="frame f-porthole"><canvas width="72" height="72" style="width:72px;height:72px"></canvas></span></figure>
   </section>
 
   <figure title="out the window" role="button" aria-label="Look out the window: St. Marks" class="scenewin window" data-scene="1" data-vig="street"><span class="frame f-window"><canvas width="80" height="60" style="width:160px;height:120px"></canvas><b class="curt l"></b><b class="curt r"></b></span></figure>
@@ -1093,7 +1092,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "e725107f56";
+var APP_BUILD = "bf43fb9157";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1976,6 +1975,7 @@ function drawCinema(ctx, W, H, t){
   ctx.fillStyle = '#c4473a'; ctx.fillRect(cx - 3, fy - 13, 6, 8); ctx.fillStyle = '#f3ead3'; ctx.fillRect(cx - 2, fy - 13, 1, 8); ctx.fillRect(cx + 1, fy - 13, 1, 8); ctx.fillStyle = '#ffe9a8'; ctx.fillRect(cx - 3, fy - 15, 6, 2); ctx.fillRect(cx - 2, fy - 16, 4, 1);
   if (Math.sin(t*0.9) > .75){ ctx.fillStyle = '#1a0a0a'; ctx.fillRect(cx + 1, fy - 17, 3, 3); }
 }
+VIG.mlh = function(ctx, W, H, t){ miniLighthouse(ctx, W, H, t); };
 VIG.film = function(ctx, W, H, t){ drawFilm(ctx, 0, 0, W, H, t); };
 
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
@@ -2069,7 +2069,7 @@ VIG.film = function(ctx, W, H, t){ drawFilm(ctx, 0, 0, W, H, t); };
 document.addEventListener('click', function(e){
   var sp = e.target.closest('.spr, .pixbox'); if (!sp || !window.openRest) return;
   e.preventDefault(); e.stopPropagation();
-  var c = sp.classList, big = c.contains('sine') ? 2 : c.contains('plant') ? 6 : c.contains('woolfw') ? 3 : c.contains('glass') ? 5 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
+  var c = sp.classList, big = c.contains('sine') ? 3 : c.contains('plant') ? 6 : c.contains('woolfw') ? 3 : c.contains('glass') ? 5 : c.contains('cat') ? 1 : 0;   // wave -> the wave; plant, waves -> The Waves; hourglass -> the city; cat -> St. Marks; candle, the reading picture -> the lighthouse   // hourglass, plant -> the city of deadlines and numbers; lamp, cat, candle -> the lighthouse
   openRest(big, sp);
 }, true);
 
@@ -2167,23 +2167,23 @@ var ROOMS = {
     for (var k = 0; k < 3; k++){ var ph = (t*0.6 + k/3) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.6*(1 - ph)) + ')'; ctx.fillRect(19 + Math.round(Math.sin(ph*8 + k)*1.5), F - 26 - Math.round(ph*10), 1, 1); }
     // the table, her at it with tea and a book
     var tx = Math.round(W*0.38); ctx.fillStyle = '#7a5a41'; ctx.fillRect(tx, F - 15, 22, 2); ctx.fillRect(tx + 2, F - 13, 1, 13); ctx.fillRect(tx + 19, F - 13, 1, 13);
-    ctx.fillStyle = '#f3ead3'; ctx.fillRect(tx + 14, F - 18, 3, 3); ctx.fillStyle = '#c4473a'; ctx.fillRect(tx + 6, F - 17, 6, 2); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(tx + 7, F - 18, 4, 1);
+    ctx.fillStyle = '#f3ead3'; ctx.fillRect(tx + 15, F - 18, 3, 3); var bl = go === 'book' ? 2 : 0; ctx.fillStyle = '#7fb7d9'; ctx.fillRect(tx + 3, F - 18 - bl, 11, 3); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(tx + 4, F - 19 - bl, 4, 1); ctx.fillRect(tx + 9, F - 19 - bl, 4, 1); ctx.fillStyle = '#e8a0b4'; ctx.fillRect(tx + 8, F - 19 - bl, 1, 2);
+    S.push({x: tx - 10, y: F - 40, w: 26, h: 40, scene: 3, id: 'book'});
     var her = usTwo()[0]; her.sit = 1; her.v = 0; her.dir = 1; her.ph = 1; stPerson(ctx, her, tx - 3, F + 1, t);
     ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tx - 8, F - 16, 2, 16);
-    // the city, framed in gold
-    var cw = 38, chh = 18, cxp = Math.round(W*0.5) - 8, cyp = 10 - (go === 'city' ? 2 : 0);
-    ctx.fillStyle = '#8a6a1a'; ctx.fillRect(cxp - 3, cyp - 3, cw + 6, chh + 6); ctx.fillStyle = '#c9a43a'; ctx.fillRect(cxp - 2, cyp - 2, cw + 4, chh + 4); vigInto(ctx, 'skyline', cxp, cyp, cw, chh, t);
-    S.push({x: cxp - 3, y: cyp - 3, w: cw + 6, h: chh + 6, scene: 4, id: 'city'});
+    // a wall clock, the real time
+    var ck = Math.round(W*0.5), cy2 = 18, now = new Date(), hA = ((now.getHours() % 12) + now.getMinutes()/60)/12*Math.PI*2 - Math.PI/2, mA = now.getMinutes()/60*Math.PI*2 - Math.PI/2;
+    for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ var d = x*x + y*y; if (d <= 36){ ctx.fillStyle = d > 25 ? '#3b2a24' : '#fbf7ee'; ctx.fillRect(ck + x, cy2 + y, 1, 1); } }
+    ctx.fillStyle = '#241f1a'; for (var k = 1; k < 5; k++) ctx.fillRect(ck + Math.round(Math.cos(mA)*k), cy2 + Math.round(Math.sin(mA)*k), 1, 1); for (var k = 1; k < 4; k++) ctx.fillRect(ck + Math.round(Math.cos(hA)*k), cy2 + Math.round(Math.sin(hA)*k), 1, 1);
+    ctx.fillStyle = '#c4473a'; ctx.fillRect(ck, cy2, 1, 1);
     // the coat rack: a leather jacket, a scarf, the burgundy bowler on top
     var rx = W - 44; ctx.fillStyle = '#3b2a24'; ctx.fillRect(rx, F - 44, 1, 44); ctx.fillRect(rx - 3, F - 1, 7, 1); ctx.fillRect(rx - 3, F - 42, 7, 1);
     ctx.fillStyle = '#24202b'; ctx.fillRect(rx - 4, F - 41, 4, 14); ctx.fillStyle = '#c4473a'; ctx.fillRect(rx + 1, F - 41, 2, 10); ctx.fillStyle = '#6b1e2a'; ctx.fillRect(rx - 2, F - 47, 5, 3); ctx.fillRect(rx - 3, F - 44, 7, 1);
-    // the front door; tapped, it swings open on the night outside
+    // the front door
     var dx = W - 32, dy = F - 46, dw = 20, dh = 46;
     ctx.fillStyle = '#e8dcc0'; ctx.fillRect(dx - 2, dy - 2, dw + 4, dh + 2);
-    if (go === 'door'){ for (var y = 0; y < dh; y++){ ctx.fillStyle = y < dh*.5 ? '#2a1650' : '#5a2c66'; ctx.fillRect(dx, dy + y, dw, 1); } for (var k = 0; k < 10; k++){ var a = t + k*0.63; ctx.fillStyle = ['#ff5a4e','#ffe7a1','#5ab4ff'][k % 3]; ctx.fillRect(dx + 10 + Math.round(Math.cos(a)*6), dy + 14 + Math.round(Math.sin(a)*6), 1, 1); } ctx.fillStyle = '#5a3a2a'; ctx.fillRect(dx, dy, 4, dh); }
-    else { ctx.fillStyle = '#5a3a2a'; ctx.fillRect(dx, dy, dw, dh); ctx.fillStyle = '#4e3224'; ctx.fillRect(dx + 3, dy + 4, 14, 16); ctx.fillRect(dx + 3, dy + 24, 14, 18); ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx + 16, dy + 24, 2, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(dx + 9, dy + 12, 2, 1);
+    { ctx.fillStyle = '#5a3a2a'; ctx.fillRect(dx, dy, dw, dh); ctx.fillStyle = '#4e3224'; ctx.fillRect(dx + 3, dy + 4, 14, 16); ctx.fillRect(dx + 3, dy + 24, 14, 18); ctx.fillStyle = '#c9a43a'; ctx.fillRect(dx + 16, dy + 24, 2, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(dx + 9, dy + 12, 2, 1);
       if (Math.sin(t*0.7) > .5){ ctx.fillStyle = 'rgba(255,207,122,.6)'; ctx.fillRect(dx, dy + dh - 1, dw, 1); } }
-    S.push({x: dx - 2, y: dy - 2, w: dw + 4, h: dh + 2, scene: 7, id: 'door'});
     // a pair of Converse by the door
     ctx.fillStyle = '#151218'; ctx.fillRect(dx - 12, F - 3, 5, 3); ctx.fillRect(dx - 6, F - 3, 5, 3); ctx.fillStyle = '#f3ead3'; ctx.fillRect(dx - 12, F - 1, 5, 1); ctx.fillRect(dx - 6, F - 1, 5, 1); ctx.fillRect(dx - 8, F - 3, 1, 1); ctx.fillRect(dx - 2, F - 3, 1, 1);
     return S;
@@ -2208,8 +2208,8 @@ var ROOMS = {
     // corkboard with notes and the postcard
     var kx = W - 38, ky = 10; ctx.fillStyle = '#7a5a41'; ctx.fillRect(kx - 1, ky - 1, 30, 22); ctx.fillStyle = '#c4935a'; ctx.fillRect(kx, ky, 28, 20); for (var k = 0; k < 18; k++){ ctx.fillStyle = '#a8784a'; ctx.fillRect(kx + (k*7) % 28, ky + (k*5) % 20, 1, 1); }
     ctx.fillStyle = '#ffe066'; ctx.fillRect(kx + 2, ky + 2, 6, 6); ctx.fillStyle = '#9fd3f2'; ctx.fillRect(kx + 3, ky + 11, 6, 6); ctx.fillStyle = '#8a7a6a'; ctx.fillRect(kx + 3, ky + 4, 4, 1); ctx.fillRect(kx + 4, ky + 13, 4, 1);
-    var pcy = ky + 4 - (go === 'card' ? 2 : 0); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(kx + 11, pcy, 16, 12); vigInto(ctx, 'shell', kx + 12, pcy + 1, 14, 9, t); ctx.fillStyle = '#c4473a'; ctx.fillRect(kx + 18, pcy - 1, 2, 2);
-    S.push({x: kx + 10, y: pcy - 1, w: 18, h: 14, scene: 3, id: 'card'});
+    var pcy = ky + 4 - (go === 'card' ? 2 : 0); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(kx + 11, pcy, 16, 12); vigInto(ctx, 'mlh', kx + 12, pcy + 1, 14, 9, t); ctx.fillStyle = '#c4473a'; ctx.fillRect(kx + 18, pcy - 1, 2, 2);
+    S.push({x: kx + 10, y: pcy - 1, w: 18, h: 14, scene: 0, id: 'card'});
     // a wall between the study and the bedroom, with an open doorway
     var wx = W - 46; ctx.fillStyle = '#3a3026'; ctx.fillRect(wx, 5, 3, F - 5); ctx.fillStyle = '#9a8a6a'; ctx.fillRect(wx - 1, 26, 5, 1); ctx.fillStyle = '#4e4234'; ctx.fillRect(wx, 27, 3, F - 27); ctx.fillStyle = '#2a2420'; ctx.fillRect(wx + 1, 28, 1, F - 28);
     // the bed, and the cat asleep on it
@@ -2294,7 +2294,7 @@ ROOMS.street = function(ctx, W, H, t, go){
   [sx, sx + 27].forEach(function(gx){ ctx.fillStyle = Math.sin(t*2 + gx) > -.8 ? '#7ae07a' : '#3d6a3a'; ctx.fillRect(gx - 1, walk - 14, 3, 4); });
   ctx.fillStyle = '#e9c45a'; ctx.fillRect(sx + 11, walk - 13, 6, 6); ctx.fillStyle = '#241f1a'; ctx.fillRect(sx + 13, walk - 11, 2, 2);
   if (go === 'sub'){ ctx.fillStyle = 'rgba(255,207,122,.5)'; ctx.fillRect(sx + 2, walk + 3, 24, curb - walk - 4); }
-  S.push({x: sx - 2, y: walk - 15, w: 32, h: curb - walk + 15, scene: 7, id: 'sub'});
+  S.push({x: sx - 2, y: walk - 15, w: 32, h: curb - walk + 15, down: 'platform', id: 'sub'});
   // a streetlamp
   var lx = Math.round(W*0.3); ctx.fillStyle = '#151218'; ctx.fillRect(lx, 6, 1, curb - 6); ctx.fillRect(lx, 6, 6, 1); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(lx + 4, 7, 3, 2);
   ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.15)'; ctx.beginPath(); ctx.moveTo(lx + 5, 9); ctx.lineTo(lx - 14, curb); ctx.lineTo(lx + 26, curb); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
@@ -2366,7 +2366,9 @@ ROOMS.platform = function(ctx, W, H, t, go){
     return (r._spots || []).filter(function(s){ return x >= s.x && x < s.x + s.w && y >= s.y && y < s.y + s.h; })[0]; }
   rooms.forEach(function(r){
     r.addEventListener('mousemove', function(e){ r.style.cursor = hit(r, e) ? 'pointer' : 'default'; });
-    r.addEventListener('click', function(e){ var s = hit(r, e); if (!s || r._go) return; r._go = s.id;
+    r.addEventListener('click', function(e){ var s = hit(r, e); if (!s || r._go) return;
+      if (s.down){ var tg = document.querySelector('[data-room="' + s.down + '"]'); if (tg) tg.scrollIntoView({behavior: 'smooth', block: 'center'}); return; }
+      r._go = s.id;
       var c = r.querySelector('canvas'), b = c.getBoundingClientRect(), sc = b.width / c.width, src = {getBoundingClientRect: function(){ return {left: b.left + s.x*sc, top: b.top + s.y*sc, width: s.w*sc, height: s.h*sc}; }};
       setTimeout(function(){ openRest(s.scene, src); setTimeout(function(){ r._go = null; }, 900); }, 420); });
   });
