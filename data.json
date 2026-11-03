@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T06:50:43+00:00",
+ "updated": "2026-11-03T07:45:17+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -391,11 +391,11 @@
    "week": "2026-11-01",
    "class": "Physics III",
    "start": "1:44 AM",
-   "end": "now",
+   "end": "2:45 AM",
    "start_min": 104,
-   "end_min": 110,
-   "minutes": 6,
-   "in_progress": true
+   "end_min": 165,
+   "minutes": 61,
+   "in_progress": false
   }
  ],
  "assignments": [
