@@ -1091,7 +1091,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "f805b2000d";
+var APP_BUILD = "2e7b36df29";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1896,13 +1896,93 @@ var VIG = {
   }
 };
 
+// ===== The late show: an old black-and-white Hamlet, Act 1 on the battlements, with intertitles; grain, flicker and scratches.
+// It plays on the living-room TV, and full screen in a small cinema where the two of you sit in the front row.
+var FILM = null, FILM_T = -1;
+function filmFrame(t){
+  if (!FILM){ FILM = document.createElement('canvas'); FILM.width = 120; FILM.height = 90; }
+  var q = Math.round(t*10)/10; if (q === FILM_T) return FILM; FILM_T = q;
+  var x = FILM.getContext('2d'), W = 120, H = 90, F = 76, u = t % 30;
+  function title(lines){ x.fillStyle = '#0c0c0c'; x.fillRect(0, 0, W, H); x.fillStyle = '#d8d4cc'; x.fillRect(8, 8, W - 16, 1); x.fillRect(8, H - 9, W - 16, 1); x.fillRect(8, 8, 1, H - 16); x.fillRect(W - 9, 8, 1, H - 16);
+    x.fillRect(11, 11, W - 22, 1); x.fillRect(11, H - 12, W - 22, 1); [[8,8],[W-12,8],[8,H-12],[W-12,H-12]].forEach(function(c){ x.fillRect(c[0] + 1, c[1] + 1, 2, 2); });
+    var y0 = Math.round(H/2 - lines.length*4); lines.forEach(function(l, i){ ptext(x, l, Math.round((W - textW(l, 1))/2), y0 + i*8, 1, '#e8e4dc'); }); }
+  if (u >= 7 && u < 10) title(['ENTER GHOST.']);
+  else if (u >= 17 && u < 21) title(['ANGELS AND', 'MINISTERS OF GRACE', 'DEFEND US!']);
+  else if (u >= 27) title(['REMEMBER ME.']);
+  else {
+    for (var y = 0; y < F; y++){ x.fillStyle = y < 20 ? '#14161e' : y < 40 ? '#1c2030' : '#2a2e3e'; x.fillRect(0, y, W, 1); }
+    for (var yy = -6; yy <= 6; yy++) for (var xx = -6; xx <= 6; xx++) if (xx*xx + yy*yy <= 36){ x.fillStyle = '#f0ece0'; x.fillRect(96 + xx, 14 + yy, 1, 1); }
+    for (var k = 0; k < 3; k++){ var cx = ((t*3 + k*50) % 170) - 40; x.fillStyle = 'rgba(70,74,90,.8)'; x.fillRect(Math.round(cx), 10 + k*7, 34, 3); x.fillRect(Math.round(cx) + 6, 8 + k*7, 20, 2); }
+    x.fillStyle = '#4a4a4e'; x.fillRect(0, 50, W, F - 50); for (var mx = 0; mx < W; mx += 12){ x.fillRect(mx, 44, 7, 6); x.fillStyle = '#5a5a5e'; x.fillRect(mx, 44, 7, 1); x.fillStyle = '#4a4a4e'; }
+    for (var yy = 52; yy < F; yy += 4) for (var xx = (yy % 8 ? 0 : 5); xx < W; xx += 10){ x.fillStyle = '#3a3a3e'; x.fillRect(xx, yy, 1, 4); x.fillRect(0, yy, W, 0); }
+    x.fillStyle = '#5e5e60'; x.fillRect(0, F, W, H - F); x.fillStyle = '#6e6e70'; x.fillRect(0, F, W, 1);
+    var ham = {dir: 1, v: 0, ph: 1, skin: 0, hair: 'short', hc: '#101010', jacket: '#151515', pants: '#151515'}, hor = {dir: 1, v: 0, ph: 3, skin: 0, hair: 'cap', hc: '#7a7a7a', jacket: '#4a4a52', pants: '#2a2a2e'};
+    var gh = {dir: -1, v: 0, ph: 0, skin: 4, hair: 'helmet', hc: '#e6eeff', jacket: '#cdd8f2', pants: '#b9c6e6', beard: '#e6eeff'};
+    if (u < 7){ stPerson(x, hor, 30, F + 2, t); stPerson(x, ham, 48, F + 2, t); }
+    else if (u < 17){ var a = Math.min(1, (u - 10)/2), back = u > 12 ? 2 : 0; stPerson(x, hor, 26 - back, F + 2, t); stPerson(x, ham, 46 - back, F + 2, t);
+      x.globalCompositeOperation = 'lighter'; for (var r = 14; r > 0; r -= 2){ x.fillStyle = 'rgba(80,90,110,' + (0.06*a) + ')'; x.fillRect(92 - r, F - 40 - r/2, 2*r, 44 + r); } x.globalCompositeOperation = 'source-over';
+      x.globalAlpha = .75*a; stPerson(x, gh, 92, F + 2, t); x.globalAlpha = 1; }
+    else { var w = (u - 21)/6; gh.dir = 1; gh.v = 1; ham.v = 1; stPerson(x, hor, 24, F + 2, t);
+      x.globalAlpha = .7; stPerson(x, gh, Math.round(80 + w*44), F + 2, t*0.6); x.globalAlpha = 1; stPerson(x, ham, Math.round(50 + w*40), F + 2, t); }
+    for (var k = 0; k < 4; k++){ var fx = ((t*(4 + k) + k*40) % 180) - 50; x.fillStyle = 'rgba(200,205,215,.18)'; x.fillRect(Math.round(fx), 62 + k*4, 60, 3); x.fillRect(Math.round(fx) + 10, 60 + k*4, 36, 2); }
+  }
+  // film: greyscale with a warm tint, flicker, grain, vignette, scratches and dust
+  var img = x.getImageData(0, 0, W, H), d = img.data, fl = 0.9 + 0.08*Math.sin(t*41) + Math.random()*0.05;
+  for (var i = 0, n = W*H; i < n; i++){ var j = i*4, px = i % W, py = (i / W) | 0, l = 0.3*d[j] + 0.59*d[j + 1] + 0.11*d[j + 2];
+    var dx = (px - W/2)/(W/2), dy = (py - H/2)/(H/2); l = l*fl*(1 - 0.38*(dx*dx + dy*dy)) + (Math.random() - .5)*26;
+    d[j] = Math.max(0, Math.min(255, l*1.06)); d[j + 1] = Math.max(0, Math.min(255, l*0.98)); d[j + 2] = Math.max(0, Math.min(255, l*0.86)); }
+  x.putImageData(img, 0, 0);
+  if (Math.random() < .35){ var sx = Math.floor(Math.random()*W); x.fillStyle = 'rgba(230,226,215,.35)'; x.fillRect(sx, 0, 1, H); }
+  for (var k = 0; k < 3; k++){ x.fillStyle = Math.random() < .5 ? 'rgba(0,0,0,.7)' : 'rgba(240,236,225,.7)'; x.fillRect(Math.floor(Math.random()*W), Math.floor(Math.random()*H), 1 + (Math.random() < .3 ? 1 : 0), 1); }
+  return FILM;
+}
+function drawFilm(ctx, x, y, w, h, t){ var f = filmFrame(t); ctx.imageSmoothingEnabled = w < 120; ctx.drawImage(f, x, y, w, h); ctx.imageSmoothingEnabled = false; }
+function drawCinema(ctx, W, H, t){
+  ctx.fillStyle = '#140a0e'; ctx.fillRect(0, 0, W, H);
+  for (var x = 0; x < W; x += 6){ ctx.fillStyle = '#1e0e14'; ctx.fillRect(x, 0, 3, H*0.6); }
+  var sw = W - 18, sh = Math.round(sw*0.75), sx = 9, sy = 18;
+  ctx.fillStyle = '#c9a43a'; ctx.fillRect(0, 4, W, 2); for (var x = 0; x < W; x += 6){ ctx.fillStyle = '#7a1420'; ctx.fillRect(x, 6, 6, 7); ctx.fillRect(x + 1, 13, 4, 2); ctx.fillStyle = '#c9a43a'; ctx.fillRect(x + 2, 15, 2, 1); }
+  ctx.fillStyle = '#050304'; ctx.fillRect(sx - 2, sy - 2, sw + 4, sh + 4); drawFilm(ctx, sx, sy, sw, sh, t);
+  [[0, 1], [W, -1]].forEach(function(q){ for (var y = 6; y < sy + sh + 12; y++){ var w = 8 + Math.round(Math.sin(y*0.08)*1); for (var k = 0; k < w; k++){ ctx.fillStyle = k % 3 === 0 ? '#5a0e18' : '#8a1a26'; ctx.fillRect(q[1] > 0 ? q[0] + k : q[0] - 1 - k, y, 1, 1); } } });
+  var stage = sy + sh + 4; ctx.fillStyle = '#2a1a14'; ctx.fillRect(0, stage, W, 6); ctx.fillStyle = '#c9a43a'; ctx.fillRect(0, stage, W, 1);
+  // the projector beam overhead, dust turning in it
+  var lum = 0.08 + 0.03*Math.sin(t*23);
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,115,100,' + lum + ')'; ctx.beginPath(); ctx.moveTo(W/2 - 2, H); ctx.lineTo(W/2 + 2, H); ctx.lineTo(sx + sw, sy + sh); ctx.lineTo(sx, sy + sh); ctx.fill();
+  for (var k = 0; k < 18; k++){ var ph = (t*0.05 + k*0.37) % 1, yy = H - ph*(H - sy - sh), spread = (1 - (yy - sy - sh)/(H - sy - sh)), xx = W/2 + Math.sin(k*12.9 + t*0.3)*spread*sw*0.45; ctx.fillStyle = 'rgba(255,250,230,.5)'; ctx.fillRect(Math.round(xx), Math.round(yy), 1, 1); }
+  ctx.fillStyle = 'rgba(90,90,100,' + (lum*0.6) + ')'; ctx.fillRect(0, stage + 6, W, H - stage - 6); ctx.globalCompositeOperation = 'source-over';
+  // the exit sign and wall sconces
+  ptext(ctx, 'EXIT', 2, stage + 9, 1, Math.sin(t*0.5) > -.9 ? '#ff4a3a' : '#7a1a14'); ctx.fillStyle = '#ffcf7a'; ctx.fillRect(W - 4, stage + 12, 2, 3);
+  // rows of seats and heads, far to near; some seats empty; the two of you in the front row with popcorn
+  ctx.fillStyle = '#100608'; ctx.fillRect(0, stage + 6, W, H - stage - 6);
+  var rows = 3, top = stage + 22, rim = 'rgba(190,180,165,' + (0.35 + lum*2) + ')';
+  function head(x, y, s, kind){ ctx.fillStyle = '#060304'; ctx.fillRect(x + 1, y - 2*s, 2*s - 2, 2*s); ctx.fillRect(x, y - 2*s + 1, 2*s, 2*s - 2); ctx.fillRect(x - 1, y - 2, 2*s + 2, 3);
+    if (kind === 1){ ctx.fillRect(x - 1, y - 2*s + 2, 2*s + 2, 2*s); } if (kind === 2){ ctx.fillRect(x + s - 1, y - 2*s - 2, 3, 3); }
+    ctx.fillStyle = rim; ctx.fillRect(x + 1, y - 2*s, 2*s - 2, 1); }
+  for (var r = 0; r < rows; r++){ var sz = 3 + r*2, y = top + r*Math.round((H - top - 6)/rows), step = sz*2 + 5;
+    for (var x = 2 + (r % 2)*Math.round(step/2), i = 0; x < W - 2; x += step, i++){ var h = Math.sin(i*12.3 + r*7.1); var seatY = y + 1;
+      ctx.fillStyle = '#3a0c14'; ctx.fillRect(x - 2, seatY, sz*2 + 3, sz + 3); ctx.fillStyle = '#5a1620'; ctx.fillRect(x - 2, seatY, sz*2 + 3, 1);
+      if (r === rows - 1 && Math.abs(x + sz - W/2) < step*1.3) continue;
+      if (h > -0.35) head(x + (Math.sin(t*0.3 + i + r) > .97 ? 1 : 0), seatY + 1, sz, (i + r) % 3); } }
+  ptext(ctx, 'EXIT', 2, stage + 9, 1, Math.sin(t*0.5) > -.9 ? '#ff4a3a' : '#7a1a14');
+  // the two of you: her bowler, your long hair, her head on your shoulder; popcorn between you
+  var fy = H - 6, cx = Math.round(W/2), s2 = 7, lean = Math.sin(t*0.12) > -.3 ? 1 : 0;
+  ctx.fillStyle = '#3a0c14'; ctx.fillRect(cx - 22, fy - 8, 44, 14); ctx.fillStyle = '#5a1620'; ctx.fillRect(cx - 22, fy - 8, 44, 1);
+  ctx.fillStyle = '#060304'; ctx.fillRect(cx - 19, fy - 9, 16, 9); ctx.fillRect(cx + 3, fy - 9, 16, 9);
+  var hx = cx - 15 + lean*2, hy = fy - 9 + lean; ctx.fillRect(hx, hy - 12, 10, 12); ctx.fillRect(hx - 1, hy - 9, 12, 7); ctx.fillStyle = '#2a0a12'; ctx.fillRect(hx - 3, hy - 13, 16, 2); ctx.fillRect(hx, hy - 17, 10, 4); ctx.fillStyle = '#4a1420'; ctx.fillRect(hx, hy - 14, 10, 1);
+  ctx.fillStyle = rim; ctx.fillRect(hx + 1, hy - 17, 8, 1); ctx.fillRect(hx - 3, hy - 13, 3, 1);
+  ctx.fillStyle = '#060304'; var mx = cx + 5; ctx.fillRect(mx, fy - 22, 10, 13); ctx.fillRect(mx - 1, fy - 18, 12, 10); ctx.fillRect(mx - 2, fy - 14, 14, 6); ctx.fillStyle = rim; ctx.fillRect(mx + 1, fy - 22, 8, 1); ctx.fillRect(mx - 1, fy - 18, 1, 3); ctx.fillRect(mx + 10, fy - 18, 1, 3);
+  ctx.fillStyle = '#c4473a'; ctx.fillRect(cx - 3, fy - 13, 6, 8); ctx.fillStyle = '#f3ead3'; ctx.fillRect(cx - 2, fy - 13, 1, 8); ctx.fillRect(cx + 1, fy - 13, 1, 8); ctx.fillStyle = '#ffe9a8'; ctx.fillRect(cx - 3, fy - 15, 6, 2); ctx.fillRect(cx - 2, fy - 16, 4, 1);
+  if (Math.sin(t*0.9) > .75){ ctx.fillStyle = '#1a0a0a'; ctx.fillRect(cx + 1, fy - 17, 3, 3); }
+}
+VIG.film = function(ctx, W, H, t){ drawFilm(ctx, 0, 0, W, H, t); };
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
   function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'coney' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -1956,8 +2036,9 @@ var VIG = {
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'wave', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney'], scene = 0, cityState = null;
   function frame(now){
+    if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
     if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; drawVanGogh(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
@@ -1968,7 +2049,7 @@ var VIG = {
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'y = a cos(kx - wt)', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
@@ -2065,7 +2146,7 @@ var ROOMS = {
     // the TV on its stand, the wave on its screen
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(tvx - 2, F - 10, 32, 10); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tvx - 2, F - 10, 32, 1); ctx.fillRect(tvx + 12, F - 8, 1, 7);
     ctx.fillStyle = '#3a3644'; ctx.fillRect(tvx, F - 33, 28, 23); ctx.fillStyle = '#5a5468'; ctx.fillRect(tvx, F - 33, 28, 1);
-    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else vigInto(ctx, 'spring', tvx + 2, F - 31, 20, 19, t);
+    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else vigInto(ctx, 'film', tvx + 2, F - 31, 20, 19, t);
     ctx.fillStyle = '#c9a43a'; ctx.fillRect(tvx + 24, F - 29, 2, 2); ctx.fillStyle = '#9a8f88'; ctx.fillRect(tvx + 24, F - 24, 2, 2);
     ctx.fillStyle = '#241f1a'; for (var k = 0; k < 7; k++){ ctx.fillRect(tvx + 10 - k, F - 34 - k, 1, 1); ctx.fillRect(tvx + 16 + k, F - 34 - k, 1, 1); }
     S.push({x: tvx - 2, y: F - 41, w: 32, h: 41, scene: 2, id: 'tv'});
