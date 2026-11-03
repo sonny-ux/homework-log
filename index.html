@@ -1092,7 +1092,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "cd33ae80b1";
+var APP_BUILD = "dd55b4b0ad";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1251,7 +1251,7 @@ function drawWoolfWaves(ctx, W, H, t){
 // ===== Scene 2: St. Marks at night. Low walk-ups, lit shops, and the people are the subject: punks, students, a busker, a dog.
 // Small nods to the coursework: a GRUE sign that turns from green to blue (Goodman), a donut shop whose neon mug becomes a torus (topology),
 // a bookshop, notes that rise in a sine (waves), and on one roof, now and then, a pale figure in armour ("Enter Ghost").
-var SKINS = [['#f0c6a0','#d9a982'],['#c48a5c','#a06c44'],['#8a5a3c','#6b4430'],['#e8b48a','#c99670'],['#dfe8ff','#b9c6e6']];
+var SKINS = [['#f0c6a0','#d9a982'],['#c48a5c','#a06c44'],['#8a5a3c','#6b4430'],['#e8b48a','#c99670'],['#dfe8ff','#b9c6e6'],['#f6e2d6','#e2c4b4']];
 function stSetup(W, H){
   var seed = 11; function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
   var bricks = ['#7a3b2e','#5e4a5a','#8a5a3c','#4e3a4a','#6b4a3a','#7b5b4a'], b = [], x = -4, shops = ['PIZZA','RECORDS','GRUE','BOOKS','CAFE','DONUTS'];
@@ -1314,6 +1314,9 @@ function stPerson(ctx, p, x, y, t){
   if (p.tee) U(-1, -25, 3, 2, p.tee);
   if (p.scarf){ U(0, -25, 4, 2, '#1d2a4a'); U(2, -23, 2, 8, '#1d2a4a'); U(1, -23, 1, 6, '#f3ead3'); U(3, -22, 1, 7, '#c4473a'); U(2, -15, 2, 2, '#c4473a'); U(4, -24, 1, 9, '#1d2a4a'); }
   if (p.tote){ U(-3, -25, 1, 1, '#e8dcc0'); U(-4, -24, 1, 8, '#e8dcc0'); U(-6, -17, 4, 6, '#e8dcc0'); U(-6, -17, 4, 1, '#c9b89a'); }
+  if (p.gown){ U(1, -24, 1, 9, '#b8b8c4'); U(-2, -25, 5, 1, '#f3efe6'); U(-2, -22, 1, 1, '#4a6a5a'); U(1, -19, 1, 1, '#4a6a5a'); }
+  if (p.gown && p.sit){ U(-3, -14, 11, 12, '#8a8a96'); U(0, -13, 1, 10, '#b8b8c4'); U(4, -12, 1, 9, '#6a6a76'); U(7, -10, 1, 7, '#b8b8c4'); U(-3, -3, 12, 2, '#7a7a86'); U(-3, -13, 11, 1, '#9a9aa6'); }
+  if (p.chemise){ U(-5, -24, 3, 6, '#f3efe6'); U(-5, -19, 3, 1, '#d9d4cc'); }
   if (p.stripes){ for (var k = -23; k < -14; k += 2) U(-1, k, 3, 1, '#2f5f9e'); }
   if (p.fairisle){ for (var k = -1; k < 2; k++){ U(k, -21, 1, 1, k % 2 ? '#3a3a4a' : '#7a3a2a'); U(k, -19, 1, 1, '#3a3a4a'); } U(-1, -16, 3, 1, '#4a5a6a'); }
   if (p.shearling){ U(-3, -25, 2, 5, p.shearling); U(2, -25, 2, 5, p.shearling); U(-4, -25, 1, 2, p.shearling); }
@@ -1326,6 +1329,7 @@ function stPerson(ctx, p, x, y, t){
   // front arm and what it carries
   if (p.books){ U(1, -24, 2, 6, jk); U(2, -19, 4, 2, '#c4473a'); U(2, -21, 5, 2, '#2f5f9e'); U(2, -17, 4, 1, '#e9c45a'); U(2, -18, 1, 2, sk); }
   else if (p.pizza){ U(1, -24, 2, 6, jk); U(3, -20, 2, 2, sk); U(5, -21, 3, 1, '#c9862a'); U(5, -20, 2, 1, '#e9b04a'); U(5, -19, 1, 1, '#e9b04a'); U(6, -20, 1, 1, '#c4473a'); }
+  else if (p.sit && p.posehair){ U(1, -25, 3, 4, '#f3efe6'); U(2, -26, 2, 2, '#ffffff'); U(3, -32, 2, 7, sk); U(3, -34, 2, 2, sk); }
   else if (p.sit && p.nocup && !p.guitar){ var talk = Math.sin(t*1.7 + p.ph*2) > .75; U(1, -24, 2, talk ? 4 : 8, jk); if (talk) U(3, -22, 2, 2, sk); else U(1, -16, 2, 2, sk); }
   else if (p.sit && !p.guitar){ var sip = Math.sin(t*0.9 + p.ph) > .7, cup = function(dx, dy){ if (p.coffee){ U(dx, dy, 3, 4, '#f3ead3'); U(dx, dy, 3, 1, '#5a3a2a'); U(dx + 3, dy + 1, 1, 2, '#f3ead3'); var sp = (t*0.7) % 1; ctx.globalAlpha = .6*(1 - sp); U(dx + 1 + Math.round(Math.sin(sp*8)), dy - 2 - Math.round(sp*5), 1, 1, '#ffffff'); ctx.globalAlpha = 1; } else if (p.ale){ U(dx, dy, 3, 4, '#d9a03a'); U(dx, dy, 3, 1, '#f6f2ea'); U(dx - 1, dy - 1, 4, 1, '#f6f2ea'); U(dx + 3, dy + 1, 1, 2, '#8a7a6a'); U(dx + 1, dy + 1, 1, 3, '#e9c45a'); } else U(dx, dy, 2, 3, '#c9c3b6'); };
     U(1, -24, 2, sip ? 4 : 8, jk); if (sip){ cup(3, -28); U(2, -24, 2, 2, sk); } else { U(1, -16, 2, 2, sk); cup(3, -16); } }
@@ -1345,6 +1349,7 @@ function stPerson(ctx, p, x, y, t){
   if (p.shades){ U(0, -31, 4, 1, '#151218'); U(0, -30, 1, 1, '#151218'); U(2, -30, 2, 1, '#2a2a3a'); }
   if (p.mask){ U(-2, -32, 6, 2, '#151218'); U(1, -31, 1, 1, '#3a3a4a'); }
   if (p.lips) U(1, -28, 2, 1, p.lips);
+  if (p.blush) U(2, -29, 1, 1, '#eaa8a0');
   if (p.glasses){ var gc = p.glassC || '#c9a43a'; U(0, -32, 4, 1, gc); U(0, -31, 1, 1, gc); U(3, -31, 1, 1, gc); U(0, -30, 4, 1, gc); U(1, -31, 2, 1, '#e8eef6'); U(-1, -31, 1, 1, gc); }
   if (p.pencil){ U(-2, -35, 1, 4, '#e9c45a'); U(-2, -36, 1, 1, '#f0a0a0'); }
   if (p.stache){ U(1, -29, 3, 1, p.stache); U(1, -27, 2, 2, p.stache); }
@@ -1368,6 +1373,7 @@ function stPerson(ctx, p, x, y, t){
   else if (p.hair === 'bangs'){ U(-3, -35, 6, 2, hc); U(0, -33, 4, 1, hc); U(-4, -33, 3, 11, hc); U(3, -32, 1, 7, hc); U(-4, -27, 1, 5, '#c98a4a'); U(3, -27, 1, 2, '#c98a4a'); }
   else if (p.hair === 'messy'){ U(-3, -35, 6, 3, hc); [[-4,-36],[-2,-37],[1,-37],[3,-36],[-4,-33]].forEach(function(q){ U(q[0], q[1], 1, 2, hc); }); U(-4, -32, 2, 5, hc); }
   else if (p.hair === 'bigcurl'){ U(-5, -38, 10, 5, hc); U(-6, -35, 4, 11, hc); U(3, -36, 3, 5, hc); U(4, -31, 1, 3, hc); [[-5,-38],[-2,-39],[1,-39],[4,-37],[-7,-33],[-6,-28],[5,-35],[-4,-25]].forEach(function(q){ U(q[0], q[1], 1, 1, '#d9b47a'); }); }
+  else if (p.hair === 'ringlets'){ U(-3, -36, 7, 3, hc); U(-5, -34, 4, 11, hc); U(3, -34, 1, 3, hc); U(-6, -30, 2, 6, hc); [[-5,-33],[-6,-29],[-4,-26],[-6,-25],[1,-36],[-2,-37]].forEach(function(q){ U(q[0], q[1], 1, 1, '#3a2a20'); }); }
   else if (p.hair === 'bob'){ U(-3, -35, 6, 2, hc); U(-4, -33, 3, 7, hc); U(0, -33, 3, 1, hc); U(3, -33, 1, 4, hc); U(-4, -27, 2, 1, hc); }
   else if (p.hair === 'helmet'){ U(-3, -36, 6, 4, '#e6eeff'); U(-1, -39, 3, 3, '#e6eeff'); U(1, -32, 2, 1, '#b9c6e6'); }
   if (p.knit){ U(-3, -38, 6, 4, p.knit); U(-2, -39, 4, 1, p.knit); U(-3, -35, 7, 1, '#2e2e36'); U(-1, -37, 1, 2, '#2e2e36'); U(1, -37, 1, 2, '#2e2e36'); }
@@ -2227,7 +2233,7 @@ var ROOMS = {
     ctx.fillStyle = '#fbf7ee'; ctx.fillRect(dx + 6, F - 18, 10, 2); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(dx + 11, F - 18, 1, 2); ctx.fillStyle = '#2f5f9e'; ctx.fillRect(dx + 17, F - 18, 4, 2);
     if (Math.floor(t*0.5) % 4 === 0){ ctx.fillStyle = '#e8dcc0'; ctx.fillRect(dx + 11, F - 19 - (Math.floor(t*4) % 2), 4, 1); }
     // the roommate: black bob with bangs, tortoiseshell glasses, a green cardigan over a striped shirt, a pencil behind the ear
-    var rm = {sit: 1, v: 0, dir: 1, ph: 2, nocup: 1, skin: 3, hair: 'bob', hc: '#151218', glasses: 1, glassC: '#6b3a1a', jacket: '#3d6a4a', open: '#e8e4dc', stripes: 1, pencil: 1, pants: '#3a3a48'}; stPerson(ctx, rm, dx - 2, F + 1, t);
+    var rm = {sit: 1, v: 0, dir: 1, ph: 2, nocup: 1, posehair: 1, skin: 5, hair: 'ringlets', hc: '#1a1410', lips: '#c45a5a', blush: 1, jacket: '#8a8a96', gown: 1, chemise: 1, pants: '#8a8a96'}; stPerson(ctx, rm, dx - 2, F + 1, t);
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(dx - 9, F - 18, 2, 18); ctx.fillRect(dx - 9, F - 8, 8, 2);
     // the windmill painting above the desk
     var pw = 30, ph = 22, ppx = dx + Math.round(dw/2) - 15, ppy = 9 - (go === 'mill' ? 2 : 0);
