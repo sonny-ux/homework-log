@@ -40,7 +40,7 @@ main { max-width: 900px; margin: 0 auto; }
 .bar h1 { font-size: 22px; font-weight: 700; letter-spacing: .02em; padding: 10px 14px; }
 .bar .date { padding: 10px 14px; border-left: var(--rule) solid var(--ink); font-weight: 600; display: flex; align-items: center; }
 .bar .flag { width: 46px; background: var(--red); border-left: var(--rule) solid var(--ink); }
-nav.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: var(--rule) solid var(--ink); border-top: none; position: sticky; top: 0; z-index: 5; background: var(--paper); }
+nav.seg { display: grid; grid-template-columns: repeat(4, 1fr); border: var(--rule) solid var(--ink); border-top: none; position: sticky; top: 0; z-index: 5; background: var(--paper); }
 nav.seg a { text-align: center; padding: 10px 4px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: .04em; text-transform: uppercase; font-size: 13px; }
 nav.seg a + a { border-left: var(--rule) solid var(--ink); }
 nav.seg a.on { background: var(--ink); color: var(--paper); }
@@ -236,17 +236,13 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 <body>
 <main>
   <div class="bar"><h1>Homework</h1><div class="date" id="today"></div><div class="flag"></div></div>
-  <nav class="seg"><a href="#day" class="on">Today</a><a href="#wk">Week</a><a href="#asg">Due</a></nav>
+  <nav class="seg"><a href="#day" class="on">Calendar</a><a href="#asg">Due</a><a href="#ins">Insights</a><a href="#log">Log</a></nav>
 
   <section id="day">
     <h2>Today <span class="sub" id="daysub"></span></h2>
     <div class="band" id="band"></div>
     <div class="list" id="daylist"></div>
-    <h2 style="margin-top:16px">Suggested for today <span class="sub" id="plansub"></span></h2>
-    <div class="plan" id="plan"></div>
-  </section>
-
-  <section id="wk">
+    <div id="wk" style="margin-top:18px">
     <div class="wkhead"><h2><span id="wkname">Week</span> <span class="sub" id="wksub"></span></h2>
       <div class="wktools"><div class="arrows"><button id="zout" aria-label="Zoom out">−</button><button id="zin" aria-label="Zoom in">+</button><button id="zfit" aria-label="Fit to worked hours">Fit</button></div>
       <div class="arrows"><button id="prev" aria-label="Previous week">‹</button><button id="next" aria-label="Next week">›</button></div></div></div>
@@ -254,18 +250,13 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
     <h2 style="margin-top:18px">By class <span class="sub" id="compsub"></span></h2>
     <div class="comp" id="comp"></div>
     <div class="zero" id="zero"></div>
-    <h2 style="margin-top:18px">Noticed <span class="sub" id="notsub">this week, from your log</span></h2>
-    <div class="noticed" id="noticed"></div>
-    <div class="wkhead" style="margin-top:18px"><h2>Trends <span class="sub" id="trsub"></span></h2>
-      <div class="arrows rng"><button data-r="D">Day</button><button data-r="W" class="on">Week</button><button data-r="M">Month</button></div></div>
-    <div id="hl"></div>
-    <div class="cards" id="cards"></div>
-    <h2 style="margin-top:18px">Topics <span class="sub">what each session was on</span></h2>
-    <div class="topics" id="topics"></div>
+    </div>
   </section>
 
   <section id="asg">
-    <h2>Due <span class="sub" id="asgsub"></span></h2>
+    <h2>Suggested for today <span class="sub" id="plansub"></span></h2>
+    <div class="plan" id="plan"></div>
+    <h2 style="margin-top:18px">Due <span class="sub" id="asgsub"></span></h2>
     <div class="wkhead"><h2 style="margin:0"><span id="calname">This week and next</span> <span class="sub" id="calsub"></span></h2>
       <div class="arrows"><button id="cprev" aria-label="Earlier weeks">‹</button><button id="cnow" aria-label="Back to this week">Now</button><button id="cnext" aria-label="Later weeks">›</button></div></div>
     <div class="cal" id="cal"></div>
@@ -273,6 +264,21 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
     <div class="fc" id="fc"></div>
     <div id="queue"></div>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
+  </section>
+
+  <section id="ins">
+    <div class="wkhead"><h2>Trends <span class="sub" id="trsub"></span></h2>
+      <div class="arrows rng"><button data-r="D">Day</button><button data-r="W" class="on">Week</button><button data-r="M">Month</button></div></div>
+    <div id="hl"></div>
+    <div class="cards" id="cards"></div>
+    <h2 style="margin-top:18px">Noticed <span class="sub" id="notsub">this week, from your log</span></h2>
+    <div class="noticed" id="noticed"></div>
+  </section>
+
+  <section id="log">
+    <div class="wkhead"><h2>Log <span class="sub" id="logsub"></span></h2>
+      <div class="arrows"><button id="lprev" aria-label="Earlier week">‹</button><button id="lnow" aria-label="This week">Now</button><button id="lnext" aria-label="Later week">›</button></div></div>
+    <div class="topics" id="topics"></div>
   </section>
 
   <p class="updated" id="upd"></p>
@@ -360,7 +366,7 @@ function renderWeek(){
   }
   html += '<div class="foot first"></div>' + totals.map(function(t){ return '<div class="foot">' + (t ? hm(t) : '—') + '</div>'; }).join('');
   g.innerHTML = html;
-  renderComp(ss); renderNoticed(ss); renderHealth(); renderTopics(ss);
+  renderComp(ss); renderNoticed(ss); renderHealth(); renderLog();
 }
 
 
@@ -579,6 +585,14 @@ function renderPlan(){
     return '<div class="pl" data-day="' + a.due + '"><span class="pn">' + (i+1) + '</span><i class="' + cls(a['class']) + '"></i><div><b>' + esc(a.title) + '</b> <small>' + esc(a['class']) + '</small><p>' + why + '</p></div><div class="pm">' + hm(Math.round(p.m)) + '</div></div>';
   }).join('') + (tips.length ? tips.map(function(t){ return '<p class="tip">' + t + '</p>'; }).join('') : '');
 }
+
+var LOG_OFF = 0;
+function renderLog(){
+  var ws = sunday(today); ws.setDate(ws.getDate() + 7*LOG_OFF); var we = addDays(ws, 6);
+  el('logsub').textContent = (LOG_OFF === 0 ? 'this week' : LOG_OFF === -1 ? 'last week' : (-LOG_OFF) + ' weeks ago') + ' · ' + MON[ws.getMonth()] + ' ' + ws.getDate() + ' – ' + MON[we.getMonth()] + ' ' + we.getDate();
+  el('lnow').classList.toggle('on', LOG_OFF === 0);
+  renderTopics(DATA.sessions.filter(function(s){ return s.week === iso(ws); }));
+}
 function renderNoticed(ss){
   var out = [], ws = iso(weekStart);
   if (!ss.length){ el('noticed').innerHTML = '<p class="nz">Nothing logged this week yet.</p>'; return; }
@@ -739,6 +753,9 @@ var ZOOMS = [0.6, 1, 1.6, 2.4, 3.4], ZI = 1, FIT = false;
 el('zin').onclick = function(){ ZI = Math.min(ZOOMS.length-1, ZI+1); renderWeek(); };
 el('zout').onclick = function(){ ZI = Math.max(0, ZI-1); renderWeek(); };
 el('zfit').onclick = function(){ FIT = !FIT; el('zfit').classList.toggle('on', FIT); renderWeek(); };
+el('lprev').onclick = function(){ LOG_OFF--; renderLog(); };
+el('lnext').onclick = function(){ if (LOG_OFF < 0){ LOG_OFF++; renderLog(); } };
+el('lnow').onclick = function(){ LOG_OFF = 0; renderLog(); };
 el('cprev').onclick = function(){ CAL_OFF--; renderCal(); };
 el('cnext').onclick = function(){ CAL_OFF++; renderCal(); };
 el('cnow').onclick = function(){ CAL_OFF = 0; renderCal(); };
@@ -760,7 +777,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "8b94cb2618";
+var APP_BUILD = "2c3fc5e98c";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
