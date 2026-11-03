@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "f18d21dc41";
+var APP_BUILD = "794579b00f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1421,6 +1421,7 @@ function drawStMarks(ctx, W, H, t, st){
   // sky with a low city glow
   var DAY = isDay(), sky = DAY ? ['#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#0a0d22','#10153a','#18194a','#251c52','#3a2257'];
   for (var y = 0; y < shopTop; y++){ var f = y/shopTop*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x += 1){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
+  if (DAY){ var sp0 = sunXY(W, Math.round(H*0.42)); duskGlow(ctx, W, 0, shopTop); daySun(ctx, sp0[0], sp0[1]); }
   if (DAY){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(2 + k*0.6) + k*47) % (W + 40)) - 20, cy0 = 8 + k*9; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 16, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 8, 2); ctx.fillStyle = '#e6eef6'; ctx.fillRect(Math.round(cx0), cy0 + 3, 16, 1); } }
   for (var k = 0; k < 18; k++){ var sx0 = (k*53) % W, sy0 = (k*29) % Math.round(H*0.2); if (!DAY && Math.sin(t*1.6 + k) > -.2){ ctx.fillStyle = k % 4 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(sx0, sy0, 1, 1); } }
   // distant towers, glimmering
@@ -1542,7 +1543,7 @@ function drawSkyline(ctx, W, H, t, st){
   var DAY = isDay(); function R(x, y, w, h, c){ ctx.fillStyle = DAY ? dayC(c) : c; ctx.fillRect(x - off, y, w, h); }
   var sky = isDay() ? ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#070a1e','#0c1030','#141640','#221a4c','#3a2257','#5a2c5e'];
   for (var y = 0; y < shore; y++){ var f = y/shore*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
-  if (isDay()){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 9, 2); } daySun(ctx, Math.round(W*0.8), Math.round(H*0.12)); }
+  if (isDay()){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 9, 2); } var sp = sunXY(W, shore); duskGlow(ctx, W, 0, shore); daySun(ctx, sp[0], sp[1]); }
   for (var k = 0; k < 40; k++){ var sx = ((k*97) % P) - off*0.3, sy = (k*41) % Math.round(H*0.3); if (sx < 0 || sx > W) continue; if (!isDay() && Math.sin(t*1.5 + k*2.1) > -.3){ ctx.fillStyle = k % 5 ? '#9aa9c8' : '#ffffff'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
   var mx = Math.round(W*0.8), my = Math.round(H*0.12); if (!isDay()) for (var y = -5; y <= 5; y++) for (var x = -5; x <= 5; x++){ var d = x*x + y*y; if (d <= 25 && (x + 2)*(x + 2) + (y - 1)*(y - 1) > 14){ ctx.fillStyle = '#f6efdf'; ctx.fillRect(mx + x, my + y, 1, 1); } }
   var px = ((t*6) % (W + 40)) - 20, py = Math.round(H*0.18); ctx.fillStyle = Math.floor(t*2) % 2 ? '#ff5a4e' : '#ffffff'; ctx.fillRect(Math.round(px), py, 1, 1);
@@ -1638,6 +1639,7 @@ function drawColumbia(ctx, W, H, t, st){
   var cx = Math.round(W/2), base = Math.round(H*0.5), bw = Math.min(W - 6, 150), x0 = cx - Math.floor(bw/2), stepsEnd = Math.round(H*0.8);
   var DAY = isDay(), sky = DAY ? ['#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#0a0d22','#0f1436','#16204a','#1f2c5a','#2a3762'];
   for (var y = 0; y < base; y++){ var f = y/base*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
+  if (DAY){ var sp0 = sunXY(W, base - 30); duskGlow(ctx, W, 0, base); daySun(ctx, sp0[0], sp0[1]); }
   if (DAY){ for (var k = 0; k < 3; k++){ var cx0 = ((t*(2 + k*0.5) + k*60) % (W + 40)) - 20, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 5, cy0 - 2, 8, 2); } }
   for (var k = 0; k < 22; k++){ var sx = (k*61) % W, sy = (k*23) % Math.round(H*0.22); if (!DAY && Math.sin(t*1.4 + k) > -.3){ ctx.fillStyle = k % 5 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(sx, sy, 1, 1); } }
   // trees at the sides
@@ -1788,7 +1790,7 @@ function drawConey(ctx, W, H, t, st){
   var Rng = Math.max(1, P + B - W), a0 = Math.max(0, Math.min(1, (P*0.64 - W/2)/Rng)), off = Math.round(Rng*(1 - Math.cos(t*0.02 + Math.acos(1 - 2*a0)))/2), bw = Math.round(H*0.66), sand = Math.round(H*0.72), sea = Math.round(H*0.8);
   var DAY = isDay(), sky = DAY ? ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#0a0a24','#12123a','#1e1650','#33205e','#5a2c66','#8a3a6a'];
   for (var y = 0; y < bw; y++){ var f = y/bw*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
-  if (DAY){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 9, 2); } daySun(ctx, Math.round(W*0.82), Math.round(H*0.1)); gulls(ctx, W, H, t); }
+  if (DAY){ for (var k = 0; k < 4; k++){ var cx0 = ((t*(1.5 + k*0.5) + k*53) % (W + 50)) - 25, cy0 = 10 + k*12; ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.round(cx0), cy0, 18, 3); ctx.fillRect(Math.round(cx0) + 4, cy0 - 2, 9, 2); } var sp = sunXY(W, bw); duskGlow(ctx, W, 0, bw); daySun(ctx, sp[0], sp[1]); gulls(ctx, W, H, t); }
   for (var k = 0; k < 26; k++){ var sx = ((k*71) % P) - off*0.4, sy = (k*31) % Math.round(H*0.25); if (!DAY && sx >= 0 && sx < W && Math.sin(t*1.5 + k) > -.3){ ctx.fillStyle = k % 4 ? '#9aa9c8' : '#ffe7a1'; ctx.fillRect(Math.round(sx), sy, 1, 1); } }
   ctx.save(); ctx.translate(-off, 0);
   var CONEY_DAY = {'#3a3048':'#e8d2a0', '#4e4258':'#d6be8a', '#2a1f1a':'#a8865a', '#1a1a44':'#4a92cc', '#121234':'#3a80bc', '#6a7ab0':'#a8daf4', '#e6eeff':'#ffffff', '#7a6a7a':'#efdcb0', '#6a5a6a':'#d9c49a', '#8a3a6a':'#c4def2', '#7a3468':'#b8d8f0', '#5a6a4a':'#7a9a5a', '#6b4a33':'#a8865a', '#5a3a28':'#8a6a48', '#8a6a4a':'#c9a878', '#3d6a8a':'#3d6a8a', '#5a8aaa':'#5a8aaa', '#2f5a7a':'#2f5a7a', '#b5651d':'#b5651d', '#5a3a2a':'#5a3a2a', '#3b2a24':'#3b2a24', '#241a14':'#241a14', '#f0c6a0':'#f0c6a0', '#c9c3b6':'#c9c3b6', '#3b2a20':'#3b2a20', '#d9a982':'#d9a982', '#c9c2b2':'#e8e4dc', '#9a948a':'#c9c3b6'};
@@ -2089,7 +2091,7 @@ function gulls(ctx, W, H, t){ for (var k = 0; k < 3; k++){ var gx = Math.round((
     if (!DAY) stars.forEach(function(s){ var b = .5 + .5*Math.sin(t*1.7 + s[2]); if (b > .25) px(s[0], s[1], s[3] ? '#ffe7a1' : (b > .8 ? '#ffffff' : '#9aa9c8')); });
     // moon
     var mx = Math.round(W*0.22), my = Math.round(H*0.14);
-    if (DAY) daySun(ctx, mx, my); else for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ var d = x*x + y*y; if (d <= 30) px(mx+x, my+y, (x-2)*(x-2) + (y+1)*(y+1) <= 22 && d > 12 ? '#f3ead3' : d <= 30 ? '#f6efdf' : ''); }
+    if (DAY){ var sp = sunXY(W, hz); mx = sp[0]; my = sp[1]; duskGlow(ctx, W, 0, hz); daySun(ctx, mx, my); } else for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ var d = x*x + y*y; if (d <= 30) px(mx+x, my+y, (x-2)*(x-2) + (y+1)*(y+1) <= 22 && d > 12 ? '#f3ead3' : d <= 30 ? '#f6efdf' : ''); }
     if (!DAY) for (var y = -6; y <= 6; y++) for (var x = -6; x <= 6; x++){ if (x*x+y*y <= 30 && (x+3)*(x+3) + (y-1)*(y-1) <= 6) px(mx+x, my+y, '#d9cdb0'); }
     // sea: gentle horizontal swells and a sparse moon path
     for (var y = hz; y < H; y++){ var depth = (y - hz) / (H - hz);
@@ -2652,6 +2654,10 @@ function drawRabbit(ctx, x, y, t, mode, dir){
 var HW_MODE = 'auto';
 try { HW_MODE = localStorage.getItem('hw-theme') || 'auto'; } catch(e){}
 function clockDay(){ var d = new Date(), h = d.getHours() + d.getMinutes()/60, m = d.getMonth(); var rise = [7.2,6.9,7.1,6.6,5.9,5.4,5.5,6.1,6.6,7.1,6.6,7.1][m], set = [16.9,17.5,19.0,19.6,20.1,20.5,20.4,19.9,19.1,18.3,16.7,16.5][m]; return h >= rise && h < set; }
+function sunTimes(){ var m = new Date().getMonth(); return [[7.2,6.9,7.1,6.6,5.9,5.4,5.5,6.1,6.6,7.1,6.6,7.1][m], [16.9,17.5,19.0,19.6,20.1,20.5,20.4,19.9,19.1,18.3,16.7,16.5][m]]; }
+function sunFrac(){ if (!clockDay()) return 0.5; var d = new Date(), h = d.getHours() + d.getMinutes()/60, st = sunTimes(); return Math.max(0, Math.min(1, (h - st[0])/(st[1] - st[0]))); }
+function sunXY(W, hz){ var f = sunFrac(); return [Math.round(W*(0.1 + 0.8*f)), Math.round(hz - 8 - Math.sin(Math.PI*f)*hz*0.75)]; }
+function duskGlow(ctx, W, top, hz){ var f = sunFrac(), e = Math.max(0, 1 - Math.min(f, 1 - f)/0.14); if (e <= 0) return; for (var y = top; y < hz; y++){ var a = e*0.55*Math.pow((y - top)/(hz - top), 2); ctx.fillStyle = 'rgba(255,140,80,' + a.toFixed(3) + ')'; ctx.fillRect(0, y, W, 1); } }
 function isDay(){ return HW_MODE === 'light' ? true : HW_MODE === 'dark' ? false : clockDay(); }
 (function(){
   var b = document.getElementById('themebtn'), modes = ['auto', 'light', 'dark'];
