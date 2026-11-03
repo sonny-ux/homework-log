@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "bda2d06f22";
+var APP_BUILD = "d6e003e072";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2124,7 +2124,7 @@ function rooftopBand(ctx, x, roof, t){
 
 // ===== Scene 9: inside the Hungarian Pastry Shop. Brick on one side, a wall of framed book covers, lamps, the pastry case,
 // small marble tables; at the front table a man in a houndstooth jacket faces us, typing, a mug and a glass of water beside him.
-function drawPastry(ctx, W, H, t){
+function drawPastry(ctx, W, H, t, st){
   // side view, crowded and warm: a long glass counter heaped with pastries on the left, menus and shelves behind, a rainbow
   // painting; then tables packed close running right under droopy lamps and bright speckled prints, a red wainscot, and at
   // the far back right the sliding bathroom door to a yellow room. Norm types, gets up, goes to the back, and returns.
@@ -2140,8 +2140,10 @@ function drawPastry(ctx, W, H, t){
   else if (c < 51){ nx = dX + 8; ny = backY; door = 1; nmode = 'stand'; ndir = -1; }
   else if (c < 58){ var f2 = (c - 51)/7; nx = dX + 8 + (seatX - dX - 8)*f2; ny = backY + (frontY - backY)*f2; nmode = 'walk'; ndir = -1; door = Math.max(0, 1 - (c - 51)); }
   else { nx = seatX; ny = frontY; }
-  var off = Math.max(0, Math.min(P - W, Math.round((c > 25 && c < 59 ? nx : seatX) - W*0.5) + Math.round(Math.sin(t*0.05)*20)));
-  off = Math.max(0, Math.min(P - W, off));
+  // the view: a slow sweep along the room from the counter to the back and home again; when Norm gets up, it follows him
+  var sweep = (P - W)*(0.5 - 0.5*Math.cos(t*0.045)), target = (c > 25 && c < 59) ? nx - W*0.5 : sweep;
+  target = Math.max(0, Math.min(P - W, target)); st = st || {}; if (st.off === undefined) st.off = target; st.off += (target - st.off)*0.05;
+  var off = Math.round(st.off);
   ctx.save(); ctx.translate(-off, 0);
   function R(x, y, w, h, col){ ctx.fillStyle = col; ctx.fillRect(x, y, w, h); }
   // warm walls, a red wainscot, the floor
@@ -2318,7 +2320,7 @@ VIG.static = function(ctx, W, H){ for (var y = 0; y < H; y++) for (var x = 0; x 
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
     if (SCENES[scene] === 'anime'){ var t = (now - t0)/1000; drawAnime(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
-    if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; drawPastry(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
+    if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawPastry(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'coney'){ var t = (now - t0)/1000; if (!cityState) cityState = coneySetup(W, H); drawConey(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'vangogh'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawVanGogh(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'columbia'){ var t = (now - t0)/1000; if (!cityState) cityState = colSetup(W, H); drawColumbia(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
