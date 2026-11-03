@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "83be1f6007";
+var APP_BUILD = "0a285bb865";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1411,6 +1411,7 @@ function stPerson(ctx, p, x, y, t){
   else if (p.hair === 'helmet'){ U(-3, -36, 6, 4, '#e6eeff'); U(-1, -39, 3, 3, '#e6eeff'); U(1, -32, 2, 1, '#b9c6e6'); }
   if (p.pearls){ U(-3, -36, 7, 1, '#3a2a20'); for (var k = -3; k < 4; k += 2) U(k, -36, 1, 1, '#f3efe6'); }
   if (p.bucket){ U(-3, -37, 7, 3, p.bucket); U(-5, -34, 11, 1, p.bucket); U(-3, -35, 7, 1, 'rgba(0,0,0,.2)'); }
+  if (p.bobby){ U(-3, -39, 6, 5, '#1a2040'); U(-2, -41, 4, 2, '#1a2040'); U(-1, -42, 2, 1, '#2a3050'); U(-4, -35, 8, 1, '#141a34'); U(0, -38, 2, 2, '#c9c3b6'); U(-3, -14, 7, 1, '#141a34'); for (var k = -23; k < -15; k += 3) U(0, k, 1, 1, '#c9c3b6'); }
   if (p.knit){ U(-3, -38, 6, 4, p.knit); U(-2, -39, 4, 1, p.knit); U(-3, -35, 7, 1, '#2e2e36'); U(-1, -37, 1, 2, '#2e2e36'); U(1, -37, 1, 2, '#2e2e36'); }
   if (p.bowler){ U(-3, -38, 6, 3, '#6b1e2a'); U(-2, -39, 4, 1, '#6b1e2a'); U(-3, -36, 6, 1, '#2a2a2a'); U(-5, -35, 10, 1, '#5a1a24'); }
   if (p.party){ U(-1, -38, 4, 2, '#d9302a'); U(0, -41, 3, 3, '#d9302a'); U(1, -43, 1, 2, '#d9302a'); U(0, -39, 1, 1, '#f3ead3'); U(2, -41, 1, 1, '#f3ead3'); U(1, -43, 1, 1, '#f3ead3'); }
@@ -1481,7 +1482,9 @@ function drawStMarks(ctx, W, H, t, st){
       if (torus){ ctx.fillRect(ix + 1, iy, 6, 1); ctx.fillRect(ix, iy + 1, 2, 3); ctx.fillRect(ix + 6, iy + 1, 2, 3); ctx.fillRect(ix + 1, iy + 4, 6, 1); }
       else { ctx.fillRect(ix, iy, 6, 1); ctx.fillRect(ix, iy, 1, 5); ctx.fillRect(ix + 5, iy, 1, 5); ctx.fillRect(ix, iy + 4, 6, 1); ctx.fillRect(ix + 6, iy + 1, 2, 1); ctx.fillRect(ix + 7, iy + 1, 1, 3); ctx.fillRect(ix + 6, iy + 3, 2, 1); }
       for (var k = 0; k < 4; k++){ var dx2 = wx + 2 + k*8, dy2 = wy + wh - 6; ctx.fillStyle = '#c98a4a'; ctx.fillRect(dx2, dy2, 6, 3); ctx.fillStyle = ['#ff7ad9','#7a3b2e','#f3ead3','#ff7ad9'][k]; ctx.fillRect(dx2, dy2, 6, 1); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(dx2 + 2, dy2 + 1, 2, 1); } }
-    if (bi === 0) rooftopBand(ctx, b.x + 17, top - 4, t);
+    if (bi === 0 && DAY){ rooftopBand(ctx, b.x + 17, top - 4, t);
+      var cu = t % 80; if (cu > 28 && cu < 72){ var cin = Math.min(1, (cu - 28)/6), cout = cu > 66 ? (cu - 66)/6 : 0, cx3 = b.x + b.w + 16 - Math.round(cin*10) + Math.round(cout*14);
+        [0, 9].forEach(function(dd, j){ stPerson(ctx, {dir: -1, v: (cin < 1 || cout > 0) ? 1 : 0, ph: j*2, skin: 0, hair: 'short', hc: '#3b2a20', bobby: 1, jacket: '#1a2040', pants: '#1a2040'}, cx3 + dd, top - 4 + (st.b[1] ? st.b[1].top - top : 0), t); }); } }
     // the ghost walks one roof, sometimes
     if (bi === 1 && !DAY){ var gp = (t*0.04) % 1, ga = Math.max(0, Math.sin(gp*Math.PI*2)); if (ga > .05){ ctx.globalAlpha = .35*ga; stPerson(ctx, {dir:1, v:1, ph:0, skin:4, jacket:'#cdd8f2', pants:'#b9c6e6', hair:'helmet', hc:'#e6eeff'}, Math.round(b.x + 6 + gp*(b.w - 12)), top - 4, t*0.5); ctx.globalAlpha = 1; } }
   });
@@ -1508,6 +1511,14 @@ function drawStMarks(ctx, W, H, t, st){
   var sitB = st.b[2] || st.b[0]; stPerson(ctx, {dir:-1, v:0, sit:1, ph:4, skin:1, jacket:'leather', pants:'#2b2f45', hair:'spikes', hc:'#9fd3f2', punk:1}, sitB.x + sitB.w - 6, walk + 3, t);
   // the walkers: back lane first, then front
   var u2 = t % 55; if (u2 < (W + 60)/7){ st.duo2 = st.duo2 || [{hair: 'ringlets', hc: '#1a1410', skin: 5, lips: '#c45a5a', blush: 1, ruff: 1, pearls: 1, jacket: '#5a1a2a', gown: 1, gc: '#5a1a2a', gh: '#7a2a3a', gl: '#3a0e1a', goldwork: 1, chemise: 1, pants: '#5a1a2a', ph: 3}, gingerGuy()]; var x2 = W + 30 - u2*7; st.duo2.forEach(function(p, k){ p.dir = -1; p.v = 1; stPerson(ctx, p, Math.round(x2) + (k ? 7 : -3), walk + 15, t); }); }
+  if (DAY){ var crowd = st.crowd || (st.crowd = [
+      {hair: 'short', hc: '#241a14', jacket: '#5a5a62', pants: '#3a3a42', skin: 0}, {hair: 'bob', hc: '#e9c45a', jacket: '#c4473a', pants: '#2a2a32', skin: 0, dress: 1},
+      {hair: 'cap', hc: '#9a9a9a', jacket: '#3a3a42', pants: '#2a2a32', skin: 0}, {hair: 'long', hc: '#5a3a24', jacket: '#d9822b', pants: '#3a4a6a', skin: 3},
+      {hair: 'short', hc: '#8a5a3a', jacket: '#2f5f9e', pants: '#1a1a22', skin: 1}]);
+    var b0 = st.b[0]; crowd.forEach(function(p, k){ p.dir = k % 2 ? -1 : 1; p.v = 0; p.ph = k; stPerson(ctx, p, Math.round(b0.x + 14 + k*9), walk + 15, t); });
+    var fu2 = t % 80; if (fu2 < 60){ var fr = st.friends || (st.friends = [usTwo()[1], usTwo()[0], gingerGuy()]), fxm, fmv;
+      if (fu2 < 7){ fxm = W + 20 - (W + 20 - Math.round(W*0.42))*(fu2/7); fmv = 1; } else if (fu2 < 50){ fxm = Math.round(W*0.42); fmv = 0; } else { fxm = Math.round(W*0.42) - (fu2 - 50)*9; fmv = 1; }
+      fr.forEach(function(p, k){ p.dir = -1; p.v = fmv; p.ph = k*1.7; stPerson(ctx, p, Math.round(fxm) + k*9, curb - 4, t); }); } }
   // the two of you, ambling down the near sidewalk, one with a bag of groceries
   if (st.duo){ var dx = ((t*6) % (W + 70)) - 35; st.duo.forEach(function(p, k){ p.dir = 1; p.v = 1; p.ph = k*2.6; stPerson(ctx, p, Math.round(dx) + (k ? 6 : -6), curb - 6, t); });
     var hx = Math.round(dx) + 7, hy = curb - 6; ctx.fillStyle = '#f3ead3'; ctx.fillRect(hx + 1, hy - 14, 1, 3); ctx.fillRect(hx, hy - 11, 5, 6); ctx.fillStyle = '#9aa0ac'; ctx.fillRect(hx, hy - 9, 5, 1); ctx.fillRect(hx + 2, hy - 11, 1, 6);
