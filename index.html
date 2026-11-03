@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "00ab244eba";
+var APP_BUILD = "ea3e4d7274";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2337,8 +2337,7 @@ var ROOMS = {
     ctx.fillStyle = '#f3ead3'; ctx.fillRect(tx + 15, F - 18, 3, 3); var bl = go === 'book' ? 2 : 0; ctx.fillStyle = '#7fb7d9'; ctx.fillRect(tx + 3, F - 18 - bl, 11, 3); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(tx + 4, F - 19 - bl, 4, 1); ctx.fillRect(tx + 9, F - 19 - bl, 4, 1); ctx.fillStyle = '#e8a0b4'; ctx.fillRect(tx + 8, F - 19 - bl, 1, 2);
 
     var her = usTwo()[0]; her.sit = 1; her.v = 0; her.dir = 1; her.ph = 1; stPerson(ctx, her, tx - 3, F + 1, t);
-    // she is daydreaming: eyes closed, and a thought cloud with the sea in it rises above her
-    ctx.fillStyle = '#d9a982'; ctx.fillRect(tx - 2, F - 25, 2, 1);
+    // she is daydreaming: a thought cloud with the sea in it rises above her
     var bob = Math.round(Math.sin(t*1.2)), bx = tx - 18, by = F - 66 + bob, lift = go === 'dream' ? 2 : 0;
     [[tx - 2, F - 38, 1], [tx - 5, F - 43, 2], [tx - 8, F - 49, 2]].forEach(function(c){ ctx.fillStyle = '#fbf7ee'; ctx.fillRect(c[0], c[1] + bob, c[2] + 1, c[2] + 1); });
     ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 2, by - lift, 26, 15); ctx.fillRect(bx, by + 2 - lift, 30, 11); ctx.fillRect(bx + 5, by - 2 - lift, 8, 2); ctx.fillRect(bx + 16, by - 2 - lift, 8, 2); ctx.fillRect(bx + 4, by + 15 - lift, 10, 1);
