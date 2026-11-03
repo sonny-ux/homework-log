@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "0942e8f539";
+var APP_BUILD = "52865b8f91";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1342,6 +1342,8 @@ function stPerson(ctx, p, x, y, t){
   if (p.pearlstrand){ U(-1, -24, 1, 1, '#f3efe6'); U(0, -23, 1, 1, '#f3efe6'); U(1, -24, 1, 1, '#f3efe6'); U(0, -20, 1, 2, '#f3efe6'); }
   if (p.orchids){ U(1, -22, 3, 2, '#f0a0b4'); U(2, -21, 1, 1, '#c4476a'); U(-3, -14, 3, 2, '#f0a0b4'); U(-2, -13, 1, 1, '#c4476a'); U(0, -10, 3, 2, '#e88aa0'); U(1, -9, 1, 1, '#c4476a'); }
   if (p.hounds){ for (var yy = -24; yy < -14; yy++) for (var xx = -3; xx < 4; xx++) if ((xx + yy) % 2 === 0) U(xx, yy, 1, 1, (xx*3 + yy) % 5 ? '#a8a8ac' : '#5a5a5e'); }
+  if (p.floral){ [[-2,-24,'#2a3a6a'],[1,-22,'#2a3a6a'],[-3,-19,'#2a3a6a'],[2,-18,'#f3e0a8'],[-1,-16,'#2a3a6a'],[0,-21,'#f3e0a8'],[3,-24,'#c98a3a'],[-2,-21,'#c98a3a']].forEach(function(q){ U(q[0], q[1], 1, 1, q[2]); }); U(-1, -25, 3, 1, '#f3e0a8'); }
+  if (p.wrapdress){ for (var k = 0; k < 7; k++){ U(-3 + k, -24 + k, 1, 1, '#2a3a6a'); U(-2 + k, -24 + k, 1, 1, '#d9602a'); } U(-3, -16, 7, 1, '#2a3a6a'); if (p.sit){ U(-2, -13, 2, 1, '#2a3a6a'); U(2, -12, 3, 1, '#d9602a'); U(5, -9, 1, 4, '#2a3a6a'); } }
   if (p.plaid){ for (var k = -24; k < -14; k += 3) U(-3, k, 7, 1, 'rgba(255,230,180,.3)'); U(-1, -25, 1, 11, 'rgba(0,0,0,.2)'); U(2, -25, 1, 11, 'rgba(0,0,0,.2)'); }
   if (p.cable){ U(-2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(2, -23, 1, 8, 'rgba(0,0,0,.14)'); U(0, -25, 1, 2, 'rgba(0,0,0,.18)'); for (var k = -22; k < -15; k += 2) U(0, k, 1, 1, 'rgba(255,255,255,.18)'); }
   if (p.bowtie){ U(-1, -25, 3, 3, '#f3efe6'); U(-1, -24, 3, 1, '#151218'); U(0, -23, 1, 6, '#f3efe6'); }
@@ -2206,12 +2208,22 @@ function drawPastry(ctx, W, H, t, st){
   var looks = [['bob','#151218','#8a2a2a',3],['cap','#151218','#8a6a5a',0],['long','#241a14','#3d6a4a',1],['short','#c9c3b6','#2f4a6a',0],['long','#e9c45a','#f3e8d4',0],['short','#151218','#151218',2],['long','#5a3a24','#c9b89a',3],['messy','#241a14','#5a6a4a',1],['bob','#e8e4dc','#e8a0b4',0],['short','#3b2a20','#3a3a48',2],['long','#151218','#e8e4dc',1],['beanie','#c4473a','#2a2a32',0]];
   var bk = [], fr = [];
   for (var x = cw + 22, i = 0; x < dX - 14; x += 42, i++) bk.push(x);
-  for (var x = cw + 14, i = 0; x < dX - 16; x += 46, i++) if (Math.abs(x - seatX) > 26) fr.push(x);
+  for (var x = cw + 14, i = 0; x < dX - 16; x += 46, i++) if (x < seatX - 26 || x > seatX + 62) fr.push(x);
   function pair(x, y, i){ table(x, y); [-1, 1].forEach(function(sd, j){ var L = looks[(i*2 + j) % looks.length]; stPerson(ctx, {sit: 1, nocup: 1, v: 0, dir: -sd, ph: i + j, hair: L[0], hc: L[1], jacket: L[2], skin: L[3], pants: '#2a2a32', glasses: (i + j) % 4 === 0}, x + sd*8, y, t); });
     R(x - 3, y - 18, 3, 2, '#f3efe6'); if (i % 2) R(x + 1, y - 19, 4, 3, 'rgba(160,200,255,.7)'); else R(x + 1, y - 19, 2, 3, 'rgba(220,235,245,.7)'); }
   bk.forEach(function(x, i){ pair(x, backY, i); });
+  // while Norm is in the bathroom, a line forms by the door; when he comes out, the first one goes in
+  if (c > 36 && c < 58){ var Q = [{hair: 'long', hc: '#e9c45a', jacket: '#3a3a48', skin: 0}, {hair: 'cap', hc: '#151218', jacket: '#c4473a', skin: 2}, {hair: 'bob', hc: '#241a14', jacket: '#3d6a4a', skin: 3}];
+    Q.forEach(function(q, i){ var arrive = 37 + i*2.5; if (c < arrive) return; if (i === 0 && c > 51.5) return; var slot = (c > 51.5 && i > 0) ? i - 1 : i, qx = dX - 12 - slot*10, qin = Math.min(1, (c - arrive)/2);
+      q.dir = 1; q.v = qin < 1 ? 1 : (Math.floor(t*1.5 + i) % 4 === 0 ? 1 : 0); q.ph = i; q.pants = '#2a2a32'; stPerson(ctx, q, Math.round(qx - (1 - qin)*30), backY, t); }); }
   // Norm's table
   table(seatX + 9, frontY);
+  R(seatX + 9, frontY - 16, 28, 2, '#3a2214'); R(seatX + 9, frontY - 14, 28, 1, '#2a1a10'); R(seatX + 30, frontY - 13, 1, 13, '#2a1a10');
+  var meP = {sit: 1, nocup: 1, v: 0, dir: -1, ph: 3, skin: 0, hair: 'wavy', hc: '#241a14', glasses: 1, stache: '#3b2a20', goatee: '#3b2a20', jacket: '#e9c45a', floral: 1, pants: '#6a5a4a'};
+  var sydP = {sit: 1, nocup: 1, v: 0, dir: -1, ph: 5, skin: 0, hair: 'updo', hc: '#5a3a24', pearlstrand: 1, jacket: '#f3ead8', gown: 1, gc: '#f3ead8', gh: '#ffffff', gl: '#d9cdb0', wrapdress: 1, pants: '#f3ead8'};
+  stPerson(ctx, sydP, seatX + 38, frontY, t); stPerson(ctx, meP, seatX + 26, frontY, t);
+  R(seatX + 20, frontY - 19, 3, 3, '#f3efe6'); R(seatX + 31, frontY - 18, 4, 2, '#e8c48a'); R(seatX + 31, frontY - 19, 4, 1, '#f3e8d0');
+  if (Math.floor(t/7) % 3 === 1 && nmode === 'sit'){ R(seatX + 22, frontY - 30, 1, 1, '#ff7a9a'); R(seatX + 24, frontY - 30, 1, 1, '#ff7a9a'); R(seatX + 22, frontY - 29, 3, 1, '#ff7a9a'); R(seatX + 23, frontY - 28, 1, 1, '#ff7a9a'); }
   if (!inside) stPerson(ctx, norm, Math.round(nx), Math.round(ny), t);
   if (nmode === 'sit'){ var tap = Math.floor(t*8) % 2; R(seatX + 3, frontY - 18 - tap, 3, 1, '#d9a982'); }
   R(seatX + 5, frontY - 21, 7, 4, '#2a2a32'); R(seatX + 5, frontY - 17, 8, 1, '#151218'); R(seatX + 6, frontY - 20, 5, 2, 'rgba(160,200,255,.35)');
