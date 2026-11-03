@@ -474,7 +474,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <h2 style="margin-top:4px">Forecast <span class="sub">next 7 days, estimated</span></h2>
     <div class="fc" id="fc"></div>
     <div id="queue"></div>
-    <figure class="room" data-room="sydney" aria-label="Sydney's room: light blue walls, a fireplace with a crowded mantle, lace curtains, a blue-flowered quilt with her beaver, and the stick insects in the corner"><canvas></canvas></figure>
+    <figure class="room" data-room="sydney" aria-label="Sydney's room: light blue walls, a kitchen island under the window, a fireplace with a crowded mantle, lace curtains, a blue-flowered quilt with her beaver, and the stick insects in the corner"><canvas></canvas></figure>
     <details class="donebox" id="donebox"><summary>Done</summary><div class="as" id="asdone" style="margin-top:6px"></div></details>
   </section>
 
@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "1953d7cfff";
+var APP_BUILD = "0dc285deb4";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2344,6 +2344,16 @@ var ROOMS = {
     // two big windows with lace curtains
     lace(13, 13, 22, 33);
     var bw = 48, bx = W - 20 - bw;
+    // the kitchen island under the window: butcher-block top, white cabinets, two stools, a fruit bowl and a mug
+    var ix = 9, iw = 30, it = F - 15;
+    ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fillRect(ix + 1, it + 1, iw, 15);
+    ctx.fillStyle = '#f3efe6'; ctx.fillRect(ix + 1, it + 2, iw - 2, 13); ctx.fillStyle = '#d9d2c2'; ctx.fillRect(ix + 1, it + 2, iw - 2, 1); ctx.fillRect(ix + Math.round(iw/2), it + 3, 1, 12);
+    ctx.fillStyle = '#9a948a'; ctx.fillRect(ix + Math.round(iw/2) - 3, it + 6, 2, 1); ctx.fillRect(ix + Math.round(iw/2) + 2, it + 6, 2, 1);
+    ctx.fillStyle = '#b5844f'; ctx.fillRect(ix - 1, it, iw + 2, 2); ctx.fillStyle = '#d0a06a'; ctx.fillRect(ix - 1, it, iw + 2, 1); ctx.fillStyle = '#9a6a3a'; for (var x = ix + 2; x < ix + iw; x += 5) ctx.fillRect(x, it + 1, 1, 1);
+    ctx.fillStyle = '#2f5f9e'; ctx.fillRect(ix + 3, it - 2, 7, 2); ctx.fillStyle = '#c4473a'; ctx.fillRect(ix + 4, it - 4, 2, 2); ctx.fillStyle = '#e9c45a'; ctx.fillRect(ix + 6, it - 4, 3, 2); ctx.fillStyle = '#3d7a55'; ctx.fillRect(ix + 5, it - 5, 1, 1);
+    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(ix + 21, it - 3, 3, 3); ctx.fillRect(ix + 24, it - 2, 1, 1); ctx.fillStyle = '#c4473a'; ctx.fillRect(ix + 21, it - 2, 3, 1);
+    for (var k = 0; k < 2; k++){ var ph = (t*0.5 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.5*(1 - ph)) + ')'; ctx.fillRect(ix + 22 + Math.round(Math.sin(ph*7 + k)), it - 4 - Math.round(ph*6), 1, 1); }
+    [ix + 4, ix + iw - 9].forEach(function(sx){ ctx.fillStyle = '#3b2a24'; ctx.fillRect(sx, F - 8, 6, 2); ctx.fillStyle = '#241f1a'; ctx.fillRect(sx + 1, F - 6, 1, 6); ctx.fillRect(sx + 4, F - 6, 1, 6); ctx.fillRect(sx + 1, F - 3, 4, 1); });
     lace(bx + 13, 12, 22, 22);
     // the fireplace, its glow on the room
     var fx = Math.max(46, Math.round((40 + bx)/2) - 18), fl = Math.sin(t*7);
@@ -2405,9 +2415,9 @@ var ROOMS = {
     ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fillRect(kx + 2, ky + 1, 1, 8);
     ctx.fillStyle = '#3a3644'; ctx.fillRect(kx, ky, 1, 17); ctx.fillRect(kx + 13, ky, 1, 17); ctx.fillRect(kx, ky + 16, 14, 1); ctx.fillStyle = '#5a5468'; ctx.fillRect(kx - 1, ky - 1, 16, 2); ctx.fillStyle = '#8a8a98'; for (var x = kx; x < kx + 14; x += 2) ctx.fillRect(x, ky - 1, 1, 1);
     // clothes on the floor: a pile under the window, a pile in front of the bed, one sock
-    pile(14, F + 6, ['#2f5f9e', '#e9c45a', '#f3ead3']);
+    pile(fx - 14, F + 7, ['#2f5f9e', '#e9c45a', '#f3ead3']);
     pile(bx + 22, F + 7, ['#3a3644', '#e8a0b4', '#3d7a55']);
-    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(fx + 40 < bx - 4 ? fx + 42 : 30, F + 5, 3, 1); ctx.fillRect(fx + 40 < bx - 4 ? fx + 44 : 32, F + 4, 1, 2);
+    ctx.fillStyle = '#fbf7ee'; ctx.fillRect(bx + 37, F + 5, 3, 1); ctx.fillRect(bx + 39, F + 4, 1, 2);
     return S;
   },
   study: function(ctx, W, H, t, go){
