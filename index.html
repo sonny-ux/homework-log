@@ -1153,7 +1153,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "6068e489f7";
+var APP_BUILD = "9c6218e906";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1674,11 +1674,11 @@ function drawSkyline(ctx, W, H, t, st){
   R(ex - 8, shore - 74, 17, 74, '#2a2a4e'); R(ex - 6, shore - 86, 13, 12, '#2a2a4e'); R(ex - 4, shore - 98, 9, 12, '#2e2e54'); R(ex - 2, shore - 106, 5, 8, '#33335a');
   R(ex - 1, shore - 112, 3, 6, cc); R(ex, shore - 122, 1, 10, '#b9c0cc'); if (Math.sin(t*2) > 0) R(ex, shore - 123, 1, 1, '#ff5a4e');
   // during a session the Empire State fills from the street up in that class's colour: one band of floors per 10 minutes,
-  // the top of the spire at two hours; when the session ends the colour drains away over a few seconds
+  // the top of the spire at 90 minutes; when the session ends the colour drains away over a few seconds
   var LS = liveSession(), fillTo = 0, fillC = null, fillA = 1;
   if (LS){ ESB_FILL.last = LS; ESB_FILL.end = 0; } else if (ESB_FILL.last){ if (!ESB_FILL.end) ESB_FILL.end = performance.now(); fillA = 1 - (performance.now() - ESB_FILL.end)/4000; if (fillA <= 0){ ESB_FILL.last = null; fillA = 0; } }
   var FL = LS || (fillA > 0 ? ESB_FILL.last : null);
-  if (FL){ fillC = CLASS_COL[FL.cls] || cc; fillTo = Math.min(12, Math.floor(FL.min/10) + 1)/12; }
+  if (FL){ fillC = CLASS_COL[FL.cls] || cc; fillTo = Math.min(9, Math.floor(FL.min/10) + 1)/9; }
   var litTop = shore - 2 - Math.round(fillTo*104), edge = FL && fillTo < 1 ? Math.sin(t*4) > 0 : false;
   for (var y = shore - 72; y < shore - 2; y += 3) for (var x = ex - 7; x < ex + 8; x += 2){ var inFill = FL && y >= litTop;
     if (inFill){ ctx.globalAlpha = fillA*(edge && y < litTop + 6 ? .6 : 1); R(x, y, 1, 2, fillC); ctx.globalAlpha = 1; if (fillA < 1 && Math.sin(x*3.1 + y*1.7 + Math.floor(t*0.5)) > -.2){ ctx.globalAlpha = 1 - fillA; R(x, y, 1, 2, '#ffd36b'); ctx.globalAlpha = 1; } }
