@@ -338,6 +338,10 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .ubr { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 0 0 0 0; }
 .ubr em { font-style: normal; font-size: 12px; color: var(--muted); border-left: 1.5px dotted var(--muted); padding-left: 14px; margin-left: 5px; }
 .usetl .tip { border-top: var(--thin) dotted var(--ink); padding: 8px 0 4px; font-size: 13px; }
+#flap { position: fixed; inset: 0; z-index: 61; background: #070b1c; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
+#flap.on { display: flex; }
+#flap canvas { height: min(74vh, calc(92vw * 1.6)); aspect-ratio: 5 / 8; image-rendering: pixelated; box-shadow: 0 0 0 4px #3a3644, 0 0 0 6px #151218; touch-action: none; }
+#flap button { background: rgba(7,11,28,.55); color: #f3ead3; border: 1px solid rgba(243,234,211,.45); font: 11px var(--pixel); letter-spacing: .08em; text-transform: uppercase; padding: 8px 14px; cursor: pointer; }
 #race { position: fixed; inset: 0; z-index: 61; background: #070b1c; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
 #race.on { display: flex; }
 #race canvas { height: min(74vh, calc(92vw * 1.5)); aspect-ratio: 2 / 3; image-rendering: pixelated; box-shadow: 0 0 0 4px #3a3644, 0 0 0 6px #151218; touch-action: none; }
@@ -1123,7 +1127,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "6daae096da";
+var APP_BUILD = "45ca2e6ca2";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1632,7 +1636,7 @@ function drawSkyline(ctx, W, H, t, st){
   var wx = Math.round(P*0.82); for (var y = 0; y < 104; y++){ var hw = Math.round(2 + y*0.07); R(wx - hw, shore - 104 + y, hw*2 + 1, 1, '#2c3a5e'); if (y % 3 === 0) R(wx - hw + ((y*3) % (hw*2 + 1)), shore - 104 + y, 1, 1, '#9fc0ff'); }
   R(wx, shore - 124, 1, 20, '#b9c0cc'); if (Math.floor(t*1.5) % 2) R(wx, shore - 125, 1, 1, '#ff5a4e');
   // the yellow submarine flying over the city
-  var fu = (t + 25) % 60; if (fu < 14){ var fx2 = Math.round(-30 + (W + 60)*(fu/14)), fy2 = Math.round(shore*0.35 + Math.sin(fu*1.2)*6); drawSubmarine(ctx, fx2, fy2, t, false);
+  var fu = (t + 25) % 60; if (ctx.canvas === window.REST_CV) window.SUB_AT = null; if (fu < 14){ var fx2 = Math.round(-30 + (W + 60)*(fu/14)), fy2 = Math.round(shore*0.35 + Math.sin(fu*1.2)*6); drawSubmarine(ctx, fx2, fy2, t, false); if (ctx.canvas === window.REST_CV) window.SUB_AT = {x: fx2, y: fy2};
     for (var k = 0; k < 8; k++){ var bx2 = fx2 - 26 - k*5, by2 = fy2 + Math.round(Math.sin(k + t*3)*3); ctx.globalAlpha = 1 - k/8; ctx.fillStyle = k % 3 ? '#e6f4ff' : '#ff9ad9'; ctx.fillRect(bx2, by2, k % 2 ? 1 : 2, k % 2 ? 1 : 2); ctx.globalAlpha = 1; } }
   // shoreline lights
   if (!isDay()) for (var x = 0; x < W; x += 3){ ctx.fillStyle = Math.sin(x*0.7 + t*2) > 0 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, shore - 1, 1, 1); }
@@ -2850,6 +2854,8 @@ function drawDerek(ctx, W, H, t){
   function panEnd(){ if (!SPAN.drag) return; SPAN.drag = null; if (panMoved) SPAN.until = performance.now() + 4000; }
   addEventListener('pointerup', panEnd); addEventListener('pointercancel', panEnd);
   rest.addEventListener('click', function(e){ if (panMoved){ panMoved = false; e.stopPropagation(); e.preventDefault(); } }, true);
+  cv.addEventListener('click', function(e){ var sa = window.SUB_AT; if (SCENES[scene] !== 'skyline' || !sa) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
+    if (Math.abs(x - sa.x) > 30 || Math.abs(y - sa.y) > 16) return; e.stopPropagation(); if (window.openFlap) openFlap(); });
   var tripSnap = null, tripFrom = null, swapSnap = null, swapFrom = null;
   cv.addEventListener('click', function(e){ var f = window.CINEMA_EXIT; if (SCENES[scene] !== 'cinema' || !f) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
     if (x < f.x - 3 || x > f.x + f.w + 3 || y < f.y - 3 || y > f.y + f.h + 3) return; e.stopPropagation();
@@ -3611,6 +3617,58 @@ ROOMS.block = function(ctx, W, H, t, go){
       var c = r.querySelector('canvas'), b = c.getBoundingClientRect(), sc = b.width / c.width, src = {getBoundingClientRect: function(){ return {left: b.left + s.x*sc, top: b.top + s.y*sc, width: s.w*sc, height: s.h*sc}; }};
       setTimeout(function(){ openRest(s.scene, src); setTimeout(function(){ r._go = null; }, 900); }, 420); });
   });
+})();
+
+// ===== Submarine over the city: tap to rise, let go to sink; thread the gaps between towers rising from below and storm
+// clouds hanging from above. Every gap passed is a point; the best is kept on this device.
+(function(){
+  var GW = 80, GH = 128, el = null, cv = null, g = null, raf = null, G = null, last = 0, KEY = 'hw-flap-best', GAP = 42, SPACING = 50, OW = 14;
+  function best(){ try { return +localStorage.getItem(KEY) || 0; } catch(e){ return 0; } }
+  function R(x, y, w, h, c){ g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
+  function txt(str, y, col){ ptext(g, str, Math.round(GW/2 - textW(str, 1)/2), y, 1, col); }
+  function reset(){ G = {state: 'ready', y: 56, v: 0, x: 22, obs: [], score: 0, t: 0, scroll: 0, boom: 0}; for (var k = 0; k < 3; k++) G.obs.push(make(GW + 20 + k*SPACING)); }
+  function make(x){ return {x: x, gy: 22 + Math.round(Math.random()*(GH - 40 - GAP - 22)), done: false, seed: Math.random()*100}; }
+  function flap(){ if (G.state === 'ready'){ G.state = 'run'; G.v = -62; return; } if (G.state === 'over'){ if (G.boom > 0.7) reset(); return; } G.v = -62; }
+  function update(dt){ G.t += dt;
+    if (G.state === 'ready'){ G.y = 56 + Math.sin(G.t*3)*3; G.scroll += dt*20; return; }
+    if (G.state === 'over'){ G.boom += dt; if (G.y < GH - 12){ G.v += 260*dt; G.y += G.v*dt; } return; }
+    G.v = Math.min(110, G.v + 230*dt); G.y += G.v*dt; G.scroll += dt*34;
+    G.obs.forEach(function(o){ o.x -= 34*dt; if (!o.done && o.x + OW < G.x - 6){ o.done = true; G.score++; } });
+    if (G.obs[0].x < -OW - 2){ G.obs.shift(); G.obs.push(make(G.obs[G.obs.length - 1].x + SPACING)); }
+    if (G.y < 4 || G.y > GH - 12) die();
+    G.obs.forEach(function(o){ if (G.x + 6 > o.x && G.x - 7 < o.x + OW && (G.y - 3 < o.gy || G.y + 3 > o.gy + GAP)) die(); }); }
+  function die(){ if (G.state !== 'run') return; G.state = 'over'; G.boom = 0; try { if (G.score > best()) localStorage.setItem(KEY, G.score); } catch(e){} }
+  function sub(x, y, tilt){ x = Math.round(x); y = Math.round(y);
+    R(x - 6, y - 2, 12, 5, '#f5c53a'); R(x - 5, y - 3, 10, 1, '#f5c53a'); R(x - 5, y + 3, 10, 1, '#d9a23a'); R(x + 6, y - 1, 1, 3, '#f5c53a');
+    R(x - 1, y - 6, 4, 3, '#f5c53a'); R(x + 1, y - 9, 1, 3, '#9a9aa2'); R(x + 1, y - 9, 3, 1, '#9a9aa2');
+    [-3, 0, 3].forEach(function(dx){ R(x + dx, y - 1, 2, 2, '#3a7ad0'); R(x + dx, y - 1, 1, 1, '#9fd3f2'); });
+    var pr = Math.floor(G.t*20) % 2; R(x - 8, y - 2 + pr, 1, 2, '#8a8a92'); R(x - 9, y - 1 - pr, 1, 2, '#8a8a92');
+    if (tilt < 0) R(x + 5, y - 3, 2, 1, '#f5c53a'); else if (tilt > 0) R(x + 5, y + 3, 2, 1, '#d9a23a'); }
+  function draw(){
+    for (var y = 0; y < GH; y++){ R(0, y, GW, 1, y < 40 ? '#0c1030' : y < 80 ? '#141640' : '#221a4c'); }
+    for (var k = 0; k < 24; k++){ var sx = ((k*37 - G.scroll*0.1) % GW + GW) % GW, sy = (k*23) % 70; if (Math.sin(G.t*2 + k) > -0.3) R(sx, sy, 1, 1, k % 4 ? '#9aa9c8' : '#ffffff'); }
+    R(60, 12, 6, 6, '#f3efe6'); R(58, 13, 3, 4, '#0c1030');
+    for (var x = 0; x < GW + 10; x += 6){ var bx = x - (G.scroll*0.3 % 6), h = 14 + Math.round(Math.abs(Math.sin(Math.floor((x + G.scroll*0.3)/6)*1.7))*22); R(bx, GH - h, 6, h, '#1c1b45'); if ((x/6) % 2) R(bx + 2, GH - h + 4, 1, 1, '#ffd36b'); }
+    G.obs.forEach(function(o){ var x = o.x, bt = o.gy + GAP;
+      R(x, bt, OW, GH - bt, '#2a2c4a'); R(x, bt, OW, 2, '#3a3c5e'); R(x - 1, bt, OW + 2, 1, '#4a4c6e'); R(x + OW - 2, bt, 2, GH - bt, '#22243e');
+      for (var y = bt + 4; y < GH - 2; y += 4) for (var wx = x + 2; wx < x + OW - 3; wx += 3) if (Math.sin(wx*3.1 + y*1.7 + o.seed) > -0.2) R(wx, y, 1, 2, '#ffd36b');
+      R(x + OW/2, bt - 5, 1, 5, '#b9c0cc'); if (Math.sin(G.t*4 + o.seed) > 0) R(x + OW/2, bt - 6, 1, 1, '#ff5a4e');
+      R(x - 2, 0, OW + 4, o.gy - 4, '#3a3c56'); for (var k = 0; k < 4; k++) R(x - 3 + k*5, o.gy - 7 + (k % 2)*2, 7, 6, '#4a4c66'); R(x - 1, o.gy - 3, OW + 2, 2, '#5a5c76');
+      if (Math.floor(G.t*3 + o.seed) % 7 === 0){ R(x + 4, o.gy - 1, 1, 3, '#ffe46a'); R(x + 5, o.gy + 2, 1, 3, '#ffe46a'); } });
+    if (G.state !== 'over' || Math.floor(G.boom*10) % 2) sub(G.x, G.y, G.v < -20 ? -1 : G.v > 40 ? 1 : 0);
+    if (G.state === 'run' && G.v < -40) for (var k = 0; k < 3; k++) R(G.x - 10 - k*3, G.y + 1 + (k % 2), 2, 1, k % 2 ? '#ff9ad9' : '#e6f4ff');
+    R(0, 0, GW, 9, 'rgba(7,11,28,.75)'); ptext(g, String(G.score), 2, 2, 1, '#f3efe6'); var bs = 'BEST ' + Math.max(best(), G.score); ptext(g, bs, GW - textW(bs, 1) - 2, 2, 1, '#e9c45a');
+    if (G.state === 'ready'){ R(8, 76, 64, 20, '#070b1c'); txt('TAP TO FLY', 80, '#e9c45a'); txt('DODGE THE CITY', 87, '#9fd3f2'); }
+    if (G.state === 'over' && G.boom > 0.7){ R(8, 46, 64, 26, '#070b1c'); txt('SUNK!', 50, '#ff5a4e'); txt(String(G.score), 57, '#f3efe6'); txt('TAP TO RETRY', 64, '#e9c45a'); } }
+  function loop(now){ if (!el.classList.contains('on')){ raf = null; return; } var dt = Math.min(0.04, (now - (last || now))/1000); last = now; update(dt); draw(); raf = requestAnimationFrame(loop); }
+  function build(){ el = document.createElement('div'); el.id = 'flap'; el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<canvas width="' + GW + '" height="' + GH + '" aria-label="Submarine game"></canvas><button data-f="x">done</button>';
+    document.body.appendChild(el); cv = el.querySelector('canvas'); g = cv.getContext('2d');
+    cv.addEventListener('pointerdown', function(e){ e.preventDefault(); flap(); });
+    el.querySelector('button').addEventListener('click', close); }
+  function close(){ el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); }
+  window.openFlap = function(){ if (!el) build(); reset(); el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); last = 0; if (!raf) raf = requestAnimationFrame(loop); };
+  document.addEventListener('keydown', function(e){ if (!el || !el.classList.contains('on')) return; if (e.key === 'Escape') close(); else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'Enter'){ flap(); e.preventDefault(); } });
 })();
 
 // ===== The racing game on Nico's TV: you drive the red car, Zach drives the blue one. Three lanes, traffic coming down,
