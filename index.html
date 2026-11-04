@@ -1153,7 +1153,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "f2881256e7";
+var APP_BUILD = "01fc06f397";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1648,6 +1648,22 @@ function drawSkyline(ctx, W, H, t, st){
   st.bl.forEach(function(b, bi){ if (b.k < .45 || b.x - off > W || b.x + b.w - off < 0) return; var ph = (t*(0.5 + b.k*0.4) + b.k*7) % 1;
     if (ph < .12) R(b.x + Math.floor(b.w/2), shore - b.h - (b.k > .7 ? 3 : 1), 1, 1, '#ff3b30');
     if (b.k > .8 && ((t*1.3 + bi*0.37) % 2.2) < .07) R(b.x + 1, shore - b.h - 1, 1, 1, '#ffffff'); });
+  // the Metropolitan Life Tower on Madison Square, just south of the Empire State: its clock shows the real time,
+  // a red dot runs round the rim for the seconds, the face glows at night, and the gold lantern flashes on the hour
+  (function(){ var Q = function(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(x - off, y, w, h); }, mx = Math.round(P*0.69), now = new Date(), hr = now.getHours() % 12, mn = now.getMinutes(), sc = now.getSeconds() + now.getMilliseconds()/1000, top = shore - 84, cy = top + 16, rr = 6;
+    R(mx - 6, top + 8, 13, shore - top - 8, '#2c2c50'); R(mx - 6, top + 8, 1, shore - top - 8, '#3a3a62'); R(mx + 6, top + 8, 1, shore - top - 8, '#22223e');
+    R(mx - 7, top + 7, 15, 2, '#3a3a62'); R(mx - 7, top + 26, 15, 2, '#3a3a62');
+    for (var y = top + 30; y < shore - 2; y += 3) for (var x = mx - 5; x < mx + 6; x += 2) if (Math.sin(x*2.9 + y*1.3 + Math.floor(t*0.4)) > -.1) R(x, y, 1, 2, '#ffd36b');
+    for (var k = 0; k < 7; k++) R(mx - 6 + k, top + 7 - k, 13 - 2*k, 1, k % 2 ? '#3e4a6e' : '#34405e');
+    var onHour = mn === 0 && sc < 40, lant = onHour ? (Math.floor(t*4) % 2 ? '#fff3c4' : '#ffd36b') : '#c9a43a';
+    R(mx - 1, top - 3, 3, 3, lant); R(mx, top - 7, 1, 4, '#d9c06a'); R(mx, top - 8, 1, 1, onHour ? '#ffffff' : '#e9c45a');
+    if (!DAY || onHour){ ctx.globalCompositeOperation = 'lighter'; for (var g = rr + 5; g > rr; g -= 2){ ctx.fillStyle = 'rgba(120,96,40,' + (onHour ? .16 : .08) + ')'; ctx.beginPath(); ctx.arc(mx + 0.5 - off, cy + 0.5, g, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+    for (var y = -rr - 1; y <= rr + 1; y++) for (var x = -rr - 1; x <= rr + 1; x++){ var d = x*x + y*y; if (d <= (rr + 1)*(rr + 1)) Q(mx + x, cy + y, 1, 1, d > rr*rr ? (DAY ? '#a8862a' : '#c9a43a') : (DAY ? '#fbf7ee' : '#fff0c4')); }
+    for (var k = 0; k < 12; k++){ var a = k*Math.PI/6; Q(Math.round(mx + Math.sin(a)*(rr - 1)), Math.round(cy - Math.cos(a)*(rr - 1)), 1, 1, k % 3 ? '#b9a88a' : '#241f1a'); }
+    function hand(frac, len, c){ var a = frac*2*Math.PI; for (var i = 0; i <= len*2; i++){ var u = i/2; Q(Math.round(mx + Math.sin(a)*u), Math.round(cy - Math.cos(a)*u), 1, 1, c); } }
+    hand((hr + mn/60)/12, 3, '#241f1a'); hand((mn + sc/60)/60, 5, '#241f1a');
+    var sa = sc/60*2*Math.PI; Q(Math.round(mx + Math.sin(sa)*(rr + 1)), Math.round(cy - Math.cos(sa)*(rr + 1)), 1, 1, '#ff3b30');
+    Q(mx, cy, 1, 1, '#c4473a'); })();
   // Empire State
   var ex = Math.round(P*0.74), cc = todayColour();
   R(ex - 8, shore - 74, 17, 74, '#2a2a4e'); R(ex - 6, shore - 86, 13, 12, '#2a2a4e'); R(ex - 4, shore - 98, 9, 12, '#2e2e54'); R(ex - 2, shore - 106, 5, 8, '#33335a');
