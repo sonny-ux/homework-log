@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "c26cd477de";
+var APP_BUILD = "9a3ca0904f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1624,6 +1624,34 @@ function drawSkyline(ctx, W, H, t, st){
   for (var k = 0; k < 8; k++){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(fx + 5 + k*2, fy - 2, 1, 1); } for (var k = 0; k < 11; k++){ ctx.fillStyle = '#fff3c4'; ctx.fillRect(fx + 2 + k*2, fy + 1, 1, 1); }
   ctx.fillStyle = '#241f1a'; ctx.fillRect(fx + 12, fy - 7, 2, 2); if (Math.floor(t*2) % 2){ ctx.fillStyle = '#ff5a4e'; ctx.fillRect(fx + 25, fy - 1, 1, 1); }
   ctx.globalAlpha = .3; ctx.fillStyle = '#e0892e'; for (var y = fy + 6; y < Math.min(H, fy + 16); y += 2) ctx.fillRect(fx + 2 + Math.round(Math.sin(y + t*2)), y, 22, 1); ctx.globalAlpha = 1;
+  // the Brooklyn Bridge in front: granite towers with their pointed double arches, the main cables hanging in a catenary,
+  // the web of diagonal stays, the deck with its lamps and traffic, and the towers' reflections wavering in the river
+  var DY2 = isDay(), b0 = Math.round(P*0.5), b1 = Math.round(P*0.7), deck = shore + 24, tt = deck - 58, aL = b0 - 70, aR = b1 + 70;
+  var stone = '#6e6258', stoneD = '#4e443e', stoneL = '#8e8072', steel = DY2 ? '#4a4a5a' : '#6a6290';
+  function line(xa, ya, xb, yb, c, every, lit){ var n = Math.max(Math.abs(xb - xa), Math.abs(yb - ya)); for (var i = 0; i <= n; i++){ if (every && i % every) continue; var u = i/n; R(Math.round(xa + (xb - xa)*u), Math.round(ya + (yb - ya)*u), 1, 1, c); } }
+  function cat(xa, ya, xb, yb, sag, u){ return ya + (yb - ya)*u + sag*(Math.cosh((u - .5)*2.4) - Math.cosh(1.2))/(1 - Math.cosh(1.2)); }
+  // reflections first, under everything
+  [b0, b1].forEach(function(tx){ for (var y = deck + 18; y < H; y += 2){ ctx.globalAlpha = Math.max(0, .35 - (y - deck - 18)/80); R(tx - 9 + Math.round(Math.sin(y*0.5 + t*1.6)), y, 19, 1, stoneD); } ctx.globalAlpha = 1; });
+  // the diagonal stays fanning down from each tower top, and the vertical suspenders
+  ctx.globalAlpha = DY2 ? .45 : .6; [b0, b1].forEach(function(tx){ for (var k = 1; k <= 6; k++){ line(tx - 8, tt + 3, tx - 6 - k*7, deck - 1, steel, 0); line(tx + 8, tt + 3, tx + 6 + k*7, deck - 1, steel, 0); } }); ctx.globalAlpha = 1;
+  function span(xa, ya, xb, yb, sag){ var n = xb - xa; for (var i = 0; i <= n; i++){ var u = i/n, x = xa + i, y = Math.round(cat(xa, ya, xb, yb, sag, u));
+      if (i % 3 === 0){ ctx.globalAlpha = .4; R(x, y + 1, 1, deck - y - 1, steel); ctx.globalAlpha = 1; }
+      R(x, y, 1, 1, steel); R(x, y + 1, 1, 1, DY2 ? '#5a5a6a' : '#2a2640');
+      if (!DY2 && i % 3 === 0 && Math.sin(t*1.5 + x*0.4) > -.8) R(x, y, 1, 1, i % 8 ? '#fff3c4' : '#ffffff'); } }
+  span(b0 + 9, tt + 2, b1 - 9, tt + 2, 40); span(aL, deck - 2, b0 - 9, tt + 2, -6); span(b1 + 9, tt + 2, aR, deck - 2, -6);
+  // the deck: a dark girder band, the promenade rail, lamps, cars crossing both ways
+  R(aL - 10, deck, aR - aL + 20, 5, DY2 ? '#3a3848' : '#1e1a2c'); R(aL - 10, deck, aR - aL + 20, 1, DY2 ? '#6a6878' : '#5a5078'); R(aL - 10, deck + 4, aR - aL + 20, 1, DY2 ? '#2a2838' : '#2e2846'); for (var x = aL - 10; x < aR + 10; x += 3) R(x, deck + 2, 1, 1, DY2 ? '#2a2838' : '#2e2840');
+  for (var x = aL - 6; x < aR + 10; x += 8){ R(x, deck - 3, 1, 3, '#2a2838'); R(x, deck - 4, 1, 1, DY2 ? '#c9c3b6' : '#ffd36b'); }
+  for (var k = 0; k < 6; k++){ var len = aR - aL + 20, cxr = aL - 10 + ((t*(10 + k*2) + k*37) % len), cxl = aR + 10 - ((t*(9 + k*2) + k*53) % len);
+    R(Math.round(cxr), deck + 1, 2, 1, DY2 ? '#c4473a' : '#fff6d8'); R(Math.round(cxl), deck + 1, 2, 1, DY2 ? '#2f5f9e' : '#ff5a4e'); }
+  // the towers: granite, a cornice, two tall pointed arches; piers widening into the river
+  [b0, b1].forEach(function(tx){ R(tx - 10, deck + 5, 21, 13, stoneD); R(tx - 11, deck + 14, 23, 4, stoneD); R(tx - 9, tt, 19, deck - tt + 5, stone); R(tx - 9, tt, 1, deck - tt + 5, stoneL); R(tx + 9, tt, 1, deck - tt + 5, stoneD);
+    R(tx - 10, tt - 2, 21, 2, stoneL); R(tx - 9, tt - 5, 19, 3, stone); R(tx - 9, tt - 5, 19, 1, stoneL); R(tx - 10, tt + 7, 21, 1, stoneD); R(tx - 2, tt + 1, 5, 5, stoneD); R(tx - 1, tt + 2, 3, 3, stone);
+    for (var y = tt + 10; y < deck + 14; y += 5) R(tx - 8, y, 17, 1, 'rgba(0,0,0,.14)');
+    [-7, 2].forEach(function(ax){ var aw = 5, at = tt + 16, open = DY2 ? '#8ab8e0' : '#141236'; R(tx + ax, at, aw, deck - at, open); R(tx + ax + 1, at - 2, 3, 2, open); R(tx + ax + 2, at - 4, 1, 2, open); R(tx + ax - 1, at, 1, deck - at, stoneL); R(tx + ax + aw, at, 1, deck - at, stoneD); });
+    if (!DY2){ R(tx - 9, tt - 6, 1, 1, '#ff5a4e'); R(tx + 9, tt - 6, 1, 1, '#ff5a4e'); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,100,60,.1)'; ctx.fillRect(tx - 12 - off, tt - 4, 25, deck - tt + 4); ctx.globalCompositeOperation = 'source-over'; } });
+  // lamp light on the water under the deck
+  if (!DY2) for (var x = aL - 6; x < aR + 10; x += 8) for (var y = deck + 6; y < H; y += 3){ if (Math.sin(y*0.8 + t*2 + x) > .3){ ctx.globalAlpha = Math.max(0, .45 - (y - deck)/70); R(x + Math.round(Math.sin(y + t*2)), y, 1, 1, '#ffd36b'); ctx.globalAlpha = 1; } }
   // above: planes on their approach, blinking, and a helicopter with a searchlight
   [[0.9, 0.08, 9, 0], [1.6, 0.2, -6, 3]].forEach(function(pl, i){ var span = W + 60, x = ((t*pl[2]*pl[0] + i*90) % span + span) % span - 30, y = Math.round(H*pl[1] + Math.sin(t*0.1 + i)*3) + Math.round((pl[2] > 0 ? x : W - x)*0.04);
     ctx.fillStyle = '#c9ccd6'; ctx.fillRect(Math.round(x) - 2, y, 5, 1); ctx.fillRect(Math.round(x), y - 1, 1, 3);
