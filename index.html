@@ -476,6 +476,8 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 .prog .pgb i { position: absolute; left: 0; top: 0; bottom: 0; }
 .prog em { font-style: normal; color: var(--ink); display: block; }
 .prog small { display: block; color: var(--muted); line-height: 1.35; }
+
+#ptr { position: fixed; top: calc(6px + env(safe-area-inset-top)); left: 50%; transform: translate(-50%, 0); z-index: 90; opacity: 0; pointer-events: none; border: var(--rule) solid var(--ink); background: var(--note, var(--paper)); color: var(--ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; transition: opacity .15s; }
 </style>
 </head>
 <body>
@@ -1153,7 +1155,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "ff2604afac";
+var APP_BUILD = "7acb1acf43";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4322,6 +4324,17 @@ function liveTick(){
   el('lfill').style.width = (100*(sec % 3600)/3600) + '%';
 }
 setInterval(liveTick, 1000);
+// refreshing without reopening: the app checks for a newer version every 3 minutes (and reloads itself when nothing is open),
+// a tap on the HOMEWORK title reloads at once, and pulling down from the top of the page reloads too
+function hardReload(){ location.replace(location.pathname + '?r=' + Date.now() + location.hash); }
+setInterval(function(){ if (!busy() && window.checkBuild) checkBuild(); }, 180000);
+(function(){ var h1 = document.querySelector('.bar h1'); if (h1){ h1.style.cursor = 'pointer'; h1.title = 'Tap to refresh'; h1.addEventListener('click', function(){ h1.style.opacity = .4; hardReload(); }); }
+  var y0 = null, pulled = 0, tip = document.createElement('div'); tip.id = 'ptr'; tip.textContent = 'Pull to refresh'; document.body.appendChild(tip);
+  document.addEventListener('touchstart', function(e){ y0 = (window.scrollY <= 0 && !busy() && e.touches.length === 1) ? e.touches[0].clientY : null; pulled = 0; }, {passive: true});
+  document.addEventListener('touchmove', function(e){ if (y0 === null) return; pulled = e.touches[0].clientY - y0; if (pulled <= 0){ tip.style.opacity = 0; return; }
+    tip.style.opacity = Math.min(1, pulled/90); tip.style.transform = 'translate(-50%,' + Math.min(60, pulled/2) + 'px)'; tip.textContent = pulled > 90 ? 'Release to refresh' : 'Pull to refresh'; }, {passive: true});
+  document.addEventListener('touchend', function(){ if (y0 !== null && pulled > 90){ tip.textContent = 'Refreshing…'; hardReload(); } else { tip.style.opacity = 0; tip.style.transform = 'translate(-50%,0)'; } y0 = null; }, {passive: true});
+})();
 loadData(true).catch(function(){ el('band').innerHTML = '<div class="empty">Could not load data.json.</div>'; });
 setInterval(function(){ if (!document.hidden) loadData(false).catch(function(){}); }, 60000);
 document.addEventListener('visibilitychange', function(){ if (!document.hidden){ loadData(false).catch(function(){}); if (window.checkBuild) checkBuild(); } });
