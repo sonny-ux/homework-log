@@ -585,10 +585,10 @@ function renderWeek(){
   var allSS = ss;
   if (FIT) ss = ss.map(function(s){ // study-day view: a late night stays in the column of the evening it began
     var o = Object.assign({}, s); o.date = sday(s); o.start_min = nightMin(s.start_min);
-    if (!s.in_progress) o.end_min = nightMin(s.end_min) < o.start_min ? nightMin(s.end_min) + 1440 : nightMin(s.end_min);
+    if (!s.in_progress) o.end_min = nightMin(s.end_min) < o.start_min ? nightMin(s.end_min) + 1440 : nightMin(s.end_min); else o.end_min = o.start_min + Math.max(10, s.minutes || 0); // a running session grows with the clock
     return o; }).filter(function(s){ return s.date >= ws; });
   var lo = FIT && ss.length ? 48*60 : 9*60, hi = FIT && ss.length ? 0 : 23*60;
-  ss.forEach(function(s){ lo = Math.min(lo, s.start_min); hi = Math.max(hi, s.in_progress ? s.start_min + 30 : (s.end_min > s.start_min ? s.end_min : 24*60)); });
+  ss.forEach(function(s){ lo = Math.min(lo, s.start_min); hi = Math.max(hi, s.in_progress ? s.start_min + Math.max(30, s.minutes || 0) : (s.end_min > s.start_min ? s.end_min : 24*60)); });
   lo = Math.max(0, Math.floor((lo - (FIT ? 30 : 0))/60)*60); hi = Math.min(FIT ? 29*60 : 24*60, Math.ceil((hi + (FIT ? 30 : 0))/60)*60);
   var H = (window.innerWidth < 560 ? 15 : 20) * ZOOMS[ZI], px = H/60, height = (hi-lo)*px;
   var g = el('week'); g.style.setProperty('--hr', H + 'px');
@@ -716,7 +716,7 @@ function addDays(d, n){ var x = new Date(d); x.setDate(x.getDate()+n); return x;
 function dayStats(){
   var by = {};
   DATA.sessions.forEach(function(s){
-    var k = sday(s), e = s.in_progress ? s.start_min : (s.end_min > s.start_min || s.start_min < 300 ? s.end_min : s.end_min + 1440);
+    var k = sday(s), e = s.in_progress ? s.start_min + (s.minutes || 0) : (s.end_min > s.start_min || s.start_min < 300 ? s.end_min : s.end_min + 1440);
     var o = by[k] || (by[k] = {min:0, first:1e9, last:0, n:0, longest:0, late:0, cls:{}});
     o.min += s.minutes||0; o.n++; o.longest = Math.max(o.longest, s.minutes||0);
     o.first = Math.min(o.first, nightMin(s.start_min)); o.last = Math.max(o.last, nightMin(e));
@@ -978,7 +978,7 @@ function renderNoticed(ss){
   var parts = [['after midnight', lateMin], ['in the evening', eve], ['during the day', day]].sort(function(a,b){ return b[1]-a[1]; });
   out.push('Most of your work this week happened <b>' + parts[0][0] + '</b> (' + Math.round(100*parts[0][1]/total) + '%).');
   if (late.length){
-    var latest = late.reduce(function(a,s){ return Math.max(a, s.in_progress ? s.start_min : s.end_min); }, 0);
+    var latest = late.reduce(function(a,s){ return Math.max(a, s.in_progress ? s.start_min + (s.minutes || 0) : s.end_min); }, 0);
     var nights = {}; late.forEach(function(s){ nights[s.date]=1; });
     out.push('You worked past midnight on <b>' + Object.keys(nights).length + (Object.keys(nights).length>1?' nights':' night') + '</b>, as late as <b>' + clock(latest) + '</b>. ' + Math.round(100*lateMin/total) + '% of the week’s hours came after midnight.');
   }
@@ -1153,7 +1153,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "19f234abaa";
+var APP_BUILD = "f2881256e7";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
