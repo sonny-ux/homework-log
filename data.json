@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T23:41:01+00:00",
+ "updated": "2026-11-04T23:41:53+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -589,12 +589,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "5:03 PM",
-   "end": "now",
+   "end": "6:41 PM",
    "start_min": 1023,
    "end_min": 1121,
    "minutes": 98,
-   "in_progress": true,
-   "topic": "HW7 with the reference guide.",
+   "in_progress": false,
+   "topic": "HW7 Q3: open map by boxes; hyperbola closed set.",
    "refs": [
     "homework 7"
    ]
@@ -676,7 +676,7 @@
     "done": [
      "Q1(a)"
     ],
-    "note": "Q1(b) written, four small fixes left; Q2 set up; Q3–Q6 not started."
+    "note": "Q3 understood (both parts); typed write-up of Q3 started in the guide. Q1(b) fixes, Q2, Q4–Q6 still to write."
    }
   },
   {
