@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T04:16:13+00:00",
+ "updated": "2026-11-04T06:40:07+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -530,6 +530,22 @@
    "minutes": 27,
    "in_progress": false,
    "topic": "Topology HW7 Q1(b) written; why the crushed set must be closed.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-04",
+   "day": "Wed",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "1:40 AM",
+   "end": "now",
+   "start_min": 100,
+   "end_min": 100,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Topology HW7: Q2 onward (in progress).",
    "refs": [
     "homework 7"
    ]
