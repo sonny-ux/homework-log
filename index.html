@@ -1127,7 +1127,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "63c5a397f8";
+var APP_BUILD = "b2934fda59";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1585,9 +1585,9 @@ function drawStMarks(ctx, W, H, t, st){
 function skySetup(W, H){
   var seed = 5; function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
   var P = Math.max(W + 60, 420), shore = Math.round(H*0.66), bl = [];
-  for (var x = 0; x < P; ){ var w = 5 + Math.floor(rnd()*9), c = Math.exp(-Math.pow((x - P*0.36)/(P*0.14), 2)) + 0.9*Math.exp(-Math.pow((x - P*0.82)/(P*0.08), 2));
+  for (var x = Math.round(P*0.2); x < P; ){ var w = 5 + Math.floor(rnd()*9), c = 1.05*Math.exp(-Math.pow((x - P*0.31)/(P*0.07), 2)) + 0.85*Math.exp(-Math.pow((x - P*0.76)/(P*0.12), 2)) + 0.12;
     var h = Math.round(10 + c*70 + rnd()*22); bl.push({x:x, w:w, h:h, tone: ['#1b1d3d','#22244a','#181a36','#262650'][Math.floor(rnd()*4)], k: rnd()}); x += w - (rnd() < .3 ? 2 : 0); }
-  var back = []; for (var x = 0; x < P; x += 4 + Math.floor(rnd()*5)) back.push({x:x, w:6 + Math.floor(rnd()*6), h: Math.round(20 + 50*Math.exp(-Math.pow((x - P*0.4)/(P*0.25), 2)) + rnd()*14)});
+  var back = []; for (var x = Math.round(P*0.22); x < P; x += 4 + Math.floor(rnd()*5)) back.push({x:x, w:6 + Math.floor(rnd()*6), h: Math.round(20 + 50*Math.exp(-Math.pow((x - P*0.62)/(P*0.25), 2)) + rnd()*14)});
   return {P:P, shore:shore, bl:bl, back:back};
 }
 function todayColour(){
@@ -1604,7 +1604,7 @@ function panOff(auto, max, ctx){ if (!ctx || ctx.canvas !== window.REST_CV) retu
     else { var k = Math.min(1, (now - SPAN.until)/3000); k = k*k*(3 - 2*k); v = SPAN.val + (auto - SPAN.val)*k; if (k >= 1) SPAN.val = null; } }
   v = Math.max(0, Math.min(max, v)); SPAN.last = v; return v; }
 function drawSkyline(ctx, W, H, t, st){
-  var P = st.P, shore = st.shore, oa = Math.max(0, Math.round(P*0.40 - W*0.5)), ob = Math.min(P - W, Math.round(P*0.80 - W*0.5)), off = Math.round(panOff(oa + (ob - oa)*(1 - Math.cos(t*0.025))/2, P - W, ctx));
+  var P = st.P, shore = st.shore, oa = Math.max(0, Math.round(P*0.16 - W*0.5)), ob = Math.min(P - W, Math.round(P*0.84 - W*0.5)), off = Math.round(panOff(oa + (ob - oa)*(1 - Math.cos(t*0.025))/2, P - W, ctx));
   var DAY = isDay(); function R(x, y, w, h, c){ ctx.fillStyle = DAY ? dayC(c) : c; ctx.fillRect(x - off, y, w, h); }
   var sky = isDay() ? ['#5a9ad8','#6aa8e0','#7fb8e6','#94c6ec','#aad2f0','#c4def2'] : ['#070a1e','#0c1030','#141640','#221a4c','#3a2257','#5a2c5e'];
   for (var y = 0; y < shore; y++){ var f = y/shore*(sky.length - 1), i = Math.floor(f), fr = f - i; for (var x = 0; x < W; x++){ ctx.fillStyle = ((x + y) % 2 === 0 && fr > .5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]; ctx.fillRect(x, y, 1, 1); } }
@@ -1623,23 +1623,37 @@ function drawSkyline(ctx, W, H, t, st){
     if (ph < .12) R(b.x + Math.floor(b.w/2), shore - b.h - (b.k > .7 ? 3 : 1), 1, 1, '#ff3b30');
     if (b.k > .8 && ((t*1.3 + bi*0.37) % 2.2) < .07) R(b.x + 1, shore - b.h - 1, 1, 1, '#ffffff'); });
   // Empire State
-  var ex = Math.round(P*0.36), cc = todayColour();
+  var ex = Math.round(P*0.74), cc = todayColour();
   R(ex - 8, shore - 74, 17, 74, '#2a2a4e'); R(ex - 6, shore - 86, 13, 12, '#2a2a4e'); R(ex - 4, shore - 98, 9, 12, '#2e2e54'); R(ex - 2, shore - 106, 5, 8, '#33335a');
   R(ex - 1, shore - 112, 3, 6, cc); R(ex, shore - 122, 1, 10, '#b9c0cc'); if (Math.sin(t*2) > 0) R(ex, shore - 123, 1, 1, '#ff5a4e');
   for (var y = shore - 72; y < shore - 2; y += 3) for (var x = ex - 7; x < ex + 8; x += 2) if (Math.sin(x*3.1 + y*1.7 + Math.floor(t*0.5)) > -.2) R(x, y, 1, 2, '#ffd36b');
   R(ex - 3, shore - 104, 7, 1, cc); R(ex - 5, shore - 96, 11, 1, cc);
   // Chrysler
-  var cx = Math.round(P*0.45); R(cx - 4, shore - 80, 9, 80, '#2a2c4a'); for (var y = shore - 78; y < shore - 2; y += 3) for (var x = cx - 3; x < cx + 4; x += 2) if (Math.sin(x*2.3 + y*3.7) > 0) R(x, y, 1, 2, '#ffe7a1');
+  var cx = Math.round(P*0.84); R(cx - 4, shore - 80, 9, 80, '#2a2c4a'); for (var y = shore - 78; y < shore - 2; y += 3) for (var x = cx - 3; x < cx + 4; x += 2) if (Math.sin(x*2.3 + y*3.7) > 0) R(x, y, 1, 2, '#ffe7a1');
   [[9,0],[7,4],[5,8],[3,12]].forEach(function(q, i){ var w = q[0], y = shore - 84 - q[1]; R(cx - Math.floor(w/2), y, w, 4, '#b9c0cc'); for (var x = 0; x < w; x += 2) if (Math.sin(t*2 + i + x) > -.5) R(cx - Math.floor(w/2) + x, y + 1, 1, 2, '#fff3c4'); });
   R(cx, shore - 104, 1, 8, '#d9dfe8');
   // One World Trade
-  var wx = Math.round(P*0.82); for (var y = 0; y < 104; y++){ var hw = Math.round(2 + y*0.07); R(wx - hw, shore - 104 + y, hw*2 + 1, 1, '#2c3a5e'); if (y % 3 === 0) R(wx - hw + ((y*3) % (hw*2 + 1)), shore - 104 + y, 1, 1, '#9fc0ff'); }
+  var wx = Math.round(P*0.31); for (var y = 0; y < 104; y++){ var hw = Math.round(2 + y*0.07); R(wx - hw, shore - 104 + y, hw*2 + 1, 1, '#2c3a5e'); if (y % 3 === 0) R(wx - hw + ((y*3) % (hw*2 + 1)), shore - 104 + y, 1, 1, '#9fc0ff'); }
   R(wx, shore - 124, 1, 20, '#b9c0cc'); if (Math.floor(t*1.5) % 2) R(wx, shore - 125, 1, 1, '#ff5a4e');
   // the yellow submarine flying over the city
   var subT = 14*(P + 60)/(W + 60), fu = (t + 25) % Math.max(60, subT + 20); if (ctx.canvas === window.REST_CV) window.SUB_AT = null; if (fu < subT){ var fx2 = Math.round(-30 + (P + 60)*(fu/subT) - off), fy2 = Math.round(shore*0.35 + Math.sin(fu*1.2)*6); drawSubmarine(ctx, fx2, fy2, t, false); if (ctx.canvas === window.REST_CV && fx2 > -30 && fx2 < W + 30) window.SUB_AT = {x: fx2, y: fy2};
     for (var k = 0; k < 8; k++){ var bx2 = fx2 - 26 - k*5, by2 = fy2 + Math.round(Math.sin(k + t*3)*3); ctx.globalAlpha = 1 - k/8; ctx.fillStyle = k % 3 ? '#e6f4ff' : '#ff9ad9'; ctx.fillRect(bx2, by2, k % 2 ? 1 : 2, k % 2 ? 1 : 2); ctx.globalAlpha = 1; } }
   // shoreline lights
-  if (!isDay()) for (var x = 0; x < W; x += 3){ ctx.fillStyle = Math.sin(x*0.7 + t*2) > 0 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, shore - 1, 1, 1); }
+  if (!isDay()) for (var x = 0; x < W; x += 3){ if (x + off < P*0.2) continue; ctx.fillStyle = Math.sin(x*0.7 + t*2) > 0 ? '#ffe7a1' : '#c9a35a'; ctx.fillRect(x, shore - 1, 1, 1); }
+  // the far Jersey shore low on the horizon across the harbour, and Liberty Island out in the water: trees, the star-shaped
+  // fort, the pedestal, and the statue with her torch raised; floodlit at night
+  var DY3 = isDay(); for (var x = 0; x < Math.round(P*0.2); x++){ var hh = 2 + Math.round(Math.abs(Math.sin(x*0.3))*2 + (x % 7 === 0 ? 3 : 0)); R(x, shore - hh, 1, hh, DY3 ? '#7a8aa0' : '#16183a'); if (!DY3 && x % 5 === 0 && Math.sin(x + t) > 0) R(x, shore - hh, 1, 1, '#c9a35a'); }
+  var lx0 = Math.round(P*0.1), ly0 = shore + 6, sg = DY3 ? '#6aa89a' : '#3a6a64', sgl = DY3 ? '#8ac8b4' : '#5a8a80';
+  R(lx0 - 16, ly0 - 1, 33, 3, DY3 ? '#4a7a3a' : '#16261c'); R(lx0 - 14, ly0 - 2, 29, 1, DY3 ? '#5a8a4a' : '#1e3226'); R(lx0 - 17, ly0 + 2, 35, 1, DY3 ? '#8a7a6a' : '#2a2430');
+  [-12, -9, 9, 12].forEach(function(dx){ R(lx0 + dx, ly0 - 4, 3, 3, DY3 ? '#3a6a3a' : '#122018'); });
+  R(lx0 - 7, ly0 - 4, 15, 3, DY3 ? '#a8a49a' : '#4a4858'); R(lx0 - 9, ly0 - 3, 2, 2, DY3 ? '#a8a49a' : '#4a4858'); R(lx0 + 8, ly0 - 3, 2, 2, DY3 ? '#a8a49a' : '#4a4858');
+  R(lx0 - 3, ly0 - 12, 7, 8, DY3 ? '#c9b89a' : '#5a5464'); R(lx0 - 4, ly0 - 13, 9, 1, DY3 ? '#d9c8aa' : '#6a6474'); R(lx0 - 1, ly0 - 10, 3, 1, DY3 ? '#a89878' : '#4a4454');
+  R(lx0 - 2, ly0 - 22, 4, 9, sg); R(lx0 - 3, ly0 - 15, 6, 2, sg); R(lx0 - 2, ly0 - 22, 1, 9, sgl); R(lx0 - 1, ly0 - 25, 3, 3, sg); R(lx0 - 2, ly0 - 26, 5, 1, sgl); R(lx0 - 2, ly0 - 27, 1, 1, sgl); R(lx0, ly0 - 27, 1, 1, sgl); R(lx0 + 2, ly0 - 27, 1, 1, sgl);
+  R(lx0 + 2, ly0 - 30, 1, 9, sg); R(lx0 + 1, ly0 - 31, 3, 1, '#c9a43a'); R(lx0 - 4, ly0 - 20, 2, 3, sgl);
+  var flame = Math.sin(t*6) > 0 ? '#ffe46a' : '#ffb03a'; R(lx0 + 1, ly0 - 33, 3, 2, flame); R(lx0 + 2, ly0 - 34, 1, 1, '#fff6c8');
+  if (!DY3){ ctx.globalCompositeOperation = 'lighter'; for (var r = 9; r > 0; r -= 2){ ctx.fillStyle = 'rgba(140,110,50,.07)'; ctx.beginPath(); ctx.arc(lx0 + 2 - off, ly0 - 33, r, 0, 7); ctx.fill(); }
+    ctx.fillStyle = 'rgba(90,120,110,.12)'; ctx.fillRect(lx0 - 6 - off, ly0 - 30, 13, 28); ctx.globalCompositeOperation = 'source-over';
+    for (var y = ly0 + 4; y < ly0 + 26; y += 2){ ctx.globalAlpha = 0.4 - (y - ly0)/70; R(lx0 + 1 + Math.round(Math.sin(y + t*2)), y, 2, 1, '#ffe46a'); } ctx.globalAlpha = 1; }
   // river: dark bands with the lit windows broken into moving reflections
   for (var y = shore; y < H; y++){ ctx.fillStyle = isDay() ? (y < shore + 6 ? '#6a9ac4' : y < shore + 20 ? '#5a8ab8' : '#4a7aaa') : (y < shore + 6 ? '#121534' : y < shore + 20 ? '#0e112a' : '#0a0c20'); ctx.fillRect(0, y, W, 1); }
   for (var y = shore + 1; y < H; y += 2){ var d = y - shore, src = shore - d*1.4;
