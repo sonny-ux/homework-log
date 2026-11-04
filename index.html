@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "4b8050d856";
+var APP_BUILD = "eccb707ff7";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2266,14 +2266,40 @@ function drawAnime(ctx, W, H, t){
   for (var y = hz + 4; y < H; y += 4) for (var x = (y/4) % 2 ? 0 : 4; x < W; x += 8){ ctx.fillStyle = '#5a4458'; ctx.fillRect(x, y, 7, 1); ctx.fillRect(x, y, 1, 3); }
   var tx = W - 18; ctx.fillStyle = '#4a2e2a'; ctx.fillRect(tx, hz - 30, 3, 34 + (H - hz) - 20); for (var k = 0; k < 70; k++){ ctx.fillStyle = ['#ffb3c8','#ff9ab8','#ffd0dc'][k % 3]; ctx.fillRect(tx - 12 + (k*7) % 26, hz - 46 + (k*5) % 18, 2, 2); }
   for (var k = 0; k < 16; k++){ var ph = (t*0.15 + k/16) % 1, px = Math.round(W - ph*(W + 20) + Math.sin(ph*12 + k)*6), py = Math.round(hz - 40 + ph*(H - hz + 40) + Math.sin(k)*8); ctx.fillStyle = '#ffc4d4'; ctx.fillRect(px, py, 2, 1); }
-  var gy = H - 14, mage = {dir: 1, v: 0, ph: 1, skin: 0, hair: 'long', hc: '#e8506a', jacket: '#2f4a8a', pants: '#2f4a8a', dress: 1}, sword = {dir: -1, v: 0, ph: 3, skin: 0, hair: 'spikes', hc: '#2a3a6a', jacket: '#3d7a4a', pants: '#2a2a32'};
-  var ax = Math.round(W*0.34), bx = Math.round(W*0.62);
+  // the fight: standoff, a dash with speed lines, a clash that shakes the frame, magic against a sword arc, a burst, standoff again
+  var c = t % 16, gy = H - 14, cx = Math.round(W/2), mage = {dir: 1, v: 0, ph: 1, skin: 0, hair: 'long', hc: '#e8506a', jacket: '#2f4a8a', pants: '#2f4a8a', dress: 1}, sword = {dir: -1, v: 0, ph: 3, skin: 0, hair: 'spikes', hc: '#2a3a6a', jacket: '#3d7a4a', pants: '#2a2a32'};
+  function R(x, y, w, h, col){ ctx.fillStyle = col; ctx.fillRect(x, y, w, h); }
+  var ax = Math.round(W*0.22), bx = Math.round(W*0.78);
+  if (c >= 4 && c < 6){ var f = (c - 4)/2; ax = Math.round(W*0.22 + (cx - 8 - W*0.22)*f); bx = Math.round(W*0.78 - (W*0.78 - cx - 8)*f); mage.v = 1; sword.v = 1;
+    for (var k = 0; k < 14; k++){ var ly = 20 + (k*13) % (gy - 30), lx = ((k*37 - t*240) % (W + 40) + W + 40) % (W + 40) - 20; R(Math.round(lx), ly, 10 + (k % 3)*6, 1, 'rgba(255,255,255,.55)'); }
+    for (var k = 1; k < 4; k++){ ctx.globalAlpha = 0.25/k; stPerson(ctx, mage, ax - k*5, gy, t); stPerson(ctx, sword, bx + k*5, gy, t); } ctx.globalAlpha = 1; }
+  else if (c >= 6 && c < 7.2){ ax = cx - 8; bx = cx + 8; }
+  else if (c >= 7.2 && c < 11){ ax = Math.round(W*0.3); bx = Math.round(W*0.7); }
+  else if (c >= 11 && c < 13){ var f2 = (c - 11)/2; ax = Math.round(W*0.3 - W*0.1*f2); bx = Math.round(W*0.7 + W*0.1*f2); }
+  var shake = (c >= 6 && c < 6.8) ? Math.round((Math.random() - .5)*4) : 0; ctx.save(); ctx.translate(shake, shake ? Math.round((Math.random() - .5)*3) : 0);
   stPerson(ctx, mage, ax, gy, t); stPerson(ctx, sword, bx, gy, t);
-  ctx.fillStyle = '#7a5a3a'; ctx.fillRect(ax + 5, gy - 34, 1, 32); var glow = 0.5 + 0.5*Math.sin(t*3);
-  ctx.globalCompositeOperation = 'lighter'; for (var r = 7; r > 0; r--){ ctx.fillStyle = 'rgba(80,160,255,' + (0.06 + glow*0.04) + ')'; ctx.beginPath(); ctx.arc(ax + 5, gy - 36, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
-  ctx.fillStyle = '#bfe6ff'; ctx.fillRect(ax + 4, gy - 37, 3, 3);
-  for (var k = 0; k < 8; k++){ var a = t*1.5 + k*Math.PI/4; ctx.fillStyle = '#9fd3ff'; ctx.fillRect(ax + 5 + Math.round(Math.cos(a)*9), gy - 36 + Math.round(Math.sin(a)*4), 1, 1); }
-  ctx.fillStyle = '#d6dbe4'; for (var k = 0; k < 12; k++) ctx.fillRect(bx - 6 - k, gy - 16 - Math.round(k*0.3), 1, 1); ctx.fillStyle = '#c9a43a'; ctx.fillRect(bx - 5, gy - 18, 1, 4); ctx.fillStyle = '#ffffff'; if (Math.floor(t*2) % 3 === 0) ctx.fillRect(bx - 14, gy - 20, 1, 1);
+  // her staff and his blade
+  R(ax + 5, gy - 34, 1, 32, '#7a5a3a'); var glow = 0.5 + 0.5*Math.sin(t*6);
+  ctx.globalCompositeOperation = 'lighter'; for (var r = 7; r > 0; r--){ ctx.fillStyle = 'rgba(80,160,255,' + (0.07 + glow*0.05) + ')'; ctx.beginPath(); ctx.arc(ax + 5, gy - 36, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; R(ax + 4, gy - 37, 3, 3, '#bfe6ff');
+  var sa = (c >= 7.2 && c < 11) ? Math.sin(t*5)*0.9 - 0.6 : -0.4; for (var k = 2; k < 14; k++) R(bx - Math.round(Math.cos(sa)*k), gy - 18 + Math.round(Math.sin(sa)*k), 1, 1, '#e8eef6'); R(bx - 2, gy - 19, 2, 2, '#c9a43a');
+  // the clash: a white flash, sparks flying out from the meeting point
+  if (c >= 6 && c < 7.2){ var f3 = (c - 6)/1.2; if (f3 < 0.15){ ctx.fillStyle = 'rgba(255,255,255,' + (0.8*(1 - f3/0.15)) + ')'; ctx.fillRect(-4, -4, W + 8, H + 8); }
+    for (var k = 0; k < 16; k++){ var an = k*Math.PI/8, d = 4 + f3*26; R(cx + Math.round(Math.cos(an)*d), gy - 22 + Math.round(Math.sin(an)*d*0.7), 2, 1, k % 2 ? '#ffe7a1' : '#ffffff'); }
+    for (var k = 0; k < 6; k++){ var an2 = k*Math.PI/3 + 0.3, l = 10 + f3*12; for (var q = 0; q < l; q += 2) R(cx + Math.round(Math.cos(an2)*q), gy - 22 + Math.round(Math.sin(an2)*q), 1, 1, 'rgba(255,240,200,.8)'); } }
+  // magic against the sword: a turning circle at her feet, bolts flying, his crescent slashes cutting them apart
+  if (c >= 7.2 && c < 11){ var u = c - 7.2;
+    for (var k = 0; k < 16; k++){ var a2 = t*2 + k*Math.PI/8; R(ax + Math.round(Math.cos(a2)*12), gy + Math.round(Math.sin(a2)*3), 1, 1, '#7ad0ff'); }
+    for (var k = 0; k < 3; k++){ var bp = ((u*1.2 + k/3) % 1), bxp = Math.round(ax + 8 + (bx - ax - 18)*bp), byp = gy - 34 + Math.round(Math.sin(bp*6 + k)*4);
+      ctx.globalCompositeOperation = 'lighter'; for (var r = 4; r > 0; r--){ ctx.fillStyle = 'rgba(90,170,255,.18)'; ctx.beginPath(); ctx.arc(bxp, byp, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; R(bxp - 1, byp - 1, 3, 3, '#e8f6ff');
+      if (bp > 0.85){ for (var q = 0; q < 6; q++) R(bxp + Math.round(Math.cos(q)*5), byp + Math.round(Math.sin(q)*5), 1, 1, '#bfe6ff'); } }
+    if (Math.floor(u*2) % 2 === 0){ for (var k = -9; k <= 9; k++){ var yy = gy - 22 + k, xx = bx - 10 - Math.round(Math.sqrt(Math.max(0, 81 - k*k))*0.8); R(xx, yy, 2, 1, 'rgba(255,255,255,.85)'); } } }
+  // the burst: energy and petals pushing out, both thrown apart
+  if (c >= 11 && c < 13){ var f4 = (c - 11)/2; ctx.globalCompositeOperation = 'lighter'; for (var r = 26; r > 0; r -= 3){ ctx.fillStyle = 'rgba(255,120,180,' + (0.05*(1 - f4)) + ')'; ctx.beginPath(); ctx.arc(cx, gy - 20, r*(0.5 + f4), 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
+    for (var k = 0; k < 20; k++){ var an3 = k*Math.PI/10, d2 = f4*44; R(cx + Math.round(Math.cos(an3)*d2), gy - 20 + Math.round(Math.sin(an3)*d2*0.6), 2, 1, k % 3 ? '#ffc4d4' : '#ffffff'); } }
+  ctx.restore();
+  // the standoff: wind in their hair, a glint in their eyes
+  if (c < 4 || c >= 13){ for (var k = 0; k < 6; k++){ var wp = (t*0.9 + k/6) % 1; R(Math.round(W - wp*W), Math.round(H*0.3 + k*9), 6, 1, 'rgba(255,255,255,.3)'); }
+    if (Math.floor(t*3) % 4 === 0){ R(ax + 2, gy - 32, 1, 1, '#ffffff'); R(bx - 2, gy - 32, 1, 1, '#ffffff'); } }
 }
 VIG.anime = function(ctx, W, H, t){ var sky = ['#3a3a8a','#d9607a','#ffd38a']; for (var y = 0; y < H; y++){ ctx.fillStyle = sky[Math.min(2, Math.floor(y/H*3))]; ctx.fillRect(0, y, W, 1); }
   ctx.fillStyle = '#2a1e46'; ctx.fillRect(3, H - 9, 7, 5); ctx.fillRect(4, H - 12, 2, 3); ctx.fillRect(8, H - 11, 2, 2); ctx.fillStyle = '#6a5468'; ctx.fillRect(0, H - 4, W, 4);
@@ -2610,7 +2636,16 @@ var ROOMS = {
     R2(dtx + 8, F - 17, 14, 2, '#7a5a41'); R2(dtx + 9, F - 15, 1, 15, '#5a412f'); R2(dtx + 20, F - 15, 1, 15, '#5a412f'); R2(dtx + 9, F - 18, 6, 1, '#fbf7ee');
     R2(dtx + 19, F - 24, 1, 6, '#241f1a'); R2(dtx + 17, F - 26, 4, 2, '#3d7a55');
     if (nc >= 92 && nc < 112){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,90,40,.18)'; ctx.beginPath(); ctx.moveTo(dtx + 18, F - 24); ctx.lineTo(dtx + 8, F - 17); ctx.lineTo(dtx + 24, F - 17); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; R2(dtx + 18, F - 24, 2, 1, '#ffe7a1'); }
-    var TVOFF = nc >= 92 && nc < 112;
+    var TVOFF = nc >= 92 && nc < 112, autoCh = (nc >= 21 && nc < 41.5) ? 0 : 1, CH = autoCh ^ (TVCH ? 1 : 0);
+    var flick = Math.abs(nc - 21) < 0.45 || Math.abs(nc - 41.5) < 0.45;
+    // the mouse: out from under the fridge at night, along the floor, up onto the TV stand, presses the knob, and home again
+    if (nc >= 15 && nc < 28){ var mf, mx2, my2 = F - 2, fxm = W - 26, kxm = tvx + 24;
+      if (nc < 19){ mf = (nc - 15)/4; mx2 = fxm - (fxm - kxm)*mf; } else if (nc < 20.5){ mx2 = kxm; my2 = F - 2 - Math.round((nc - 19)/1.5*8); } else if (nc < 22){ mx2 = kxm; my2 = F - 10; } else if (nc < 23.5){ mx2 = kxm; my2 = F - 10 + Math.round((nc - 22)/1.5*8); } else { mf = (nc - 23.5)/4.5; mx2 = kxm + (fxm - kxm)*mf; }
+      var md = (nc < 19 || (nc >= 20.5 && nc < 22)) ? -1 : 1, mxr = Math.round(mx2), st2 = Math.floor(t*10) % 2;
+      R2(mxr - 2, my2 - 2, 5, 2, '#8a8a92'); R2(mxr + (md < 0 ? -3 : 3), my2 - 3, 2, 2, '#9a9aa2'); R2(mxr + (md < 0 ? -3 : 4), my2 - 4, 1, 1, '#e8a0b0'); R2(mxr + (md < 0 ? -3 : 4), my2 - 2, 1, 1, '#151218');
+      for (var k = 0; k < 4; k++) R2(mxr + (md < 0 ? 3 + k : -3 - k), my2 - 1 + (k > 1 ? -1 : 0), 1, 1, '#c9a0a8'); R2(mxr - 1 + st2, my2, 1, 1, '#6a6a72'); }
+    // Nico, waking, points the remote at the TV
+    if (nc >= 40.5 && nc < 42){ R2(cx0 + 15, F - 22, 4, 1, '#151218'); R2(cx0 + 19, F - 22, 1, 1, '#c4302a'); }
     // floor lamp, off
     var lx = Math.round(W*0.2); ctx.fillStyle = '#241f1a'; ctx.fillRect(lx, F - 34, 1, 34); ctx.fillRect(lx - 2, F - 1, 5, 1); ctx.fillStyle = '#8a7a5a'; ctx.fillRect(lx - 3, F - 38, 7, 4);
     // the polaroid of Low Library, taped above the couch
@@ -2627,11 +2662,11 @@ var ROOMS = {
     // the TV on its stand, the wave on its screen
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(tvx - 2, F - 10, 32, 10); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tvx - 2, F - 10, 32, 1); ctx.fillRect(tvx + 12, F - 8, 1, 7);
     ctx.fillStyle = '#3a3644'; ctx.fillRect(tvx, F - 33, 28, 23); ctx.fillStyle = '#5a5468'; ctx.fillRect(tvx, F - 33, 28, 1);
-    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else if (TVOFF){ ctx.fillStyle = '#1a1a22'; ctx.fillRect(tvx + 2, F - 31, 20, 19); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(tvx + 4, F - 29, 6, 2); } else vigInto(ctx, performance.now() < TV_STATIC ? 'static' : (TVCH ? 'anime' : 'film'), tvx + 2, F - 31, 20, 19, t);
+    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else if (TVOFF){ ctx.fillStyle = '#1a1a22'; ctx.fillRect(tvx + 2, F - 31, 20, 19); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(tvx + 4, F - 29, 6, 2); } else vigInto(ctx, (performance.now() < TV_STATIC || flick) ? 'static' : (CH ? 'anime' : 'film'), tvx + 2, F - 31, 20, 19, t);
     ctx.fillStyle = '#c9a43a'; ctx.fillRect(tvx + 24, F - 29, 2, 2); ctx.fillStyle = '#9a8f88'; ctx.fillRect(tvx + 24, F - 24, 2, 2);
     ctx.fillStyle = '#241f1a'; for (var k = 0; k < 7; k++){ ctx.fillRect(tvx + 10 - k, F - 34 - k, 1, 1); ctx.fillRect(tvx + 16 + k, F - 34 - k, 1, 1); }
     S.push({x: tvx + 22, y: F - 31, w: 6, h: 11, channel: 1, id: 'knob'});
-    S.push({x: tvx - 2, y: F - 41, w: 32, h: 41, scene: TVCH ? 9 : 2, id: 'tv'});
+    S.push({x: tvx - 2, y: F - 41, w: 32, h: 41, scene: CH ? 9 : 2, id: 'tv'});
     // the fridge behind, humming, magnets on the door
     var fx = W - 27; ctx.fillStyle = '#d6d0c4'; ctx.fillRect(fx, F - 48, 19, 48); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(fx, F - 48, 17, 48); ctx.fillStyle = '#b9b2a4'; ctx.fillRect(fx, F - 32, 17, 1); ctx.fillStyle = '#9a948a'; ctx.fillRect(fx + 2, F - 44, 1, 8); ctx.fillRect(fx + 2, F - 28, 1, 12);
     [[6,-44,'#c4473a'],[11,-40,'#2f5f9e'],[8,-24,'#e9c45a'],[12,-20,'#3d7a55']].forEach(function(m){ ctx.fillStyle = m[2]; ctx.fillRect(fx + m[0], F + m[1], 2, 2); });
