@@ -324,7 +324,8 @@ section { margin-top: 26px; }
 h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !important; text-transform: none; font-size: 14px; }
 #rest { position: fixed; inset: 0; z-index: 60; background: #070b1c; opacity: 0; pointer-events: none; transition: opacity .5s; }
 #rest.on { opacity: 1; pointer-events: auto; }
-#rest canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; object-fit: cover; }
+#rest canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; object-fit: cover; touch-action: none; will-change: transform; }
+#rest { touch-action: none; }
 .resthint { display: none !important; position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom)); text-align: center; color: rgba(243,234,211,.55); font: 10px var(--pixel); letter-spacing: .08em; text-transform: uppercase; animation: hintfade 6s forwards; }
 @keyframes hintfade { 0%, 60% { opacity: 1; } 100% { opacity: 0; } }
 .pixbox { cursor: pointer; }
@@ -1118,7 +1119,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "900f30e88d";
+var APP_BUILD = "bbacd6c36c";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2747,11 +2748,12 @@ function drawDerek(ctx, W, H, t){
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
-  function size(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
+  function size(){ size0(); layoutPan(); }
+  function size0(){ var sc = (typeof SCENES !== 'undefined') ? SCENES[scene] : 'lighthouse';
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
     if (sc === 'pastry' && innerHeight > innerWidth*1.1){ W = 150; H = Math.round(150*innerHeight/innerWidth); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'alley' ? 180 : sc === 'derek' ? 160 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'alley' ? 180 : sc === 'derek' ? 160 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight * (innerHeight > innerWidth ? 2 : 1.4))); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -2830,6 +2832,24 @@ function drawDerek(ctx, W, H, t){
     if (SCENES[scene] === 'stmarks'){ var t = (now - t0)/1000; if (!cityState) cityState = stSetup(W, H); drawStMarks(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); }
     else draw(now);
   }
+
+  // panning: the scene drifts slowly side to side by itself; a finger (or mouse) drags it anywhere, and a few seconds after
+  // letting go the drift picks up again from there
+  var PAN = {x: 0, max: 0, user: 0, dir: 1, drag: null, moved: false, last: 0}, panRaf = null;
+  function panApply(){ cv.style.transform = PAN.max > 0 ? 'translateX(' + (-Math.round(PAN.x)) + 'px)' : ''; }
+  function layoutPan(){ var sc = SCENES[scene];
+    if (sc === 'wave' || (sc === 'pastry' && innerHeight > innerWidth*1.1)){ cv.style.width = ''; cv.style.height = ''; PAN.max = 0; PAN.x = 0; panApply(); return; }
+    var cssW = Math.round(W/H*innerHeight); cv.style.width = cssW + 'px'; cv.style.height = innerHeight + 'px'; PAN.max = Math.max(0, cssW - innerWidth); PAN.x = Math.min(PAN.x, PAN.max); panApply(); }
+  function panTick(now){ if (!rest.classList.contains('on')){ panRaf = null; return; } var dt = Math.min(0.1, (now - (PAN.last || now))/1000); PAN.last = now;
+    if (!PAN.drag && now > PAN.user && PAN.max > 0){ PAN.x += PAN.dir*9*dt; if (PAN.x >= PAN.max){ PAN.x = PAN.max; PAN.dir = -1; } if (PAN.x <= 0){ PAN.x = 0; PAN.dir = 1; } panApply(); }
+    panRaf = requestAnimationFrame(panTick); }
+  function panStart(){ if (!panRaf){ PAN.last = 0; panRaf = requestAnimationFrame(panTick); } }
+  rest.addEventListener('pointerdown', function(e){ if (e.target.closest('[data-go]') || PAN.max <= 0) return; PAN.drag = {x: e.clientX, px: PAN.x}; PAN.moved = false; });
+  addEventListener('pointermove', function(e){ if (!PAN.drag) return; var dx = e.clientX - PAN.drag.x; if (Math.abs(dx) > 6) PAN.moved = true; if (!PAN.moved) return;
+    PAN.x = Math.max(0, Math.min(PAN.max, PAN.drag.px - dx)); PAN.dir = dx > 0 ? -1 : 1; panApply(); });
+  function panEnd(){ if (!PAN.drag) return; PAN.drag = null; PAN.user = performance.now() + 4000; }
+  addEventListener('pointerup', panEnd); addEventListener('pointercancel', panEnd);
+  rest.addEventListener('click', function(e){ if (PAN.moved){ PAN.moved = false; e.stopPropagation(); e.preventDefault(); } }, true);
   var tripSnap = null, tripFrom = null, swapSnap = null, swapFrom = null;
   cv.addEventListener('click', function(e){ var f = window.CINEMA_EXIT; if (SCENES[scene] !== 'cinema' || !f) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
     if (x < f.x - 3 || x > f.x + f.w + 3 || y < f.y - 3 || y > f.y + f.h + 3) return; e.stopPropagation();
@@ -2839,7 +2859,7 @@ function drawDerek(ctx, W, H, t){
     if (x < f.x - 3 || x > f.x + f.w + 3 || y < f.y - 3 || y > f.y + f.h + 3) return; e.stopPropagation();
     tripSnap = document.createElement('canvas'); tripSnap.width = W; tripSnap.height = H; tripSnap.getContext('2d').drawImage(cv, 0, 0); tripFrom = {x: f.x, y: f.y, w: f.w, h: f.h};
     t0 = performance.now(); });
-  function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
+  function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); var keep = SCENES[i] === 'trip' && PAN.max > 0 ? PAN.x : null; size(); PAN.x = keep !== null ? Math.min(keep, PAN.max) : SCENES[i] === 'alley' ? 0 : PAN.max/2; PAN.dir = 1; panApply(); panStart(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
     var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest', 'down the mouse hole', 'the alley', 'derek\'s room'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
