@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T07:20:33+00:00",
+ "updated": "2026-11-04T07:21:25+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -540,14 +540,15 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "1:40 AM",
-   "end": "now",
+   "end": "2:12 AM",
    "start_min": 100,
-   "end_min": 140,
-   "minutes": 40,
-   "in_progress": true,
-   "topic": "Topology HW7: Q2 onward (in progress).",
+   "end_min": 132,
+   "minutes": 32,
+   "in_progress": false,
+   "topic": "Topology HW7 Q2 setup; quotient topology intuition; guide reading.",
    "refs": [
-    "homework 7"
+    "homework 7",
+    "homework 6"
    ]
   }
  ],
