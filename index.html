@@ -1153,7 +1153,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "c25b59bcbf";
+var APP_BUILD = "ff2604afac";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1719,6 +1719,24 @@ function drawSkyline(ctx, W, H, t, st){
     for (var x = 0; x < W; x += 2){ var sx = x + Math.round(Math.sin(y*0.55 + t*1.8)*(1 + d*0.06)), q = Math.sin((sx + off)*12.9898 + Math.round(src)*78.233)*43758.5453, r = q - Math.floor(q);
       if (r > .8 && Math.sin(t*2 + x*0.3 + y) > 0){ ctx.globalAlpha = Math.max(.1, .6 - d/(H - shore)); ctx.fillStyle = isDay() ? (r > .93 ? '#ffffff' : '#b8d8ee') : (r > .93 ? '#ffe7a1' : '#c9a35a'); ctx.fillRect(x, y, 2, 1); ctx.globalAlpha = 1; } } }
   var ecx = ex - off; if (!isDay()) for (var y = shore + 2; y < H; y += 2){ ctx.globalAlpha = .35; ctx.fillStyle = cc; ctx.fillRect(Math.round(ecx - 1 + Math.sin(y*0.6 + t*2)*2), y, 3, 1); ctx.globalAlpha = 1; }
+  // fireworks off the river by the bridge when a session reaches 90 minutes: a one-minute show, then a short volley every 10 minutes after
+  if (LS && LS.min >= 90){ var since = (LS.min - 90)*60, showT = since < 60 ? since : ((LS.min - 90) % 10 < 0.25 ? ((LS.min - 90) % 10)*60 : -1);
+    if (showT >= 0){ var FW = ['#e0a8ff', '#ff7ad8', '#a8c8ff', '#c99dff', '#ffe08a', '#8ae4ff', '#ffb0e8'], every = since < 60 ? 0.55 : 1.1, life = 2.8, rise = 0.8;
+      ctx.globalCompositeOperation = 'lighter';
+      for (var k = Math.max(0, Math.floor((showT - life - rise)/every)); k*every <= showT; k++){ var u0 = showT - k*every; if (u0 < 0 || u0 > rise + life) continue;
+        var h1 = Math.sin(k*12.9898)*43758.5453, h2 = Math.sin(k*78.233)*12345.678; h1 -= Math.floor(h1); h2 -= Math.floor(h2);
+        var bx = Math.round(P*0.42 + h1*P*0.4) - off, by = Math.round(shore - 112 - h2*34), base = shore + 18, col = FW[k % FW.length], col2 = FW[(k + 3) % FW.length];
+        if (bx < -40 || bx > W + 40) continue;
+        if (u0 < rise){ var ry = base + (by - base)*(u0/rise); ctx.fillStyle = '#fff3c4'; ctx.fillRect(bx, Math.round(ry), 1, 2); ctx.globalAlpha = .5; ctx.fillRect(bx, Math.round(ry) + 3, 1, 2); ctx.globalAlpha = 1; continue; }
+        var u = (u0 - rise)/life, rad = 34*(1 - Math.exp(-3.2*u)), drop = 12*u*u, n = 26 + (k % 3)*8, sz = u < .4 ? 2 : 1;
+        for (var q = 0; q < n; q++){ var a = q/n*2*Math.PI + k, rr = rad*(q % 2 ? 1 : .72), px = Math.round(bx + Math.cos(a)*rr), py = Math.round(by + Math.sin(a)*rr*0.9 + drop);
+          ctx.globalAlpha = Math.max(0, 1 - u)*(Math.sin(t*25 + q) > -.6 ? 1 : .35); ctx.fillStyle = q % 3 ? col : col2; ctx.fillRect(px, py, sz, sz);
+          if (u < .35){ ctx.globalAlpha *= .5; ctx.fillRect(Math.round(bx + Math.cos(a)*rr*.6), Math.round(by + Math.sin(a)*rr*.54 + drop*.6), 1, 1); } }
+        if (u < .12){ ctx.globalAlpha = .5*(1 - u/.12); ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(bx, by, 6, 0, 7); ctx.fill(); }
+        // the burst's glow on the water
+        ctx.globalAlpha = Math.max(0, .25*(1 - u)); ctx.fillStyle = col; for (var y = shore + 3; y < H; y += 3) ctx.fillRect(bx - 3 + Math.round(Math.sin(y*0.6 + t*2)*2), y, 6, 1);
+        ctx.globalAlpha = 1; }
+      ctx.globalCompositeOperation = 'source-over'; } }
   // the Brooklyn Bridge in front: granite towers with their pointed double arches, the main cables hanging in a catenary,
   // the web of diagonal stays, the deck with its lamps and traffic, and the towers' reflections wavering in the river
   var DY2 = isDay(), b0 = Math.round(P*0.52), b1 = Math.round(P*0.66), deck = shore + 20, tt = deck - 38, aL = b0 - 48, aR = b1 + 48;
