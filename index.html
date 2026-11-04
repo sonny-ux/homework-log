@@ -1130,7 +1130,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "99dd127ea8";
+var APP_BUILD = "bff303df37";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -3875,65 +3875,80 @@ ROOMS.block = function(ctx, W, H, t, go){
   });
 })();
 
-// ===== Submarine over the city: tap to rise; thread the gaps between towers rising from below and storm clouds above.
-// It speeds up slowly, and the fall and the flap scale with the speed so every jump covers the same ground at any pace.
-// Every 33 points the flyer lands on a rooftop: the band in their bright uniforms steps out of the submarine, the masked
-// hero swings in to meet them, and whoever was not flying takes over for the next 33. Fireworks over a purple city.
+// ===== Submarine over the city, then Icarus. Tap to rise; thread the gaps. Fall and flap scale with speed, so a jump covers
+// the same ground at any pace. At 33 the submarine lands on a London rooftop: Beatlemania below, the band comes down and drives off
+// in four round little cars. Then Daedalus's workshop: Icarus flies between brass pipes and gears. At 66 he flies too near the sun.
 (function(){
-  var GW = 80, GH = 128, el = null, cv = null, g = null, raf = null, G = null, last = 0, KEY = 'hw-flap-best', SPACING = 52, OW = 14, ROOF = GH - 46;
+  var GW = 80, GH = 128, el = null, cv = null, g = null, raf = null, G = null, last = 0, KEY = 'hw-flap-best', SPACING = 52, OW = 14, ROOF = GH - 52, BX = 8, BW = 34;
   var FW_COLS = ['#ff5ad9', '#c86aff', '#7a8cff', '#5ad8ff', '#ffffff', '#ff8ae8'];
   var BAND = [['#3a6ae8', '#e8c46a'], ['#ff6a3a', '#ffe08a'], ['#ff5ab4', '#ffe0f0'], ['#c8e64a', '#3a6a2a']];
+  var CARS = ['#e8e0c8', '#4a8ae8', '#e8402a', '#f0c020'];
   function best(){ try { return +localStorage.getItem(KEY) || 0; } catch(e){ return 0; } }
   function R(x, y, w, h, c){ g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
   function txt(str, y, col){ ptext(g, str, Math.round(GW/2 - textW(str, 1)/2), y, 1, col); }
-  function speed(){ return Math.min(66, 30 + G.score*1.1); }
+  // speed: the first 33 climb gently, the workshop starts faster and climbs faster
+  function speed(){ return G.ph === 2 ? Math.min(82, 50 + (G.score - 33)*1.0) : Math.min(56, 30 + G.score*0.78); }
   function k(){ return speed()/30; }
-  function gapNow(){ return Math.max(32, Math.round(40 - G.score*0.25)); }
+  function gapNow(){ return G.ph === 2 ? Math.max(30, Math.round(36 - (G.score - 33)*0.18)) : Math.max(34, Math.round(41 - G.score*0.2)); }
   function make(x){ var gp = gapNow(); return {x: x, gap: gp, gy: 20 + Math.round(Math.random()*(GH - 40 - gp - 20)), done: false, seed: Math.random()*100, kind: Math.floor(Math.random()*5)}; }
-  function reset(){ G = {state: 'ready', who: 'sub', y: 56, v: 0, x: 22, obs: [], fw: [], fwt: 1.5, score: 0, t: 0, scroll: 0, boom: 0, ct: 0, roofX: null}; for (var i = 0; i < 3; i++) G.obs.push(make(GW + 20 + i*SPACING)); }
-  function flap(){ if (G.state === 'ready'){ G.state = 'run'; G.v = -68*k(); return; } if (G.state === 'over'){ if (G.boom > 0.7) reset(); return; } if (G.state === 'run') G.v = -68*k(); }
-  function burst(x, y, n){ var c = FW_COLS[Math.floor(Math.random()*FW_COLS.length)], c2 = FW_COLS[Math.floor(Math.random()*FW_COLS.length)];
+  function reset(){ G = {state: 'ready', ph: 1, y: 56, v: 0, x: 22, obs: [], fw: [], fwt: 1.5, fx: [], score: 0, t: 0, scroll: 0, boom: 0, ct: 0, roofX: null}; for (var i = 0; i < 3; i++) G.obs.push(make(GW + 20 + i*SPACING)); }
+  function flap(){ if (G.state === 'ready'){ G.state = 'run'; G.v = -68*k(); return; } if (G.state === 'over' || G.state === 'end'){ if (G.boom > 0.7) reset(); return; } if (G.state === 'run') G.v = -68*k(); }
+  function burst(x, y, n, cols){ cols = cols || FW_COLS; var c = cols[Math.floor(Math.random()*cols.length)], c2 = cols[Math.floor(Math.random()*cols.length)];
     for (var i = 0; i < n; i++){ var a = i/n*6.283 + Math.random()*0.2, sp = 14 + Math.random()*16; G.fw.push({x: x, y: y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp, life: 1, col: i % 3 ? c : c2}); } }
   function update(dt){ G.t += dt;
-    G.fwt -= dt; if (G.fwt <= 0){ burst(10 + Math.random()*(GW - 20), 14 + Math.random()*40, 18 + Math.floor(Math.random()*10)); G.fwt = (G.state === 'cut' ? 0.5 : 2.2) + Math.random()*2; }
+    if (G.ph === 1 || G.state === 'cut1'){ G.fwt -= dt; if (G.fwt <= 0){ burst(10 + Math.random()*(GW - 20), 14 + Math.random()*40, 18 + Math.floor(Math.random()*10)); G.fwt = (G.state === 'cut1' ? 0.6 : 2.2) + Math.random()*2; } }
     G.fw.forEach(function(p){ p.x += p.vx*dt; p.y += p.vy*dt; p.vy += 10*dt; p.vx *= 0.985; p.life -= dt*0.7; }); G.fw = G.fw.filter(function(p){ return p.life > 0; });
-    if (G.state === 'ready'){ G.y = 56 + Math.sin(G.t*3)*3; G.scroll += dt*20; return; }
-    if (G.state === 'over'){ G.boom += dt; if (G.y < GH - 12){ G.v += 260*dt; G.y += G.v*dt; } return; }
-    if (G.state === 'cut') return cut(dt);
+    G.fx.forEach(function(p){ p.x += p.vx*dt; p.y += p.vy*dt; p.vy += (p.g || 0)*dt; p.life -= dt*(p.fade || 0.5); }); G.fx = G.fx.filter(function(p){ return p.life > 0; });
+    if (G.state === 'ready'){ G.y = (G.ph === 2 ? 70 : 56) + Math.sin(G.t*3)*3; G.scroll += dt*20; return; }
+    if (G.state === 'over' || G.state === 'end'){ G.boom += dt; if (G.state === 'over' && G.y < GH - 12){ G.v += 260*dt; G.y += G.v*dt; } return; }
+    if (G.state === 'cut1') return cut1(dt);
+    if (G.state === 'cut2') return cut2(dt);
     G.x += (22 - G.x)*Math.min(1, dt*1.5);
     var kk = k(); G.v = Math.min(130*kk, G.v + 300*kk*kk*dt); G.y += G.v*dt; G.scroll += dt*speed();
-    G.obs.forEach(function(o){ o.x -= speed()*dt; if (!o.done && o.x + OW < G.x - 6){ o.done = true; G.score++; if (G.score % 10 === 0) burst(o.x + 6, 30, 30); } });
-    if (G.roofX !== null){ G.roofX -= speed()*dt; if (G.roofX < -60) G.roofX = null; }
+    G.obs.forEach(function(o){ o.x -= speed()*dt; if (!o.done && o.x + OW < G.x - 6){ o.done = true; G.score++; if (G.ph === 1 && G.score % 10 === 0) burst(o.x + 6, 30, 30); } });
     if (G.obs.length && G.obs[0].x < -OW - 2){ G.obs.shift(); G.obs.push(make(G.obs[G.obs.length - 1].x + SPACING)); }
+    if (G.ph === 2 && Math.random() < dt*2) G.fx.push({x: 20 + Math.random()*60, y: GH - 30 - Math.random()*60, vx: -4, vy: -6, life: 1, fade: 0.6, col: 'steam'});
     if (G.y < 4 || G.y > GH - 12) return die();
     G.obs.forEach(function(o){ if (G.x + 6 > o.x && G.x - 7 < o.x + OW && (G.y - 3 < o.gy || G.y + 3 > o.gy + o.gap)) die(); });
-    if (G.score > 0 && G.score % 33 === 0 && G.cutAt !== G.score){ G.cutAt = G.score; G.state = 'cut'; G.ct = 0; G.from = {x: G.x, y: G.y}; } }
-  // the rooftop interlude
-  function cut(dt){ G.ct += dt; var c = G.ct, sp = speed();
-    G.obs.forEach(function(o){ o.x -= sp*dt; }); G.obs = G.obs.filter(function(o){ return o.x > -OW - 4; }); G.scroll += dt*sp*(c < 1.6 ? 1 - c/1.6 : 0);
-    G.roofX = c < 1.6 ? GW + 4 - (GW + 4 - 24)*Math.min(1, c/1.6) : 24;
-    if (c < 1.8){ var f = Math.min(1, c/1.8); f = f*f*(3 - 2*f); var tx = G.who === 'sub' ? 56 : 66, ty = ROOF - 4; G.x = G.from.x + (tx - G.from.x)*f; G.y = G.from.y + (ty - G.from.y)*f; }
-    if (Math.floor(c*4) !== Math.floor((c - dt)*4) && c > 2) burst(10 + Math.random()*60, 12 + Math.random()*30, 22);
-    if (c >= 8.4){ var wasSub = G.who === 'sub'; G.who = wasSub ? 'hero' : 'sub'; G.state = 'run'; G.x = wasSub ? G.roofX + 42 : G.roofX + 32; G.y = wasSub ? ROOF - 38 : ROOF - 10; G.v = -68*k(); G.obs = []; for (var i = 0; i < 3; i++) G.obs.push(make(GW + 30 + i*SPACING)); } }
+    if (G.ph === 1 && G.score >= 33){ G.state = 'cut1'; G.ct = 0; G.from = {x: G.x, y: G.y}; }
+    if (G.ph === 2 && G.score >= 66){ G.state = 'cut2'; G.ct = 0; G.from = {x: G.x, y: G.y}; } }
   function die(){ if (G.state !== 'run') return; G.state = 'over'; G.boom = 0; try { if (G.score > best()) localStorage.setItem(KEY, G.score); } catch(e){} }
-  // sprites
+  // ---- 33: London
+  function cut1(dt){ G.ct += dt; var c = G.ct, sp = speed();
+    G.obs.forEach(function(o){ o.x -= sp*dt; }); G.obs = G.obs.filter(function(o){ return o.x > -OW - 4; }); G.scroll += dt*sp*(c < 1.6 ? 1 - c/1.6 : 0);
+    if (c < 1.8){ var f = Math.min(1, c/1.8); f = f*f*(3 - 2*f); G.x = G.from.x + (BX + 24 - G.from.x)*f; G.y = G.from.y + (ROOF - 4 - G.from.y)*f; }
+    if (c > 2 && c < 8 && Math.floor(c*3) !== Math.floor((c - dt)*3)) burst(10 + Math.random()*60, 12 + Math.random()*26, 20);
+    if (c > 1.6 && c < 9) for (var i = 0; i < 2; i++) if (Math.random() < dt*3) G.fx.push({x: BX + Math.random()*GW, y: GH - 16, vx: (Math.random() - .5)*6, vy: -14 - Math.random()*8, life: 1, fade: 0.7, col: 'heart'});
+    if (c >= 12.2){ G.ph = 2; G.state = 'ready'; G.x = 18; G.y = 70; G.v = 0; G.obs = []; G.fw = []; for (var i = 0; i < 3; i++) G.obs.push(make(GW + 30 + i*SPACING)); } }
+  // ---- 66: the sun
+  function cut2(dt){ G.ct += dt; var c = G.ct;
+    G.obs.forEach(function(o){ o.x -= 60*dt; });
+    if (c < 2.2){ var f = c/2.2; G.x = G.from.x + (46 - G.from.x)*f; G.y = G.from.y + (24 - G.from.y)*f; }
+    else if (c < 3.6){ G.y = 24 + Math.sin(c*20)*0.5; if (Math.random() < dt*30) G.fx.push({x: G.x + (Math.random() - .5)*10, y: G.y - 2, vx: (Math.random() - .5)*10, vy: 6 + Math.random()*10, g: 8, life: 1, fade: 0.35, col: 'feather'}); if (Math.random() < dt*20) G.fx.push({x: G.x + (Math.random() - .5)*8, y: G.y, vx: 0, vy: 14, g: 30, life: 1, fade: 0.8, col: 'wax'}); }
+    else if (c < 5.4){ G.y = 24 + Math.pow(c - 3.6, 2)*30; G.x = 46 - (c - 3.6)*6; if (G.y > GH - 26 && !G.splash){ G.splash = 1; for (var i = 0; i < 16; i++) G.fx.push({x: G.x, y: GH - 24, vx: (Math.random() - .5)*30, vy: -20 - Math.random()*20, g: 60, life: 1, fade: 0.8, col: 'sea'}); } }
+    else { G.state = 'end'; G.boom = 0; try { if (66 > best()) localStorage.setItem(KEY, 66); } catch(e){} } }
+  // ---- sprites
   function sub(x, y, tilt){ x = Math.round(x); y = Math.round(y);
     R(x - 6, y - 2, 12, 5, '#f5c53a'); R(x - 5, y - 3, 10, 1, '#f5c53a'); R(x - 5, y + 3, 10, 1, '#d9a23a'); R(x + 6, y - 1, 1, 3, '#f5c53a');
     R(x - 1, y - 6, 4, 3, '#f5c53a'); R(x + 1, y - 9, 1, 3, '#9a9aa2'); R(x + 1, y - 9, 3, 1, '#9a9aa2');
     [-3, 0, 3].forEach(function(dx){ R(x + dx, y - 1, 2, 2, '#3a7ad0'); R(x + dx, y - 1, 1, 1, '#9fd3f2'); });
     var pr = Math.floor(G.t*20) % 2; R(x - 8, y - 2 + pr, 1, 2, '#8a8a92'); R(x - 9, y - 1 - pr, 1, 2, '#8a8a92');
     if (tilt < 0) R(x + 5, y - 3, 2, 1, '#f5c53a'); else if (tilt > 0) R(x + 5, y + 3, 2, 1, '#d9a23a'); }
-  function hero(x, y, tilt){ x = Math.round(x); y = Math.round(y); var fl = Math.floor(G.t*12) % 2;
-    R(x - 9, y - 3 + fl, 5, 2, '#e8822a'); R(x - 11, y - 2 + fl*2, 3, 2, '#c8621a');
-    R(x - 5, y - 2, 8, 3, '#1a7a7a'); R(x - 5, y - 2, 8, 1, '#2a9a9a'); R(x - 7, y - 1, 2, 2, '#1a7a7a'); R(x - 8, y, 2, 1, '#e8822a');
-    R(x + 3, y - 3, 4, 4, '#e8822a'); R(x + 4, y - 2, 3, 1, '#151218'); R(x + 5, y - 2, 1, 1, '#ffffff');
-    R(x + 7, y - 2 - (tilt < 0 ? 1 : 0), 2, 1, '#1a7a7a'); R(x + 9, y - 2 - (tilt < 0 ? 1 : 0), 1, 1, '#e8822a'); }
+  function icarus(x, y, tilt, burnt){ x = Math.round(x); y = Math.round(y); var up = Math.floor(G.t*(G.state === 'cut2' ? 6 : 10)) % 2, wc = burnt ? '#8a6a4a' : '#f6efdf', wc2 = burnt ? '#5a3a2a' : '#d9c8a0';
+    if (!burnt || G.ct < 3.6){ if (up){ R(x - 6, y - 8, 9, 2, wc); R(x - 7, y - 6, 9, 2, wc2); R(x - 5, y - 10, 6, 2, wc); } else { R(x - 6, y + 1, 9, 2, wc); R(x - 7, y + 3, 8, 2, wc2); R(x - 5, y + 5, 5, 1, wc); } R(x - 2, y - 3 + (up ? -2 : 2), 1, 1, '#e9c45a'); }
+    R(x - 4, y - 2, 7, 3, '#f6efdf'); R(x - 4, y, 7, 1, '#c9a43a'); R(x + 3, y - 4, 3, 4, '#e0b090'); R(x + 3, y - 5, 3, 2, '#5a3a22'); R(x + 5, y - 3, 1, 1, '#151218'); R(x - 7, y - 1, 3, 1, '#e0b090'); R(x - 8, y, 2, 1, '#e0b090'); }
+  function flyer(x, y, tilt){ if (G.ph === 2) icarus(x, y, tilt, false); else sub(x, y, tilt); }
   function bandman(x, y, i, step){ x = Math.round(x); y = Math.round(y); var b = BAND[i];
     R(x, y - 3, 1, 3, '#151218'); R(x + 2, y - 3, 1, 3, '#151218'); if (step) R(x + (step > 0 ? 3 : -1), y - 1, 1, 1, '#151218');
     R(x - 1, y - 7, 5, 4, b[0]); R(x + 1, y - 7, 1, 4, b[1]); R(x - 1, y - 6, 5, 1, b[1]);
     R(x, y - 10, 3, 3, '#e8c4a8'); R(x, y - 11, 3, 1, '#3a2418'); R(x - 1, y - 10, 1, 2, '#3a2418'); R(x, y - 8, 3, 1, '#5a3a22'); }
-  function flyer(x, y, tilt){ if (G.who === 'hero') hero(x, y, tilt); else sub(x, y, tilt); }
-  // towers in several styles
+  function beetle(x, y, col, occupied){ x = Math.round(x); y = Math.round(y);
+    R(x + 1, y - 5, 6, 2, col); R(x, y - 3, 8, 2, col); R(x + 2, y - 6, 3, 1, col); R(x + 2, y - 5, 3, 1, '#9fd3f2'); if (occupied) R(x + 3, y - 5, 1, 1, '#3a2418');
+    R(x + 1, y - 1, 2, 2, '#151218'); R(x + 5, y - 1, 2, 2, '#151218'); R(x + 7, y - 3, 1, 1, '#fff6c8'); }
+  function fan(x, y, i){ x = Math.round(x); y = Math.round(y); var j = Math.abs(Math.sin(G.t*9 + i*1.7)) > 0.5 ? 1 : 0, cols = ['#e8402a', '#3a6ae8', '#f0c020', '#ff9ad9', '#5ac04a', '#c86aff'];
+    R(x, y - 2 - j, 1, 2, '#151218'); R(x + 1, y - 2 - j, 1, 2, '#151218'); R(x - 1, y - 6 - j, 4, 4, cols[i % 6]); R(x, y - 9 - j, 2, 3, i % 3 ? '#e0b090' : '#8a5a3c'); R(x, y - 10 - j, 2, 1, i % 2 ? '#e9c45a' : '#3a2418');
+    if (j){ R(x - 2, y - 10 - j, 1, 3, '#e0b090'); R(x + 3, y - 10 - j, 1, 3, '#e0b090'); } }
+  // ---- New York towers (five styles)
   function tower(o){ var x = o.x, bt = o.gy + o.gap, kind = o.kind, w = OW;
     if (kind === 0){ R(x, bt, w, GH - bt, '#2a2a6a'); for (var xx = x + 1; xx < x + w - 1; xx += 3) R(xx, bt + 2, 1, GH - bt - 2, '#4a5ab0'); R(x, bt, w, 2, '#7a8cff'); R(x + w - 2, bt, 2, GH - bt, '#1e1e52'); }
     else if (kind === 1){ R(x, bt + 6, w, GH - bt - 6, '#3a2a5a'); R(x + 2, bt + 3, w - 4, 3, '#3a2a5a'); R(x + 4, bt, w - 8, 3, '#4a3a6a'); R(x + w/2, bt - 6, 1, 6, '#e8c46a'); R(x, bt + 6, w, 1, '#c86aff'); R(x + 2, bt + 3, w - 4, 1, '#c86aff');
@@ -3943,51 +3958,90 @@ ROOMS.block = function(ctx, W, H, t, go){
     else if (kind === 3){ R(x, bt, w, GH - bt, '#1e2a4a'); R(x, bt, w, 1, '#5ad8ff'); for (var y = bt + 3; y < GH - 2; y += 5) R(x + 1, y, w - 2, 1, '#2a4a7a'); for (var y = bt + 4; y < GH - 2; y += 5) for (var wx = x + 2; wx < x + w - 2; wx += 2) if (Math.sin(wx + y + o.seed) > 0.5) R(wx, y, 1, 2, '#9fe8ff'); }
     else { R(x + 1, bt, w - 2, GH - bt, '#2e2450'); R(x + 3, bt - 4, w - 6, 4, '#3a2e60'); R(x + w/2 - 1, bt - 12, 2, 8, '#b9c0cc'); R(x + w/2, bt - 16, 1, 4, '#b9c0cc'); if (Math.sin(G.t*4 + o.seed) > 0) R(x + w/2, bt - 17, 1, 1, '#ff5a8a');
       for (var y = bt + 3; y < GH - 2; y += 4) for (var wx = x + 3; wx < x + w - 3; wx += 3) if (Math.sin(wx*3.1 + y*1.7 + o.seed) > -0.2) R(wx, y, 1, 2, '#e8c4ff'); }
-    // the storm cloud hanging from above, tinted violet, with lightning now and then
     R(x - 2, 0, w + 4, o.gy - 4, '#3a2e5a'); for (var i = 0; i < 4; i++) R(x - 3 + i*5, o.gy - 7 + (i % 2)*2, 7, 6, '#4a3a6e'); R(x - 1, o.gy - 3, w + 2, 2, '#5a4a80');
     if (Math.floor(G.t*3 + o.seed) % 7 === 0){ R(x + 4, o.gy - 1, 1, 3, '#e8c4ff'); R(x + 5, o.gy + 2, 1, 3, '#e8c4ff'); } }
-  function draw(){
-    var sky = ['#0a0620', '#140a34', '#1e0e48', '#2a1258', '#3a1666', '#4a1a70', '#5a1e74'];
+  // ---- the workshop's obstacles: brass pipe columns below, gear-and-piston clusters hanging above
+  function gear(cx, cy, r, a, col){ for (var i = 0; i < 8; i++){ var an = a + i*0.785; R(cx + Math.cos(an)*r - 1, cy + Math.sin(an)*r - 1, 2, 2, col); } g.fillStyle = col; g.beginPath(); g.arc(cx, cy, r - 1, 0, 7); g.fill(); R(cx - 1, cy - 1, 2, 2, '#2a1a10'); }
+  function pipe(o){ var x = o.x, bt = o.gy + o.gap, w = OW;
+    R(x + 1, bt + 3, w - 2, GH - bt - 3, '#b07a3a'); R(x + 2, bt + 3, 2, GH - bt - 3, '#e0a860'); R(x + w - 4, bt + 3, 2, GH - bt - 3, '#7a4a20'); R(x - 1, bt, w + 2, 4, '#c9903a'); R(x - 1, bt, w + 2, 1, '#f0c070');
+    for (var y = bt + 8; y < GH - 6; y += 9){ R(x, y, w, 2, '#8a5a2a'); R(x + 2, y, 1, 1, '#f0c070'); R(x + w - 3, y, 1, 1, '#f0c070'); }
+    if (o.kind % 2){ R(x + 3, bt + 12, 8, 8, '#2a1a10'); R(x + 4, bt + 13, 6, 6, '#f3e8d0'); R(x + 7, bt + 16, 1, 1, '#151218'); var an = Math.sin(G.t*3 + o.seed); R(x + 7 + Math.round(an*2), bt + 14, 1, 2, '#c4302a'); }
+    R(x + 3, 0, 2, o.gy - 12, '#6a6a72'); R(x + w - 5, 0, 2, o.gy - 12, '#6a6a72'); R(x, o.gy - 12, w, 6, '#8a6a4a'); R(x, o.gy - 12, w, 1, '#c9a070');
+    gear(x + w/2, o.gy - 4, 5, G.t*(o.kind % 2 ? 2 : -2), '#c9903a'); R(x + 2, o.gy - 1, w - 4, 1, '#f0c070'); }
+  function workshop(){
+    for (var y = 0; y < GH; y++) R(0, y, GW, 1, y % 16 === 0 ? '#3a2614' : '#2a1a0e');
+    for (var x = -((G.scroll*0.25) % 20); x < GW; x += 20){ R(x, 0, 1, GH, '#3a2614'); for (var y = 6; y < GH; y += 16){ R(x + 2, y, 1, 1, '#6a4a2a'); R(x + 17, y, 1, 1, '#6a4a2a'); } }
+    var off = G.scroll*0.35; for (var i = 0; i < 4; i++){ var gx = ((i*31 + 10 - off) % (GW + 30) + GW + 30) % (GW + 30) - 15; gear(gx, 20 + (i*23) % 70, 6 + (i % 2)*3, G.t*(i % 2 ? 0.8 : -0.8), '#4a3018'); }
+    for (var i = 0; i < 2; i++){ var lx = ((i*45 + 20 - G.scroll*0.35) % (GW + 30) + GW + 30) % (GW + 30) - 15; R(lx, 0, 1, 14, '#4a3018'); R(lx - 2, 14, 5, 5, '#e9a03a'); g.globalCompositeOperation = 'lighter'; g.fillStyle = 'rgba(140,90,30,.15)'; g.beginPath(); g.arc(lx, 17, 12, 0, 7); g.fill(); g.globalCompositeOperation = 'source-over'; }
+    var wx = ((60 - G.scroll*0.35) % (GW + 40) + GW + 40) % (GW + 40) - 20; for (var i = 0; i < 5; i++) R(wx + i*2, 40 + i, 1, 10 - i, '#6a5a40');
+    R(0, 30, GW, 2, '#7a4a20'); R(0, 30, GW, 1, '#b07a3a');
+    G.fx.forEach(function(p){ if (p.col === 'steam'){ g.globalAlpha = 0.3*p.life; R(p.x, p.y, 3, 2, '#d9d0c0'); g.globalAlpha = 1; } });
+    R(0, GH - 8, GW, 8, '#4a2a14'); for (var x = -((G.scroll) % 9); x < GW; x += 9) R(x, GH - 8, 1, 8, '#2a1a0a'); R(0, GH - 8, GW, 1, '#7a4a20'); }
+  // ---- London
+  function london(c){ var sky = ['#1a1440', '#2a1a58', '#3a2068', '#5a2a74', '#7a3a7a'];
+    for (var y = 0; y < GH; y++){ var f = y/GH*(sky.length - 1), i = Math.floor(f); R(0, y, GW, 1, sky[i]); }
+    for (var i = 0; i < 20; i++){ if (Math.sin(G.t*2 + i) > 0) R((i*41) % GW, (i*17) % 50, 1, 1, '#e8d8ff'); }
+    R(56, GH - 96, 8, 88, '#2a1a40'); R(55, GH - 74, 10, 10, '#3a2a50'); R(57, GH - 72, 6, 6, '#e9d08a'); R(60, GH - 70, 1, 2, '#2a1a40'); R(60, GH - 69, 2, 1, '#2a1a40'); R(58, GH - 104, 4, 8, '#2a1a40'); R(59, GH - 110, 2, 6, '#2a1a40'); R(60, GH - 114, 1, 4, '#2a1a40');
+    for (var x = 0; x < GW; x += 7){ var h = 12 + ((x*13) % 9); R(x, GH - 8 - h, 7, h, '#22163a'); if (x % 14 === 0) R(x + 2, GH - 8 - h, 1, 3, '#22163a'); }
+    R(0, GH - 8, GW, 8, '#2a2030'); R(0, GH - 8, GW, 1, '#4a3a50'); }
+  function drawCut1(){ var c = G.ct, fade = Math.min(1, c/1.2);
+    if (fade < 1){ draw1(); g.globalAlpha = fade; } london(c); g.globalAlpha = 1;
+    G.obs.forEach(tower);
+    // the building: roof at ROOF, street door at the bottom, parking spaces to its right
+    R(BX, ROOF, BW, GH - 8 - ROOF, '#3a2458'); R(BX, ROOF, BW, 2, '#c86aff'); for (var y = ROOF + 5; y < GH - 14; y += 5) for (var wx = BX + 3; wx < BX + BW - 2; wx += 4) if (Math.sin(wx + y) > -0.3) R(wx, y, 2, 2, '#ffd36b');
+    R(BX + 2, ROOF - 5, 4, 5, '#5a3a80'); R(BX + 3, ROOF - 4, 2, 4, '#1a1028'); R(BX + 4, GH - 15, 5, 7, '#1a1028'); R(BX + 4, GH - 16, 5, 1, '#e9c45a');
+    for (var i = 0; i < 5; i++) R(43 + i*9, GH - 8, 1, 3, '#e8e0c8');
+    var bus = ((c*14) % (GW + 40)) - 20; R(GW - bus, GH - 17, 16, 9, '#c4302a'); R(GW - bus + 1, GH - 15, 14, 2, '#f3e8d0'); R(GW - bus + 1, GH - 12, 14, 1, '#f3e8d0'); R(GW - bus + 2, GH - 9, 2, 1, '#151218'); R(GW - bus + 12, GH - 9, 2, 1, '#151218');
+    R(BX + BW + 1, GH - 18, 3, 10, '#c4302a'); R(BX + BW + 2, GH - 16, 1, 6, '#f6c050');
+    // Beatlemania at the foot of the building
+    if (c > 1.4){ for (var i = 0; i < 12; i++){ var fx2 = (c > 9 && c < 12) ? BX - 4 + i*7 + (c - 9)*14 : BX - 4 + i*7; if (fx2 < GW + 4) fan(fx2, GH - 8, i); }
+      if (Math.floor(G.t*2) % 2){ ptext(g, 'YEAH', BX + 12, GH - 34, 1, '#ff5ab4'); ptext(g, 'YEAH', BX + BW + 6, GH - 40, 1, '#5ad8ff'); } }
+    G.fx.forEach(function(p){ if (p.col === 'heart'){ g.globalAlpha = p.life; R(p.x, p.y, 1, 1, '#ff5ab4'); R(p.x + 2, p.y, 1, 1, '#ff5ab4'); R(p.x, p.y + 1, 3, 1, '#ff5ab4'); R(p.x + 1, p.y + 2, 1, 1, '#ff5ab4'); g.globalAlpha = 1; } });
+    // the four cars wait in the lot, then each takes one of the band and drives off
+    for (var i = 0; i < 4; i++){ var lotX = 44 + i*9, carX = lotX + (c > 9.2 + i*0.3 ? Math.pow(c - 9.2 - i*0.3, 2)*20 : 0), occ = c > 8.4 + i*0.2; if (carX < GW + 10) beetle(carX, GH - 8, CARS[i], occ); }
+    // the submarine and the band
+    sub(G.x, G.y, 0);
+    for (var i = 0; i < 4; i++){ var tOut = 2.2 + i*0.45, tDoor = 4.2 + i*0.35, tDown = 6.4 + i*0.3, tCar = 8.4 + i*0.2;
+      var home = BX + 6 + i*5, hatch = G.x + 1, door = BX + 3, street = BX + 6, carSeat = 47 + i*9;
+      if (c < tOut) continue;
+      if (c < tOut + 0.4) bandman(hatch + (home - hatch)*((c - tOut)/0.4), ROOF, i, 1);
+      else if (c < tDoor) bandman(home, ROOF, i, Math.floor(G.t*6 + i) % 3 - 1);
+      else if (c < tDoor + 0.4) bandman(home + (door - home)*((c - tDoor)/0.4), ROOF, i, 1);
+      else if (c < tDown) {}
+      else if (c < tCar) bandman(street + (carSeat - street)*Math.min(1, (c - tDown)/(tCar - tDown)), GH - 8, i, 1); }
+    if (c > 2.4 && c < 7.8){ var n = 'LONDON'; R(GW/2 - textW(n, 1)/2 - 2, 14, textW(n, 1) + 4, 8, 'rgba(10,6,32,.8)'); txt(n, 16, FW_COLS[Math.floor(G.t*4) % FW_COLS.length]); }
+    // into the workshop: an iris closes on the city and opens on Daedalus's workshop
+    if (c > 10.6){ var f = Math.min(1, (c - 10.6)/0.8), f2 = Math.max(0, (c - 11.4)/0.8);
+      if (f2 <= 0){ g.fillStyle = '#000'; g.beginPath(); g.rect(0, 0, GW, GH); g.arc(GW/2, GH/2, (1 - f)*80, 0, 7, true); g.fill(); }
+      else { g.save(); g.beginPath(); g.arc(GW/2, GH/2, f2*80, 0, 7); g.clip(); workshop(); icarus(18, 70, 0, false); g.restore(); g.fillStyle = '#000'; g.beginPath(); g.rect(0, 0, GW, GH); g.arc(GW/2, GH/2, f2*80, 0, 7, true); g.fill(); var n2 = "DAEDALUS' WORKSHOP"; txt(n2, 20, '#f0c070'); } } }
+  function drawCut2(){ var c = G.ct, op = Math.min(1, c/1.5);
+    workshop(); G.obs.forEach(pipe);
+    g.globalAlpha = op; for (var y = 0; y < GH; y++) R(0, y, GW, 1, y < 70 ? (y < 30 ? '#ffd890' : '#ffb870') : '#2a5a8a'); for (var y = 72; y < GH; y += 3) R(((y*7 + Math.floor(G.t*10)) % 20) - 10, y, GW + 20, 1, '#3a6a9a');
+    var sr = 10 + c*2; g.fillStyle = '#fff6c8'; g.beginPath(); g.arc(54, 14, sr, 0, 7); g.fill(); g.globalCompositeOperation = 'lighter'; for (var r = sr + 14; r > sr; r -= 3){ g.fillStyle = 'rgba(160,110,30,.12)'; g.beginPath(); g.arc(54, 14, r, 0, 7); g.fill(); } g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+    G.fx.forEach(function(p){ g.globalAlpha = Math.max(0, p.life); if (p.col === 'feather') R(p.x, p.y, 2, 1, '#f6efdf'); else if (p.col === 'wax') R(p.x, p.y, 1, 2, '#e9c45a'); else if (p.col === 'sea') R(p.x, p.y, 1, 1, '#cfe8ff'); g.globalAlpha = 1; });
+    if (c > 2.2 && c < 3.6){ for (var i = 0; i < 3; i++){ g.globalAlpha = 0.5; R(G.x - 4 + i*3, G.y - 8 - ((G.t*20 + i*5) % 10), 2, 2, '#6a6a6a'); } g.globalAlpha = 1; }
+    if (!G.splash) icarus(G.x, G.y, 0, c > 2.2); }
+  function draw1(){ var sky = ['#0a0620', '#140a34', '#1e0e48', '#2a1258', '#3a1666', '#4a1a70', '#5a1e74'];
     for (var y = 0; y < GH; y++){ var f = y/GH*(sky.length - 1), i = Math.floor(f); R(0, y, GW, 1, (y % 2 && f - i > 0.5) ? sky[Math.min(i + 1, sky.length - 1)] : sky[i]); }
     for (var i = 0; i < 34; i++){ var sx = ((i*37 - G.scroll*0.08) % GW + GW) % GW, sy = (i*23 + (i % 3)*7) % 74, tw = Math.sin(G.t*(1.5 + (i % 5)*0.6) + i*1.7);
       if (tw > -0.2){ var c = i % 5 === 0 ? '#ffffff' : i % 3 ? '#c8b8ff' : '#9ad8ff'; R(sx, sy, 1, 1, c); if (tw > 0.85 && i % 4 === 0){ R(sx - 1, sy, 3, 1, c); R(sx, sy - 1, 1, 3, c); } } }
     R(60, 12, 6, 6, '#f3e8ff'); R(58, 13, 3, 4, '#140a34');
-    g.globalCompositeOperation = 'lighter'; G.fw.forEach(function(p){ g.globalAlpha = Math.max(0, p.life); R(p.x, p.y, 1, 1, p.col); if (p.life > 0.7) R(p.x - p.vx*0.04, p.y - p.vy*0.04, 1, 1, p.col); }); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
     for (var x = 0; x < GW + 10; x += 6){ var bx = x - (G.scroll*0.3 % 6), h = 14 + Math.round(Math.abs(Math.sin(Math.floor((x + G.scroll*0.3)/6)*1.7))*22); R(bx, GH - h, 6, h, '#2a1450'); if ((x/6) % 2) R(bx + 2, GH - h + 4, 1, 1, '#ff9ad9'); }
-    G.obs.forEach(tower);
-    if (G.roofX !== null){ var rx = G.roofX; R(rx, ROOF, 48, GH - ROOF, '#3a2458'); R(rx, ROOF, 48, 2, '#c86aff'); R(rx - 1, ROOF - 2, 50, 2, '#5a3a80');
-      for (var y = ROOF + 5; y < GH - 8; y += 5) for (var wx = rx + 3; wx < rx + 46; wx += 4) if (Math.sin(wx + y) > -0.3) R(wx, y, 2, 2, '#ffd36b');
-      for (var i = 0; i < 8; i++) R(rx + 3 + i*6, ROOF - 4, 2, 2, FW_COLS[(i + Math.floor(G.t*3)) % FW_COLS.length]); }
     R(0, GH - 8, GW, 8, '#1e1430'); R(0, GH - 8, GW, 1, '#5a3a80'); for (var x = -8; x < GW + 8; x += 10) R(x - (G.scroll % 10), GH - 4, 5, 1, '#c86aff');
-    for (var i = 0; i < 2; i++){ var cx = ((i*47 - G.scroll*1.3) % (GW + 20) + GW + 20) % (GW + 20) - 10; R(cx, GH - 8, 9, 3, '#f0c020'); R(cx + 2, GH - 10, 5, 2, '#f0c020'); R(cx + 3, GH - 10, 3, 1, '#1a2a3a'); R(cx + 1, GH - 5, 2, 1, '#151218'); R(cx + 6, GH - 5, 2, 1, '#151218'); }
-    if (G.state === 'run' && G.roofX !== null){ if (G.who === 'hero'){ sub(G.roofX + 32, ROOF - 4, 0); for (var i = 0; i < 4; i++) bandman(G.roofX + 4 + i*5, ROOF, i, 0); } else { var hx0 = Math.round(G.roofX + 42); R(hx0, ROOF - 3, 1, 3, '#1a7a7a'); R(hx0 + 2, ROOF - 3, 1, 3, '#1a7a7a'); R(hx0 - 1, ROOF - 8, 5, 5, '#1a7a7a'); R(hx0, ROOF - 11, 3, 3, '#e8822a'); R(hx0, ROOF - 10, 3, 1, '#151218'); R(hx0 + 4, ROOF - 11, 1, 3, '#e8822a'); } }
-    if (G.state === 'cut') drawCut();
-    else if (G.state !== 'over' || Math.floor(G.boom*10) % 2) flyer(G.x, G.y, G.v < -20 ? -1 : G.v > 40 ? 1 : 0);
-    if (G.state === 'run' && G.v < -40) for (var i = 0; i < 3; i++) R(G.x - 10 - i*3, G.y + 1 + (i % 2), 2, 1, i % 2 ? '#ff9ad9' : '#c8b8ff');
+    for (var i = 0; i < 2; i++){ var cx = ((i*47 - G.scroll*1.3) % (GW + 20) + GW + 20) % (GW + 20) - 10; R(cx, GH - 8, 9, 3, '#f0c020'); R(cx + 2, GH - 10, 5, 2, '#f0c020'); R(cx + 3, GH - 10, 3, 1, '#1a2a3a'); R(cx + 1, GH - 5, 2, 1, '#151218'); R(cx + 6, GH - 5, 2, 1, '#151218'); } }
+  function fireworks(){ g.globalCompositeOperation = 'lighter'; G.fw.forEach(function(p){ g.globalAlpha = Math.max(0, p.life); R(p.x, p.y, 1, 1, p.col); if (p.life > 0.7) R(p.x - p.vx*0.04, p.y - p.vy*0.04, 1, 1, p.col); }); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; }
+  function draw(){
+    if (G.state === 'cut1'){ drawCut1(); fireworks(); }
+    else if (G.state === 'cut2' || (G.state === 'end')){ drawCut2(); }
+    else if (G.ph === 2){ workshop(); G.obs.forEach(pipe); if (G.state === 'ready'){ R(6, 86, 68, 20, 'rgba(26,14,6,.85)'); txt('TAP TO FLY', 90, '#f0c070'); txt('NOT TOO HIGH', 97, '#ffd890'); } if (G.state !== 'over' || Math.floor(G.boom*10) % 2) icarus(G.x, G.y, G.v < -20 ? -1 : 0, false); }
+    else { draw1(); fireworks(); G.obs.forEach(tower); if (G.state !== 'over' || Math.floor(G.boom*10) % 2) sub(G.x, G.y, G.v < -20 ? -1 : G.v > 40 ? 1 : 0);
+      if (G.state === 'run' && G.v < -40) for (var i = 0; i < 3; i++) R(G.x - 10 - i*3, G.y + 1 + (i % 2), 2, 1, i % 2 ? '#ff9ad9' : '#c8b8ff'); }
     R(0, 0, GW, 9, 'rgba(10,6,32,.75)'); ptext(g, String(G.score), 2, 2, 1, '#f3e8ff'); var bs = 'BEST ' + Math.max(best(), G.score); ptext(g, bs, GW - textW(bs, 1) - 2, 2, 1, '#ff9ad9');
-    if (G.state === 'ready'){ R(8, 76, 64, 20, '#0a0620'); txt('TAP TO FLY', 80, '#ff9ad9'); txt('DODGE THE CITY', 87, '#9ad8ff'); }
-    if (G.state === 'over' && G.boom > 0.7){ var md = G.score >= 40 ? ['PLATINUM', '#e8f4ff'] : G.score >= 30 ? ['GOLD', '#e9c45a'] : G.score >= 20 ? ['SILVER', '#c9ccd6'] : G.score >= 10 ? ['BRONZE', '#c08040'] : null;
-      R(8, 40, 64, md ? 40 : 30, '#0a0620'); txt(G.who === 'sub' ? 'SUNK!' : 'FELL!', 44, '#ff5a9a'); txt(String(G.score), 51, '#f3e8ff');
+    if (G.state === 'ready' && G.ph === 1){ R(8, 76, 64, 20, '#0a0620'); txt('TAP TO FLY', 80, '#ff9ad9'); txt('DODGE THE CITY', 87, '#9ad8ff'); }
+    if (G.state === 'end' && G.boom > 0.8){ R(4, 44, 72, 32, 'rgba(10,6,32,.85)'); txt('TOO NEAR', 48, '#ffd890'); txt('THE SUN', 55, '#ffd890'); txt('66', 63, '#f3e8ff'); txt('TAP TO FLY AGAIN', 70, '#ff9ad9'); }
+    if (G.state === 'over' && G.boom > 0.7){ var md = G.score >= 66 ? ['SUN', '#ffd890'] : G.score >= 40 ? ['PLATINUM', '#e8f4ff'] : G.score >= 30 ? ['GOLD', '#e9c45a'] : G.score >= 20 ? ['SILVER', '#c9ccd6'] : G.score >= 10 ? ['BRONZE', '#c08040'] : null;
+      R(8, 40, 64, md ? 40 : 30, '#0a0620'); txt(G.ph === 2 ? 'FELL!' : 'SUNK!', 44, '#ff5a9a'); txt(String(G.score), 51, '#f3e8ff');
       if (md){ g.fillStyle = md[1]; g.beginPath(); g.arc(GW/2, 62, 4, 0, 7); g.fill(); R(GW/2 - 1, 60, 2, 2, '#0a0620'); txt(md[0], 68, md[1]); txt('TAP TO RETRY', 75, '#ff9ad9'); } else txt('TAP TO RETRY', 60, '#ff9ad9'); } }
-  function drawCut(){ var c = G.ct, rx = G.roofX, comingSub = G.who === 'sub';
-    // the submarine parks on the roof; if the hero is the one landing, it is already there with the band
-    var sx = rx + 32, sy = ROOF - 4;
-    if (comingSub) sub(G.x, G.y + (c > 1.8 && c < 2.1 ? -1 : 0), 0); else sub(sx, sy, 0);
-    // the band steps out of the hatch one by one and lines up; on the hero's return they climb back in
-    for (var i = 0; i < 4; i++){ var tOut = comingSub ? 2.2 + i*0.45 : 0, xHome = rx + 4 + i*5, xHatch = sx + 1, bx, vis = true;
-      if (comingSub){ if (c < tOut) vis = false; else { var f = Math.min(1, (c - tOut)/0.4); bx = xHatch + (xHome - xHatch)*f; } }
-      else { var tIn = 6.2 + i*0.35; if (c > tIn + 0.35) vis = false; else { var f2 = Math.max(0, Math.min(1, (c - tIn)/0.35)); bx = xHome + (xHatch - xHome)*f2; } }
-      if (vis) bandman(bx, ROOF, i, Math.floor(G.t*6 + i) % 3 - 1); }
-    // the hero swings in on his line (or lands, if he was flying), meets them, and leaps
-    var hx, hy, hv = true;
-    if (comingSub){ if (c < 4.4) hv = false; else if (c < 5.4){ var f3 = (c - 4.4); hx = GW + 6 - (GW + 6 - (rx + 42))*f3; hy = ROOF - 4 - Math.sin(f3*Math.PI)*10; R(hx, 0, 1, Math.max(0, hy - 6), '#d9dde4'); } else if (c < 7.6){ hx = rx + 42; hy = ROOF - 4; } else { hx = rx + 42 + (c - 7.6)*8; hy = ROOF - 4 - (c - 7.6)*40; } }
-    else { hx = G.x; hy = G.y; }
-    if (hv && hx !== undefined){ if (comingSub && c >= 5.4 && c < 7.6){ var hxx = Math.round(hx), hyy = Math.round(hy) + 4; R(hxx, hyy - 3, 1, 3, '#1a7a7a'); R(hxx + 2, hyy - 3, 1, 3, '#1a7a7a'); R(hxx - 1, hyy - 8, 5, 5, '#1a7a7a'); R(hxx, hyy - 11, 3, 3, '#e8822a'); R(hxx, hyy - 10, 3, 1, '#151218'); R(hxx - 2, hyy - 7, 1, 4, '#e8822a'); if (Math.floor(G.t*3) % 2) R(hxx + 4, hyy - 10 - (Math.floor(G.t*6) % 2), 1, 3, '#e8822a'); }
-      else hero(hx, hy, -1); }
-    // the sub takes off again when the band is back aboard
-    if (!comingSub && c > 7.6){ /* drawn by the run state once it resumes */ }
-    if (c > 2.4 && c < 7.8){ var n = 'MEET THE BAND'; R(GW/2 - textW(n, 1)/2 - 2, 14, textW(n, 1) + 4, 8, 'rgba(10,6,32,.8)'); txt(n, 16, FW_COLS[Math.floor(G.t*4) % FW_COLS.length]); }
-    for (var i = 0; i < 3; i++){ var ph = (G.t*0.6 + i/3) % 1; g.globalAlpha = 1 - ph; R(rx + 8 + i*12 + Math.sin(ph*6)*2, ROOF - 14 - ph*18, 2, 2, '#ff9ad9'); R(rx + 9 + i*12 + Math.sin(ph*6)*2, ROOF - 18 - ph*18, 1, 4, '#ff9ad9'); } g.globalAlpha = 1; }
   function loop(now){ if (!el.classList.contains('on')){ raf = null; return; } var dt = Math.min(0.04, (now - (last || now))/1000); last = now; update(dt); draw(); raf = requestAnimationFrame(loop); }
   function build(){ el = document.createElement('div'); el.id = 'flap'; el.setAttribute('aria-hidden', 'true');
     el.innerHTML = '<canvas width="' + GW + '" height="' + GH + '" aria-label="Submarine game"></canvas><button data-f="x">done</button>';
@@ -3996,7 +4050,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     el.querySelector('button').addEventListener('click', close); }
   function close(){ el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); }
   window.openFlap = function(){ if (!el) build(); reset(); el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); last = 0; if (!raf) raf = requestAnimationFrame(loop); };
-  window.__flapTest = function(n, who){ G.score = n; G.who = who || 'sub'; };
+  window.__flapTest = function(n){ G.score = n; if (n > 33){ G.ph = 2; } };
   document.addEventListener('keydown', function(e){ if (!el || !el.classList.contains('on')) return; if (e.key === 'Escape') close(); else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'Enter'){ flap(); e.preventDefault(); } });
 })();
 

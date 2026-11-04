@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T07:16:04+00:00",
+ "updated": "2026-11-04T07:20:33+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -542,8 +542,8 @@
    "start": "1:40 AM",
    "end": "now",
    "start_min": 100,
-   "end_min": 136,
-   "minutes": 36,
+   "end_min": 140,
+   "minutes": 40,
    "in_progress": true,
    "topic": "Topology HW7: Q2 onward (in progress).",
    "refs": [
