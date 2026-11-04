@@ -338,6 +338,17 @@ h2 .sub, .sh b { font-family: var(--sans) !important; letter-spacing: 0 !importa
 .ubr { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 0 0 0 0; }
 .ubr em { font-style: normal; font-size: 12px; color: var(--muted); border-left: 1.5px dotted var(--muted); padding-left: 14px; margin-left: 5px; }
 .usetl .tip { border-top: var(--thin) dotted var(--ink); padding: 8px 0 4px; font-size: 13px; }
+#pad { position: fixed; inset: 0; z-index: 61; background: #070b1c; display: none; align-items: center; justify-content: center; padding: 16px; }
+#pad.on { display: flex; }
+#pad .padin { width: min(92vw, 440px); display: flex; flex-direction: column; gap: 10px; align-items: center; }
+#pad .padtt { font: 12px var(--pixel); letter-spacing: .1em; text-transform: uppercase; color: #f3ead3; }
+#pad canvas { width: min(92vw, 62vh, 440px); height: min(92vw, 62vh, 440px); image-rendering: pixelated; touch-action: none; background: #fbf7ee; box-shadow: 0 0 0 4px #7a5a41, 0 0 0 6px #5a412f; cursor: crosshair; }
+#pad .padpal { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; width: min(92vw, 62vh, 440px); }
+#pad .padpal button { aspect-ratio: 1; border: 2px solid rgba(243,234,211,.25); padding: 0; cursor: pointer; }
+#pad .padpal button.on { border-color: #f3ead3; outline: 2px solid #e9c45a; }
+#pad .padtools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+#pad .padtools button { background: rgba(7,11,28,.55); color: #f3ead3; border: 1px solid rgba(243,234,211,.45); font: 11px var(--pixel); letter-spacing: .08em; text-transform: uppercase; padding: 8px 12px; cursor: pointer; }
+#pad .padtools button.on { background: #f3ead3; color: #151218; }
 .rctl { position: absolute; left: 0; right: 0; bottom: max(40px, calc(env(safe-area-inset-bottom) + 28px)); display: flex; justify-content: center; gap: 10px; }
 .rctl button { background: rgba(7,11,28,.55); color: #f3ead3; border: 1px solid rgba(243,234,211,.45); font: 11px var(--pixel); letter-spacing: .08em; text-transform: uppercase; padding: 8px 14px; cursor: pointer; }
 .spr, .pixbox { cursor: pointer; } .spr { transition: transform .15s; } .spr:hover { transform: scale(1.25); }
@@ -1107,7 +1118,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "9a18b277f6";
+var APP_BUILD = "b4f324d96e";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2777,6 +2788,9 @@ var ROOMS = {
     R2(dtx + 8, F - 17, 14, 2, '#7a5a41'); R2(dtx + 9, F - 15, 1, 15, '#5a412f'); R2(dtx + 20, F - 15, 1, 15, '#5a412f'); R2(dtx + 9, F - 18, 6, 1, '#fbf7ee');
     R2(dtx + 19, F - 24, 1, 6, '#241f1a'); R2(dtx + 17, F - 26, 4, 2, '#3d7a55');
     if (nc >= 92 && nc < 112){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,90,40,.18)'; ctx.beginPath(); ctx.moveTo(dtx + 18, F - 24); ctx.lineTo(dtx + 8, F - 17); ctx.lineTo(dtx + 24, F - 17); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; R2(dtx + 18, F - 24, 2, 1, '#ffe7a1'); }
+    // whatever has been drawn in the sketchbook is pinned on the wall above the table; tap the table to open the sketchbook
+    var pm = window.padMini && padMini(); if (pm){ R2(dtx + 9, F - 37, 10, 10, '#5a412f'); R2(dtx + 10, F - 36, 8, 8, '#fbf7ee'); ctx.drawImage(pm, dtx + 10, F - 36); R2(dtx + 13, F - 38, 2, 1, '#c4473a'); }
+    S.push({x: dtx + 6, y: F - 40, w: 18, h: 40, draw: 1, id: 'sketch'});
     var mhx = W - 36; R2(mhx, F - 7, 6, 7, '#151218'); R2(mhx + 1, F - 8, 4, 1, '#151218'); R2(mhx - 1, F - 7, 1, 7, '#5a4a6a'); R2(mhx + 6, F - 7, 1, 7, '#5a4a6a'); if (Math.sin(t*0.7) > .7){ R2(mhx + 2, F - 4, 1, 1, '#f3efe6'); R2(mhx + 4, F - 4, 1, 1, '#f3efe6'); }
     S.push({x: mhx - 3, y: F - 11, w: 12, h: 12, scene: 11, id: 'mousehole'});
     var TVOFF = nc >= 92 && nc < 112, autoCh = (nc >= 21 && nc < 41.5) ? 0 : 1, CH = autoCh ^ (TVCH ? 1 : 0);
@@ -3300,11 +3314,53 @@ ROOMS.block = function(ctx, W, H, t, go){
     r.addEventListener('mousemove', function(e){ r.style.cursor = hit(r, e) ? 'pointer' : 'default'; });
     r.addEventListener('click', function(e){ var s = hit(r, e); if (!s || r._go) return;
       if (s.channel){ TVCH = TVCH ? 0 : 1; TV_STATIC = performance.now() + 450; try { localStorage.setItem('hw-tvch', TVCH); } catch(e){} return; }
+      if (s.draw){ if (window.openPad) openPad(); return; }
       if (s.down){ var tg = document.querySelector('[data-room="' + s.down + '"]'); if (tg) tg.scrollIntoView({behavior: 'smooth', block: 'center'}); return; }
       r._go = s.id;
       var c = r.querySelector('canvas'), b = c.getBoundingClientRect(), sc = b.width / c.width, src = {getBoundingClientRect: function(){ return {left: b.left + s.x*sc, top: b.top + s.y*sc, width: s.w*sc, height: s.h*sc}; }};
       setTimeout(function(){ openRest(s.scene, src); setTimeout(function(){ r._go = null; }, 900); }, 420); });
   });
+})();
+
+// ===== Nico's sketchbook: a 32 x 32 pixel-art pad, opened from his drawing table. Pen, eraser, fill, undo, clear; saved on this device.
+(function(){
+  var N = 32, C = 10, KEY = 'hw-pad', PAL = ['#151218','#fbf7ee','#8a8a92','#c4473a','#e8822a','#e9c45a','#5ac04a','#3d7a55','#3a8ae8','#2f5f9e','#8a4ad8','#e88aa0','#f0c6a0','#a0704a','#5a3a2a','#9fd3f2'];
+  var data = null, col = 0, tool = 'pen', undo = [], el = null, cv = null, cx = null, down = false, last = null, mini = null;
+  function load(){ if (data) return; try { var d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.length === N*N) data = d; } catch(e){} if (!data){ data = []; for (var i = 0; i < N*N; i++) data.push(-1); } }
+  function save(){ mini = null; try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} }
+  window.padMini = function(){ load(); if (mini) return mini; if (data.every(function(v){ return v < 0; })) return null;
+    var big = document.createElement('canvas'); big.width = N; big.height = N; var b = big.getContext('2d'); b.fillStyle = '#fbf7ee'; b.fillRect(0, 0, N, N);
+    data.forEach(function(v, i){ if (v >= 0){ b.fillStyle = PAL[v]; b.fillRect(i % N, Math.floor(i/N), 1, 1); } });
+    mini = document.createElement('canvas'); mini.width = 8; mini.height = 8; var m = mini.getContext('2d'); m.imageSmoothingEnabled = true; m.imageSmoothingQuality = 'high'; m.drawImage(big, 0, 0, 8, 8); return mini; };
+  function paint(){ cx.fillStyle = '#fbf7ee'; cx.fillRect(0, 0, N*C, N*C);
+    for (var i = 0; i < N*N; i++) if (data[i] >= 0){ cx.fillStyle = PAL[data[i]]; cx.fillRect((i % N)*C, Math.floor(i/N)*C, C, C); }
+    cx.fillStyle = 'rgba(90,65,47,.12)'; for (var k = 1; k < N; k++){ cx.fillRect(k*C, 0, 1, N*C); cx.fillRect(0, k*C, N*C, 1); }
+    cx.fillStyle = 'rgba(90,65,47,.28)'; for (var k = 8; k < N; k += 8){ cx.fillRect(k*C, 0, 1, N*C); cx.fillRect(0, k*C, N*C, 1); } }
+  function cell(e){ var b = cv.getBoundingClientRect(); return [Math.max(0, Math.min(N - 1, Math.floor((e.clientX - b.left)/b.width*N))), Math.max(0, Math.min(N - 1, Math.floor((e.clientY - b.top)/b.height*N)))]; }
+  function set(x, y){ data[y*N + x] = tool === 'erase' ? -1 : col; }
+  function fill(x, y){ var from = data[y*N + x], to = col; if (from === to) return; var st = [[x, y]];
+    while (st.length){ var q = st.pop(), i = q[1]*N + q[0]; if (q[0] < 0 || q[1] < 0 || q[0] >= N || q[1] >= N || data[i] !== from) continue; data[i] = to; st.push([q[0] + 1, q[1]], [q[0] - 1, q[1]], [q[0], q[1] + 1], [q[0], q[1] - 1]); } }
+  function stroke(a, b){ var n = Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]), 1); for (var i = 0; i <= n; i++) set(Math.round(a[0] + (b[0] - a[0])*i/n), Math.round(a[1] + (b[1] - a[1])*i/n)); }
+  function build(){
+    el = document.createElement('div'); el.id = 'pad'; el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<div class="padin"><div class="padtt">Nico\'s sketchbook</div><canvas width="' + N*C + '" height="' + N*C + '" aria-label="Drawing grid"></canvas><div class="padpal"></div>' +
+      '<div class="padtools"><button data-t="pen" class="on">pen</button><button data-t="erase">eraser</button><button data-t="fill">fill</button><button data-t="undo">undo</button><button data-t="clear">clear</button><button data-t="done">done</button></div></div>';
+    document.body.appendChild(el); cv = el.querySelector('canvas'); cx = cv.getContext('2d');
+    var pal = el.querySelector('.padpal'); PAL.forEach(function(c, i){ var b = document.createElement('button'); b.style.background = c; b.setAttribute('aria-label', 'colour ' + c); if (i === col) b.classList.add('on'); b.onclick = function(){ col = i; if (tool === 'erase') setTool('pen'); [].forEach.call(pal.children, function(k, j){ k.classList.toggle('on', j === i); }); }; pal.appendChild(b); });
+    function setTool(t){ tool = t; [].forEach.call(el.querySelectorAll('.padtools button'), function(k){ k.classList.toggle('on', k.dataset.t === t); }); }
+    el.querySelector('.padtools').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; var t = b.dataset.t;
+      if (t === 'undo'){ if (undo.length){ data = undo.pop(); paint(); save(); } return; }
+      if (t === 'clear'){ undo.push(data.slice()); for (var i = 0; i < N*N; i++) data[i] = -1; paint(); save(); return; }
+      if (t === 'done'){ close(); return; } setTool(t); });
+    cv.addEventListener('pointerdown', function(e){ e.preventDefault(); cv.setPointerCapture(e.pointerId); undo.push(data.slice()); if (undo.length > 40) undo.shift(); var c = cell(e);
+      if (tool === 'fill'){ fill(c[0], c[1]); paint(); save(); return; } down = true; last = c; set(c[0], c[1]); paint(); });
+    cv.addEventListener('pointermove', function(e){ if (!down) return; var c = cell(e); stroke(last, c); last = c; paint(); });
+    function up(){ if (down){ down = false; save(); } } cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    el.addEventListener('click', function(e){ if (e.target === el) close(); });
+  }
+  function close(){ el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); }
+  window.openPad = function(){ load(); if (!el) build(); paint(); el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); };
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && el && el.classList.contains('on')) close(); });
 })();
 
 // ===== The White Rabbit: waistcoat, checked jacket, pocket watch. He crosses the screen when the app opens, late as ever,
