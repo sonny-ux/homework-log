@@ -1130,7 +1130,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "bb3eceff9f";
+var APP_BUILD = "ab79e6b66a";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2891,7 +2891,7 @@ function drawCorridor(ctx, W, H, t){ deepClear(ctx);
     else if (Math.random() < 0.3){ R(cx - 2 + Math.random()*4, yc + 2, 1, 1, '#9fd3f2'); } });
   if (Math.sin(t*13)*Math.sin(t*3.7) <= -0.25){ ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fillRect(0, 0, W, H); }
   // room numbers, where the doors are near enough to read
-  doors.forEach(function(d){ var k1 = 1/d[0], k2 = 1/d[1], wpx = (k1 - k2)*W/2; if (wpx < 17) return; var num = ['4051', '2601', '1927'][doors.indexOf(d)] || '', xm = d[2] ? cx + (k1 + k2)/2*W/2 - wpx/2 : cx - (k1 + k2)/2*W/2 - wpx/2, km = (k1 + k2)/2;
+  doors.forEach(function(d){ var k1 = 1/d[0], k2 = 1/d[1], wpx = (k1 - k2)*W/2; if (wpx < 17) return; var num = ['2601', '1927', '1882'][doors.indexOf(d)] || '', xm = d[2] ? cx + (k1 + k2)/2*W/2 - wpx/2 : cx - (k1 + k2)/2*W/2 - wpx/2, km = (k1 + k2)/2;
     ptext(ctx, num, Math.round(xm + wpx/2 - textW(num, 1)/2), Math.round(wallY(km, 0.32)), 1, '#c9a43a'); });
   // the mirror on the left wall: in it, not the corridor but a small grey shape with red eyes, watching
   var mz1 = 2.3, mz2 = 2.7, k1 = 1/mz1, k2 = 1/mz2, mx1 = cx - k1*W/2, mx2 = cx - k2*W/2;
@@ -2903,7 +2903,7 @@ function drawCorridor(ctx, W, H, t){ deepClear(ctx);
   var u = t % 12, mz = u < 3 ? 0 : u < 6 ? 6 : u < 9 ? 3.2 : u < 9.8 ? 1.8 : 0;
   if (mz){ var k = 1/mz, man = patchMan(); man.dir = -1; man.v = 0; drawFigLit(ctx, man, Math.round(cx), Math.round(cy + k*(H - cy)), t, 0.45, 0.62*k*H/48, u > 9 ? (Math.floor(t*12) % 2 ? 1 : 0.4) : 1); }
   if (mz !== 6) deepSpot(ctx, Math.round(dxl - 2), dTop - 2, dw + 4, Math.round(fyB - dTop + 2), 'room');
-  var mat = '4051', mw = textW(mat, 1) + 4, mty = Math.round(fyB) + 2; R(cx - mw/2, mty, mw, 7, '#5a1a1a'); ptext(ctx, mat, Math.round(cx - mw/2 + 2), mty + 1, 1, '#c9a43a');
+  var mat = '4051', mw = textW(mat, 1) + 4, mty = Math.round(dTop) - 9; R(cx - mw/2, mty, mw, 8, '#3a2418'); R(cx - mw/2, mty, mw, 1, '#c9a43a'); R(cx - mw/2, mty + 7, mw, 1, '#8a6a2a'); ptext(ctx, mat, Math.round(cx - mw/2 + 2), mty + 2, 1, '#e9c45a'); R(cx, mty + 8, 1, Math.max(1, Math.round(dTop) - mty - 8), '#8a6a2a');
   if (t < 4.5){ ctx.globalAlpha = Math.min(1, t/0.8, (4.5 - t)/0.8); var cap = "IT'S FOR YOU."; ptext(ctx, cap, Math.round(W/2 - textW(cap, 1)/2), 6, 1, '#c9c3b6'); ctx.globalAlpha = 1; }
 }
 
