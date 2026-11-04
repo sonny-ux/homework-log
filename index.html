@@ -1130,7 +1130,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "ab79e6b66a";
+var APP_BUILD = "79730ca11d";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2160,7 +2160,7 @@ function drawFigLit(ctx, p, x, y, t, dark, scale, alpha){
   var s = scale || 1, w = Math.max(1, Math.round(60*s)), h = Math.max(1, Math.round(52*s));
   ctx.imageSmoothingEnabled = false; ctx.globalAlpha = Math.max(0, Math.min(1, alpha == null ? 1 : alpha));
   ctx.drawImage(FIGC, Math.round(x - 30*s), Math.round(y - 48*s), w, h); ctx.globalAlpha = 1; }
-function orbSeen(){ if (window.ORB_SEEN === undefined){ try { window.ORB_SEEN = localStorage.getItem('hw-orb') === '1'; } catch(e){ window.ORB_SEEN = false; } } return window.ORB_SEEN; }
+function orbSeen(){ var at = 0; try { at = +localStorage.getItem('hw-orb-at') || 0; } catch(e){} if (window.ORB_AT) at = Math.max(at, window.ORB_AT); window.ORB_SEEN = Date.now() - at < 3600e3; return window.ORB_SEEN; }
 function velvetLady(){ return {skin: 0, hair: 'long', hc: '#2a1410', dress: 1, velvet: 1, jacket: '#1e2a8a', pants: '#1e2a8a', lips: '#b01a2a', ph: 0}; }
 function patchMan(){ return {skin: 0, hair: 'short', hc: '#1a1414', jacket: '#1a1a22', pants: '#1a1a22', patch: 1, ph: 2}; }
 function drawCinema(ctx, W, H, t){
@@ -2168,7 +2168,7 @@ function drawCinema(ctx, W, H, t){
   for (var x = 0; x < W; x += 6){ ctx.fillStyle = '#1e0e14'; ctx.fillRect(x, 0, 3, H*0.6); }
   var sw = W - 18, sh = Math.round(sw*0.75), sx = 9, sy = 18;
   ctx.fillStyle = '#c9a43a'; ctx.fillRect(0, 4, W, 2); for (var x = 0; x < W; x += 6){ ctx.fillStyle = '#7a1420'; ctx.fillRect(x, 6, 6, 7); ctx.fillRect(x + 1, 13, 4, 2); ctx.fillStyle = '#c9a43a'; ctx.fillRect(x + 2, 15, 2, 1); }
-  ctx.fillStyle = '#050304'; ctx.fillRect(sx - 2, sy - 2, sw + 4, sh + 4); drawFilm(ctx, sx, sy, sw, sh, t); if (window.ORB_SEEN === undefined){ try { window.ORB_SEEN = localStorage.getItem('hw-orb') === '1'; } catch(e){ window.ORB_SEEN = false; } } if (window.ORB_SEEN && (t % 37) < 3){ var of = (t % 37)/3, ox = Math.round(sx + sw*(0.2 + of*0.6)), oy = Math.round(sy + sh*0.4 + Math.sin(of*6)*3); ctx.globalCompositeOperation = 'lighter'; for (var r = 6; r > 0; r -= 2){ ctx.fillStyle = 'rgba(150,120,40,.18)'; ctx.beginPath(); ctx.arc(ox, oy, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#ffe9a0'; ctx.fillRect(ox - 1, oy - 1, 2, 2); }
+  ctx.fillStyle = '#050304'; ctx.fillRect(sx - 2, sy - 2, sw + 4, sh + 4); drawFilm(ctx, sx, sy, sw, sh, t); if (orbSeen() && (t % 37) < 3){ var of = (t % 37)/3, ox = Math.round(sx + sw*(0.2 + of*0.6)), oy = Math.round(sy + sh*0.4 + Math.sin(of*6)*3); ctx.globalCompositeOperation = 'lighter'; for (var r = 6; r > 0; r -= 2){ ctx.fillStyle = 'rgba(150,120,40,.18)'; ctx.beginPath(); ctx.arc(ox, oy, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#ffe9a0'; ctx.fillRect(ox - 1, oy - 1, 2, 2); }
   [[0, 1], [W, -1]].forEach(function(q){ for (var y = 6; y < sy + sh + 12; y++){ var w = 8 + Math.round(Math.sin(y*0.08)*1); for (var k = 0; k < w; k++){ ctx.fillStyle = k % 3 === 0 ? '#5a0e18' : '#8a1a26'; ctx.fillRect(q[1] > 0 ? q[0] + k : q[0] - 1 - k, y, 1, 1); } } });
   var stage = sy + sh + 4; ctx.fillStyle = '#2a1a14'; ctx.fillRect(0, stage, W, 6); ctx.fillStyle = '#c9a43a'; ctx.fillRect(0, stage, W, 1);
   // the projector beam overhead, dust turning in it
@@ -2926,7 +2926,7 @@ function drawStage(ctx, W, H, t){ deepClear(ctx);
   for (var y = 0; y < 30; y++){ var hw = Math.round(2 + Math.sin(y/30*Math.PI)*3); R(gx - hw, gy - y - 4, hw*2 + 1, 1, y % 5 === 0 ? '#fff6d8' : '#f3e2b0'); }
   R(gx - 2, gy - 40, 5, 5, '#fff6d8'); R(gx - 1, gy - 41, 3, 1, '#fff6d8'); R(gx - 6, gy - 26, 4, 1, '#f3e2b0'); R(gx + 3, gy - 26, 4, 1, '#f3e2b0');
   for (var a = 0; a < 6.28; a += 0.12){ var rr = 8 + 1.6*Math.sin(4*a)*Math.cos(t*3); R(gx + Math.round(Math.cos(a)*rr), gy - 38 + Math.round(Math.sin(a)*rr*0.4), 1, 1, '#ffe46a'); }
-  deepSpot(ctx, X0 + gx - 8, gy - 46, 17, 46, 'white', function(){ try { localStorage.setItem('hw-orb', '1'); } catch(e){} window.ORB_SEEN = true; });
+  deepSpot(ctx, X0 + gx - 8, gy - 46, 17, 46, 'white', function(){ window.ORB_AT = Date.now(); try { localStorage.setItem('hw-orb-at', String(window.ORB_AT)); localStorage.removeItem('hw-orb'); } catch(e){} });
   // the other: nothing there. The panels behind ripple in the shape of a man, and his shadow lies on the boards
   var ox = Math.round(SW*0.68), oy = FL - 2, bx = X0 + ox - 8, byy = oy - 44;
   if (bx >= 0 && bx + 17 <= W){ var src = ctx.getImageData(bx, byy, 17, 44), dst = ctx.createImageData(17, 44);
