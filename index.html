@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "bbf0b55468";
+var APP_BUILD = "29da52f154";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2443,7 +2443,7 @@ function drawTrip(ctx, W, H, t){
   var fx = Math.round(W*0.08), fy = Math.round(H*0.48); ctx.fillStyle = '#c9a43a'; ctx.fillRect(fx - 1, fy - 1, 14, 11); for (var y = 0; y < 9; y++) for (var x = 0; x < 12; x++){ ctx.fillStyle = TRIP_PAL[(x + y + Math.floor(t*3)) % 6]; ctx.fillRect(fx + x, fy + y, 1, 1); }
   // the lamp and his shadow cast big and soft on the wall behind the bed
   var lx = Math.round(W*0.06), bedY = floorY - 4, bx = Math.round(W*0.14), bw = Math.round(W*0.4);
-  ctx.fillStyle = 'rgba(30,60,40,.32)'; ctx.fillRect(bx + 8, bedY - 22, bw - 4, 8); ctx.fillRect(bx + 2, bedY - 26, 10, 10); ctx.fillRect(bx + bw - 10, bedY - 18, 8, 6);
+
   ctx.fillStyle = '#3a3430'; ctx.fillRect(lx, bedY - 20, 1, 20); ctx.fillStyle = '#e9c45a'; ctx.fillRect(lx - 3, bedY - 24, 7, 4); ctx.globalCompositeOperation = 'lighter'; for (var r = 14; r > 0; r -= 2){ ctx.fillStyle = 'rgba(110,90,40,.05)'; ctx.beginPath(); ctx.arc(lx, bedY - 20, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
   // the bed and him lying on it: short fair hair, a beard, black puffer jacket over a cream tee, camo trousers; breathing slowly, one knee up
   ctx.fillStyle = '#5a3a2a'; ctx.fillRect(bx, bedY - 6, bw, 6); ctx.fillRect(bx, bedY - 14, 3, 14); ctx.fillRect(bx + bw - 3, bedY - 10, 3, 10); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(bx + 3, bedY - 9, bw - 6, 3); ctx.fillStyle = '#f3efe6'; ctx.fillRect(bx + 4, bedY - 12, 8, 3);
@@ -2454,6 +2454,15 @@ function drawTrip(ctx, W, H, t){
   ctx.fillStyle = '#151218'; ctx.fillRect(hx + 10, hy - 1 - br, 6, 2); ctx.fillStyle = '#e8c4a8'; ctx.fillRect(hx + 15, hy - 1 - br, 2, 2);
   var camo = ['#5a6a3a','#8a8a5a','#3a3a2a','#6a7a4a']; for (var x = 0; x < 14; x++) for (var y = 0; y < 4; y++){ ctx.fillStyle = camo[(x*3 + y*5 + (x >> 2)) % 4]; ctx.fillRect(hx + 21 + x, hy + 2 + y - (x > 3 && x < 9 ? Math.min(x - 3, 9 - x) : 0), 1, 1); }
   ctx.fillStyle = '#2a2420'; ctx.fillRect(hx + 34, hy + 3, 3, 3);
+  // shadow puppets: his hands raised into the lamplight, and big shapes on the wall behind him: a bird, a dog, a rabbit, in turn
+  var pc = Math.floor(t/5) % 3, pt = t % 5, hpx = hx + 12, hpy = hy - 9;
+  ctx.fillStyle = '#151218'; ctx.fillRect(hx + 10, hy - 4, 2, 5); ctx.fillRect(hx + 15, hy - 4, 2, 5); ctx.fillStyle = '#e8c4a8'; ctx.fillRect(hx + 9, hy - 8, 4, 4); ctx.fillRect(hx + 14, hy - 8, 4, 4);
+  var sx = Math.round(W*0.42), sy = Math.round(H*0.47); ctx.fillStyle = 'rgba(20,50,30,.55)';
+  function S(x, y, w, h){ ctx.fillRect(sx + x, sy + y, w, h); }
+  if (pc === 0){ var fl = Math.round(Math.sin(t*6)*4); S(-2, -2, 6, 4); S(4, -1, 3, 2); S(-12, -2 - fl, 10, 3); S(-8, -5 - fl, 6, 3); S(4, -2 - fl, 10, 3); S(4, -5 - fl, 6, 3); S(-1, 2, 4, 2); }
+  else if (pc === 1){ var jaw = Math.sin(t*4) > 0 ? 2 : 0; S(-8, -4, 14, 6); S(6, -3, 6, 3); S(6, 1 + jaw, 6, 2); S(-6, -8, 3, 4); S(-2, -9, 3, 5); S(-10, 2, 4, 3); ctx.fillStyle = 'rgba(154,208,164,1)'; S(1, -2, 1, 1); }
+  else { var wig = Math.sin(t*5) > 0 ? 1 : 0; S(-6, -3, 12, 7); S(6, -1, 3, 3); S(-4, -12 - wig, 3, 9); S(1, -11 + wig, 3, 8); S(-8, 3, 4, 2); ctx.fillStyle = 'rgba(154,208,164,1)'; S(3, -1, 1, 1); }
+  ctx.fillStyle = 'rgba(20,50,30,.3)'; ctx.fillRect(sx - 4, sy + 6, 3, 14); ctx.fillRect(sx + 3, sy + 6, 3, 14);
   ctx.restore();
   // the edge of the cut, a thin light line
   ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p1[0], p1[1] + .5); ctx.lineTo(p2[0], p2[1] + .5); ctx.lineTo(p3[0] + .5, p3[1]); ctx.stroke();
