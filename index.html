@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "eccb707ff7";
+var APP_BUILD = "bbf0b55468";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2420,6 +2420,51 @@ function drawJungle(ctx, W, H, t, st){
   seasonParticles && 0;
 }
 
+// ===== Scene 12: through the mouse hole. A shimmering kaleidoscope fills nearly everything, a pair of eyes blinking in it and a
+// swirling mask drifting; cut into it, a small green room where a friend lies on a bed, a lamp throwing his shadow on the wall.
+var TRIP_PAL = ['#e8402a','#f0902a','#f0d23a','#5ac04a','#3a8ae8','#8a4ad8'];
+function drawTrip(ctx, W, H, t){
+  var cell = 26;
+  for (var y = 0; y < H; y++) for (var x = 0; x < W; x++){
+    var cx = Math.floor(x/cell)*cell + cell/2, cy = Math.floor(y/cell)*cell + cell/2, dx = x - cx, dy = y - cy, r = Math.sqrt(dx*dx + dy*dy), a = Math.atan2(dy, dx);
+    var petal = Math.cos(a*4 + t*0.5 + (cx + cy)*0.05), band = Math.floor(r*0.45 - t*2.2 + cx*0.1) % 6;
+    var col = '#0e0a14';
+    if (petal > 0.4 && r < cell*0.6 && r > 2){ col = TRIP_PAL[(band + 6) % 6]; if ((r*2 + a*3) % 2 < 0.6) col = '#1a1422'; if (((x*7 + y*13 + Math.floor(t*6)) % 41) === 0) col = '#ffffff'; }
+    else if (petal < -0.85 && r < cell*0.5) col = '#241a30';
+    ctx.fillStyle = col; ctx.fillRect(x, y, 1, 1); }
+  // eyes watching from the pattern, blinking now and then
+  var ey = Math.round(H*0.12), blink = (t % 5) < 0.18;
+  [Math.round(W*0.55), Math.round(W*0.78)].forEach(function(ex){ ctx.fillStyle = '#f3efe6'; ctx.fillRect(ex - 4, ey - 2, 9, blink ? 1 : 5); if (!blink){ ctx.fillStyle = '#4a6ab0'; ctx.fillRect(ex - 1 + Math.round(Math.sin(t*0.7)), ey - 1, 3, 3); ctx.fillStyle = '#151218'; ctx.fillRect(ex + Math.round(Math.sin(t*0.7)), ey, 1, 1); } });
+  // the cut-away room: a slanted opening with green walls and a dark floor
+  var p1 = [0, Math.round(H*0.38)], p2 = [Math.round(W*0.8), Math.round(H*0.28)], p3 = [Math.round(W*0.62), H], p4 = [0, H];
+  ctx.save(); ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.lineTo(p3[0], p3[1]); ctx.lineTo(p4[0], p4[1]); ctx.closePath(); ctx.clip();
+  var floorY = Math.round(H*0.78); ctx.fillStyle = '#9ad0a4'; ctx.fillRect(0, 0, W, floorY); ctx.fillStyle = '#4a3a34'; ctx.fillRect(0, floorY, W, H - floorY); ctx.fillStyle = '#7ab888'; ctx.fillRect(0, floorY - 2, W, 2);
+  // a little framed picture: the same kaleidoscope, small
+  var fx = Math.round(W*0.08), fy = Math.round(H*0.48); ctx.fillStyle = '#c9a43a'; ctx.fillRect(fx - 1, fy - 1, 14, 11); for (var y = 0; y < 9; y++) for (var x = 0; x < 12; x++){ ctx.fillStyle = TRIP_PAL[(x + y + Math.floor(t*3)) % 6]; ctx.fillRect(fx + x, fy + y, 1, 1); }
+  // the lamp and his shadow cast big and soft on the wall behind the bed
+  var lx = Math.round(W*0.06), bedY = floorY - 4, bx = Math.round(W*0.14), bw = Math.round(W*0.4);
+  ctx.fillStyle = 'rgba(30,60,40,.32)'; ctx.fillRect(bx + 8, bedY - 22, bw - 4, 8); ctx.fillRect(bx + 2, bedY - 26, 10, 10); ctx.fillRect(bx + bw - 10, bedY - 18, 8, 6);
+  ctx.fillStyle = '#3a3430'; ctx.fillRect(lx, bedY - 20, 1, 20); ctx.fillStyle = '#e9c45a'; ctx.fillRect(lx - 3, bedY - 24, 7, 4); ctx.globalCompositeOperation = 'lighter'; for (var r = 14; r > 0; r -= 2){ ctx.fillStyle = 'rgba(110,90,40,.05)'; ctx.beginPath(); ctx.arc(lx, bedY - 20, r, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over';
+  // the bed and him lying on it: short fair hair, a beard, black puffer jacket over a cream tee, camo trousers; breathing slowly, one knee up
+  ctx.fillStyle = '#5a3a2a'; ctx.fillRect(bx, bedY - 6, bw, 6); ctx.fillRect(bx, bedY - 14, 3, 14); ctx.fillRect(bx + bw - 3, bedY - 10, 3, 10); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(bx + 3, bedY - 9, bw - 6, 3); ctx.fillStyle = '#f3efe6'; ctx.fillRect(bx + 4, bedY - 12, 8, 3);
+  var br = Math.sin(t*0.9) > 0 ? 1 : 0, hx = bx + 5, hy = bedY - 17;
+  ctx.fillStyle = '#e8c4a8'; ctx.fillRect(hx, hy, 6, 6); ctx.fillStyle = '#d9b47a'; ctx.fillRect(hx, hy, 6, 2); ctx.fillRect(hx, hy, 1, 4); ctx.fillStyle = '#b08a5a'; ctx.fillRect(hx + 2, hy + 4, 4, 2); ctx.fillStyle = '#4a6ab0'; ctx.fillRect(hx + 4, hy + 2, 1, 1); ctx.fillStyle = '#c9c3b6'; ctx.fillRect(hx + 1, hy + 3, 1, 1);
+  ctx.fillStyle = '#e8e2d0'; ctx.fillRect(hx + 6, hy + 3, 2, 3);
+  ctx.fillStyle = '#151218'; ctx.fillRect(hx + 7, hy + 1 - br, 14, 6 + br); ctx.fillStyle = '#2a2a32'; for (var x = hx + 9; x < hx + 21; x += 3) ctx.fillRect(x, hy + 1 - br, 1, 6 + br); ctx.fillStyle = '#3a3a44'; ctx.fillRect(hx + 7, hy + 1 - br, 14, 1);
+  ctx.fillStyle = '#151218'; ctx.fillRect(hx + 10, hy - 1 - br, 6, 2); ctx.fillStyle = '#e8c4a8'; ctx.fillRect(hx + 15, hy - 1 - br, 2, 2);
+  var camo = ['#5a6a3a','#8a8a5a','#3a3a2a','#6a7a4a']; for (var x = 0; x < 14; x++) for (var y = 0; y < 4; y++){ ctx.fillStyle = camo[(x*3 + y*5 + (x >> 2)) % 4]; ctx.fillRect(hx + 21 + x, hy + 2 + y - (x > 3 && x < 9 ? Math.min(x - 3, 9 - x) : 0), 1, 1); }
+  ctx.fillStyle = '#2a2420'; ctx.fillRect(hx + 34, hy + 3, 3, 3);
+  ctx.restore();
+  // the edge of the cut, a thin light line
+  ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p1[0], p1[1] + .5); ctx.lineTo(p2[0], p2[1] + .5); ctx.lineTo(p3[0] + .5, p3[1]); ctx.stroke();
+  // a swirling mask drifting over the corner of the room
+  var mx = Math.round(W*0.72 + Math.sin(t*0.4)*4), my = Math.round(H*0.33 + Math.cos(t*0.5)*3);
+  for (var y = -10; y <= 10; y++) for (var x = -7; x <= 7; x++){ if (x*x/49 + y*y/100 > 1) continue; var rr = Math.sqrt(x*x + y*y), sw = Math.sin(rr*1.4 - Math.atan2(y, x)*2 - t*2);
+    ctx.fillStyle = sw > 0.3 ? '#c9b84a' : sw > -0.3 ? '#8ab05a' : '#5a7a8a'; ctx.fillRect(mx + x, my + y, 1, 1); }
+  ctx.fillStyle = '#151218'; ctx.fillRect(mx - 4, my - 3, 3, 2); ctx.fillRect(mx + 2, my - 3, 3, 2); ctx.fillStyle = '#c4475a'; ctx.fillRect(mx - 2, my + 5, 5, 1);
+  ctx.fillStyle = '#151218'; for (var k = 0; k < 4; k++){ ctx.fillRect(mx - 11, my - 2 + k*3, 3, 2); ctx.fillRect(mx + 9, my - 2 + k*3, 3, 2); }
+}
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
@@ -2427,7 +2472,7 @@ function drawJungle(ctx, W, H, t, st){
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
     if (sc === 'pastry' && innerHeight > innerWidth*1.1){ W = 150; H = Math.round(150*innerHeight/innerWidth); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -2489,10 +2534,11 @@ function drawJungle(ctx, W, H, t, st){
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle', 'trip'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'trip'){ var t = (now - t0)/1000; drawTrip(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'jungle'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawJungle(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'anime'){ var t = (now - t0)/1000; drawAnime(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'pastry'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; if (H > 170){ var band = 140, top = Math.round((H - band)/2); ctx.fillStyle = '#1a120c'; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.translate(0, top); drawPastry(ctx, W, band, t, cityState); ctx.restore(); var PP = Math.max(W + 60, 300), o2 = Math.round(cityState.off || 0); drawAbove(ctx, W, top, t, o2, PP); ctx.save(); ctx.translate(0, top + band); drawBelow(ctx, W, H - top - band, t, o2, PP); ctx.restore(); } else drawPastry(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
@@ -2505,7 +2551,7 @@ function drawJungle(ctx, W, H, t, st){
   }
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest', 'down the mouse hole'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
@@ -2636,10 +2682,12 @@ var ROOMS = {
     R2(dtx + 8, F - 17, 14, 2, '#7a5a41'); R2(dtx + 9, F - 15, 1, 15, '#5a412f'); R2(dtx + 20, F - 15, 1, 15, '#5a412f'); R2(dtx + 9, F - 18, 6, 1, '#fbf7ee');
     R2(dtx + 19, F - 24, 1, 6, '#241f1a'); R2(dtx + 17, F - 26, 4, 2, '#3d7a55');
     if (nc >= 92 && nc < 112){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,90,40,.18)'; ctx.beginPath(); ctx.moveTo(dtx + 18, F - 24); ctx.lineTo(dtx + 8, F - 17); ctx.lineTo(dtx + 24, F - 17); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; R2(dtx + 18, F - 24, 2, 1, '#ffe7a1'); }
+    var mhx = W - 36; R2(mhx, F - 7, 6, 7, '#151218'); R2(mhx + 1, F - 8, 4, 1, '#151218'); R2(mhx - 1, F - 7, 1, 7, '#5a4a6a'); R2(mhx + 6, F - 7, 1, 7, '#5a4a6a'); if (Math.sin(t*0.7) > .7){ R2(mhx + 2, F - 4, 1, 1, '#f3efe6'); R2(mhx + 4, F - 4, 1, 1, '#f3efe6'); }
+    S.push({x: mhx - 3, y: F - 11, w: 12, h: 12, scene: 11, id: 'mousehole'});
     var TVOFF = nc >= 92 && nc < 112, autoCh = (nc >= 21 && nc < 41.5) ? 0 : 1, CH = autoCh ^ (TVCH ? 1 : 0);
     var flick = Math.abs(nc - 21) < 0.45 || Math.abs(nc - 41.5) < 0.45;
     // the mouse: out from under the fridge at night, along the floor, up onto the TV stand, presses the knob, and home again
-    if (nc >= 15 && nc < 28){ var mf, mx2, my2 = F - 2, fxm = W - 26, kxm = tvx + 24;
+    if (nc >= 15 && nc < 28){ var mf, mx2, my2 = F - 2, fxm = W - 33, kxm = tvx + 24;
       if (nc < 19){ mf = (nc - 15)/4; mx2 = fxm - (fxm - kxm)*mf; } else if (nc < 20.5){ mx2 = kxm; my2 = F - 2 - Math.round((nc - 19)/1.5*8); } else if (nc < 22){ mx2 = kxm; my2 = F - 10; } else if (nc < 23.5){ mx2 = kxm; my2 = F - 10 + Math.round((nc - 22)/1.5*8); } else { mf = (nc - 23.5)/4.5; mx2 = kxm + (fxm - kxm)*mf; }
       var md = (nc < 19 || (nc >= 20.5 && nc < 22)) ? -1 : 1, mxr = Math.round(mx2), st2 = Math.floor(t*10) % 2;
       R2(mxr - 2, my2 - 2, 5, 2, '#8a8a92'); R2(mxr + (md < 0 ? -3 : 3), my2 - 3, 2, 2, '#9a9aa2'); R2(mxr + (md < 0 ? -3 : 4), my2 - 4, 1, 1, '#e8a0b0'); R2(mxr + (md < 0 ? -3 : 4), my2 - 2, 1, 1, '#151218');
