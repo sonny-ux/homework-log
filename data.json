@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T08:07:06+00:00",
+ "updated": "2026-11-04T08:40:46+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -557,12 +557,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "3:06 AM",
-   "end": "now",
+   "end": "3:40 AM",
    "start_min": 186,
-   "end_min": 187,
-   "minutes": 1,
-   "in_progress": true,
-   "topic": "Topology reading; HW7.",
+   "end_min": 220,
+   "minutes": 34,
+   "in_progress": false,
+   "topic": "Reading in the guide; problem-approach pages.",
    "refs": [
     "homework 7"
    ]
