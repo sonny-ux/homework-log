@@ -1118,7 +1118,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "3050b1016c";
+var APP_BUILD = "f341dd968f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -2971,7 +2971,7 @@ var ROOMS = {
         if (sit){ for (var k = 0; k < 14; k++) R2(ex + 8 - Math.round(k*0.5), ey - 6 - k, 7, 1, sh); R2(ex - 1, ey - 27, 7, 7, sk0); R2(ex - 1, ey - 27, 7, 3, hr); R2(ex + 4, ey - 24, 1, 1, '#241f1a'); R2(ex + 4, ey - 18, 6, 2, sk0); }
         else { R2(ex - 8, ey - 6, 16, 6, sh); R2(ex - 15, ey - 7, 7, 7, sk0); R2(ex - 15, ey - 7, 2, 7, hr); R2(ex - 12, ey - 5, 1, 1, '#241f1a'); } }
       else if (nc < 68){ walkTo(ex + 4, cx0 + 16, (nc - 66)/2, -1); }
-      else if (nc >= 80 && nc < 90){ if (nc < 88) exoDraw(ctx, nico, cx0 + 16, F, t, nc, '#3a2448'); else { nico.dir = 1; nico.v = 0; nico.sit = 0; stPerson(ctx, nico, cx0 + 16, F + 2, t); if (Math.sin(t*3) > 0) R2(cx0 + 22, F - 30, 2, 2, '#f0c6a0'); } }
+      else if (nc >= 80 && nc < 90 && isDay()){ if (nc < 88) exoDraw(ctx, nico, cx0 + 16, F, t, nc, '#3a2448'); else { nico.dir = 1; nico.v = 0; nico.sit = 0; stPerson(ctx, nico, cx0 + 16, F + 2, t); if (Math.sin(t*3) > 0) R2(cx0 + 22, F - 30, 2, 2, '#f0c6a0'); } }
       else if (nc < 90){ nico.dir = 1; nico.v = 0; nico.sit = 1; nico.nocup = 1; stPerson(ctx, nico, cx0 + 16, F - 6, t);
         R2(cx0 + 24, F - 15, 5, 6, '#e8822a'); R2(cx0 + 24, F - 15, 5, 1, '#c4302a'); R2(cx0 + 25, F - 13, 3, 2, '#e9c45a');
         if (Math.sin(t*1.1) > .6){ R2(cx0 + 18, F - 30, 2, 2, '#f0c6a0'); R2(cx0 + 20, F - 30, 1, 1, '#e9c45a'); } if (Math.sin(t*1.1 - .5) > .8) R2(cx0 + 20, F - 22, 1, 1, '#e9c45a'); }
@@ -3016,7 +3016,7 @@ var ROOMS = {
     // the TV on its stand, the wave on its screen
     ctx.fillStyle = '#3b2a24'; ctx.fillRect(tvx - 2, F - 10, 32, 10); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(tvx - 2, F - 10, 32, 1); ctx.fillRect(tvx + 12, F - 8, 1, 7);
     ctx.fillStyle = '#3a3644'; ctx.fillRect(tvx, F - 33, 28, 23); ctx.fillStyle = '#5a5468'; ctx.fillRect(tvx, F - 33, 28, 1);
-    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else if (TVOFF){ ctx.fillStyle = '#1a1a22'; ctx.fillRect(tvx + 2, F - 31, 20, 19); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(tvx + 4, F - 29, 6, 2); } else if (nc >= 70 && nc < 80){ var gx0 = tvx + 2, gy0 = F - 31; R2(gx0, gy0, 20, 7, '#5ab4ff'); R2(gx0, gy0 + 7, 20, 12, '#3a9a3a'); R2(gx0 + 15, gy0 + 2, 3, 3, '#ffe46a');
+    if (go === 'tv'){ ctx.fillStyle = '#ffffff'; ctx.fillRect(tvx + 2, F - 31, 20, 19); } else if (TVOFF){ ctx.fillStyle = '#1a1a22'; ctx.fillRect(tvx + 2, F - 31, 20, 19); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(tvx + 4, F - 29, 6, 2); } else if (nc >= 70 && nc < 80 && isDay()){ var gx0 = tvx + 2, gy0 = F - 31; R2(gx0, gy0, 20, 7, '#5ab4ff'); R2(gx0, gy0 + 7, 20, 12, '#3a9a3a'); R2(gx0 + 15, gy0 + 2, 3, 3, '#ffe46a');
       for (var y = 0; y < 12; y++){ var hw = 2 + Math.round(y*0.75); R2(gx0 + 10 - hw, gy0 + 7 + y, hw*2, 1, '#6a6a72'); if ((y + Math.floor(t*10)) % 4 < 2) R2(gx0 + 10, gy0 + 7 + y, 1, 1, '#f3efe6'); }
       var race = Math.sin(t*1.7); R2(gx0 + 5, gy0 + 13 - Math.round(race*2), 4, 3, '#e8402a'); R2(gx0 + 11, gy0 + 13 + Math.round(race*2), 4, 3, '#3a8ae8'); R2(gx0 + 5, gy0 + 16 - Math.round(race*2), 1, 1, '#151218'); R2(gx0 + 14, gy0 + 16 + Math.round(race*2), 1, 1, '#151218'); }
     else vigInto(ctx, (performance.now() < TV_STATIC || flick) ? 'static' : (CH ? 'anime' : 'film'), tvx + 2, F - 31, 20, 19, t);
@@ -3034,7 +3034,8 @@ var ROOMS = {
       if (f < 0.75) for (var k = 0; k < 4; k++) R2(zx0 - 2 + Math.round(Math.cos(t*5 + k*1.6)*8), F - 6 - Math.round(f*18) + Math.round(Math.sin(t*5 + k*1.6)*5), 1, 1, '#c9a0a8');
       for (var k = 0; k < 5; k++){ var an = t*4 + k*1.26; R2(zx0 + Math.round(Math.cos(an)*(6 + f*6)), F - 6 - Math.round(f*14) + Math.round(Math.sin(an)*(4 + f*10)), 1, 1, k % 2 ? '#ffe46a' : '#ffffff'); } }
     var zgame = nc >= 70 && nc < 80, zex = cx0 + 42;
-    if (nc >= 64 && nc < 67) rat(hole0 - (hole0 - zx0)*((nc - 64)/3), F - 2, -1);
+    if (!isDay()){}
+    else if (nc >= 64 && nc < 67) rat(hole0 - (hole0 - zx0)*((nc - 64)/3), F - 2, -1);
     else if (nc >= 67 && nc < 69) morph((nc - 67)/2);
     else if (nc >= 69 && nc < 70){ var zw = zachGuy(); zw.dir = -1; zw.v = 1; stPerson(ctx, zw, Math.round(zx0 + (zseat - zx0)*(nc - 69)), F + 2, t); }
     else if (zgame){ var zs = zachGuy(); zs.dir = 1; zs.v = 0; zs.sit = 1; zs.nocup = 1; stPerson(ctx, zs, zseat, F - 6, t);
