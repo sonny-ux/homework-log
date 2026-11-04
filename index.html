@@ -1107,7 +1107,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "9a3ca0904f";
+var APP_BUILD = "9a18b277f6";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1616,14 +1616,6 @@ function drawSkyline(ctx, W, H, t, st){
     for (var x = 0; x < W; x += 2){ var sx = x + Math.round(Math.sin(y*0.55 + t*1.8)*(1 + d*0.06)), q = Math.sin((sx + off)*12.9898 + Math.round(src)*78.233)*43758.5453, r = q - Math.floor(q);
       if (r > .8 && Math.sin(t*2 + x*0.3 + y) > 0){ ctx.globalAlpha = Math.max(.1, .6 - d/(H - shore)); ctx.fillStyle = isDay() ? (r > .93 ? '#ffffff' : '#b8d8ee') : (r > .93 ? '#ffe7a1' : '#c9a35a'); ctx.fillRect(x, y, 2, 1); ctx.globalAlpha = 1; } } }
   var ecx = ex - off; if (!isDay()) for (var y = shore + 2; y < H; y += 2){ ctx.globalAlpha = .35; ctx.fillStyle = cc; ctx.fillRect(Math.round(ecx - 1 + Math.sin(y*0.6 + t*2)*2), y, 3, 1); ctx.globalAlpha = 1; }
-  // an orange ferry crossing, its windows lit, a wake behind it
-  var fx = Math.round(((t*5) % (W + 70)) - 35), fy = shore + 14;
-  ctx.fillStyle = 'rgba(200,210,230,.35)'; for (var k = 1; k < 14; k++) if ((k + Math.floor(t*4)) % 3) ctx.fillRect(fx - k*2, fy + 3 + (k % 2), 2, 1);
-  ctx.fillStyle = '#e0892e'; ctx.fillRect(fx, fy, 26, 4); ctx.fillRect(fx + 1, fy + 4, 24, 1); ctx.fillStyle = '#b5651d'; ctx.fillRect(fx, fy + 3, 26, 1);
-  ctx.fillStyle = '#e8dcc0'; ctx.fillRect(fx + 4, fy - 3, 18, 3); ctx.fillRect(fx + 9, fy - 5, 8, 2);
-  for (var k = 0; k < 8; k++){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(fx + 5 + k*2, fy - 2, 1, 1); } for (var k = 0; k < 11; k++){ ctx.fillStyle = '#fff3c4'; ctx.fillRect(fx + 2 + k*2, fy + 1, 1, 1); }
-  ctx.fillStyle = '#241f1a'; ctx.fillRect(fx + 12, fy - 7, 2, 2); if (Math.floor(t*2) % 2){ ctx.fillStyle = '#ff5a4e'; ctx.fillRect(fx + 25, fy - 1, 1, 1); }
-  ctx.globalAlpha = .3; ctx.fillStyle = '#e0892e'; for (var y = fy + 6; y < Math.min(H, fy + 16); y += 2) ctx.fillRect(fx + 2 + Math.round(Math.sin(y + t*2)), y, 22, 1); ctx.globalAlpha = 1;
   // the Brooklyn Bridge in front: granite towers with their pointed double arches, the main cables hanging in a catenary,
   // the web of diagonal stays, the deck with its lamps and traffic, and the towers' reflections wavering in the river
   var DY2 = isDay(), b0 = Math.round(P*0.5), b1 = Math.round(P*0.7), deck = shore + 24, tt = deck - 58, aL = b0 - 70, aR = b1 + 70;
@@ -1652,6 +1644,14 @@ function drawSkyline(ctx, W, H, t, st){
     if (!DY2){ R(tx - 9, tt - 6, 1, 1, '#ff5a4e'); R(tx + 9, tt - 6, 1, 1, '#ff5a4e'); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,100,60,.1)'; ctx.fillRect(tx - 12 - off, tt - 4, 25, deck - tt + 4); ctx.globalCompositeOperation = 'source-over'; } });
   // lamp light on the water under the deck
   if (!DY2) for (var x = aL - 6; x < aR + 10; x += 8) for (var y = deck + 6; y < H; y += 3){ if (Math.sin(y*0.8 + t*2 + x) > .3){ ctx.globalAlpha = Math.max(0, .45 - (y - deck)/70); R(x + Math.round(Math.sin(y + t*2)), y, 1, 1, '#ffd36b'); ctx.globalAlpha = 1; } }
+  // an orange ferry crossing in front of the bridge, nearer to us, its windows lit, a wake behind it
+  var fx = Math.round(((t*5) % (W + 70)) - 35), fy = shore + 40;
+  ctx.fillStyle = 'rgba(200,210,230,.35)'; for (var k = 1; k < 14; k++) if ((k + Math.floor(t*4)) % 3) ctx.fillRect(fx - k*2, fy + 3 + (k % 2), 2, 1);
+  ctx.fillStyle = '#e0892e'; ctx.fillRect(fx, fy, 26, 4); ctx.fillRect(fx + 1, fy + 4, 24, 1); ctx.fillStyle = '#b5651d'; ctx.fillRect(fx, fy + 3, 26, 1);
+  ctx.fillStyle = '#e8dcc0'; ctx.fillRect(fx + 4, fy - 3, 18, 3); ctx.fillRect(fx + 9, fy - 5, 8, 2);
+  for (var k = 0; k < 8; k++){ ctx.fillStyle = '#ffe7a1'; ctx.fillRect(fx + 5 + k*2, fy - 2, 1, 1); } for (var k = 0; k < 11; k++){ ctx.fillStyle = '#fff3c4'; ctx.fillRect(fx + 2 + k*2, fy + 1, 1, 1); }
+  ctx.fillStyle = '#241f1a'; ctx.fillRect(fx + 12, fy - 7, 2, 2); if (Math.floor(t*2) % 2){ ctx.fillStyle = '#ff5a4e'; ctx.fillRect(fx + 25, fy - 1, 1, 1); }
+  ctx.globalAlpha = .3; ctx.fillStyle = '#e0892e'; for (var y = fy + 6; y < Math.min(H, fy + 16); y += 2) ctx.fillRect(fx + 2 + Math.round(Math.sin(y + t*2)), y, 22, 1); ctx.globalAlpha = 1;
   // above: planes on their approach, blinking, and a helicopter with a searchlight
   [[0.9, 0.08, 9, 0], [1.6, 0.2, -6, 3]].forEach(function(pl, i){ var span = W + 60, x = ((t*pl[2]*pl[0] + i*90) % span + span) % span - 30, y = Math.round(H*pl[1] + Math.sin(t*0.1 + i)*3) + Math.round((pl[2] > 0 ? x : W - x)*0.04);
     ctx.fillStyle = '#c9ccd6'; ctx.fillRect(Math.round(x) - 2, y, 5, 1); ctx.fillRect(Math.round(x), y - 1, 1, 3);
