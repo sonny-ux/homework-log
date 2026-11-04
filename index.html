@@ -478,6 +478,10 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 .prog small { display: block; color: var(--muted); line-height: 1.35; }
 
 #ptr { position: fixed; top: calc(6px + env(safe-area-inset-top)); left: 50%; transform: translate(-50%, 0); z-index: 90; opacity: 0; pointer-events: none; border: var(--rule) solid var(--ink); background: var(--note, var(--paper)); color: var(--ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; transition: opacity .15s; }
+#dive { position: fixed; inset: 0; z-index: 61; background: #061428; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
+#dive.on { display: flex; }
+#dive canvas { width: min(94vw, calc(80vh * 1.6)); aspect-ratio: 8 / 5; image-rendering: pixelated; box-shadow: 0 0 0 4px #1f3a5a, 0 0 0 6px #0a1424; touch-action: none; }
+#dive button { background: rgba(6,20,40,.55); color: #f3ead3; border: 1px solid rgba(243,234,211,.45); font: 11px var(--pixel); letter-spacing: .08em; text-transform: uppercase; padding: 8px 14px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -1156,7 +1160,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "faf4e66d56";
+var APP_BUILD = "5ed7a7948e";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -3122,8 +3126,9 @@ function drawRoom(ctx, W, H, t){ deepClear(ctx);
         px(x, y, c); } }
     // the yellow submarine: a periscope across the bay, then a surfacing out by the light
     var lu = (t + 10) % 46;
-    if (lu < 12){ var pxp = Math.round(-6 + (W*0.55)*(lu/12)), pyp = hz + 14; ctx.fillStyle = '#9a9a9a'; ctx.fillRect(pxp, pyp - 6, 1, 6); ctx.fillRect(pxp, pyp - 6, 3, 2); ctx.fillStyle = '#151218'; ctx.fillRect(pxp + 2, pyp - 6, 1, 2); for (var k = 0; k < 6; k++) if (Math.sin(k + t*4) > -.3){ ctx.fillStyle = DAY ? '#ffffff' : '#9aa9c8'; ctx.fillRect(pxp - 2 - k*2, pyp + (k % 2), 2, 1); } }
-    else if (lu > 16 && lu < 30){ var r2 = lu < 19 ? (lu - 16)/3 : lu > 27 ? (30 - lu)/3 : 1, scx2 = Math.round(W*0.38 + (lu - 23)*2), scy2 = Math.round(hz + 30 - r2*14);
+    window.LH_SUB = null;
+    if (lu < 12){ var pxp = Math.round(-6 + (W*0.55)*(lu/12)), pyp = hz + 14; window.LH_SUB = {x: pxp, y: pyp - 3}; ctx.fillStyle = '#9a9a9a'; ctx.fillRect(pxp, pyp - 6, 1, 6); ctx.fillRect(pxp, pyp - 6, 3, 2); ctx.fillStyle = '#151218'; ctx.fillRect(pxp + 2, pyp - 6, 1, 2); for (var k = 0; k < 6; k++) if (Math.sin(k + t*4) > -.3){ ctx.fillStyle = DAY ? '#ffffff' : '#9aa9c8'; ctx.fillRect(pxp - 2 - k*2, pyp + (k % 2), 2, 1); } }
+    else if (lu > 16 && lu < 30){ var r2 = lu < 19 ? (lu - 16)/3 : lu > 27 ? (30 - lu)/3 : 1, scx2 = Math.round(W*0.38 + (lu - 23)*2), scy2 = Math.round(hz + 30 - r2*14); window.LH_SUB = {x: scx2, y: scy2 - 4};
       drawSubmarine(ctx, scx2, scy2, t, false); for (var y = scy2 + 1; y < scy2 + 12; y++){ ctx.globalAlpha = 0.75; ctx.fillStyle = DAY ? '#4a8ac4' : '#1d2c52'; ctx.fillRect(scx2 - 26, y, 52, 1); ctx.globalAlpha = 1; }
       for (var x = scx2 - 22; x < scx2 + 22; x++) if (Math.sin(x*0.6 + t*3) > 0) px(x, scy2 + 1, DAY ? '#ffffff' : '#9aa9c8'); }
     // rocky point the lighthouse stands on, sea in front of it
@@ -3185,6 +3190,8 @@ function drawRoom(ctx, W, H, t){ deepClear(ctx);
   rest.addEventListener('click', function(e){ if (panMoved){ panMoved = false; e.stopPropagation(); e.preventDefault(); } }, true);
   cv.addEventListener('click', function(e){ var sa = window.SUB_AT; if (SCENES[scene] !== 'skyline' || !sa) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
     if (Math.abs(x - sa.x) > 30 || Math.abs(y - sa.y) > 16) return; e.stopPropagation(); if (window.openFlap) openFlap(); });
+  cv.addEventListener('click', function(e){ var ls = window.LH_SUB; if (SCENES[scene] !== 'lighthouse' || !ls) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
+    if (Math.abs(x - ls.x) > 28 || Math.abs(y - ls.y) > 16) return; e.stopPropagation(); if (window.openDive) openDive(); });
   window.REST_SPOTS = [];
   function goDeep(name, px, py){ var sw = document.getElementById('restswap'); sw.width = W; sw.height = H; sw.getContext('2d').drawImage(cv, 0, 0);
     sw.style.width = cv.clientWidth + 'px'; sw.style.height = cv.clientHeight + 'px'; sw.style.imageRendering = 'pixelated'; sw.style.display = 'block'; var st0 = performance.now();
@@ -4210,6 +4217,94 @@ ROOMS.block = function(ctx, W, H, t, go){
   window.openFlap = function(){ if (!el) build(); reset(); el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); last = 0; if (!raf) raf = requestAnimationFrame(loop); };
   window.__flapTest = function(n){ G.score = n; if (n > 33){ G.ph = 2; } };
   document.addEventListener('keydown', function(e){ if (!el || !el.classList.contains('on')) return; if (e.key === 'Escape') close(); else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'Enter'){ flap(); e.preventDefault(); } });
+})();
+
+// ===== Deep Run: the yellow submarine from the lighthouse, under the sea. Hold to rise, let go to sink; the sub runs forward by itself
+// and the sea speeds up. Pearls come in patterns; electric eels stretch across the water, torpedoes come in after a warning, and jellyfish drift.
+(function(){
+  var GW = 160, GH = 100, el = null, cv = null, g = null, raf = null, G = null, last = 0, KEY = 'hw-dive-best', SX = 34, TOP = 9, FLOOR = GH - 9;
+  function R(x, y, w, h, c){ g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
+  function txt(s, y, c){ ptext(g, s, Math.round(GW/2 - textW(s, 1)/2), y, 1, c); }
+  function best(){ try { return JSON.parse(localStorage.getItem(KEY) || '{"m":0,"p":0}'); } catch(e){ return {m: 0, p: 0}; } }
+  function reset(){ G = {state: 'ready', t: 0, y: GH/2, vy: 0, hold: false, scroll: 0, next: 120, obs: [], pearls: [], fx: [], dist: 0, got: 0, boom: 0, warnY: GH/2}; }
+  function speed(){ return Math.min(96, 42 + G.dist*0.035); }
+  // patterns of pearls, laid out ahead of the sub
+  function pearlRow(x0, y0, kind){ var P = [];
+    if (kind === 0) for (var i = 0; i < 8; i++) P.push([x0 + i*7, y0]);
+    else if (kind === 1) for (var i = 0; i < 11; i++) P.push([x0 + i*6, y0 + Math.sin(i*0.6)*12]);
+    else if (kind === 2) for (var r = 0; r < 3; r++) for (var c = 0; c < 5; c++) P.push([x0 + c*7, y0 - 7 + r*7]);
+    else for (var i = 0; i < 9; i++) P.push([x0 + i*6, y0 - Math.round(16*Math.sin(i/8*Math.PI))]);
+    P.forEach(function(p){ G.pearls.push({x: p[0], y: Math.max(TOP + 4, Math.min(FLOOR - 4, p[1]))}); }); }
+  function spawn(){ var x0 = G.scroll + GW + 16, r = Math.random(), lvl = Math.min(1, G.dist/900);
+    if (r < 0.42){ var len = 22 + Math.random()*20, ang = [0, Math.PI/2, Math.PI/4, -Math.PI/4][Math.floor(Math.random()*4)], cy = TOP + 14 + Math.random()*(FLOOR - TOP - 28);
+      G.obs.push({k: 'eel', x: x0, y: cy, ang: ang, len: len, spin: lvl > 0.4 && Math.random() < 0.35 ? (Math.random() < .5 ? 1 : -1)*0.8 : 0}); G.next = 58 + Math.random()*30 - lvl*14; }
+    else if (r < 0.62){ pearlRow(x0, TOP + 14 + Math.random()*(FLOOR - TOP - 28), Math.floor(Math.random()*4)); G.next = 60 + Math.random()*24; }
+    else if (r < 0.8){ G.obs.push({k: 'jelly', x: x0, y: TOP + 16 + Math.random()*(FLOOR - TOP - 32), ph: Math.random()*6}); if (Math.random() < 0.5) pearlRow(x0 + 26, TOP + 20 + Math.random()*50, 0); G.next = 44 + Math.random()*24; }
+    else { G.obs.push({k: 'torp', x: 0, y: G.y, warn: 1.25 - lvl*0.35, lock: 0.3, live: false}); G.next = 40 + Math.random()*20; } }
+  function press(on){ if (G.state === 'ready'){ if (on){ G.state = 'run'; G.hold = true; } return; }
+    if (G.state === 'over'){ if (on && G.boom > 1) reset(); return; } G.hold = on; }
+  function segDist(px, py, ax, ay, bx, by){ var dx = bx - ax, dy = by - ay, L = dx*dx + dy*dy, u = L ? Math.max(0, Math.min(1, ((px - ax)*dx + (py - ay)*dy)/L)) : 0, qx = ax + dx*u - px, qy = ay + dy*u - py; return Math.sqrt(qx*qx + qy*qy); }
+  function eelEnds(o){ var cx = o.x - G.scroll, a = o.ang + (o.spin ? G.t*o.spin : 0), hx = Math.cos(a)*o.len/2, hy = Math.sin(a)*o.len/2; return [cx - hx, o.y - hy, cx + hx, o.y + hy]; }
+  function hit(){ G.state = 'over'; G.boom = 0; G.hold = false; for (var i = 0; i < 18; i++) G.fx.push({x: SX, y: G.y, vx: (Math.random() - .5)*40, vy: -10 - Math.random()*30, life: 1, c: Math.random() < .5 ? '#ffe066' : '#cfe8ff'});
+    var b = best(), m = Math.floor(G.dist); if (m > b.m || (m === b.m && G.got > b.p)){ try { localStorage.setItem(KEY, JSON.stringify({m: Math.max(m, b.m), p: m >= b.m ? G.got : b.p})); } catch(e){} } }
+  function update(dt){ G.t += dt;
+    G.fx.forEach(function(p){ p.x += p.vx*dt; p.y += p.vy*dt; p.vy -= 6*dt; p.life -= dt*0.9; }); G.fx = G.fx.filter(function(p){ return p.life > 0; });
+    if (G.state === 'ready'){ G.y = GH/2 + Math.sin(G.t*2)*3; return; }
+    if (G.state === 'over'){ G.boom += dt; G.vy = Math.min(60, G.vy + 120*dt); G.y = Math.min(FLOOR - 3, G.y + G.vy*dt); return; }
+    var v = speed(); G.scroll += v*dt; G.dist += v*dt/4;
+    // the sub: holding blows the tanks and it rises; letting go it sinks; sand and surface stop it gently
+    G.vy += (G.hold ? -250 : 170)*dt; G.vy = Math.max(-95, Math.min(115, G.vy)); G.y += G.vy*dt;
+    if (G.y > FLOOR - 4){ G.y = FLOOR - 4; G.vy = 0; } if (G.y < TOP + 4){ G.y = TOP + 4; G.vy = 0; }
+    if (G.hold && Math.random() < 0.6) G.fx.push({x: SX - 8, y: G.y + 2, vx: -20 - Math.random()*10, vy: 6 + Math.random()*8, life: 0.6, c: '#cfe8ff'});
+    G.next -= v*dt; if (G.next <= 0) spawn();
+    G.pearls = G.pearls.filter(function(p){ var dx = p.x - G.scroll - SX, dy = p.y - G.y; if (dx*dx + dy*dy < 30){ G.got++; G.fx.push({x: SX + dx, y: p.y, vx: 0, vy: -8, life: 0.5, c: '#ffffff'}); return false; } return p.x - G.scroll > -10; });
+    G.obs.forEach(function(o){
+      if (o.k === 'eel'){ var e = eelEnds(o); if (segDist(SX, G.y, e[0], e[1], e[2], e[3]) < 4.5) hit(); }
+      else if (o.k === 'jelly'){ var jx = o.x - G.scroll, jy = o.y + Math.sin(G.t*1.6 + o.ph)*8; if ((jx - SX)*(jx - SX) + (jy - G.y)*(jy - G.y) < 36) hit(); }
+      else if (o.k === 'torp'){ if (!o.live){ if (o.warn > 0){ o.warn -= dt; o.y += (G.y - o.y)*Math.min(1, dt*3); } else { o.lock -= dt; if (o.lock <= 0){ o.live = true; o.tx = GW + 6; } } }
+        else { o.tx -= (190 + v)*dt; if (Math.abs(o.tx - SX) < 8 && Math.abs(o.y - G.y) < 4) hit(); } } });
+    G.obs = G.obs.filter(function(o){ return o.k === 'torp' ? !(o.live && o.tx < -20) : o.x - G.scroll > -40; }); }
+  // drawing
+  function sub(x, y, tilt){ var b = G.state === 'over' && Math.floor(G.boom*10) % 2 && G.boom < 0.8; if (b) return;
+    for (var yy = -3; yy <= 3; yy++){ var hw = Math.round(8*Math.sqrt(Math.max(0, 1 - Math.pow(yy/3.4, 2)))), off = Math.round(tilt*yy*0.3); R(x - hw + off, y + yy, hw*2 + 1, 1, yy > 1 ? '#d9a010' : yy < -2 ? '#ffe066' : '#f5c518'); }
+    R(x - 7, y, 15, 1, '#e04a2a'); R(x - 2, y - 6, 6, 3, '#f5c518'); R(x + 1, y - 9, 1, 3, '#9a9a9a'); R(x + 1, y - 9, 3, 1, '#9a9a9a');
+    R(x + 3, y - 1, 2, 2, '#bfe6ff'); R(x - 1, y - 1, 2, 2, '#bfe6ff'); var pr = Math.floor(G.t*14) % 2; R(x - 10, y - (pr ? 2 : 0), 1, pr ? 4 : 1, '#9a9a9a'); R(x - 9, y - 1, 1, 2, '#d9a010'); }
+  function bg(){ var d = Math.min(1, G.dist/1500), c0 = [40, 120, 170], c1 = [8, 22, 58];
+    for (var y = 0; y < GH; y++){ var f = y/GH, k = Math.min(1, d*0.7 + f*0.55); R(0, y, GW, 1, 'rgb(' + Math.round(c0[0] + (c1[0] - c0[0])*k) + ',' + Math.round(c0[1] + (c1[1] - c0[1])*k) + ',' + Math.round(c0[2] + (c1[2] - c0[2])*k) + ')'); }
+    g.globalAlpha = 0.07*(1 - d*0.6); g.fillStyle = '#ffffff'; for (var k = 0; k < 5; k++){ var rx = ((k*41 - G.scroll*0.15) % (GW + 60) + GW + 60) % (GW + 60) - 30; g.beginPath(); g.moveTo(rx, 0); g.lineTo(rx + 10, 0); g.lineTo(rx - 14, GH); g.lineTo(rx - 26, GH); g.fill(); } g.globalAlpha = 1;
+    R(0, 0, GW, TOP - 3, 'rgba(160,220,255,.25)'); for (var x = 0; x < GW; x += 2) R(x, TOP - 3 + Math.round(Math.sin(x*0.3 + G.t*3)), 2, 1, 'rgba(220,245,255,.5)');
+    for (var k = 0; k < 7; k++){ var fx = ((k*53 - G.scroll*0.35) % (GW + 40) + GW + 40) % (GW + 40) - 20, fy = 20 + (k*29) % 50; g.globalAlpha = 0.25; R(fx, fy, 4, 2, '#0a2a4a'); R(fx + 4, fy - 1, 2, 4, '#0a2a4a'); g.globalAlpha = 1; }
+    for (var x = -10; x < GW + 10; x += 9){ var wx = x - ((G.scroll*0.55) % 9), h = 8 + Math.round(Math.abs(Math.sin(Math.floor((x + G.scroll*0.55)/9)*2.3))*14); for (var yy = 0; yy < h; yy++) R(wx + Math.round(Math.sin(yy*0.4 + G.t*2 + x)*1.5), FLOOR - yy, 1, 1, yy % 3 ? '#1f5a3a' : '#2f7a4a'); }
+    R(0, FLOOR, GW, GH - FLOOR, '#c9a86a'); R(0, FLOOR, GW, 1, '#e0c890'); for (var x = -6; x < GW + 6; x += 6) R(x - (G.scroll % 6), FLOOR + 3 + ((x/6) % 2), 2, 1, '#a8885a');
+    for (var k = 0; k < 10; k++){ var bx = (k*31 + Math.sin(k)*20) % GW, by = GH - ((G.t*14 + k*23) % GH); R(bx + Math.sin(G.t + k)*2, by, 1, 1, 'rgba(220,245,255,.5)'); } }
+  function drawObs(){
+    G.pearls.forEach(function(p){ var x = p.x - G.scroll; if (x < -4 || x > GW + 4) return; R(x - 1, p.y - 1, 3, 3, '#f6f2ea'); R(x - 1, p.y - 1, 1, 1, '#ffffff'); R(x + 1, p.y + 1, 1, 1, '#c9c3d6'); });
+    G.obs.forEach(function(o){
+      if (o.k === 'eel'){ var e = eelEnds(o), n = Math.max(2, Math.round(o.len/2)), on = Math.sin(G.t*20 + o.x) > -0.3;
+        g.globalCompositeOperation = 'lighter'; for (var i = 0; i <= n; i++){ var u = i/n, x = e[0] + (e[2] - e[0])*u, y = e[1] + (e[3] - e[1])*u, w = Math.sin(u*Math.PI*4 + G.t*14)*1.4, nx = -(e[3] - e[1])/o.len, ny = (e[2] - e[0])/o.len;
+          R(x + nx*w - 1, y + ny*w - 1, 2, 2, '#4a7a3a'); if (on){ g.globalAlpha = .7; R(x + nx*w*0.3, y + ny*w*0.3, 1, 1, '#e8ff8a'); g.globalAlpha = 1; } }
+        g.globalCompositeOperation = 'source-over';
+        R(e[0] - 2, e[1] - 2, 4, 4, '#2a4a2a'); R(e[0] - 1, e[1] - 1, 1, 1, '#ffe066'); R(e[2] - 2, e[3] - 2, 4, 4, '#2a4a2a'); R(e[2] - 1, e[3] - 1, 2, 2, '#d8ff6a'); }
+      else if (o.k === 'jelly'){ var jx = o.x - G.scroll, jy = o.y + Math.sin(G.t*1.6 + o.ph)*8; g.globalAlpha = 0.85; for (var yy = -4; yy <= 0; yy++){ var hw = Math.round(5*Math.sqrt(1 - Math.pow(yy/4.5, 2))); R(jx - hw, jy + yy, hw*2 + 1, 1, yy < -2 ? '#ffb0e8' : '#e08ad0'); }
+        for (var k = -3; k <= 3; k += 2) for (var yy = 1; yy < 7; yy++) R(jx + k + Math.round(Math.sin(yy*0.8 + G.t*4 + k)), jy + yy, 1, 1, 'rgba(255,176,232,.7)'); g.globalAlpha = 1; R(jx - 1, jy - 2, 2, 1, '#ffffff'); }
+      else if (o.k === 'torp'){ if (!o.live){ var fl = o.warn > 0 ? Math.floor(G.t*6) % 2 : 1; if (fl){ R(GW - 10, o.y - 4, 8, 9, o.warn > 0 ? '#e0261c' : '#ff5a3a'); ptext(g, '!', GW - 7, o.y - 2, 1, '#fff3e6'); } }
+        else { R(o.tx - 6, o.y - 1, 12, 3, '#6a6a78'); R(o.tx - 7, o.y, 1, 1, '#c4473a'); R(o.tx + 6, o.y - 2, 2, 5, '#3a3a48'); for (var k = 0; k < 6; k++) R(o.tx + 9 + k*3, o.y + Math.round(Math.sin(k + G.t*20)), 2, 1, 'rgba(220,245,255,.6)'); } } }); }
+  function draw(){ bg(); drawObs(); sub(SX, G.y, G.vy/60);
+    G.fx.forEach(function(p){ g.globalAlpha = Math.max(0, p.life); R(p.x, p.y, 1, 1, p.c); }); g.globalAlpha = 1;
+    R(0, 0, GW, 8, 'rgba(4,10,30,.6)'); ptext(g, Math.floor(G.dist) + 'M', 3, 2, 1, '#f3ead3'); R(60, 3, 3, 3, '#f6f2ea'); ptext(g, String(G.got), 66, 2, 1, '#f6f2ea'); var b = best(), bs = 'BEST ' + Math.max(b.m, Math.floor(G.dist)) + 'M'; ptext(g, bs, GW - textW(bs, 1) - 3, 2, 1, '#ffe066');
+    if (G.state === 'ready'){ R(24, 58, 112, 26, 'rgba(4,10,30,.8)'); txt('HOLD TO RISE', 62, '#ffe066'); txt('LET GO TO SINK', 69, '#bfe6ff'); txt('TAP TO DIVE', 76, '#f3ead3'); }
+    if (G.state === 'over' && G.boom > 0.8){ R(30, 30, 100, 42, 'rgba(4,10,30,.85)'); txt('SUNK', 34, '#ff7a6a'); txt(Math.floor(G.dist) + 'M  ·  ' + G.got + ' PEARLS', 44, '#f3ead3'); txt('BEST ' + b.m + 'M', 53, '#ffe066'); if (G.boom > 1) txt('TAP TO DIVE AGAIN', 63, '#bfe6ff'); } }
+  function loop(now){ if (!el.classList.contains('on')){ raf = null; return; } var dt = Math.min(0.04, (now - (last || now))/1000); last = now; update(dt); draw(); raf = requestAnimationFrame(loop); }
+  function build(){ el = document.createElement('div'); el.id = 'dive'; el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<canvas width="' + GW + '" height="' + GH + '" aria-label="Deep Run: hold to rise, let go to sink"></canvas><button data-f="x">done</button>';
+    document.body.appendChild(el); cv = el.querySelector('canvas'); g = cv.getContext('2d');
+    cv.addEventListener('pointerdown', function(e){ e.preventDefault(); press(true); }); ['pointerup', 'pointercancel', 'pointerleave'].forEach(function(ev){ cv.addEventListener(ev, function(){ press(false); }); });
+    el.querySelector('button').addEventListener('click', close); }
+  function close(){ el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); }
+  window.openDive = function(){ if (!el) build(); reset(); el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); last = 0; if (!raf) raf = requestAnimationFrame(loop); };
+  window.__diveG = function(){ return G; };
+  document.addEventListener('keydown', function(e){ if (!el || !el.classList.contains('on')) return; if (e.key === 'Escape') close(); else if ((e.key === ' ' || e.key === 'ArrowUp') && !e.repeat){ press(true); e.preventDefault(); } });
+  document.addEventListener('keyup', function(e){ if (!el || !el.classList.contains('on')) return; if (e.key === ' ' || e.key === 'ArrowUp') press(false); });
 })();
 
 // ===== The racing game on Nico's TV: you drive the red car, Zach drives the blue one. Three lanes, traffic coming down,
