@@ -1130,7 +1130,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "0c21b56d7a";
+var APP_BUILD = "bb3eceff9f";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1143,7 +1143,7 @@ var APP_BUILD = "0c21b56d7a";
 // ===== More rest scenes. Swipe right again for the next one; left goes back.
 var FONT = {A:'010101111101101',B:'110101110101110',C:'011100100100011',D:'110101101101110',E:'111100110100111',F:'111100110100100',G:'011100101101011',H:'101101111101101',I:'111010010010111',J:'001001001101010',K:'101101110101101',L:'100100100100111',M:'101111111101101',N:'110101101101101',O:'010101101101010',P:'110101110100100',Q:'010101101110011',R:'110101110101101',S:'011100010001110',T:'111010010010010',U:'101101101101111',V:'101101101101010',W:'101101111111101',X:'101101010101101',Y:'101101010010010',Z:'111001010100111',
   '0':'111101101101111','1':'010110010010111','2':'110001010100111','3':'110001010001110','4':'101101111001001','5':'111100110001110','6':'011100111101111','7':'111001010010010','8':'111101111101111','9':'111101111001110',
-  ' ':'000000000000000','.':'000000000000010',':':'000010000010000','·':'000000010000000','-':'000000111000000','/':'001001010100100','~':'000011110000000','!':'010010010000010','%':'101001010100101','+':'000010111010000','?':'111001010000010'};
+  ' ':'000000000000000','.':'000000000000010',':':'000010000010000','·':'000000010000000','-':'000000111000000','/':'001001010100100','~':'000011110000000','!':'010010010000010','%':'101001010100101','+':'000010111010000','?':'111001010000010',"'":'010010000000000'};
 function ptext(ctx, str, x, y, sc, col){ ctx.fillStyle = col; str = String(str).toUpperCase(); var cx = x;
   for (var i = 0; i < str.length; i++){ var g = FONT[str[i]] || FONT[' ']; for (var r = 0; r < 5; r++) for (var c = 0; c < 3; c++) if (g[r*3+c] === '1') ctx.fillRect(cx + c*sc, y + r*sc, sc, sc); cx += 4*sc; }
   return cx - x; }
@@ -2160,6 +2160,7 @@ function drawFigLit(ctx, p, x, y, t, dark, scale, alpha){
   var s = scale || 1, w = Math.max(1, Math.round(60*s)), h = Math.max(1, Math.round(52*s));
   ctx.imageSmoothingEnabled = false; ctx.globalAlpha = Math.max(0, Math.min(1, alpha == null ? 1 : alpha));
   ctx.drawImage(FIGC, Math.round(x - 30*s), Math.round(y - 48*s), w, h); ctx.globalAlpha = 1; }
+function orbSeen(){ if (window.ORB_SEEN === undefined){ try { window.ORB_SEEN = localStorage.getItem('hw-orb') === '1'; } catch(e){ window.ORB_SEEN = false; } } return window.ORB_SEEN; }
 function velvetLady(){ return {skin: 0, hair: 'long', hc: '#2a1410', dress: 1, velvet: 1, jacket: '#1e2a8a', pants: '#1e2a8a', lips: '#b01a2a', ph: 0}; }
 function patchMan(){ return {skin: 0, hair: 'short', hc: '#1a1414', jacket: '#1a1a22', pants: '#1a1a22', patch: 1, ph: 2}; }
 function drawCinema(ctx, W, H, t){
@@ -2198,7 +2199,7 @@ function drawCinema(ctx, W, H, t){
   window.CINEMA_EXIT = {x: 0, y: stage + 7, w: 18, h: dB - stage - 5};
   if (cc >= 27 && cc < 36.2){ var wf = cc < 28 ? 0 : Math.min(1, (cc - 28)/6.3), lx = Math.round(W*0.72 - (W*0.72 - dX - 6)*wf), al = Math.min(1, (cc - 27)/1, cc > 34.6 ? (36.2 - cc)/1.6 : 1);
     var lady = velvetLady(), man = patchMan(); lady.dir = man.dir = -1; lady.v = man.v = (cc >= 28 && cc < 34.3) ? 1 : 0;
-    drawFigLit(ctx, man, lx + 8, dB, t, 0.35, 1, al); drawFigLit(ctx, lady, lx, dB, t, 0.3, 1, al); }
+    if (!orbSeen()) drawFigLit(ctx, man, lx + 8, dB, t, 0.35, 1, al); drawFigLit(ctx, lady, lx, dB, t, 0.3, 1, al); }
   // the two of you: her bowler, your long hair, her head on your shoulder; popcorn between you
   var fy = H - 6, cx = Math.round(W/2), s2 = 7, lean = Math.sin(t*0.12) > -.3 ? 1 : 0;
   ctx.fillStyle = '#3a0c14'; ctx.fillRect(cx - 22, fy - 8, 44, 14); ctx.fillStyle = '#5a1620'; ctx.fillRect(cx - 22, fy - 8, 44, 1);
@@ -2733,14 +2734,17 @@ function drawAlley(ctx, W, H, t){
     var sc3 = scl(dq), fy = gY(dq), xL = lerp(lX(dq), rX(dq), uq), gap = Math.max(3, Math.round(9*sc3)), xM = dirq > 0 ? xL - gap : xL + gap;
     if (pause){ xM = xL + gap; man.dir = -1; } else man.dir = dirq; lady.dir = dirq; lady.v = man.v = walk;
     var dk = Math.max(0.1, 0.62 - light(xL, fy - 15)*0.5);
-    drawFigLit(ctx, man, xM, fy, t, dk, sc3, alq); drawFigLit(ctx, lady, xL, fy, t, dk - 0.05, sc3, alq);
+    if (!orbSeen()) drawFigLit(ctx, man, xM, fy, t, dk, sc3, alq); drawFigLit(ctx, lady, xL, fy, t, dk - 0.05, sc3, alq);
     // under the lamp he lights her cigarette; then the smoke trails after them
     var mouthX = xL + (lady.dir > 0 ? 3 : -3)*sc3, mouthY = fy - 28*sc3;
-    if (cyc >= 7 && cyc < 7.9){ R(mouthX + 2*sc3, mouthY - 1, 1, 2, Math.floor(t*12) % 2 ? '#ffd36b' : '#ff8a3a'); glow(mouthX + 2*sc3, mouthY, 5, '140,90,30', 0.12); }
-    if (cyc >= 7.9){ R(mouthX + (lady.dir > 0 ? 1 : -2)*sc3, mouthY, Math.max(1, Math.round(2*sc3)), 1, '#e8e2d0'); if (Math.sin(t*2) > 0) R(mouthX + (lady.dir > 0 ? 3 : -3)*sc3, mouthY, 1, 1, '#ff6a2a');
+    if (cyc >= 7 && cyc < 7.9 && !orbSeen()){ R(mouthX + 2*sc3, mouthY - 1, 1, 2, Math.floor(t*12) % 2 ? '#ffd36b' : '#ff8a3a'); glow(mouthX + 2*sc3, mouthY, 5, '140,90,30', 0.12); }
+    if (cyc >= 7.9 && !orbSeen()){ R(mouthX + (lady.dir > 0 ? 1 : -2)*sc3, mouthY, Math.max(1, Math.round(2*sc3)), 1, '#e8e2d0'); if (Math.sin(t*2) > 0) R(mouthX + (lady.dir > 0 ? 3 : -3)*sc3, mouthY, 1, 1, '#ff6a2a');
       for (var k = 0; k < 5; k++){ var sp2 = (t*0.5 + k/5) % 1; ctx.globalAlpha = alq*0.4*(1 - sp2); R(mouthX + Math.sin(sp2*6 + k)*3 - dirq*sp2*6, mouthY - 2 - sp2*14*sc3, 2, 1, '#c9c9d4'); } ctx.globalAlpha = 1; } }
   // the piano: every so often one key goes down on its own and a note drifts up into the rain
-  if (ctx.canvas === window.REST_CV){ window.REST_SPOTS = [{x: M.px, y: M.py, w: M.pw, h: M.ph, go: 'club'}]; }
+  if (ctx.canvas === window.REST_CV) window.REST_SPOTS = [];
+  if (cyc >= 11.8){ var mbx = Math.round(lerp(lX(0.35), rX(0.35), 0.56)), mby = Math.round(gY(0.35)) + 1 - (cyc < 12.3 ? Math.round((12.3 - cyc)*14) : 0);
+    R(mbx, mby - 2, 4, 2, '#a01a2a'); R(mbx, mby - 2, 4, 1, '#c9a43a'); R(mbx + 1, mby - 1, 1, 1, '#2a3ca8'); if (Math.sin(t*2) > 0.6) R(mbx + 3, mby - 2, 1, 1, '#ffffff');
+    if (cyc >= 12.3 && ctx.canvas === window.REST_CV) window.REST_SPOTS.push({x: mbx - 4, y: mby - 7, w: 12, h: 10, go: 'club'}); }
   var pk = t % 7; if (pk < 1.6){ var kx = M.px + 1 + 2*(3 + Math.floor(t/7) % Math.max(1, Math.floor((M.pw - 4)/2))); R(kx, M.ky, 1, 2, '#8a8478'); var nf = pk/1.6; ctx.globalAlpha = 1 - nf; R(kx + Math.round(Math.sin(nf*6)*2), M.ky - 4 - Math.round(nf*16), 2, 2, '#c9c3b6'); R(kx + 1 + Math.round(Math.sin(nf*6)*2), M.ky - 8 - Math.round(nf*16), 1, 4, '#c9c3b6'); ctx.globalAlpha = 1; }
   // a cat on the bins, its eyes catching the light, its tail going
   var cbx = W - 20, cby = H - 3 - 16; R(cbx, cby - 4, 6, 4, '#0a0a0e'); R(cbx + 5, cby - 7, 4, 4, '#0a0a0e'); R(cbx + 5, cby - 8, 1, 1, '#0a0a0e'); R(cbx + 8, cby - 8, 1, 1, '#0a0a0e');
@@ -2829,8 +2833,9 @@ function drawClub(ctx, W, H, t){ deepClear(ctx);
   function table(x, y){ R(x - 7, y - 10, 15, 2, '#3a2418'); R(x, y - 8, 1, 8, '#2a1810'); R(x - 3, y, 7, 1, '#2a1810'); R(x - 2, y - 15, 5, 3, '#a01a2a'); R(x, y - 12, 1, 2, '#c9a43a'); L(function(){ for (var r = 9; r > 0; r -= 3){ ctx.fillStyle = 'rgba(120,20,30,.12)'; ctx.beginPath(); ctx.arc(X0 + x, y - 12, r, 0, 7); ctx.fill(); } }); }
   var tx1 = Math.round(SW*0.72), ty1 = H - 10; table(tx1, ty1);
   // the man with the eye patch, alone, smoking; on his table a cup that will not stay a cup
-  var man = patchMan(); man.dir = -1; man.v = 0; man.sit = 1; man.nocup = 1; drawFigLit(ctx, man, X0 + tx1 + 11, ty1 - 2, t, 0.35, 1, 1);
-  for (var k = 0; k < 5; k++){ var sp = (t*0.3 + k/5) % 1; ctx.globalAlpha = 0.35*(1 - sp); R(tx1 + 7 + Math.round(Math.sin(sp*5 + k)*3), ty1 - 30 - Math.round(sp*24), 2, 1, '#9a9aa8'); } ctx.globalAlpha = 1;
+  if (!orbSeen()){ var man = patchMan(); man.dir = -1; man.v = 0; man.sit = 1; man.nocup = 1; drawFigLit(ctx, man, X0 + tx1 + 11, ty1 - 2, t, 0.35, 1, 1); if (Math.sin(t*0.7) > 0.9) R(tx1 + 7, ty1 - 32, 1, 1, '#ffffff'); }
+  else { R(tx1 + 1, ty1 - 13, 3, 1, '#08080c'); R(tx1 + 4, ty1 - 13, 4, 1, '#3a3a44'); }
+  if (!orbSeen()) for (var k = 0; k < 5; k++){ var sp = (t*0.3 + k/5) % 1; ctx.globalAlpha = 0.35*(1 - sp); R(tx1 + 7 + Math.round(Math.sin(sp*5 + k)*3), ty1 - 30 - Math.round(sp*24), 2, 1, '#9a9aa8'); } ctx.globalAlpha = 1;
   var m = (Math.sin(t*0.45) + 1)/2, cX = tx1 - 4, cY = ty1 - 13;
   if (m < 0.3){ R(cX, cY - 3, 4, 3, '#e8e4dc'); R(cX + 4, cY - 2, 1, 1, '#e8e4dc'); R(cX + 5, cY - 3, 1, 2, '#e8e4dc'); R(cX + 1, cY - 3, 2, 1, '#3a2418'); }
   else if (m < 0.7){ R(cX, cY - 3, 6, 3, '#e0c8a8'); R(cX + 4, cY - 2, 1, 1, '#3a2418'); R(cX + 1, cY - 4, 3, 1, '#e0c8a8'); }
@@ -2847,6 +2852,9 @@ function drawClub(ctx, W, H, t){ deepClear(ctx);
   deepSpot(ctx, X0 + px0 - 1, py0 - 1, 12, 14, 'lighthouse');
   // a few heads in the dark, facing the stage
   for (var k = 0; k < 4; k++){ var hx = Math.round(SW*(0.36 + k*0.1)), hy = H - 4; R(hx, hy - 7, 6, 7, '#06040a'); R(hx + 1, hy - 8, 4, 1, '#06040a'); R(hx + 1, hy - 8, 4, 1, 'rgba(120,140,220,.35)'); }
+  // what she sings, one line at a time
+  t = Math.max(0, t); var song = orbSeen() ? ['I FOUND MY LIGHT', 'IN THE DARK', 'I SING ALONE NOW', 'AND I AM NOT BLUE'] : ['THEY TOOK MY LIGHT', 'AND LEFT ME BLUE', 'FIND ME IN ROOM', '4051'], ln = song[Math.floor(t/4) % 4], la = Math.min(1, (t % 4)/0.6, (4 - (t % 4))/0.6);
+  ctx.globalAlpha = Math.max(0, la); ptext(ctx, ln, X0 + Math.round(SW/2 - textW(ln, 1)/2), cB + 10, 1, '#9ab8ff'); ctx.globalAlpha = 1;
   // a ceiling fan turning very slowly
   var fa = t*0.6; R(Math.round(SW*0.5), 0, 1, 4, '#2a2a3a'); for (var k = 0; k < 2; k++){ var c = Math.cos(fa + k*Math.PI/2); R(Math.round(SW*0.5 - Math.abs(c)*10*(c < 0 ? 1 : 0)), 4, Math.max(1, Math.round(Math.abs(c)*10)), 1, '#2a2a3a'); }
 }
@@ -2890,11 +2898,13 @@ function drawCorridor(ctx, W, H, t){ deepClear(ctx);
   ctx.fillStyle = '#c9a43a'; ctx.beginPath(); ctx.moveTo(mx1, wallY(k1, 0.24)); ctx.lineTo(mx2, wallY(k2, 0.24)); ctx.lineTo(mx2, wallY(k2, 0.56)); ctx.lineTo(mx1, wallY(k1, 0.56)); ctx.fill();
   ctx.fillStyle = '#7a8a98'; ctx.beginPath(); ctx.moveTo(mx1 + 1, wallY(k1, 0.26)); ctx.lineTo(mx2 - 1, wallY(k2, 0.26)); ctx.lineTo(mx2 - 1, wallY(k2, 0.54)); ctx.lineTo(mx1 + 1, wallY(k1, 0.54)); ctx.fill();
   var mmx = (mx1 + mx2)/2, mmy = (wallY(k1, 0.4) + wallY(k2, 0.4))/2; R(mmx - 2, mmy, 5, 2, '#4a4a52'); R(mmx + 2, mmy - 1, 2, 2, '#4a4a52'); if (Math.sin(t*0.8) < 0.95) R(mmx + 3, mmy - 1, 1, 1, '#ff3a3a');
-  deepSpot(ctx, Math.round(mx1), Math.round(wallY(k1, 0.24)), Math.max(4, Math.round(mx2 - mx1)), Math.round(wallY(k1, 0.56) - wallY(k1, 0.24)), 'stage');
+  deepSpot(ctx, Math.round(mx1), Math.round(wallY(k1, 0.24)), Math.max(4, Math.round(mx2 - mx1)), Math.round(wallY(k1, 0.56) - wallY(k1, 0.24)), 'trip');
   // the man: at the far door, then halfway, then close, then gone
   var u = t % 12, mz = u < 3 ? 0 : u < 6 ? 6 : u < 9 ? 3.2 : u < 9.8 ? 1.8 : 0;
   if (mz){ var k = 1/mz, man = patchMan(); man.dir = -1; man.v = 0; drawFigLit(ctx, man, Math.round(cx), Math.round(cy + k*(H - cy)), t, 0.45, 0.62*k*H/48, u > 9 ? (Math.floor(t*12) % 2 ? 1 : 0.4) : 1); }
-  if (mz !== 6) deepSpot(ctx, Math.round(dxl - 2), dTop - 2, dw + 4, Math.round(fyB - dTop + 2), 'stage');
+  if (mz !== 6) deepSpot(ctx, Math.round(dxl - 2), dTop - 2, dw + 4, Math.round(fyB - dTop + 2), 'room');
+  var mat = '4051', mw = textW(mat, 1) + 4, mty = Math.round(fyB) + 2; R(cx - mw/2, mty, mw, 7, '#5a1a1a'); ptext(ctx, mat, Math.round(cx - mw/2 + 2), mty + 1, 1, '#c9a43a');
+  if (t < 4.5){ ctx.globalAlpha = Math.min(1, t/0.8, (4.5 - t)/0.8); var cap = "IT'S FOR YOU."; ptext(ctx, cap, Math.round(W/2 - textW(cap, 1)/2), 6, 1, '#c9c3b6'); ctx.globalAlpha = 1; }
 }
 
 // the stage: a proscenium in the dark, blue curtains drawn back; on the boards, two presences. One is made of light. The other
@@ -2955,8 +2965,46 @@ function drawWhite(ctx, W, H, t){ deepClear(ctx);
   for (var u = 0; u < 6.283; u += 0.03) for (var v = -1; v <= 1; v += 0.5){ var hw = 3.5, rr = 12 + v*hw*Math.cos(u/2), X = rr*Math.cos(u + t*0.4), Y = rr*Math.sin(u + t*0.4), Z = v*hw*Math.sin(u/2);
     var px = Math.round(mx + X), py = Math.round(my + Y*0.35 - Z); ctx.fillStyle = Math.cos(u/2) > 0 ? '#c9a43a' : '#8a6a2a'; ctx.fillRect(px, py, 1, 1); }
   // the words, arriving one line at a time
-  var lines = [['WHAT IS HIDDEN', 2], ['IS KNOWN', 5], ['BY ITS SHADOW.', 8], ['CARRY THE LIGHT', 13], ['INTO THE DARK.', 16]];
+  var lines = [['WHAT IS HIDDEN', 2], ['IS KNOWN', 5], ['BY ITS SHADOW.', 8], ['SHE CARRIES', 13], ['HER OWN LIGHT.', 16]];
   lines.forEach(function(q, i){ if (t < q[1]) return; ctx.globalAlpha = Math.min(1, (t - q[1])/1.5); var y = i < 3 ? 8 + i*7 : Math.round(H*0.86) + (i - 3)*7; ptext(ctx, q[0], Math.round(W/2 - textW(q[0], 1)/2), y, 1, '#7a5a1a'); ctx.globalAlpha = 1; });
+}
+
+// room 4051: olive walls, one lamp, blinds with the blue of the club's sign coming through. On the bed, a woman in black velvet
+// with her back to you. A radio on the nightstand speaks in the static. On the dresser, a light shut in a glass jar
+function drawRoom(ctx, W, H, t){ deepClear(ctx);
+  t = Math.max(0, t); var SW = Math.min(W, 170), X0 = Math.round((W - SW)/2), F = H - 30, c = t % 16;
+  function R(x, y, w, h, col){ ctx.fillStyle = col; ctx.fillRect(Math.round(X0 + x), Math.round(y), w, h); }
+  function L(fn){ ctx.globalCompositeOperation = 'lighter'; fn(); ctx.globalCompositeOperation = 'source-over'; }
+  ctx.fillStyle = '#3e3e24'; ctx.fillRect(0, 0, W, F); for (var x = 0; x < W; x += 6){ ctx.fillStyle = '#46462a'; ctx.fillRect(x, 0, 2, F); } for (var y = 8; y < F; y += 12) for (var x = (y % 24) ? 3 : 0; x < W; x += 6){ ctx.fillStyle = '#56563a'; ctx.fillRect(x, y, 1, 1); }
+  ctx.fillStyle = '#2a1e18'; ctx.fillRect(0, F - 3, W, 3); ctx.fillStyle = '#3a2a2a'; ctx.fillRect(0, F, W, H - F); for (var y = F + 3; y < H; y += 4) for (var x = (y % 8) ? 2 : 0; x < W; x += 4){ ctx.fillStyle = '#4a3434'; ctx.fillRect(x, y, 1, 1); }
+  // the window, blinds, blue light pulsing through
+  var wx = Math.round(SW*0.42), wy = 22, ww = 22, wh = 30, blue = 0.5 + 0.5*Math.sin(t*1.7) > 0.2; R(wx - 2, wy - 2, ww + 4, wh + 4, '#2a1e18'); R(wx, wy, ww, wh, blue ? '#2a3ca8' : '#141e5a'); for (var y = wy; y < wy + wh; y += 3) R(wx, y, ww, 2, '#8a8a70');
+  if (blue) L(function(){ ctx.fillStyle = 'rgba(30,50,140,.18)'; ctx.beginPath(); ctx.moveTo(X0 + wx, wy + wh); ctx.lineTo(X0 + wx + ww, wy + wh); ctx.lineTo(X0 + wx + ww + 10, F + 20); ctx.lineTo(X0 + wx - 10, F + 20); ctx.fill(); });
+  // a photograph on the wall: the two of them, her in blue and him in black
+  var pfx = Math.round(SW*0.12), pfy = 30; R(pfx - 1, pfy - 1, 12, 14, '#c9a43a'); R(pfx, pfy, 10, 12, '#d9d0b8'); R(pfx + 2, pfy + 4, 2, 7, '#1e2a8a'); R(pfx + 2, pfy + 2, 2, 2, '#e0b090'); R(pfx + 6, pfy + 4, 2, 7, '#151218'); R(pfx + 6, pfy + 2, 2, 2, '#e0b090'); R(pfx + 6, pfy + 2, 1, 1, '#08080c');
+  // the bed and her other self, in black velvet, back to you; at the last words she turns, and she wears his patch
+  var bL = Math.round(SW*0.05), bR = Math.round(SW*0.5); R(bL, F - 22, 3, 22, '#4a2a1a'); R(bL, F - 8, bR - bL, 8, '#4a2a1a'); R(bL + 3, F - 12, bR - bL - 3, 4, '#a08a3a'); R(bL + 3, F - 12, bR - bL - 3, 1, '#c0a84a'); R(bL + 4, F - 15, 8, 3, '#e8e4dc');
+  var dbl = velvetLady(); dbl.jacket = dbl.pants = '#0e0e16'; dbl.sit = 1; dbl.nocup = 1; dbl.v = 0; var turn = c >= 12.3; dbl.dir = turn ? 1 : -1; if (turn) dbl.patch = 1;
+  drawFigLit(ctx, dbl, X0 + bR - 10, F - 6 - (Math.sin(t*1.1) > 0 ? 1 : 0), t, 0.2, 1, 1);
+  // the nightstand: the lamp, and the radio
+  var nx = bR + 2; R(nx, F - 12, 12, 12, '#4a2a1a'); R(nx, F - 12, 12, 1, '#6a4a2a'); R(nx + 9, F - 26, 1, 14, '#2a2a2a'); R(nx + 6, F - 30, 7, 4, '#c9a43a');
+  L(function(){ for (var r = 14; r > 0; r -= 3){ ctx.fillStyle = 'rgba(130,100,40,.08)'; ctx.beginPath(); ctx.arc(X0 + nx + 9, F - 27, r, 0, 7); ctx.fill(); } });
+  R(nx + 1, F - 18, 7, 6, '#6a4a2a'); for (var y = F - 17; y < F - 13; y += 2) R(nx + 2, y, 3, 1, '#2a1a10'); R(nx + 6, F - 17, 1, 1, '#ff5a3a');
+  var talking = (c % 4) < 3.2; if (talking) for (var k = 1; k <= 3; k++) if (Math.floor(t*4 + k) % 3) { R(nx + 8 + k*2, F - 18 - k, 1, 1, '#c9c3b6'); R(nx + 8 + k*2, F - 14 + k, 1, 1, '#c9c3b6'); }
+  // what the radio says
+  var say = ['THIS IS 4051.', 'HE KEEPS MY LIGHT', 'IN A JAR.', 'HE IS ME.'][Math.floor(c/4)], sa = Math.min(1, (c % 4)/0.5, (4 - (c % 4))/0.5);
+  for (var k = 0; k < say.length*4; k += 3) if (Math.random() < 0.15) R(Math.round(SW/2 - textW(say, 1)/2) + k, 10, 1, 1, '#6a6a5a');
+  ctx.globalAlpha = Math.max(0, sa); ptext(ctx, say, X0 + Math.round(SW/2 - textW(say, 1)/2), 8, 1, '#e8e4dc'); ctx.globalAlpha = 1;
+  // the dresser, and on it the jar with her light, beating against the glass like a moth
+  var dx = Math.round(SW*0.7), dt0 = F - 18; R(dx, dt0, Math.round(SW*0.26), 18, '#4a2a1a'); R(dx, dt0, Math.round(SW*0.26), 1, '#6a4a2a'); R(dx + 2, dt0 + 5, Math.round(SW*0.26) - 4, 1, '#2a1a10'); R(dx + 2, dt0 + 11, Math.round(SW*0.26) - 4, 1, '#2a1a10');
+  var jx = dx + 5, jy = dt0 - 11; L(function(){ for (var r = 10; r > 0; r -= 2){ ctx.fillStyle = 'rgba(150,120,40,.08)'; ctx.beginPath(); ctx.arc(X0 + jx + 4, jy + 5, r, 0, 7); ctx.fill(); } });
+  R(jx, jy, 9, 11, 'rgba(160,190,200,.25)'); R(jx, jy, 1, 11, '#9ab0b8'); R(jx + 8, jy, 1, 11, '#9ab0b8'); R(jx, jy + 10, 9, 1, '#9ab0b8'); R(jx - 1, jy - 2, 11, 2, '#6a6a72');
+  var mx = jx + 4 + Math.round(Math.sin(t*5)*2.5), my = jy + 5 + Math.round(Math.cos(t*3.7)*3); R(mx - 1, my - 1, 3, 3, '#ffe46a'); R(mx, my, 1, 1, '#ffffff');
+  deepSpot(ctx, X0 + jx - 3, jy - 4, 15, 17, 'stage');
+  // a small TV on the dresser: on it, the cinema, two heads in the front row
+  if (SW < 120) return;
+  var tvx = dx + Math.round(SW*0.26) - 13, tvy = dt0 - 10; R(tvx, tvy, 12, 10, '#2a2a32'); R(tvx + 1, tvy + 1, 10, 7, '#140a0e'); R(tvx + 2, tvy + 1, 8, 3, '#c9c3b6'); R(tvx + 1, tvy + 5, 10, 3, '#3a0c14'); R(tvx + 4, tvy + 5, 2, 2, '#060304'); R(tvx + 7, tvy + 5, 2, 2, '#060304');
+  if (Math.random() < 0.1) R(tvx + 1, tvy + 1 + Math.floor(Math.random()*7), 10, 1, '#8a8a92');
 }
 
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
@@ -2966,7 +3014,7 @@ function drawWhite(ctx, W, H, t){ deepClear(ctx);
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
     if (sc === 'pastry' && innerHeight > innerWidth*1.1){ W = 150; H = Math.round(150*innerHeight/innerWidth); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'alley' ? 180 : sc === 'derek' ? 160 : (sc === 'club' || sc === 'corridor' || sc === 'stage' || sc === 'white') ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'alley' ? 180 : sc === 'derek' ? 160 : (sc === 'club' || sc === 'corridor' || sc === 'stage' || sc === 'white' || sc === 'room') ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -3028,11 +3076,11 @@ function drawWhite(ctx, W, H, t){ deepClear(ctx);
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle', 'trip', 'alley', 'derek', 'club', 'corridor', 'stage', 'white'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle', 'trip', 'alley', 'derek', 'club', 'corridor', 'stage', 'white', 'room'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
-    var DEEP = {club: drawClub, corridor: drawCorridor, stage: drawStage, white: drawWhite}; if (DEEP[SCENES[scene]]){ var t = (now - t0)/1000; DEEP[SCENES[scene]](ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
+    var DEEP = {club: drawClub, corridor: drawCorridor, stage: drawStage, white: drawWhite, room: drawRoom}; if (DEEP[SCENES[scene]]){ var t = (now - t0)/1000; DEEP[SCENES[scene]](ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'derek'){ var t = (now - t0)/1000; drawDerek(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'alley'){ var t = (now - t0)/1000; if (swapSnap && t < 0.9){ var zf = t/0.9; zf = zf*zf*(3 - 2*zf); ctx.drawImage(swapSnap, 0, 0, W, H); ctx.save(); ctx.beginPath(); ctx.arc(swapFrom.x, swapFrom.y, 4 + zf*Math.hypot(W, H), 0, 7); ctx.clip(); drawAlley(ctx, W, H, t); ctx.restore(); } else { swapSnap = null; drawAlley(ctx, W, H, t); } raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'trip'){ var t = (now - t0)/1000; if (tripSnap && t < 0.9){ var zf = t/0.9; zf = zf*zf*(3 - 2*zf); var fr = tripFrom, rx = fr.x*(1 - zf), ry = fr.y*(1 - zf), rw = fr.w + (W - fr.w)*zf, rh = fr.h + (H - fr.h)*zf; ctx.drawImage(tripSnap, 0, 0); ctx.save(); ctx.beginPath(); ctx.rect(rx, ry, rw, rh); ctx.clip(); ctx.translate(rx, ry); ctx.scale(rw/W, rh/H); drawTrip(ctx, W, H, t); ctx.restore(); } else { tripSnap = null; drawTrip(ctx, W, H, t); } raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
@@ -3075,7 +3123,7 @@ function drawWhite(ctx, W, H, t){ deepClear(ctx);
     t0 = performance.now(); });
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); window.REST_SPOTS = []; SPAN.val = null; SPAN.drag = null; size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest', 'down the mouse hole', 'the alley', 'derek\'s room', 'the blue hour', 'the corridor', 'the stage', '. . .'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest', 'down the mouse hole', 'the alley', 'derek\'s room', 'the blue hour', 'the corridor', 'the stage', '. . .', 'room 4051'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
