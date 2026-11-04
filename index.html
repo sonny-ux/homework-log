@@ -1127,7 +1127,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "bf56c156fb";
+var APP_BUILD = "63c5a397f8";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1664,8 +1664,11 @@ function drawSkyline(ctx, W, H, t, st){
   // the deck: a dark girder band, the promenade rail, lamps, cars crossing both ways
   R(aL - 10, deck, aR - aL + 20, 5, DY2 ? '#3a3848' : '#1e1a2c'); R(aL - 10, deck, aR - aL + 20, 1, DY2 ? '#6a6878' : '#5a5078'); R(aL - 10, deck + 4, aR - aL + 20, 1, DY2 ? '#2a2838' : '#2e2846'); for (var x = aL - 10; x < aR + 10; x += 3) R(x, deck + 2, 1, 1, DY2 ? '#2a2838' : '#2e2840');
   for (var x = aL - 6; x < aR + 10; x += 8){ R(x, deck - 3, 1, 3, '#2a2838'); R(x, deck - 4, 1, 1, DY2 ? '#c9c3b6' : '#ffd36b'); }
-  for (var k = 0; k < 6; k++){ var len = aR - aL + 20, cxr = aL - 10 + ((t*(10 + k*2) + k*37) % len), cxl = aR + 10 - ((t*(9 + k*2) + k*53) % len);
-    R(Math.round(cxr), deck + 1, 2, 1, DY2 ? '#c4473a' : '#fff6d8'); R(Math.round(cxl), deck + 1, 2, 1, DY2 ? '#2f5f9e' : '#ff5a4e'); }
+  var path = [[aL - 40, shore + 2], [aL - 8, deck], [aR + 8, deck]]; for (var f7 = 0.1; f7 <= 1.001; f7 += 0.1){ var xx = aR + 8 + 62*f7; path.push([xx, deck + (H + 6 - deck)*(f7*f7*0.6 + f7*0.4)]); }
+  var segs = [], plen = 0; for (var k = 1; k < path.length; k++){ var dl = Math.hypot(path[k][0] - path[k - 1][0], path[k][1] - path[k - 1][1]); segs.push(dl); plen += dl; }
+  function along(d){ d = ((d % plen) + plen) % plen; for (var k = 0; k < segs.length; k++){ if (d <= segs[k]){ var u = d/segs[k]; return [path[k][0] + (path[k + 1][0] - path[k][0])*u, path[k][1] + (path[k + 1][1] - path[k][1])*u, k]; } d -= segs[k]; } return path[path.length - 1].concat([0]); }
+  for (var k = 0; k < 6; k++){ var pa = along(t*(10 + k*2) + k*37), pb = along(plen - (t*(9 + k*2) + k*53)), big = pa[1] > deck + 8 ? 2 : 1, bigb = pb[1] > deck + 8 ? 2 : 1;
+    R(Math.round(pa[0]), Math.round(pa[1]) + 1, 2*big, big, DY2 ? '#c4473a' : '#fff6d8'); R(Math.round(pb[0]), Math.round(pb[1]) + 1 + big, 2*bigb, bigb, DY2 ? '#2f5f9e' : '#ff5a4e'); }
   // the bridge's two ends: on the left a stone anchorage and a ramp on arches back to the Manhattan shore; on the right an
   // anchorage on our side of the river, where the roadway comes down onto the bank: a stone embankment, a promenade, lamps and trees
   var rampL = aL - 40;
@@ -1674,10 +1677,12 @@ function drawSkyline(ctx, W, H, t, st){
     if ((x - rampL) % 8 === 0){ R(x, ry - 3, 1, 3, '#2a2838'); R(x, ry - 4, 1, 1, DY2 ? '#c9c3b6' : '#ffd36b'); } }
   [aL - 8, aR - 1].forEach(function(ax0){ R(ax0, deck - 6, 9, 20, stone); R(ax0, deck - 6, 9, 1, stoneL); R(ax0 + 8, deck - 6, 1, 20, stoneD); R(ax0 - 1, deck + 11, 11, 3, stoneD); R(ax0 + 3, deck + 4, 3, 6, DY2 ? '#8ab8e0' : '#141236');
     for (var y = deck - 3; y < deck + 11; y += 4) R(ax0 + 1, y, 7, 1, 'rgba(0,0,0,.14)'); });
-  var bank = aR + 8; R(bank, deck + 5, P - bank + 2, H - deck - 5, '#4a4038'); R(bank, deck + 5, P - bank + 2, 1, '#6a5a48'); for (var y = deck + 8; y < H; y += 4) for (var x = bank + ((y >> 2) % 2)*3; x < P; x += 6) R(x, y, 1, 3, '#3a3028');
-  R(bank, deck + 1, P - bank + 2, 4, DY2 ? '#5a8a4a' : '#1e2a22'); R(bank, deck, P - bank + 2, 1, DY2 ? '#7aa860' : '#2a3a2a'); R(aR + 7, deck, P - aR, 2, DY2 ? '#3a3848' : '#1e1a2c');
-  for (var x = bank + 6; x < P - 2; x += 14){ R(x, deck - 9, 1, 9, '#2a2838'); R(x - 1, deck - 10, 3, 1, DY2 ? '#c9c3b6' : '#ffd36b'); if (!DY2){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,100,50,.12)'; ctx.fillRect(x - 4 - off, deck - 6, 9, 7); ctx.globalCompositeOperation = 'source-over'; }
-    R(x + 7, deck - 7, 5, 5, DY2 ? '#3a6a3a' : '#16261c'); R(x + 9, deck - 2, 1, 2, '#3a2a1a'); }
+  // on our side the roadway comes off the anchorage and down toward us on its own arches, leaving the picture at the bottom
+  var rx0 = aR + 8, rx1 = aR + 70;
+  for (var x = rx0; x < rx1; x++){ var f6 = (x - rx0)/(rx1 - rx0), ry2 = Math.round(deck + (H + 6 - deck)*f6*f6*0.6 + (H + 6 - deck)*f6*0.4), th = Math.round(4 + f6*6), wl = Math.round(ry2 + th + 4 + f6*30);
+    if (ry2 > H) break; R(x, ry2, 1, th, DY2 ? '#3a3848' : '#1e1a2c'); R(x, ry2, 1, 1, DY2 ? '#6a6878' : '#5a5078'); R(x, ry2 + th - 1, 1, 1, DY2 ? '#2a2838' : '#2e2846');
+    var pierEvery = Math.round(8 + f6*10); if ((x - rx0) % pierEvery < 2 + Math.round(f6*3)) R(x, ry2 + th, 1, Math.max(0, wl - ry2 - th), stoneD);
+    if ((x - rx0) % pierEvery === 0){ var lh = Math.round(3 + f6*5); R(x, ry2 - lh, 1, lh, '#2a2838'); R(x, ry2 - lh - 1, 2, 1, DY2 ? '#c9c3b6' : '#ffd36b'); } }
   // the towers: granite, a cornice, two tall pointed arches; piers widening into the river
   [b0, b1].forEach(function(tx){ R(tx - 7, deck + 4, 15, 10, stoneD); R(tx - 8, deck + 11, 17, 3, stoneD); R(tx - 6, tt, 13, deck - tt + 4, stone); R(tx - 6, tt, 1, deck - tt + 4, stoneL); R(tx + 6, tt, 1, deck - tt + 4, stoneD);
     R(tx - 7, tt - 2, 15, 2, stoneL); R(tx - 6, tt - 4, 13, 2, stone); R(tx - 6, tt - 4, 13, 1, stoneL); R(tx - 7, tt + 5, 15, 1, stoneD);
