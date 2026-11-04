@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T21:51:17+00:00",
+ "updated": "2026-11-04T21:52:07+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -582,22 +582,6 @@
    "refs": [
     "homework 7"
    ]
-  },
-  {
-   "date": "2026-11-04",
-   "day": "Wed",
-   "week": "2026-11-01",
-   "class": "Topology",
-   "start": "4:46 PM",
-   "end": "now",
-   "start_min": 1006,
-   "end_min": 1011,
-   "minutes": 5,
-   "in_progress": true,
-   "topic": "Topology HW7 with the reference guide.",
-   "refs": [
-    "homework 7"
-   ]
   }
  ],
  "assignments": [
@@ -643,7 +627,7 @@
    "done": false,
    "source": "hand",
    "key": "homework 7",
-   "about": "30 pts on Canvas, due 11:59 PM; open until Thu 11/5. Problems not yet seen here; send the PDF for a breakdown."
+   "about": "Six questions on §22 quotients: Q1 crushing a closed set (classes; X/∼ Hausdorff), Q2 is the sign map open or closed, Q3 projections open but not always closed, Q4 folding a plane region onto ℝ (quotient map, not open, not closed), Q5 quotient then subspace versus subspace then quotient, Q6 open bijections. 30 pts on Canvas, due 11:59 PM; open until Thu 11/5. Guides: sonny-ux.github.io/topology-ch2 (Homework 7)."
   },
   {
    "due": "2026-11-06",
