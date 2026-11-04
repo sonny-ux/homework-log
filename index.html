@@ -1118,7 +1118,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "b4f324d96e";
+var APP_BUILD = "a60982c657";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1339,6 +1339,8 @@ function stPerson(ctx, p, x, y, t){
   else { U(-3, -25, 7, 1, 'rgba(0,0,0,.2)'); U(1, -24, 1, 10, 'rgba(255,255,255,.14)'); }
   if (!p.skirt && !p.dress){ U(-3, -14, 7, 1, '#151218'); U(1, -14, 1, 1, '#c9c3b6'); }
   if (p.dress){ [[-2,-23],[1,-22],[-1,-19],[2,-18],[0,-16],[-3,-17]].forEach(function(q, i){ U(q[0], q[1], 1, 1, i % 3 === 1 ? '#e9c45a' : '#5a6a7a'); }); U(0, -22, 1, 1, '#d6e0d6'); U(1, -21, 1, 1, '#9aa8a0'); }
+  if (p.velvet && !p.sit){ var vc = p.jacket; U(-3, -24, 7, 10, vc); U(-3, -14, 7, 5, vc); U(-4, -9, 9, 6, vc); U(-2, -23, 1, 19, '#3a4ac8'); U(-1, -25, 3, 1, sk);
+    [[-2,-21],[1,-23],[2,-19],[-1,-16],[1,-13],[-3,-11],[3,-10],[0,-8],[-2,-6],[2,-5],[4,-7],[-1,-19]].forEach(function(q, k){ if (Math.sin(t*6 + k*2.3) > 0.45) U(q[0], q[1], 1, 1, k % 3 ? '#9ab8ff' : '#ffffff'); }); }
   if (p.tiedye){ [[-3,-24,'#8e5fa8'],[-2,-23,'#8e5fa8'],[-1,-22,'#5a6aa8'],[0,-21,'#5a6aa8'],[1,-20,'#a85a8a'],[2,-19,'#a85a8a'],[3,-18,'#8e5fa8'],[-3,-17,'#5a6aa8'],[-2,-16,'#a85a8a'],[2,-24,'#a85a8a'],[3,-23,'#8e5fa8']].forEach(function(q){ U(q[0], q[1], 1, 1, q[2]); }); }
   if (p.toggles){ for (var k = 0; k < 4; k++) U(0, -23 + k*3, 2, 1, '#c9a07a'); U(-3, -25, 1, 11, '#3a3a28'); }
   if (p.collar){ U(-3, -25, 2, 3, p.collar); U(2, -25, 2, 3, p.collar); U(0, -25, 1, 4, '#2f6a45'); U(-1, -25, 1, 2, '#2f6a45'); U(1, -25, 1, 2, '#2f6a45'); }
@@ -1409,6 +1411,7 @@ function stPerson(ctx, p, x, y, t){
     for (var k = 0; k < 4; k++){ var sp = (t*0.25 + k/4) % 1; ctx.globalAlpha = .5*(1 - sp); U(6 + Math.round(Math.sin(sp*7 + k)*2 + sp*4), -33 - Math.round(sp*14), 1, 1, '#d9d4cc'); } ctx.globalAlpha = 1; }
   if (p.beard){ U(-1, -29, 4, 4, p.beard); U(0, -26, 3, 1, p.beard); U(1, -28, 2, 1, '#8a5a4a'); }
   if (p.kiss){ U(-1, -33, 4, 7, '#f6f2ea'); U(0, -32, 3, 3, '#151218'); U(1, -33, 1, 1, '#151218'); U(1, -29, 1, 1, '#151218'); U(-1, -31, 1, 1, '#151218'); U(1, -31, 1, 1, '#f6f2ea'); U(1, -28, 2, 1, '#c4473a'); }
+  if (p.patch){ U(0, -32, 3, 2, '#08080c'); U(-3, -33, 3, 1, '#08080c'); U(-1, -32, 1, 1, '#08080c'); }
   // hair
   var hc = p.hc;
   if (p.hair === 'mohawk'){ U(-2, -33, 4, 1, sd); [5, 7, 6, 4].forEach(function(h, i){ U(-2 + i, -33 - h, 1, h + 1, hc); }); U(-1, -39, 1, 1, '#fbf7ee'); }
@@ -2097,6 +2100,18 @@ function filmFrame(t){
   return FILM;
 }
 function drawFilm(ctx, x, y, w, h, t){ var f = filmFrame(t); ctx.imageSmoothingEnabled = w < 120; ctx.drawImage(f, x, y, w, h); ctx.imageSmoothingEnabled = false; }
+
+// a figure drawn small and then placed: shaded by how dark it is where it stands, scaled for depth, faded in or out
+var FIGC = null;
+function drawFigLit(ctx, p, x, y, t, dark, scale, alpha){
+  if (!FIGC){ FIGC = document.createElement('canvas'); FIGC.width = 60; FIGC.height = 52; }
+  var o = FIGC.getContext('2d'); o.clearRect(0, 0, 60, 52); stPerson(o, p, 30, 48, t);
+  if (dark > 0){ o.globalCompositeOperation = 'source-atop'; o.fillStyle = 'rgba(6,6,14,' + dark + ')'; o.fillRect(0, 0, 60, 52); o.globalCompositeOperation = 'source-over'; }
+  var s = scale || 1, w = Math.max(1, Math.round(60*s)), h = Math.max(1, Math.round(52*s));
+  ctx.imageSmoothingEnabled = false; ctx.globalAlpha = Math.max(0, Math.min(1, alpha == null ? 1 : alpha));
+  ctx.drawImage(FIGC, Math.round(x - 30*s), Math.round(y - 48*s), w, h); ctx.globalAlpha = 1; }
+function velvetLady(){ return {skin: 0, hair: 'long', hc: '#2a1410', dress: 1, velvet: 1, jacket: '#1e2a8a', pants: '#1e2a8a', lips: '#b01a2a', ph: 0}; }
+function patchMan(){ return {skin: 0, hair: 'short', hc: '#1a1414', jacket: '#1a1a22', pants: '#1a1a22', patch: 1, ph: 2}; }
 function drawCinema(ctx, W, H, t){
   ctx.fillStyle = '#140a0e'; ctx.fillRect(0, 0, W, H);
   for (var x = 0; x < W; x += 6){ ctx.fillStyle = '#1e0e14'; ctx.fillRect(x, 0, 3, H*0.6); }
@@ -2124,6 +2139,16 @@ function drawCinema(ctx, W, H, t){
       if (r === rows - 1 && Math.abs(x + sz - W/2) < step*1.3) continue;
       if (h > -0.35) head(x + (Math.sin(t*0.3 + i + r) > .97 ? 1 : 0), seatY + 1, sz, (i + r) % 3); } }
   ptext(ctx, 'EXIT', 2, stage + 9, 1, Math.sin(t*0.5) > -.9 ? '#ff4a3a' : '#7a1a14');
+  // the exit door under the sign; a woman in blue velvet and a man with an eye patch walk along the front and out through it
+  var cc = t % 45, dX = 3, dT = stage + 16, dB = stage + 52, dOpen = cc < 33.5 ? 0 : cc < 34.3 ? (cc - 33.5)/0.8 : cc < 36.5 ? 1 : cc < 37.3 ? 1 - (cc - 36.5)/0.8 : 0;
+  ctx.fillStyle = '#2a1a1c'; ctx.fillRect(dX - 1, dT - 1, 13, dB - dT + 1); ctx.fillStyle = '#1a0e10'; ctx.fillRect(dX, dT, 11, dB - dT);
+  if (dOpen > 0){ var ow = Math.round(11*dOpen); ctx.fillStyle = '#c99a4a'; ctx.fillRect(dX, dT, ow, dB - dT); ctx.fillStyle = '#8a6a3a'; ctx.fillRect(dX, dT + Math.round((dB - dT)*0.7), ow, 2);
+    ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,90,40,' + (0.25*dOpen) + ')'; ctx.beginPath(); ctx.moveTo(dX, dB); ctx.lineTo(dX + ow, dB); ctx.lineTo(dX + ow + 22, H); ctx.lineTo(dX, H); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; }
+  ctx.fillStyle = '#4a3a3c'; ctx.fillRect(dX + 8, dT + 18, 2, 1);
+  window.CINEMA_EXIT = {x: 0, y: stage + 7, w: 18, h: dB - stage - 5};
+  if (cc >= 27 && cc < 36.2){ var wf = cc < 28 ? 0 : Math.min(1, (cc - 28)/6.3), lx = Math.round(W*0.72 - (W*0.72 - dX - 6)*wf), al = Math.min(1, (cc - 27)/1, cc > 34.6 ? (36.2 - cc)/1.6 : 1);
+    var lady = velvetLady(), man = patchMan(); lady.dir = man.dir = -1; lady.v = man.v = (cc >= 28 && cc < 34.3) ? 1 : 0;
+    drawFigLit(ctx, man, lx + 8, dB, t, 0.35, 1, al); drawFigLit(ctx, lady, lx, dB, t, 0.3, 1, al); }
   // the two of you: her bowler, your long hair, her head on your shoulder; popcorn between you
   var fy = H - 6, cx = Math.round(W/2), s2 = 7, lean = Math.sin(t*0.12) > -.3 ? 1 : 0;
   ctx.fillStyle = '#3a0c14'; ctx.fillRect(cx - 22, fy - 8, 44, 14); ctx.fillStyle = '#5a1620'; ctx.fillRect(cx - 22, fy - 8, 44, 1);
@@ -2566,6 +2591,115 @@ function drawTrip(ctx, W, H, t){
   if (ctx.getTransform().a === 1){ if (!TRIP_LAST) TRIP_LAST = document.createElement('canvas'); if (TRIP_LAST.width !== W || TRIP_LAST.height !== H){ TRIP_LAST.width = W; TRIP_LAST.height = H; } TRIP_LAST.getContext('2d').drawImage(ctx.canvas, 0, 0); }
 }
 
+// ===== Scene 13: out the cinema's exit into an alley at night. Wet brick going back in perspective, one lamp on a bracket,
+// a fire escape, a neon sign that can't stay lit, steam from a grate, rain, an old upright piano left out, a cat on the bins.
+// The couple from the cinema come out of the door, stop under the lamp to light a cigarette, and walk off down the alley.
+function drawAlley(ctx, W, H, t){
+  var vx0 = Math.round(W*0.40), vx1 = Math.round(W*0.60), fyT = Math.round(H*0.30), fyB = Math.round(H*0.62), nb = H*0.93, nt = -H*0.12;
+  function lerp(a, b, u){ return a + (b - a)*u; }
+  function gY(d){ return lerp(nb, fyB, d); } function topY(d){ return lerp(nt, fyT, d); }
+  function lX(d){ return d*vx0; } function rX(d){ return W - d*(W - vx1); }
+  function scl(d){ return (gY(d) - topY(d))/(nb - nt); }
+  var Lx = Math.round(rX(0.35)) - 5, Ly = Math.round(lerp(topY(0.35), gY(0.35), 0.36));
+  function light(x, y){ var dx = x - Lx, dy = (y - Ly)*0.75, r = Math.max(28, W*0.42); var I = 1.25*Math.exp(-(dx*dx + dy*dy)/(r*r));
+    var fx = (vx0 + vx1)/2, fy = fyB - 6; I += 0.3*Math.exp(-((x - fx)*(x - fx) + (y - fy)*(y - fy))/Math.pow(W*0.16 + 8, 2)); return I; }
+  var A = drawAlley._c;
+  if (!A || A.width !== W || A.height !== H){
+    A = drawAlley._c = document.createElement('canvas'); A.width = W; A.height = H; var x2 = A.getContext('2d'), img = x2.createImageData(W, H), D = img.data;
+    function hash(a, b){ var q = Math.sin(a*12.9898 + b*78.233)*43758.5453; return q - Math.floor(q); }
+    for (var py = 0; py < H; py++) for (var px = 0; px < W; px++){
+      var rgb, d = -1, side = 0;
+      if (px < vx0){ d = px/vx0; side = 1; } else if (px > vx1){ d = (W - px)/(W - vx1); side = 2; }
+      var tY = side ? topY(d) : fyT, bY = side ? gY(d) : fyB, I = light(px, py);
+      if (side && py >= tY && py < bY){
+        var z = 1/(1 - 0.82*d), v = (py - tY)/(bY - tY), rv = v*30, row = Math.floor(rv), fr = rv - row, cvv = z*3 + (row % 2)*0.5, col = Math.floor(cvv), fc = cvv - col;
+        var mort = fr < (z < 3 ? 0.16 : 0.1) || (z < 3.5 && fc < 0.08), hv = hash(row, col + side*50);
+        rgb = mort ? [30, 26, 28] : [52 + hv*16, 26 + hv*8, 24 + hv*6];
+        var wcol = Math.floor(cvv/2) % 3 === 1, wrow = (row >= 3 && row <= 7) || (row >= 12 && row <= 16);
+        if (wcol && wrow && !(side === 1 && d < 0.32 && row > 10)){ rgb = hash(Math.floor(cvv/2), row > 10 ? 1 : 0) > 0.82 ? [120, 86, 40] : [14, 14, 22]; if (fr < 0.1 || fc < 0.06) rgb = [40, 34, 34]; }
+        I *= side === 2 ? 1 : 0.8; }
+      else if (!side && py >= fyT && py < fyB){
+        var fv = (py - fyT)/(fyB - fyT); rgb = [26 + fv*14, 28 + fv*10, 46 + fv*8];
+        var bh = fyT + Math.round((fyB - fyT)*(0.25 + 0.4*hash(Math.floor(px/4), 3))); if (py > bh){ rgb = [16, 16, 28]; if ((px % 3 === 1) && (py % 4 === 1) && hash(px, py) > 0.7) rgb = [150, 120, 60]; }
+        I *= 0.4; }
+      else if (py < (side ? tY : fyT)){ var sv = py/(H*0.3); rgb = [10 + sv*10, 12 + sv*10, 24 + sv*14]; I *= 0.25; }
+      else {
+        var gd = Math.max(-0.4, Math.min(0.99, (nb - py)/(nb - fyB))), gz = 1/(1 - 0.82*Math.max(0, gd)), gr = gz*5, grf = gr - Math.floor(gr), cobx = (px - W/2)/(W*0.06 + 1)/gz + Math.floor(gr)*0.5, cf = cobx - Math.floor(cobx);
+        rgb = [20, 20, 26]; if (gz < 3 && (grf < 0.12 || cf < 0.08)) rgb = [12, 12, 16]; else if (hash(Math.floor(cobx), Math.floor(gr)) > 0.7) rgb = [26, 26, 32];
+        I *= 1.1; }
+      var k = 0.2 + I, o = (py*W + px)*4;
+      D[o] = Math.min(255, rgb[0]*k + I*34); D[o + 1] = Math.min(255, rgb[1]*k + I*20); D[o + 2] = Math.min(255, rgb[2]*k + I*4); D[o + 3] = 255; }
+    x2.putImageData(img, 0, 0);
+    function P(x, y, w, h, c){ x2.fillStyle = c; x2.fillRect(Math.round(x), Math.round(y), w, h); }
+    // the cinema's back door on the left wall
+    for (var px = Math.round(lX(0.15)); px <= Math.round(lX(0.29)); px++){ var dd = px/vx0, b = gY(dd), hgt = 0.25*(gY(dd) - topY(dd)); P(px, b - hgt, 1, hgt, (px === Math.round(lX(0.15)) || px === Math.round(lX(0.29))) ? '#3a3238' : '#1a2420'); P(px, b - hgt - 1, 1, 1, '#4a4248'); }
+    // a fire escape on the right wall: two landings with railings and a stair between them
+    [0.2, 0.43].forEach(function(v, li){ for (var px = Math.round(rX(0.34)); px < Math.round(rX(0.02)); px++){ var dd = (W - px)/(W - vx1), y = lerp(topY(dd), gY(dd), v), sc2 = scl(dd);
+        P(px, y, 1, 1, '#0a0a0e'); P(px, y - Math.round(7*sc2), 1, 1, '#0e0e14'); if (px % 3 === 0) P(px, y - Math.round(7*sc2), 1, Math.round(7*sc2), '#121218'); }
+      if (li === 0){ for (var k = 0; k < 14; k++){ var dd2 = 0.30 - k*0.012, xs = rX(dd2), ys = lerp(lerp(topY(dd2), gY(dd2), 0.2), lerp(topY(dd2), gY(dd2), 0.43), k/14); P(xs, ys, 2, 1, '#0a0a0e'); } } });
+    // a neon sign's dark frame far down the left wall
+    var nx = Math.round(lX(0.62)) - 1, ny = Math.round(lerp(topY(0.62), gY(0.62), 0.32)); P(nx - 1, ny - 1, 7, 21, '#141018'); P(nx + 5, ny + 2, 3, 1, '#2a2228');
+    // the lamp's bracket and shade
+    P(Lx, Ly - 6, Math.round(rX(0.35)) - Lx, 1, '#141418'); P(Lx - 3, Ly - 5, 7, 2, '#1e1e24'); P(Lx - 4, Ly - 3, 9, 1, '#2a2a30');
+    // the grate, puddles on the stones
+    var gx = Math.round(W*0.47), gy0 = Math.round(gY(0.12)); P(gx - 6, gy0, 13, 3, '#0c0c10'); for (var k = -5; k <= 5; k += 2) P(gx + k, gy0, 1, 3, '#2a2a30');
+    [[0.55, 0.06, 14], [0.3, 0.3, 9], [0.62, 0.5, 6]].forEach(function(q){ var y = Math.round(gY(q[1])) + 2, x = Math.round(lerp(lX(q[1]), rX(q[1]), q[0])); for (var k = -q[2]; k <= q[2]; k++){ var hh = Math.round(2*Math.sqrt(1 - (k*k)/(q[2]*q[2]))); P(x + k, y - hh, 1, hh*2 + 1, '#1a1e2c'); } });
+    // an old upright piano left out against the wall, a few keys missing
+    var pw = Math.max(16, Math.min(26, Math.round(W*0.22))), pb = H - 3, ph2 = Math.round(pw*0.85); P(1, pb - ph2, pw, ph2, '#2a1810'); P(1, pb - ph2, pw, 2, '#3a2418'); P(2, pb - ph2 + 3, pw - 2, 5, '#1e120c');
+    P(2, pb - Math.round(ph2*0.45), pw - 2, 3, '#c9c3b6'); for (var k = 3; k < pw - 1; k += 2) P(k, pb - Math.round(ph2*0.45), 1, 2, k % 7 === 0 ? '#c9c3b6' : '#1a1210'); P(pw*0.6, pb - Math.round(ph2*0.45), 3, 3, '#1e120c');
+    P(1, pb - Math.round(ph2*0.45) + 3, pw, 1, '#3a2418'); P(3, pb - 2, 2, 2, '#1a0e08'); P(pw - 3, pb - 2, 2, 2, '#1a0e08');
+    // two bins on the right
+    [W - 24, W - 12].forEach(function(bx, k){ var by = H - 3, bh2 = 14 - k*2; P(bx, by - bh2, 10, bh2, '#2a2a32'); for (var y = by - bh2 + 3; y < by; y += 4) P(bx, y, 10, 1, '#1e1e26'); P(bx - 1, by - bh2 - 2, 12, 2, '#34343e'); P(bx + 4, by - bh2 - 3, 2, 1, '#34343e'); P(bx + 1, by - bh2, 1, bh2, '#3a3a44'); });
+    A._m = {nx: nx, ny: ny, gx: gx, gy: gy0};
+  }
+  ctx.drawImage(A, 0, 0); var M = A._m;
+  function R(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); }
+  function glow(x, y, r, col, a){ ctx.globalCompositeOperation = 'lighter'; for (var k = r; k > 0; k -= 2){ ctx.fillStyle = 'rgba(' + col + ',' + a + ')'; ctx.beginPath(); ctx.arc(x, y, k, 0, 7); ctx.fill(); } ctx.globalCompositeOperation = 'source-over'; }
+  var cyc = t % 40;
+  // the door: open while they come out, warm light from the cinema spilling across the stones
+  var dOp = cyc < 0.7 ? cyc/0.7 : cyc < 3 ? 1 : cyc < 3.8 ? 1 - (cyc - 3)/0.8 : 0;
+  if (dOp > 0){ var d0 = 0.15, d1 = lerp(0.15, 0.29, dOp); for (var px = Math.round(lX(d0)) + 1; px < Math.round(lX(d1)); px++){ var dd = px/vx0, b = gY(dd), hgt = 0.25*(gY(dd) - topY(dd)); R(px, b - hgt, 1, hgt, '#d9a050'); }
+    ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(140,90,40,' + (0.3*dOp) + ')'; ctx.beginPath(); ctx.moveTo(lX(0.15), gY(0.15)); ctx.lineTo(lX(0.29), gY(0.29)); ctx.lineTo(W*0.55, gY(0.2)); ctx.lineTo(W*0.4, gY(0.05)); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; }
+  var dbx = Math.round(lX(0.22)), dby = Math.round(gY(0.22) - 0.25*(gY(0.22) - topY(0.22))) - 4; R(dbx, dby, 2, 2, '#ffe0a0'); glow(dbx + 1, dby + 1, 6, '120,90,40', 0.08);
+  // the lamp: a warm bulb, a cone of light the rain shows up in, and its reflection trembling on the wet stones
+  var fl = Math.random() < 0.03 ? 0.4 : 1; R(Lx - 2, Ly - 2, 5, 2, fl > .5 ? '#fff0c0' : '#8a7a5a'); glow(Lx, Ly, 14, '130,100,50', 0.06*fl);
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(110,85,40,' + (0.1*fl) + ')'; ctx.beginPath(); ctx.moveTo(Lx - 3, Ly); ctx.lineTo(Lx + 3, Ly); ctx.lineTo(Lx + 22, gY(0.35)); ctx.lineTo(Lx - 26, gY(0.35)); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
+  for (var y = Math.round(gY(0.35)) + 1; y < H; y += 2){ var rx = Lx - 2 + Math.round(Math.sin(y*0.7 + t*3)*1.5 + (y - gY(0.35))*-0.15); ctx.globalAlpha = Math.max(0, 0.5 - (y - gY(0.35))/90); R(rx, y, 3, 1, '#e0b060'); ctx.globalAlpha = 1; }
+  // the neon sign, vertical, flickering and catching; its red smeared on the ground under it
+  var on = !(Math.sin(t*7.3) > 0.82 || (t % 9) < 0.35 || ((t % 9) > 0.6 && (t % 9) < 0.75)), ncol = on ? '#ff3a4a' : '#4a1a20';
+  ptext(ctx, 'B', M.nx + 1, M.ny + 1, 1, ncol); ptext(ctx, 'A', M.nx + 1, M.ny + 7, 1, ncol); ptext(ctx, 'R', M.nx + 1, M.ny + 13, 1, (on && Math.sin(t*13) > -0.6) ? '#ff3a4a' : '#4a1a20');
+  if (on){ glow(M.nx + 2, M.ny + 9, 9, '120,20,30', 0.07); var ry = Math.round(gY(0.62)); for (var y = ry; y < ry + 14; y += 2){ ctx.globalAlpha = 0.35 - (y - ry)/45; R(M.nx + Math.round(Math.sin(y + t*3)), y, 3, 1, '#ff3a4a'); } ctx.globalAlpha = 1; }
+  // a car's lights passing across the far end now and then
+  var cu = (t + 6) % 17; if (cu < 3){ var cx2 = Math.round(lerp(vx0 - 6, vx1 + 6, cu/3)); R(cx2, fyB - 3, 2, 1, '#fff6d8'); R(cx2 + 4, fyB - 3, 1, 1, '#ff4a3a'); glow(cx2, fyB - 3, 6, '120,110,80', 0.08); }
+  // steam out of the grate
+  for (var k = 0; k < 7; k++){ var sp = (t*0.25 + k/7) % 1, sx = M.gx + Math.round(Math.sin(sp*5 + k)*4 + sp*6), sy = M.gy - Math.round(sp*40); ctx.globalAlpha = 0.22*(1 - sp); R(sx - 3, sy - 2, 6 + Math.round(sp*6), 4, '#9a9aa8'); } ctx.globalAlpha = 1;
+  // the couple
+  var lady = velvetLady(), man = patchMan(), dq, uq, dirq, walk = 1, alq = 1, pause = false;
+  if (cyc >= 0.8 && cyc < 27){
+    if (cyc < 2.6){ var f = (cyc - 0.8)/1.8; dq = 0.22; uq = lerp(0.0, 0.3, f); dirq = 1; alq = Math.min(1, (cyc - 0.8)/0.5); }
+    else if (cyc < 6){ var f = (cyc - 2.6)/3.4; dq = lerp(0.22, 0.35, f); uq = lerp(0.3, 0.6, f); dirq = 1; }
+    else if (cyc < 12){ dq = 0.35; uq = 0.6; dirq = 1; walk = 0; pause = true; }
+    else { var f = (cyc - 12)/14; dq = lerp(0.35, 0.98, f); uq = lerp(0.6, 0.48, f); dirq = -1; alq = dq > 0.88 ? (0.98 - dq)/0.1 : 1; }
+    var sc3 = scl(dq), fy = gY(dq), xL = lerp(lX(dq), rX(dq), uq), gap = Math.max(3, Math.round(9*sc3)), xM = dirq > 0 ? xL - gap : xL + gap;
+    if (pause){ xM = xL + gap; man.dir = -1; } else man.dir = dirq; lady.dir = dirq; lady.v = man.v = walk;
+    var dk = Math.max(0.1, 0.62 - light(xL, fy - 15)*0.5);
+    drawFigLit(ctx, man, xM, fy, t, dk, sc3, alq); drawFigLit(ctx, lady, xL, fy, t, dk - 0.05, sc3, alq);
+    // under the lamp he lights her cigarette; then the smoke trails after them
+    var mouthX = xL + (lady.dir > 0 ? 3 : -3)*sc3, mouthY = fy - 28*sc3;
+    if (cyc >= 7 && cyc < 7.9){ R(mouthX + 2*sc3, mouthY - 1, 1, 2, Math.floor(t*12) % 2 ? '#ffd36b' : '#ff8a3a'); glow(mouthX + 2*sc3, mouthY, 5, '140,90,30', 0.12); }
+    if (cyc >= 7.9){ R(mouthX + (lady.dir > 0 ? 1 : -2)*sc3, mouthY, Math.max(1, Math.round(2*sc3)), 1, '#e8e2d0'); if (Math.sin(t*2) > 0) R(mouthX + (lady.dir > 0 ? 3 : -3)*sc3, mouthY, 1, 1, '#ff6a2a');
+      for (var k = 0; k < 5; k++){ var sp2 = (t*0.5 + k/5) % 1; ctx.globalAlpha = alq*0.4*(1 - sp2); R(mouthX + Math.sin(sp2*6 + k)*3 - dirq*sp2*6, mouthY - 2 - sp2*14*sc3, 2, 1, '#c9c9d4'); } ctx.globalAlpha = 1; } }
+  // a cat on the bins, its eyes catching the light, its tail going
+  var cbx = W - 20, cby = H - 3 - 16; R(cbx, cby - 4, 6, 4, '#0a0a0e'); R(cbx + 5, cby - 7, 4, 4, '#0a0a0e'); R(cbx + 5, cby - 8, 1, 1, '#0a0a0e'); R(cbx + 8, cby - 8, 1, 1, '#0a0a0e');
+  var tw2 = Math.round(Math.sin(t*1.5)*2); R(cbx - 1, cby - 5 + tw2, 1, 3, '#0a0a0e'); R(cbx - 2, cby - 6 + tw2, 1, 2, '#0a0a0e');
+  if (Math.sin(t*0.8) < 0.93){ R(cbx + 6, cby - 6, 1, 1, '#9aff6a'); R(cbx + 8, cby - 6, 1, 1, '#9aff6a'); }
+  // rain, slanting, brighter where it crosses the lamplight; rings in the puddles
+  for (var k = 0; k < Math.round(W*0.6); k++){ var rx2 = ((k*37 + t*30) % (W + 20)) - 10, ry2 = ((k*53 + t*140) % (H + 10)) - 5, li = light(rx2, ry2);
+    ctx.fillStyle = 'rgba(' + (li > 0.4 ? '230,210,170' : '150,160,185') + ',' + Math.min(0.55, 0.12 + li*0.35) + ')'; ctx.fillRect(Math.round(rx2), Math.round(ry2), 1, 3); ctx.fillRect(Math.round(rx2) - 1, Math.round(ry2) + 3, 1, 1); }
+  [[0.55, 0.06, 14], [0.3, 0.3, 9]].forEach(function(q, n){ var ph3 = (t*1.3 + n*0.5) % 1, y = Math.round(gY(q[1])) + 2, x = Math.round(lerp(lX(q[1]), rX(q[1]), q[0])) + Math.round(Math.sin(n*5 + Math.floor(t*1.3))*q[2]*0.5), rr = Math.round(1 + ph3*4);
+    ctx.globalAlpha = 0.5*(1 - ph3); R(x - rr, y, 1, 1, '#9aa0b8'); R(x + rr, y, 1, 1, '#9aa0b8'); R(x, y - 1, 1, 1, '#9aa0b8'); ctx.globalAlpha = 1; });
+}
+
 // ===== Rest screen: a pixel lighthouse on a shore at night. Swipe right to open; tap or swipe left to close.
 (function(){
   var rest = document.getElementById('rest'), cv = document.getElementById('restc'), ctx = cv.getContext('2d'), raf = null, W, H, stars = [], t0;
@@ -2573,7 +2707,7 @@ function drawTrip(ctx, W, H, t){
     cv.classList.toggle('smooth', sc === 'wave');
     if (sc === 'wave'){ W = Math.round(innerWidth*devicePixelRatio); H = Math.round(innerHeight*devicePixelRatio); cv.width = W; cv.height = H; return; }
     if (sc === 'pastry' && innerHeight > innerWidth*1.1){ W = 150; H = Math.round(150*innerHeight/innerWidth); cv.width = W; cv.height = H; return; }
-    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
+    H = sc === 'stmarks' ? 200 : sc === 'skyline' || sc === 'columbia' ? 200 : sc === 'vangogh' ? 170 : sc === 'cinema' ? 180 : sc === 'coney' ? 200 : sc === 'pastry' ? 140 : sc === 'anime' ? 180 : sc === 'jungle' ? 180 : sc === 'trip' ? 170 : sc === 'alley' ? 180 : sc === 'woolf' ? 180 : 160; W = Math.max(80, Math.round(H * innerWidth / innerHeight)); cv.width = W; cv.height = H;
     stars = []; var seed = 7; function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < W*0.9; i++) stars.push([Math.floor(rnd()*W), Math.floor(rnd()*H*0.55), rnd()*6.28, rnd() < .2]); }
   function px(x, y, c){ ctx.fillStyle = c; ctx.fillRect(x, y, 1, 1); }
@@ -2635,10 +2769,11 @@ function drawTrip(ctx, W, H, t){
     seasonParticles(ctx, W, H, t, 0);
     raf = requestAnimationFrame(function(n){ setTimeout(function(){ if (SCENES[scene] === 'lighthouse') draw(n); }, 70); });
   }
-  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle', 'trip'], scene = 0, cityState = null;
+  var SCENES = ['lighthouse', 'stmarks', 'cinema', 'woolf', 'skyline', 'columbia', 'vangogh', 'coney', 'pastry', 'anime', 'jungle', 'trip', 'alley'], scene = 0, cityState = null;
   function frame(now){
     if (SCENES[scene] === 'cinema'){ var t = (now - t0)/1000; drawCinema(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
     if (SCENES[scene] === 'wave' || SCENES[scene] === 'woolf'){ var t = (now - t0)/1000; (SCENES[scene] === 'wave' ? drawWaveTank : drawWoolfWaves)(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, SCENES[scene] === 'wave' ? 33 : 80); }); return; }
+    if (SCENES[scene] === 'alley'){ var t = (now - t0)/1000; if (swapSnap && t < 0.9){ var zf = t/0.9; zf = zf*zf*(3 - 2*zf); ctx.drawImage(swapSnap, 0, 0, W, H); ctx.save(); ctx.beginPath(); ctx.arc(swapFrom.x, swapFrom.y, 4 + zf*Math.hypot(W, H), 0, 7); ctx.clip(); drawAlley(ctx, W, H, t); ctx.restore(); } else { swapSnap = null; drawAlley(ctx, W, H, t); } raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'trip'){ var t = (now - t0)/1000; if (tripSnap && t < 0.9){ var zf = t/0.9; zf = zf*zf*(3 - 2*zf); var fr = tripFrom, rx = fr.x*(1 - zf), ry = fr.y*(1 - zf), rw = fr.w + (W - fr.w)*zf, rh = fr.h + (H - fr.h)*zf; ctx.drawImage(tripSnap, 0, 0); ctx.save(); ctx.beginPath(); ctx.rect(rx, ry, rw, rh); ctx.clip(); ctx.translate(rx, ry); ctx.scale(rw/W, rh/H); drawTrip(ctx, W, H, t); ctx.restore(); } else { tripSnap = null; drawTrip(ctx, W, H, t); } raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 90); }); return; }
     if (SCENES[scene] === 'jungle'){ var t = (now - t0)/1000; if (!cityState) cityState = {}; drawJungle(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); return; }
     if (SCENES[scene] === 'anime'){ var t = (now - t0)/1000; drawAnime(ctx, W, H, t); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 80); }); return; }
@@ -2650,14 +2785,18 @@ function drawTrip(ctx, W, H, t){
     if (SCENES[scene] === 'stmarks'){ var t = (now - t0)/1000; if (!cityState) cityState = stSetup(W, H); drawStMarks(ctx, W, H, t, cityState); raf = requestAnimationFrame(function(n){ setTimeout(function(){ frame(n); }, 70); }); }
     else draw(now);
   }
-  var tripSnap = null, tripFrom = null;
+  var tripSnap = null, tripFrom = null, swapSnap = null, swapFrom = null;
+  cv.addEventListener('click', function(e){ var f = window.CINEMA_EXIT; if (SCENES[scene] !== 'cinema' || !f) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
+    if (x < f.x - 3 || x > f.x + f.w + 3 || y < f.y - 3 || y > f.y + f.h + 3) return; e.stopPropagation();
+    swapSnap = document.createElement('canvas'); swapSnap.width = W; swapSnap.height = H; swapSnap.getContext('2d').drawImage(cv, 0, 0); swapFrom = {x: f.x + 8, y: f.y + f.h*0.6};
+    show(SCENES.indexOf('alley')); });
   cv.addEventListener('click', function(e){ var f = window.TRIP_FRAME; if (SCENES[scene] !== 'trip' || tripSnap || !f) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left)*W/b.width, y = (e.clientY - b.top)*H/b.height;
     if (x < f.x - 3 || x > f.x + f.w + 3 || y < f.y - 3 || y > f.y + f.h + 3) return; e.stopPropagation();
     tripSnap = document.createElement('canvas'); tripSnap.width = W; tripSnap.height = H; tripSnap.getContext('2d').drawImage(cv, 0, 0); tripFrom = {x: f.x, y: f.y, w: f.w, h: f.h};
     t0 = performance.now(); });
   function show(i){ scene = i; if (raf) cancelAnimationFrame(raf); size(); t0 = performance.now(); cityState = null;
     document.querySelectorAll('.rdots i').forEach(function(d, k){ d.classList.toggle('on', k === i); });
-    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest', 'down the mouse hole'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
+    var hint = rest.querySelector('.resthint'); hint.textContent = ['to the lighthouse', 'st. marks', 'the late show', 'the waves', 'the city', 'columbia', 'the windmill', 'coney island', 'the hungarian pastry shop', 'channel 2', 'the rainforest', 'down the mouse hole', 'the alley'][i]; hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
     frame(t0); }
   function open(i, src){ i = typeof i === 'number' ? i : 0; if (rest.classList.contains('on')){ show(i); return; }
     var r = src && src.getBoundingClientRect ? src.getBoundingClientRect() : null, cx = r ? r.left + r.width/2 : innerWidth/2, cy = r ? r.top + r.height/2 : innerHeight/2;
