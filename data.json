@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T21:53:19+00:00",
+ "updated": "2026-11-04T22:04:02+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -579,6 +579,22 @@
    "minutes": 30,
    "in_progress": false,
    "topic": "Equivalence relations and classes; saturated sets.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-04",
+   "day": "Wed",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "5:03 PM",
+   "end": "now",
+   "start_min": 1023,
+   "end_min": 1024,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "HW7 with the reference guide.",
    "refs": [
     "homework 7"
    ]
