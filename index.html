@@ -1155,7 +1155,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "7acb1acf43";
+var APP_BUILD = "9606413aa3";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1721,9 +1721,11 @@ function drawSkyline(ctx, W, H, t, st){
     for (var x = 0; x < W; x += 2){ var sx = x + Math.round(Math.sin(y*0.55 + t*1.8)*(1 + d*0.06)), q = Math.sin((sx + off)*12.9898 + Math.round(src)*78.233)*43758.5453, r = q - Math.floor(q);
       if (r > .8 && Math.sin(t*2 + x*0.3 + y) > 0){ ctx.globalAlpha = Math.max(.1, .6 - d/(H - shore)); ctx.fillStyle = isDay() ? (r > .93 ? '#ffffff' : '#b8d8ee') : (r > .93 ? '#ffe7a1' : '#c9a35a'); ctx.fillRect(x, y, 2, 1); ctx.globalAlpha = 1; } } }
   var ecx = ex - off; if (!isDay()) for (var y = shore + 2; y < H; y += 2){ ctx.globalAlpha = .35; ctx.fillStyle = cc; ctx.fillRect(Math.round(ecx - 1 + Math.sin(y*0.6 + t*2)*2), y, 3, 1); ctx.globalAlpha = 1; }
+  var SALUTE = -1;
   // fireworks off the river by the bridge when a session reaches 90 minutes: a one-minute show, then a short volley every 10 minutes after
   if (LS && LS.min >= 90){ var since = (LS.min - 90)*60, showT = since < 60 ? since : ((LS.min - 90) % 10 < 0.25 ? ((LS.min - 90) % 10)*60 : -1);
-    if (showT >= 0){ var FW = ['#e0a8ff', '#ff7ad8', '#a8c8ff', '#c99dff', '#ffe08a', '#8ae4ff', '#ffb0e8'], every = since < 60 ? 0.55 : 1.1, life = 2.8, rise = 0.8;
+    if (showT >= 0 && DAY) SALUTE = showT;
+    if (showT >= 0 && !DAY){ var FW = ['#e0a8ff', '#ff7ad8', '#a8c8ff', '#c99dff', '#ffe08a', '#8ae4ff', '#ffb0e8'], every = since < 60 ? 0.55 : 1.1, life = 2.8, rise = 0.8;
       ctx.globalCompositeOperation = 'lighter';
       for (var k = Math.max(0, Math.floor((showT - life - rise)/every)); k*every <= showT; k++){ var u0 = showT - k*every; if (u0 < 0 || u0 > rise + life) continue;
         var h1 = Math.sin(k*12.9898)*43758.5453, h2 = Math.sin(k*78.233)*12345.678; h1 -= Math.floor(h1); h2 -= Math.floor(h2);
@@ -1784,6 +1786,16 @@ function drawSkyline(ctx, W, H, t, st){
     if (!DY2){ R(tx - 6, tt - 5, 1, 1, '#ff5a4e'); R(tx + 6, tt - 5, 1, 1, '#ff5a4e'); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,100,60,.1)'; ctx.fillRect(tx - 8 - off, tt - 4, 17, deck - tt + 4); ctx.globalCompositeOperation = 'source-over'; } });
   // lamp light on the water under the deck
   if (!DY2) for (var x = aL - 6; x < aR + 10; x += 8) for (var y = deck + 6; y < H; y += 3){ if (Math.sin(y*0.8 + t*2 + x) > .3){ ctx.globalAlpha = Math.max(0, .45 - (y - deck)/70); R(x + Math.round(Math.sin(y + t*2)), y, 1, 1, '#ffd36b'); ctx.globalAlpha = 1; } }
+  // by day the 90-minute show is a water salute: two fireboats in front of the bridge shoot arcs of spray tinted red, white and blue,
+  // as FDNY fireboats do for celebrations
+  if (SALUTE >= 0){ var on = Math.min(1, SALUTE/2), BOATS = [[0.5, 1, 0], [0.68, -1, 2.1]], JET = ['#ff5a5a', '#ffffff', '#5aa8ff'];
+    BOATS.forEach(function(bt, bi){ var bx = Math.round(P*bt[0] + Math.sin(t*0.3 + bi)*5) - off, by = shore + 34 + bi*5; if (bx < -80 || bx > W + 80) return;
+      for (var j = 0; j < 3; j++){ var ang = (0.25 + j*0.32)*bt[1], vx = Math.sin(ang)*26, vy = -58 + j*6, col = JET[j];
+        for (var d = 0; d < 46; d++){ var tt2 = ((t*0.8 + d/46 + j*0.17 + bi*0.31) % 1)*2.6, px = bx + vx*tt2, py = by - 5 + vy*tt2 + 0.5*44*tt2*tt2; if (py > by) continue;
+          ctx.globalAlpha = on*Math.max(0, 1 - tt2*0.28); ctx.fillStyle = col; ctx.fillRect(Math.round(px), Math.round(py), tt2 < 1.6 ? 2 : 1, 2); }
+        ctx.globalAlpha = on*.35; ctx.fillStyle = '#ffffff'; for (var m = 0; m < 12; m++){ var u2 = 1.9 + m*0.06, mx2 = bx + vx*u2, my2 = by - 5 + vy*u2 + 22*u2*u2; if (my2 < by) ctx.fillRect(Math.round(mx2 + Math.sin(t*2 + m)*2), Math.round(my2), 3, 2); } ctx.globalAlpha = 1; }
+      ctx.fillStyle = '#c4302a'; ctx.fillRect(bx - 9, by, 19, 4); ctx.fillStyle = '#e8e4dc'; ctx.fillRect(bx - 5, by - 4, 10, 4); ctx.fillStyle = '#2a2a3a'; ctx.fillRect(bx - 1, by - 7, 3, 3); ctx.fillStyle = '#ff5a5a'; ctx.fillRect(bx, by - 8, 1, 1);
+      ctx.fillStyle = '#8a2a24'; ctx.fillRect(bx - 9, by + 4, 19, 1); ctx.globalAlpha = .7; ctx.fillStyle = '#ffffff'; for (var w = 0; w < 7; w++) ctx.fillRect(bx - 11 - w*3, by + 4 + Math.round(Math.sin(t*3 + w + bi)), 2, 1); ctx.globalAlpha = 1; }); }
   // an orange ferry crossing in front of the bridge, nearer to us, its windows lit, a wake behind it
   var fx = Math.round(((t*5) % (P + 70)) - 35 - off), fy = shore + 40;
   ctx.fillStyle = 'rgba(200,210,230,.35)'; for (var k = 1; k < 14; k++) if ((k + Math.floor(t*4)) % 3) ctx.fillRect(fx - k*2, fy + 3 + (k % 2), 2, 1);
