@@ -1118,7 +1118,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "a1f4d7da14";
+var APP_BUILD = "244fbd7a3b";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -3378,6 +3378,14 @@ ROOMS.street = function(ctx, W, H, t, go){
       R3(tx + TL - 1, bs - 12, 1, 2, '#ffffff'); R3(tx + TL*0.6, bs - 13, TL*0.4, 1, isDay() ? '#d4d8e0' : '#f3f6ff'); R3(tx, bs - 12, 1, 2, '#ff3a3a');
       if (!isDay()){ ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(150,150,170,.18)'; ctx.beginPath(); ctx.moveTo(tx + TL, bs - 11); ctx.lineTo(tx + TL + 30, bs - 3); ctx.lineTo(tx + TL + 30, bs + 2); ctx.fill(); ctx.globalCompositeOperation = 'source-over'; }
       if (ku >= 14.6 && ku < 16.4){ var dop = Math.min(1, (ku - 14.6)/0.4, (16.4 - ku)/0.4); R3(tx + 16, bs - 17, 10, 8, '#151218'); R3(tx + 16 - Math.round(dop*3), bs - 18, 9, 9, '#c4c8d0'); } } }
+  // now and then a masked hero in teal and orange swings down the block on a grappling line, hooking the cornice, a slice of pizza in his other hand
+  var hu = (t + 68) % 100, HL = 40, step = 2*HL*Math.sin(1), nsw = Math.ceil((W + 80)/step) + 1;
+  if (hu < nsw*1.1){ var kk = Math.floor(hu/1.1), uu = (hu - kk*1.1)/1.1, th = -1 + 2*uu, ax = -HL*Math.sin(1) - 14 + kk*step, ay = 1, hxp = ax + HL*Math.sin(th), hyp = ay + HL*Math.cos(th);
+    ctx.fillStyle = '#d9dde4'; for (var q = 0; q < HL; q += 1) ctx.fillRect(Math.round(ax + (hxp - ax)*q/HL), Math.round(ay + (hyp - ay)*q/HL), 1, 1); ctx.fillStyle = '#8a8a92'; ctx.fillRect(Math.round(ax) - 1, ay - 1, 3, 2);
+    var hero = {dir: 1, v: 0, sit: 1, nocup: 1, ph: 0, skin: 0, hair: 'short', hc: '#e8822a', jacket: '#1a7a7a', pants: '#1a7a7a'}, bx3 = Math.round(hxp - 3), by3 = Math.round(hyp + 21);
+    stPerson(ctx, hero, bx3, by3, t); ctx.fillStyle = '#e8822a'; ctx.fillRect(bx3 - 2, by3 - 30, 7, 8); ctx.fillRect(bx3 - 3, by3 - 29, 1, 6); ctx.fillStyle = '#151218'; ctx.fillRect(bx3 - 1, by3 - 27, 6, 2); ctx.fillStyle = '#ffffff'; ctx.fillRect(bx3 + 2, by3 - 27, 2, 1); ctx.fillStyle = '#e8822a'; ctx.fillRect(bx3 - 1, by3 - 21, 7, 1); ctx.fillStyle = '#f0a050'; ctx.fillRect(bx3 - 1, by3 - 30, 4, 1); ctx.fillRect(bx3 + 4, by3 - 3, 4, 3);
+    var bite = Math.min(3, Math.floor(hu/1.6)), sxp = bx3 + 7, syp = by3 - 20; ctx.fillStyle = '#d9a23a'; ctx.fillRect(sxp, syp, 5 - bite, 2); ctx.fillStyle = '#f0d070'; for (var q = 0; q < 4 - bite; q++) ctx.fillRect(sxp + q, syp + 2, Math.max(1, 4 - bite - q), 1); ctx.fillStyle = '#c4302a'; if (bite < 3) ctx.fillRect(sxp + 1, syp + 2, 1, 1); if (bite < 2) ctx.fillRect(sxp + 3, syp + 3, 1, 1);
+    if (Math.floor(hu*4) % 5 === 0){ ctx.fillStyle = '#f0d070'; ctx.fillRect(sxp - 1, syp + 5, 1, 1); } }
   // a streetlamp
   var lx = Math.round(W*0.3); ctx.fillStyle = '#151218'; ctx.fillRect(lx, 6, 1, curb - 6); ctx.fillRect(lx, 6, 6, 1); ctx.fillStyle = '#ffe7a1'; ctx.fillRect(lx + 4, 7, 3, 2);
   ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(120,96,40,.15)'; ctx.beginPath(); ctx.moveTo(lx + 5, 9); ctx.lineTo(lx - 14, curb); ctx.lineTo(lx + 26, curb); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
