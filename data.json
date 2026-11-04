@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T21:52:07+00:00",
+ "updated": "2026-11-04T21:53:19+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -616,7 +616,26 @@
    "done": false,
    "source": "hand",
    "key": "problem set 6",
-   "about": "King 5-2, 5-3, 5-6 (travelling waves). 1: write a wave's equation from amplitude, frequency, speed and start. 2: show functions solve the 1D and 3D wave equation. 3: convert wavelength and frequency for light and sound. 30 pts, one merged PDF on Gradescope, reasoning written beside the math."
+   "about": "King 5-2, 5-3, 5-6 (travelling waves). 1: write a wave's equation from amplitude, frequency, speed and start. 2: show functions solve the 1D and 3D wave equation. 3: convert wavelength and frequency for light and sound. 30 pts, one merged PDF on Gradescope, reasoning written beside the math.",
+   "progress": {
+    "parts": [
+     "1",
+     "2(i)",
+     "2(ii)",
+     "2(iii)",
+     "2(iv)",
+     "2(v)",
+     "2(b)",
+     "3"
+    ],
+    "done": [
+     "1",
+     "2(i)",
+     "2(ii)",
+     "2(iii)"
+    ],
+    "note": "Next: 2(iv) Ae^(i(ωt+kx)), then 2(v), 2(b) and Problem 3."
+   }
   },
   {
    "due": "2026-11-04",
@@ -627,7 +646,22 @@
    "done": false,
    "source": "hand",
    "key": "homework 7",
-   "about": "Six questions on §22 quotients: Q1 crushing a closed set (classes; X/∼ Hausdorff), Q2 is the sign map open or closed, Q3 projections open but not always closed, Q4 folding a plane region onto ℝ (quotient map, not open, not closed), Q5 quotient then subspace versus subspace then quotient, Q6 open bijections. 30 pts on Canvas, due 11:59 PM; open until Thu 11/5. Guides: sonny-ux.github.io/topology-ch2 (Homework 7)."
+   "about": "Six questions on §22 quotients: Q1 crushing a closed set (classes; X/∼ Hausdorff), Q2 is the sign map open or closed, Q3 projections open but not always closed, Q4 folding a plane region onto ℝ (quotient map, not open, not closed), Q5 quotient then subspace versus subspace then quotient, Q6 open bijections. 30 pts on Canvas, due 11:59 PM; open until Thu 11/5. Guides: sonny-ux.github.io/topology-ch2 (Homework 7).",
+   "progress": {
+    "parts": [
+     "Q1(a)",
+     "Q1(b)",
+     "Q2",
+     "Q3",
+     "Q4",
+     "Q5",
+     "Q6"
+    ],
+    "done": [
+     "Q1(a)"
+    ],
+    "note": "Q1(b) written, four small fixes left; Q2 set up; Q3–Q6 not started."
+   }
   },
   {
    "due": "2026-11-06",

@@ -469,6 +469,13 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 .livebar .lclock { font-size: 24px; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
 .livebar .lbar { grid-column: 1 / -1; height: 6px; border: var(--thin) solid var(--ink); position: relative; }
 .livebar .lbar i { position: absolute; left: 0; top: 0; bottom: 0; }
+
+/* progress recorded at the end of each session */
+.prog { margin-top: 6px; font-size: 12px; }
+.prog .pgb { display: block; height: 6px; border: var(--thin) solid var(--ink); position: relative; margin-bottom: 3px; max-width: 220px; }
+.prog .pgb i { position: absolute; left: 0; top: 0; bottom: 0; }
+.prog em { font-style: normal; color: var(--ink); display: block; }
+.prog small { display: block; color: var(--muted); line-height: 1.35; }
 </style>
 </head>
 <body>
@@ -813,7 +820,8 @@ function renderPlan(){
   var td = parse(nowStudy), by = dayStats();
   var doneToday = by[nowStudy] ? by[nowStudy].min : 0;
   var items = DATA.assignments.filter(function(a){ return !a.done && a.key && parse(a.due) >= addDays(td, -14); }).map(function(a){
-    var t = typicalMinutes(a), left = Math.max(0, t.m - spentOn(a));
+    var t = typicalMinutes(a), left = Math.max(0, t.m - spentOn(a)), pf = progFrac(a);
+    if (pf != null) left = pf >= 1 ? 0 : Math.max(15, t.m*(1 - pf)); // recorded progress: the share of parts still open
     var daysLeft = Math.round((parse(a.due) - td)/864e5);
     var late = daysLeft < 0, dueTonight = daysLeft === 0 || (daysLeft === 1 && a.time && /^(0?[0-9]|1[01]):\d\d AM/.test(a.time));
     var share = late ? left : left / Math.max(1, daysLeft + (a.time && /PM/.test(a.time) ? 1 : 0));
@@ -832,7 +840,7 @@ function renderPlan(){
   var lastNight = by[iso(addDays(td, -1))]; if (lastNight && lastNight.last >= 1440 + 120) tips.push('Last night ran until ' + clk(lastNight.last) + '; starting earlier today would leave the hard parts for when you are freshest.');
   el('plan').innerHTML = plan.map(function(p, i){
     var a = p.x.a, why = p.x.late ? 'past due; finish first' : p.x.daysLeft === 0 ? 'due today' : p.x.daysLeft === 1 ? 'due tomorrow' + (a.time ? ' ' + a.time.replace(':00','') : '') : 'due ' + DAYS[parse(a.due).getDay()] + ' · about ' + hm(Math.round(p.x.left)) + ' left';
-    return '<div class="pl" data-day="' + a.due + '"><span class="pn">' + (i+1) + '</span><i class="' + cls(a['class']) + '"></i><div><b>' + esc(a.title) + '</b> <small>' + esc(a['class']) + '</small><p>' + why + '</p></div><div class="pm">' + hm(Math.round(p.m)) + '</div></div>';
+    return '<div class="pl" data-day="' + a.due + '"><span class="pn">' + (i+1) + '</span><i class="' + cls(a['class']) + '"></i><div><b>' + esc(a.title) + '</b> <small>' + esc(a['class']) + '</small><p>' + why + '</p>' + progHtml(a) + '</div><div class="pm">' + hm(Math.round(p.m)) + '</div></div>';
   }).join('') + (tips.length ? tips.map(function(t){ return '<p class="tip">' + t + '</p>'; }).join('') : '');
 }
 
@@ -880,7 +888,7 @@ function renderHome(){
   var lastHtml = '<div class="tm">Nothing logged yet</div>';
   if (past){ var ago = past.in_progress ? 'happening now' : past.date === t ? 'today' : past.date === iso(addDays(today, -1)) ? 'yesterday' : DAYS[parse(past.date).getDay()] + ' ' + MON[parse(past.date).getMonth()] + ' ' + parse(past.date).getDate();
     lastHtml = '<div class="ls"><i class="' + cls(past['class']) + '"></i><div><b>' + esc(past['class']) + '</b> <small>' + esc(ago) + ', ' + esc(past.start) + '–' + esc(past.in_progress ? 'now' : past.end) + ' · ' + hm(past.minutes || 0) + '</small>' + (past.topic ? '<p>' + esc(past.topic) + '</p>' : '') + '</div></div>'; }
-  var nexts = [].slice.call(el('plan').querySelectorAll('.pl')).slice(0, 2).map(function(pl, i){ return '<div class="nx' + (i ? ' second' : '') + '"><i class="' + pl.querySelector('i').className + '"></i><div><b>' + esc(pl.querySelector('b').textContent) + '</b> <small>' + esc(pl.querySelector('.pm').textContent) + '</small>' + (i ? '' : '<p>' + esc(pl.querySelector('p').textContent) + '</p>') + '</div></div>'; }).join('');
+  var nexts = [].slice.call(el('plan').querySelectorAll('.pl')).slice(0, 2).map(function(pl, i){ return '<div class="nx' + (i ? ' second' : '') + '"><i class="' + pl.querySelector('i').className + '"></i><div><b>' + esc(pl.querySelector('b').textContent) + '</b> <small>' + esc(pl.querySelector('.pm').textContent) + '</small>' + (i ? '' : '<p>' + esc(pl.querySelector('p').textContent) + '</p>' + (pl.querySelector('.prog') ? pl.querySelector('.prog').outerHTML : '')) + '</div></div>'; }).join('');
   el('tiles').innerHTML =
     '<a class="tile wide last" href="#log" data-day="' + (past ? past.date : t) + '"><div class="tl">Last session</div>' + lastHtml + '</a>' +
     '<a class="tile wide accent" href="#asg"><div class="tl">Next up</div>' + (nexts || '<div class="tm">Nothing pressing</div>') + '</a>' +
@@ -1034,6 +1042,9 @@ function abbr(t){ return t.replace(/^Problem Set\s*/i,'PS ').replace(/^Homework\
 
 var DEFAULT_H = {'problem set':3, 'homework':8, 'paper':6, 'discussion post':1, 'midterm':8};
 function kindOf(key){ return (key||'').replace(/\s*\d+$/,''); }
+function progFrac(a){ var p = a.progress; return p && p.parts && p.parts.length ? p.done.length/p.parts.length : null; }
+function progHtml(a){ var p = a.progress; if (!p || !p.parts || !p.parts.length) return ''; var n = p.done.length, N = p.parts.length, left = p.parts.filter(function(x){ return p.done.indexOf(x) < 0; });
+  return '<div class="prog"><span class="pgb"><i class="' + cls(a['class']) + '" style="width:' + (100*n/N) + '%"></i></span><em>' + n + ' of ' + N + ' parts' + (left.length ? ' · next ' + esc(left[0]) : ' · all done') + '</em>' + (p.note ? '<small>' + esc(p.note) + '</small>' : '') + '</div>'; }
 function spentOn(a){ return DATA.sessions.filter(function(s){ return s['class']===a['class'] && (s.refs||[]).indexOf(a.key) >= 0; }).reduce(function(t,s){ return t+(s.minutes||0); },0); }
 function typicalMinutes(a){
   var kind = kindOf(a.key), seen = {};
@@ -1098,7 +1109,7 @@ function renderAssignments(){
   }
   function row(r){
     var st = r.a.done ? 'done' : r.days < 0 ? 'over' : r.days <= 2 ? 'soon' : '';
-    return '<div class="a ' + st + '" data-day="' + r.a.due + '"><div class="sw ' + cls(r.a['class']) + '"></div><div class="ti">' + esc(r.a.title) + '<small>' + esc(r.a['class']) + '</small>' + (r.a.about ? '<div class="about">' + esc(r.a.about) + '</div>' : '') + '</div><div class="when">' + when(r) + '</div></div>';
+    return '<div class="a ' + st + '" data-day="' + r.a.due + '"><div class="sw ' + cls(r.a['class']) + '"></div><div class="ti">' + esc(r.a.title) + '<small>' + esc(r.a['class']) + '</small>' + (r.a.about ? '<div class="about">' + esc(r.a.about) + '</div>' : '') + (r.a.done ? '' : progHtml(r.a)) + '</div><div class="when">' + when(r) + '</div></div>';
   }
   el('queue').innerHTML = groups.filter(function(g){ return g.items.length; }).map(function(g){
     return '<div class="grp ' + g.key + '"><div class="gh">' + g.name + ' <span>' + g.items.length + '</span></div><div class="as">' + g.items.map(row).join('') + '</div>' + (g.note ? '<p class="note">' + g.note + '</p>' : '') + '</div>';
@@ -1142,7 +1153,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "49193f13c5";
+var APP_BUILD = "19f234abaa";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
