@@ -1130,7 +1130,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "8e7a568c75";
+var APP_BUILD = "8ffeacd3aa";
 (function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -3884,13 +3884,13 @@ ROOMS.block = function(ctx, W, H, t, go){
   function txt(str, y, col){ ptext(g, str, Math.round(GW/2 - textW(str, 1)/2), y, 1, col); }
   function reset(){ G = {state: 'ready', y: 56, v: 0, x: 22, obs: [], birds: [], bt: 2, score: 0, t: 0, scroll: 0, boom: 0}; for (var k = 0; k < 3; k++) G.obs.push(make(GW + 20 + k*SPACING)); }
   function gapNow(){ return Math.max(30, Math.round(38 - (G ? G.score : 0)*0.5)); }
-  function speed(){ return Math.min(74, 38 + G.score*1.8); }
+  function speed(){ return Math.min(78, 30 + G.score*2.4); }
   function make(x){ var gp = gapNow(); return {x: x, gap: gp, gy: 20 + Math.round(Math.random()*(GH - 38 - gp - 20)), done: false, seed: Math.random()*100}; }
-  function flap(){ if (G.state === 'ready'){ G.state = 'run'; G.v = -62; return; } if (G.state === 'over'){ if (G.boom > 0.7) reset(); return; } G.v = -62; }
+  function flap(){ if (G.state === 'ready'){ G.state = 'run'; G.v = -70; return; } if (G.state === 'over'){ if (G.boom > 0.7) reset(); return; } G.v = -70; }
   function update(dt){ G.t += dt;
     if (G.state === 'ready'){ G.y = 56 + Math.sin(G.t*3)*3; G.scroll += dt*20; return; }
     if (G.state === 'over'){ G.boom += dt; if (G.y < GH - 12){ G.v += 260*dt; G.y += G.v*dt; } return; }
-    G.v = Math.min(118, G.v + 250*dt); G.y += G.v*dt; G.scroll += dt*speed();
+    G.v = Math.min(135, G.v + 310*dt); G.y += G.v*dt; G.scroll += dt*speed();
     G.obs.forEach(function(o){ o.x -= speed()*dt; if (!o.done && o.x + OW < G.x - 6){ o.done = true; G.score++; } });
     if (G.obs[0].x < -OW - 2){ G.obs.shift(); G.obs.push(make(G.obs[G.obs.length - 1].x + SPACING)); }
     if (G.y < 4 || G.y > GH - 12) die();
