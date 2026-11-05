@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T04:28:53+00:00",
+ "updated": "2026-11-05T04:54:45+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -637,12 +637,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "11:28 PM",
-   "end": "now",
+   "end": "11:54 PM",
    "start_min": 1408,
-   "end_min": 1408,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "HW7: Q4 write-up, then Q2.",
+   "end_min": 1434,
+   "minutes": 26,
+   "in_progress": false,
+   "topic": "HW7 Q4(c): why the projection is not closed.",
    "refs": [
     "homework 7"
    ]
@@ -725,7 +725,7 @@
      "Q1(a)",
      "Q3"
     ],
-    "note": "Q3 written; Q4 worked through ((b) via the section i(x) = (x, 0); (c) W = [0,∞)×(0,∞), C = right branch of xy = 1), write-up in progress. Next: Q4 write-up, Q2, Q1(b) fixes, Q5–Q6."
+    "note": "Q3 written; Q4 worked through and (c) explained, write-up in progress. Next: Q4 write-up, Q2, Q1(b) fixes, Q5–Q6 (Canvas open until Thu 11:59 PM)."
    }
   },
   {
