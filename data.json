@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T01:23:47+00:00",
+ "updated": "2026-11-05T02:02:57+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -605,12 +605,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "7:32 PM",
-   "end": "now",
+   "end": "9:02 PM",
    "start_min": 1172,
-   "end_min": 1223,
-   "minutes": 51,
-   "in_progress": true,
-   "topic": "HW7 write-up.",
+   "end_min": 1262,
+   "minutes": 90,
+   "in_progress": false,
+   "topic": "HW7 Q3 (a)–(b) written and checked; pad fixes.",
    "refs": [
     "homework 7"
    ]
@@ -690,9 +690,10 @@
      "Q6"
     ],
     "done": [
-     "Q1(a)"
+     "Q1(a)",
+     "Q3"
     ],
-    "note": "Q3(a) written and corrected (union of boxes, discard empty boxes, images respect unions); Q3(b) next (hyperbola xy = 1), then Q2, Q1(b) fixes, Q4–Q6."
+    "note": "Q3 (a) and (b) written; small fixes left (empty boxes; justify the image and why {0} is not open). Next: Q2, Q1(b) fixes, Q4–Q6."
    }
   },
   {
