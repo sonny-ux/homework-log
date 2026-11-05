@@ -835,11 +835,14 @@ function renderPlan(){
     var share = late ? left : left / Math.max(1, daysLeft + (a.time && /PM/.test(a.time) ? 1 : 0));
     return {a:a, left:left, daysLeft:daysLeft, late:late, today: Math.round(Math.min(left, Math.max(share, 30))/15)*15};
   }).filter(function(x){ return x.left > 10; });
+  // of several late assignments in one class, only the oldest is planned; the rest wait their turn
+  items = items.filter(function(x){ return !x.late || !items.some(function(y){ return y !== x && y.late && y.a['class'] === x.a['class'] && y.daysLeft < x.daysLeft; }); });
   // due today first (it closes soonest), then anything late, then by days left
   items.sort(function(x, y){ var r = function(i){ return i.daysLeft === 0 ? 0 : i.late ? 1 : 2; }; return r(x) - r(y) || x.daysLeft - y.daysLeft; });
   var budget = 0; Object.keys(by).forEach(function(k){ budget += by[k].min; }); budget = Math.max(150, Math.min(360, budget / Math.max(1, Object.keys(by).length)));
   var plan = [], used = 0;
-  items.forEach(function(x){ if (used >= budget) return; var m = Math.min(x.today, Math.max(30, budget - used)); plan.push({x:x, m:m}); used += m; });
+  items.forEach(function(x){ if (used >= budget && x.daysLeft > 1) return;   // anything due today or tomorrow always makes the plan
+    var m = Math.min(x.today, Math.max(30, budget - used)); plan.push({x:x, m:m}); used += m; });
   el('plansub').textContent = plan.length ? 'about ' + hm(Math.round(used)) + ' of work' : '';
   if (!plan.length){ el('plan').innerHTML = '<p class="nz" style="padding:10px 12px">Nothing pressing. A good day to get ahead or review.</p>'; return; }
   var tips = [];
@@ -897,7 +900,7 @@ function renderHome(){
   var lastHtml = '<div class="tm">Nothing logged yet</div>';
   if (past){ var ago = past.in_progress ? 'happening now' : past.date === t ? 'today' : past.date === iso(addDays(today, -1)) ? 'yesterday' : DAYS[parse(past.date).getDay()] + ' ' + MON[parse(past.date).getMonth()] + ' ' + parse(past.date).getDate();
     lastHtml = '<div class="ls"><i class="' + cls(past['class']) + '"></i><div><b>' + esc(past['class']) + '</b> <small>' + esc(ago) + ', ' + esc(past.start) + '–' + esc(past.in_progress ? 'now' : past.end) + ' · ' + hm(past.minutes || 0) + '</small>' + (past.topic ? '<p>' + esc(past.topic) + '</p>' : '') + '</div></div>'; }
-  var nexts = [].slice.call(el('plan').querySelectorAll('.pl')).slice(0, 2).map(function(pl, i){ return '<div class="nx' + (i ? ' second' : '') + '"><i class="' + pl.querySelector('i').className + '"></i><div><b>' + esc(pl.querySelector('b').textContent) + '</b> <small>' + esc(pl.querySelector('.pm').textContent) + '</small>' + (i ? '' : '<p>' + esc(pl.querySelector('p').textContent) + '</p>' + (pl.querySelector('.prog') ? pl.querySelector('.prog').outerHTML : '')) + '</div></div>'; }).join('');
+  var nexts = [].slice.call(el('plan').querySelectorAll('.pl')).slice(0, 3).map(function(pl, i){ return '<div class="nx' + (i ? ' second' : '') + '"><i class="' + pl.querySelector('i').className + '"></i><div><b>' + esc(pl.querySelector('b').textContent) + '</b> <small>' + esc(pl.querySelector('.pm').textContent) + '</small>' + (i ? '' : '<p>' + esc(pl.querySelector('p').textContent) + '</p>' + (pl.querySelector('.prog') ? pl.querySelector('.prog').outerHTML : '')) + '</div></div>'; }).join('');
   el('tiles').innerHTML =
     '<a class="tile wide last" href="#log" data-day="' + (past ? past.date : t) + '"><div class="tl">Last session</div>' + lastHtml + '</a>' +
     '<a class="tile wide accent" href="#asg"><div class="tl">Next up</div>' + (nexts || '<div class="tm">Nothing pressing</div>') + '</a>' +
@@ -1162,7 +1165,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "1f5d1bd232";
+var APP_BUILD = "44fbe5f583";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
