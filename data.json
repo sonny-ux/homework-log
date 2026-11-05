@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T23:41:53+00:00",
+ "updated": "2026-11-05T00:32:26+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -595,6 +595,22 @@
    "minutes": 98,
    "in_progress": false,
    "topic": "HW7 Q3: open map by boxes; hyperbola closed set.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-04",
+   "day": "Wed",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "7:32 PM",
+   "end": "now",
+   "start_min": 1172,
+   "end_min": 1172,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "HW7 write-up.",
    "refs": [
     "homework 7"
    ]
