@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T05:37:26+00:00",
+ "updated": "2026-11-05T06:06:28+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -653,12 +653,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "12:37 AM",
-   "end": "now",
+   "end": "1:06 AM",
    "start_min": 37,
-   "end_min": 37,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "HW7: Q4 write-up, then Q2.",
+   "end_min": 66,
+   "minutes": 29,
+   "in_progress": false,
+   "topic": "HW7 Q5: max(0, y) and the folding map; (a) plan.",
    "refs": [
     "homework 7"
    ]
@@ -741,7 +741,7 @@
      "Q1(a)",
      "Q3"
     ],
-    "note": "Q3 written; Q4 worked through and (c) explained, write-up in progress. Next: Q4 write-up, Q2, Q1(b) fixes, Q5–Q6 (Canvas open until Thu 11:59 PM)."
+    "note": "Q3 written; Q4 worked through; Q5(a) being written. Next: Q5(a)–(b), Q4 write-up, Q2, Q1(b) fixes, Q6 (Canvas open until Thu 11:59 PM)."
    }
   },
   {
