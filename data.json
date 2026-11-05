@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T02:02:57+00:00",
+ "updated": "2026-11-05T03:03:59+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -611,6 +611,22 @@
    "minutes": 90,
    "in_progress": false,
    "topic": "HW7 Q3 (a)–(b) written and checked; pad fixes.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-04",
+   "day": "Wed",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "10:03 PM",
+   "end": "now",
+   "start_min": 1323,
+   "end_min": 1323,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "HW7: Q3 fixes, then Q2.",
    "refs": [
     "homework 7"
    ]
