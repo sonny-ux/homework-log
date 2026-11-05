@@ -1162,7 +1162,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "4e93a52110";
+var APP_BUILD = "2cbde4ef94";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -3928,7 +3928,7 @@ function turtleWalk(ctx, W, fh, t){
 // and the ON AIR light hanging from the ceiling over it. Right: the booth, foam on the walls, you at the microphone.
 // The light is on only while a session is running; then the clock counts the session, the reels turn, the meters jump and you sing.
 ROOMS.recording = function(ctx, W, H, t, go){
-  var F = roomShell(ctx, W, H, '#34303c', '#302c38', '#4a4456'), S = [], LS = liveSession(), on = !!LS;
+  var F = roomShell(ctx, W, H, '#34303c', '#302c38', '#4a4456'), S = [], LS = liveSession(), on = !!LS, play = true;   // the tape always rolls: your session, or the band's when you are out
   function B(x, y, w, h, c){ ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); }
   var xw = Math.round(W*0.52);
   // the booth: acoustic foam in wedges, a warm lamp
@@ -3948,7 +3948,7 @@ ROOMS.recording = function(ctx, W, H, t, go){
     B(px - 3, F - 37, 7, 1, '#151218'); B(px - 4, F - 35, 2, 4, '#151218'); B(px + 3, F - 35, 2, 4, '#151218'); B(px - 4, F - 34, 1, 2, '#c4473a');
     for (var k = 0; k < 3; k++){ var ph = (t*0.45 + k/3) % 1, nc = ['#ffd36b', '#f3ead3', '#ff8ad8'][k], ny = F - 34 - Math.round(ph*16 + Math.sin(ph*10 + k)*2), nx = px - 10 - Math.round(ph*10); ctx.globalAlpha = 1 - ph; B(nx, ny, 2, 2, nc); B(nx + 1, ny - 4, 1, 4, nc); ctx.globalAlpha = 1; } }
   else { var sx = mx + 14; B(sx - 3, F - 9, 7, 2, '#5a412f'); B(sx - 2, F - 7, 1, 7, '#3b2a24'); B(sx + 2, F - 7, 1, 7, '#3b2a24'); B(sx - 2, F - 3, 5, 1, '#3b2a24');
-    /* out of session you are downstairs in your room, so the booth is empty */ }
+    /* out of session you are downstairs in your room; the band has the booth */ rooftopBand(ctx, mx + 6, F, t); }
   // a music stand with the lyrics
   var ms = mx - 14; B(ms, F - 18, 1, 18, '#3a3a44'); B(ms - 3, F - 1, 7, 1, '#3a3a44'); B(ms - 5, F - 24, 11, 7, '#f3ead3'); for (var y = F - 23; y < F - 18; y += 2) B(ms - 4, y, 7 + (y % 3), 1, '#8a8070');
   // the wall between the rooms, edge-on: a thick line with the glass set into it; and the ON AIR light over it
@@ -3968,14 +3968,14 @@ ROOMS.recording = function(ctx, W, H, t, go){
   // the reel-to-reel against the left wall: two reels turning while on air
   var rx = 9, ry = F - 32; B(rx, ry, 18, 32, '#2a2630'); B(rx, ry, 18, 1, '#4a4456'); B(rx + 2, ry + 22, 14, 3, '#1a1618'); B(rx + 3, ry + 23, 2, 1, on ? '#ff3b30' : '#5a2a2a'); B(rx + 7, ry + 23, 6, 1, '#8a8a98');
   [[rx + 5, ry + 8], [rx + 13, ry + 8]].forEach(function(c, i){ ctx.fillStyle = '#b9c0cc'; ctx.beginPath(); ctx.arc(c[0], c[1], 4.5, 0, 7); ctx.fill(); ctx.fillStyle = '#4a4656'; ctx.beginPath(); ctx.arc(c[0], c[1], 1.5, 0, 7); ctx.fill();
-    var a0 = on ? t*(i ? 2.4 : 3) : 0.4; for (var k = 0; k < 3; k++){ var a = a0 + k*2.094; B(c[0] + Math.round(Math.cos(a)*3), c[1] + Math.round(Math.sin(a)*3), 1, 1, '#4a4656'); } });
+    var a0 = play ? t*(i ? 2.4 : 3) : 0.4; for (var k = 0; k < 3; k++){ var a = a0 + k*2.094; B(c[0] + Math.round(Math.cos(a)*3), c[1] + Math.round(Math.sin(a)*3), 1, 1, '#4a4656'); } });
   B(rx + 5, ry + 13, 8, 1, '#5a4a3a');
   // the console against the glass: knobs, faders, two meters; a monitor speaker on it; the engineer facing the glass
   var k0 = xw - 34, k1 = xw - 3, kt = F - 16;
   for (var i = 0; i <= 5; i++) B(k0 + i*2, kt + 5 - i, k1 - k0 - i*2, 1, '#3a3644');
   B(k0, kt + 5, k1 - k0, 11, '#24202a'); B(k0, kt + 5, k1 - k0, 1, '#5a5468');
-  for (var x = k0 + 2; x < k1 - 2; x += 3){ B(x, kt + 1, 1, 1, ['#c4473a', '#e9c45a', '#5aa8ff', '#5fae7a'][(x/3 | 0) % 4]); var fd = on ? Math.round(2 + 1.5*Math.sin(t*3 + x)) : 2; B(x, kt + 7, 1, 5, '#121014'); B(x, kt + 7 + fd, 1, 1, '#d9dfe8'); }
-  [k0 + 4, k0 + 12].forEach(function(vx, i){ B(vx, kt - 6, 7, 5, '#0c0a0e'); var lv = on ? Math.max(1, Math.round(5*Math.abs(Math.sin(t*(5 + i) + i)*Math.sin(t*2.3 + i*2)))) : 0; for (var k = 0; k < lv; k++) B(vx + 1 + k, kt - 4, 1, 2, k > 3 ? '#ff3b30' : k > 2 ? '#e9c45a' : '#5fae7a'); });
+  for (var x = k0 + 2; x < k1 - 2; x += 3){ B(x, kt + 1, 1, 1, ['#c4473a', '#e9c45a', '#5aa8ff', '#5fae7a'][(x/3 | 0) % 4]); var fd = play ? Math.round(2 + 1.5*Math.sin(t*3 + x)) : 2; B(x, kt + 7, 1, 5, '#121014'); B(x, kt + 7 + fd, 1, 1, '#d9dfe8'); }
+  [k0 + 4, k0 + 12].forEach(function(vx, i){ B(vx, kt - 6, 7, 5, '#0c0a0e'); var lv = play ? Math.max(1, Math.round(5*Math.abs(Math.sin(t*(5 + i) + i)*Math.sin(t*2.3 + i*2)))) : 0; for (var k = 0; k < lv; k++) B(vx + 1 + k, kt - 4, 1, 2, k > 3 ? '#ff3b30' : k > 2 ? '#e9c45a' : '#5fae7a'); });
   B(k1 - 9, kt - 10, 6, 9, '#151218'); B(k1 - 8, kt - 9, 4, 4, '#2a2632'); ctx.fillStyle = '#4a4456'; ctx.beginPath(); ctx.arc(k1 - 6, kt - 3, 1.5, 0, 7); ctx.fill();
   var eng = {hair: 'cap', hc: '#2f5f9e', jacket: '#3d7a55', pants: '#2b2f45', skin: 2, sit: 1, v: 0, dir: 1, ph: 5, nocup: 1}, ex = k0 - 7;
   B(ex - 4, F - 9, 9, 2, '#1a1618'); B(ex, F - 7, 1, 7, '#3a3a44'); B(ex - 3, F - 1, 7, 1, '#3a3a44'); stPerson(ctx, eng, ex, F - 6, t);
