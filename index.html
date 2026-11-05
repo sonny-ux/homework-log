@@ -1162,7 +1162,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "64df500180";
+var APP_BUILD = "6cb0b3e4c3";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4437,6 +4437,93 @@ ROOMS.block = function(ctx, W, H, t, go){
     for (var x = 8; x < CWW; x += 34){ Q(x, y - 22, 3, 18, '#c9a43a'); Q(x - 1, y - 24, 5, 3, '#e9c45a'); if (x + 34 < CWW) for (var s = 0; s <= 31; s++) Q(x + 3 + s, y - 20 + Math.round(Math.sin(s/31*Math.PI)*5), 1, 2, '#8a1a2a'); } }
   function crowdBig(t, k0){ var y = 160; [[14, 'm', '#e9c45a', '#5a9a9a'], [40, 'p'], [62, 's'], [86, 'm', '#c4473a', '#9a6aff'], [300, 'o'], [262, 'p'], [236, 'm', '#3a2a1a', '#3aa0a0'], [212, 't'], [286, 'f', '#5ad1ff']].forEach(function(c, k){ var bob = Math.round(Math.sin(t*3 + k)*1.5);
       if (c[1] === 'm') merPerson(c[0], y + bob, c[2], c[3], t, k + k0); else if (c[1] === 'p') puffer(c[0], y - 14 + bob, t, k); else if (c[1] === 's') seahorse(c[0], y + bob, t + k); else if (c[1] === 'o') octopus(c[0], y + 2, t); else if (c[1] === 't') turtle(c[0], y - 2 + bob, t); else fishB(c[0], y - 16 + bob, c[2], k, t); }); }
+  // ---- larger, more detailed figures and the concert hall
+  var HAIR = [['#3a2414', 'mop'], ['#16100c', 'mop'], ['#6a4426', 'side'], ['#7a3a1a', 'long']];
+  // a band member about as tall as the app's people: tunic with gold frogging, fringed epaulettes, cuffs, striped trousers; a face with brows,
+  // eyes and a mouth that sings; each with his own hair. pose: 'walk', 'wave', 'stand', 'play' (arms forward), 'sit' (at the piano)
+  function bandHi(x, y, i, pose, t, sing){ var c = BAND[i], h = HAIR[i], st = pose === 'walk' ? Math.floor(t*6 + i) % 2 : 0, arm = (pose === 'play' || pose === 'sit') ? Math.floor(t*5 + i*1.7) % 2 : 0, wv = Math.floor(t*4 + i) % 2, sit = pose === 'sit';
+    if (!sit){ Q(x - 3, y - 12, 3, 11 - st*2, '#14182a'); Q(x + 1, y - 12, 3, 9 + st*2, '#14182a'); Q(x - 2, y - 12, 1, 11 - st*2, c[1]); Q(x + 3, y - 12, 1, 9 + st*2, c[1]); Q(x - 4, y - 2 - st*2, 4, 2, '#0c0c12'); Q(x + 1, y - 2 - (st ? 0 : 2) + 2, 4, 2, '#0c0c12'); }
+    else { Q(x - 3, y - 13, 9, 3, '#14182a'); Q(x + 4, y - 12, 3, 10, '#14182a'); Q(x + 4, y - 2, 4, 2, '#0c0c12'); }
+    var ty = sit ? y - 26 : y - 26; Q(x - 5, ty, 11, 14, c[0]); Q(x - 5, ty + 12, 11, 2, '#2a2014'); Q(x, ty + 12, 1, 2, c[1]);
+    for (var k = 0; k < 5; k++){ Q(x - 4, ty + 2 + k*2, 4, 1, c[1]); Q(x + 2, ty + 2 + k*2, 4, 1, c[1]); } Q(x, ty + 1, 1, 11, '#f3efe6'); Q(x - 2, ty - 1, 5, 2, c[1]);
+    Q(x - 7, ty, 3, 2, c[1]); Q(x + 5, ty, 3, 2, c[1]); Q(x - 7, ty + 2, 1, 2, c[1]); Q(x + 7, ty + 2, 1, 2, c[1]);
+    if (pose === 'wave'){ Q(x - 8, ty + 1, 3, 10, c[0]); Q(x - 8, ty + 10, 3, 2, c[1]); Q(x - 8, ty + 12, 3, 2, '#f0c6a0'); Q(x + 6, ty - 8 + wv*2, 3, 9, c[0]); Q(x + 6, ty - 10 + wv*2, 3, 3, '#f0c6a0'); }
+    else if (pose === 'play' || sit){ Q(x - 8, ty + 1, 3, 7, c[0]); Q(x - 8, ty + 8, 5, 3, c[0]); Q(x - 3, ty + 8 + arm, 2, 2, '#f0c6a0'); Q(x + 6, ty + 1, 3, 7, c[0]); Q(x + 6, ty + 8, 4, 3, c[0]); Q(x + 9, ty + 8 - arm, 2, 2, '#f0c6a0'); }
+    else { Q(x - 8, ty + 1, 3, 11, c[0]); Q(x - 8, ty + 10, 3, 2, c[1]); Q(x - 8, ty + 12, 3, 2, '#f0c6a0'); Q(x + 6, ty + 1, 3, 11, c[0]); Q(x + 6, ty + 10, 3, 2, c[1]); Q(x + 6, ty + 12, 3, 2, '#f0c6a0'); }
+    var hy = ty - 9; Q(x - 3, hy, 7, 8, '#f0c6a0'); Q(x - 3, hy + 6, 1, 2, '#e0b090'); Q(x + 3, hy + 6, 1, 2, '#e0b090');
+    Q(x - 2, hy + 2, 2, 1, h[0]); Q(x + 2, hy + 2, 2, 1, h[0]); Q(x - 2, hy + 3, 1, 1, '#241f1a'); Q(x + 2, hy + 3, 1, 1, '#241f1a'); Q(x, hy + 4, 1, 1, '#d9a07a');
+    var mo = sing && Math.floor(t*3.2 + i) % 3 !== 0; Q(x - 1, hy + 6, 3, mo ? 2 : 1, mo ? '#6a2a2a' : '#c98a6a');
+    if (h[1] === 'mop'){ Q(x - 4, hy - 3, 9, 4, h[0]); Q(x - 4, hy + 1, 2, 4, h[0]); Q(x + 3, hy + 1, 2, 3, h[0]); Q(x - 3, hy + 1, 6, 1, h[0]); }
+    else if (h[1] === 'side'){ Q(x - 4, hy - 3, 9, 3, h[0]); Q(x - 4, hy, 2, 5, h[0]); Q(x + 3, hy, 2, 2, h[0]); Q(x - 2, hy, 3, 1, h[0]); }
+    else { Q(x - 4, hy - 3, 9, 4, h[0]); Q(x - 5, hy, 2, 8, h[0]); Q(x + 4, hy, 2, 8, h[0]); Q(x - 3, hy + 1, 3, 1, h[0]); }
+    Q(x - 4, hy + 3, 1, 3, h[0]); Q(x + 4, hy + 3, 1, 3, h[0]); }
+  function guitarHi(x, y, bass, t, i){ var a = Math.floor(t*6 + i) % 2, gy = y - 14; Q(x - 3, gy, 10, 7, bass ? '#6a2a12' : '#c4651d'); Q(x - 2, gy - 1, 6, 1, bass ? '#6a2a12' : '#c4651d'); Q(x - 1, gy + 1, 4, 4, bass ? '#4a1a0a' : '#e08a3a'); Q(x + 1, gy + 2, 2, 2, '#241f1a');
+    for (var k = 0; k < 11; k++) Q(x + 7 + k, gy + 1 - Math.round(k*0.55), 1, 2, '#3b2a1a'); Q(x + 17, gy - 6, 3, 3, '#2a1a10'); Q(x + a - 1, gy + 2, 2, 2, '#f0c6a0'); }
+  function drumsHi(x, y, t){ var hit = Math.floor(t*4.8) % 2; Q(x - 12, y - 14, 24, 14, '#f3ead3'); Q(x - 12, y - 14, 24, 1, '#c9c3b6'); Q(x - 11, y - 13, 22, 12, '#c4473a'); Q(x - 6, y - 10, 12, 6, '#f3ead3'); for (var k = -10; k < 12; k += 4) Q(x + k, y - 14, 1, 14, '#a8a8b0');
+    Q(x - 22, y - 20 + hit, 11, 2, '#e9c45a'); Q(x - 17, y - 18, 1, 18, '#8a8a98'); Q(x + 12, y - 22 + (1 - hit), 11, 2, '#e9c45a'); Q(x + 17, y - 20, 1, 20, '#8a8a98'); Q(x - 10, y - 19, 8, 5, '#f3ead3'); Q(x + 2, y - 19, 8, 5, '#f3ead3'); Q(x - 9, y - 19, 6, 1, '#c4473a'); Q(x + 3, y - 19, 6, 1, '#c4473a'); }
+  function piano(x, y){ // a grand piano seen from the side, lid up
+    Q(x - 4, y - 22, 56, 10, '#0e0c10'); Q(x + 36, y - 22, 18, 8, '#0e0c10'); Q(x - 4, y - 22, 56, 1, '#3a3640'); c2.fillStyle = '#0e0c10'; c2.beginPath(); c2.moveTo(x, y - 22); c2.lineTo(x + 46, y - 44); c2.lineTo(x + 48, y - 42); c2.lineTo(x + 6, y - 22); c2.fill();
+    Q(x + 30, y - 34, 1, 12, '#3a3640'); Q(x - 6, y - 16, 10, 3, '#f3efe6'); for (var k = 0; k < 5; k++) Q(x - 5 + k*2, y - 16, 1, 2, '#0e0c10'); Q(x - 2, y - 12, 2, 12, '#0e0c10'); Q(x + 44, y - 12, 2, 12, '#0e0c10'); Q(x - 4, y - 1, 6, 1, '#c9a43a'); Q(x + 42, y - 1, 6, 1, '#c9a43a');
+    Q(x - 20, y - 11, 12, 2, '#3a2418'); Q(x - 19, y - 9, 1, 9, '#3a2418'); Q(x - 10, y - 9, 1, 9, '#3a2418'); }
+  function neptuneHi(x, y, t){ // Neptune, king of the sea: gold scallop throne with dolphins, muscled, long white hair and beard, spiked crown, sea-green cape, trident raised
+    for (var k = 0; k < 11; k++){ var a = Math.PI + (k + 0.5)/11*Math.PI; c2.fillStyle = k % 2 ? '#e9c45a' : '#c9a43a'; c2.beginPath(); c2.moveTo(x, y - 18); c2.lineTo(x + Math.cos(a)*34, y - 18 + Math.sin(a)*40); c2.lineTo(x + Math.cos(a + 0.29)*34, y - 18 + Math.sin(a + 0.29)*40); c2.fill(); }
+    glow(x, y - 40, 44, 'rgba(255,220,120,A)', 0.18); Q(x - 30, y - 18, 60, 18, '#c9a43a'); Q(x - 30, y - 18, 60, 2, '#ffe9a0');
+    [-1, 1].forEach(function(s){ var dx = x + s*36, b = Math.round(Math.sin(t*2 + s)*2); Q(dx - 6, y - 20 + b, 12, 6, '#6a8aa8'); Q(dx + s*6, y - 19 + b, 4*s > 0 ? 4 : 4, 3, '#6a8aa8'); Q(dx - 2, y - 24 + b, 4, 4, '#6a8aa8'); Q(dx - s*8, y - 22 + b, 3, 8, '#5a7a98'); Q(dx + s*2, y - 19 + b, 1, 1, '#151218'); Q(dx - 4, y - 16 + b, 8, 1, '#a8c8e0'); });
+    Q(x - 15, y - 34, 30, 22, '#2f8a7a'); Q(x - 17, y - 34, 4, 26, '#1f6a5a'); Q(x + 13, y - 34, 4, 26, '#1f6a5a'); for (var k = 0; k < 4; k++) Q(x - 15 + k*8, y - 14, 6, 2, '#e9c45a');
+    Q(x - 9, y - 38, 18, 16, '#e0a880'); Q(x - 1, y - 36, 1, 10, '#c98a60'); Q(x - 7, y - 32, 5, 1, '#c98a60'); Q(x + 3, y - 32, 5, 1, '#c98a60'); Q(x - 6, y - 28, 4, 1, '#c98a60'); Q(x + 3, y - 28, 4, 1, '#c98a60');
+    Q(x - 14, y - 39, 6, 12, '#e0a880'); Q(x + 9, y - 39, 6, 12, '#e0a880'); Q(x - 14, y - 39, 6, 2, '#2f8a7a'); Q(x + 9, y - 39, 6, 2, '#2f8a7a');
+    Q(x - 6, y - 52, 13, 13, '#e0a880'); Q(x - 4, y - 47, 3, 1, '#4a3a2a'); Q(x + 2, y - 47, 3, 1, '#4a3a2a'); Q(x - 3, y - 46, 1, 1, '#151218'); Q(x + 3, y - 46, 1, 1, '#151218'); Q(x, y - 45, 1, 2, '#c98a60');
+    Q(x - 7, y - 43, 15, 6, '#f3efe6'); Q(x - 6, y - 37, 13, 6, '#f3efe6'); Q(x - 4, y - 31, 9, 4, '#e8e4dc'); Q(x - 2, y - 27, 5, 2, '#e8e4dc'); Q(x - 2, y - 42, 5, 1, '#c9c3b6'); for (var k = -5; k < 6; k += 3) Q(x + k, y - 38, 1, 8, '#d9d4c8');
+    Q(x - 9, y - 55, 19, 5, '#f3efe6'); Q(x - 10, y - 52, 3, 16, '#f3efe6'); Q(x + 8, y - 52, 3, 16, '#e8e4dc'); Q(x - 11, y - 40, 2, 8, '#e8e4dc'); Q(x + 10, y - 40, 2, 8, '#e8e4dc');
+    Q(x - 8, y - 59, 17, 5, '#e9c45a'); for (var k = 0; k < 5; k++) Q(x - 8 + k*4, y - 64 - (k % 2)*2, 2, 5 + (k % 2)*2, '#e9c45a'); Q(x - 1, y - 58, 3, 3, '#c4473a'); Q(x - 6, y - 57, 2, 2, '#5ad1ff'); Q(x + 5, y - 57, 2, 2, '#5ad1ff');
+    var tx = x + 20, raise = Math.sin(t*1.2)*2; Q(tx - 2, y - 40, 6, 8, '#e0a880'); Q(tx, y - 92 + raise, 3, 74, '#e9c45a'); Q(tx + 1, y - 92 + raise, 1, 74, '#fff3c4');
+    Q(tx - 9, y - 94 + raise, 21, 3, '#e9c45a'); Q(tx - 9, y - 106 + raise, 3, 12, '#e9c45a'); Q(tx, y - 110 + raise, 3, 16, '#e9c45a'); Q(tx + 9, y - 106 + raise, 3, 12, '#e9c45a');
+    Q(tx - 11, y - 104 + raise, 2, 3, '#e9c45a'); Q(tx - 2, y - 108 + raise, 2, 3, '#e9c45a'); Q(tx + 3, y - 108 + raise, 2, 3, '#e9c45a'); Q(tx + 12, y - 104 + raise, 2, 3, '#e9c45a');
+    glow(tx + 1, y - 102 + raise, 26, 'rgba(255,230,140,A)', 0.4 + 0.15*Math.sin(t*4)); for (var k = 0; k < 4; k++){ var a = t*2 + k*1.57; Q(tx + 1 + Math.cos(a)*14, y - 102 + raise + Math.sin(a)*10, 2, 2, '#fff3c4'); } }
+  // the app's own people
+  function castList(){ var u = usTwo(), L = [u[0], u[1], zachGuy(), walterGuy(), lucyGirl(), alfieGuy(), gingerGuy(),
+      {hair: 'curly', hc: '#1a1410', beard: '#1a1410', party: 1, collar: '#c98a4a', jacket: '#2e2e30', pants: '#1a1a2e', skin: 1},
+      {hair: 'messy', hc: '#4a3020', mask: 1, neck: '#151218', jacket: 'leather', pants: '#151218', skin: 0},
+      {hair: 'tousled', hc: '#120e10', glasses: 1, glassC: '#8a7a6a', jacket: '#3a2448', hoodie: '#2a1a36', big: 1, pants: '#c9b896', skin: 0}];
+    L.forEach(function(p, k){ p.nocup = 1; p.v = 0; p.sit = 0; p.ph = k*1.3; }); return L; }
+  var CAST = null;
+  function drawConcert(u, t){ var beat = Math.floor(u*1.6) % 2;   // a slower song: a piano ballad
+    Q(0, 0, CWW, CHH, '#140a26');
+    c2.fillStyle = '#20123a'; c2.beginPath(); c2.arc(CWW/2, 120, 210, Math.PI, 0); c2.fill(); for (var k = 0; k < 10; k++){ c2.strokeStyle = 'rgba(233,196,90,' + (0.08 + (k % 3 === 0 ? 0.12 : 0)) + ')'; c2.lineWidth = 1; c2.beginPath(); c2.arc(CWW/2, 120, 80 + k*14, Math.PI, 0); c2.stroke(); }
+    for (var k = 0; k < 7; k++){ var a = Math.PI + (k + 0.5)/7*Math.PI; c2.strokeStyle = 'rgba(233,196,90,.12)'; c2.beginPath(); c2.moveTo(CWW/2, 120); c2.lineTo(CWW/2 + Math.cos(a)*210, 120 + Math.sin(a)*210); c2.stroke(); }
+    // the chandelier: rings of pearls
+    Q(CWW/2, 0, 1, 10, '#c9a43a'); for (var r = 0; r < 2; r++) for (var k = 0; k < 14 - r*5; k++){ var a = k/(14 - r*5)*Math.PI*2, px = CWW/2 + Math.cos(a)*(26 - r*10), py = 14 + r*5 + Math.sin(a)*4; Q(px, py, 2, 2, Math.floor(t*3 + k) % 3 ? '#fff6e6' : '#ffd8f0'); Q(px, py + 2, 1, 3, 'rgba(255,246,230,.5)'); } glow(CWW/2, 16, 46, 'rgba(255,240,220,A)', 0.22);
+    // side boxes with our friends' neighbours: merfolk with fans
+    [[2, 58], [CWW - 46, 58]].forEach(function(b, s){ Q(b[0], b[1], 44, 30, '#3a1430'); Q(b[0] - 2, b[1] - 3, 48, 4, '#c9a43a'); Q(b[0], b[1] + 20, 44, 10, '#c9a43a'); for (var x = b[0] + 2; x < b[0] + 44; x += 5) Q(x, b[1] + 22, 2, 6, '#8a6a1a');
+      for (var k = 0; k < 3; k++) merPerson(b[0] + 9 + k*13, b[1] + 20, ['#e9c45a', '#c4473a', '#9a6aff'][(k + s) % 3], '#5a9a9a', t, k + 20 + s*3); });
+    // the proscenium: gilded columns and a great scallop over the stage
+    Q(44, 34, 8, 104, '#c9a43a'); Q(268, 34, 8, 104, '#c9a43a'); Q(46, 34, 2, 104, '#ffe9a0'); Q(270, 34, 2, 104, '#ffe9a0'); Q(40, 30, 240, 6, '#c9a43a'); Q(40, 30, 240, 1, '#ffe9a0');
+    for (var k = 0; k < 9; k++){ var a = Math.PI + (k + 0.5)/9*Math.PI; c2.fillStyle = k % 2 ? '#e9c45a' : '#c9a43a'; c2.beginPath(); c2.moveTo(CWW/2, 32); c2.lineTo(CWW/2 + Math.cos(a)*24, 32 + Math.sin(a)*18); c2.lineTo(CWW/2 + Math.cos(a + 0.35)*24, 32 + Math.sin(a + 0.35)*18); c2.fill(); }
+    // the stage: curtains drawn back with tassels, the glowing shell backdrop, a lit banner with the song's title
+    Q(52, 36, 216, 92, '#24163e'); for (var k = 0; k < 13; k++){ var a = Math.PI + (k + 0.5)/13*Math.PI, cc = ['rgba(255,176,232,.18)', 'rgba(138,228,255,.16)', 'rgba(255,224,102,.14)'][k % 3]; c2.fillStyle = cc; c2.beginPath(); c2.moveTo(CWW/2, 128); c2.lineTo(CWW/2 + Math.cos(a)*92, 128 + Math.sin(a)*86); c2.lineTo(CWW/2 + Math.cos(a + 0.24)*92, 128 + Math.sin(a + 0.24)*86); c2.fill(); }
+    Q(52, 36, 20, 96, '#8a1a2a'); Q(248, 36, 20, 96, '#8a1a2a'); for (var y = 40; y < 130; y += 4){ Q(56, y, 2, 3, '#6a1020'); Q(64, y, 1, 3, '#a8202e'); Q(258, y, 2, 3, '#6a1020'); Q(255, y, 1, 3, '#a8202e'); } Q(70, 76, 4, 8, '#e9c45a'); Q(246, 76, 4, 8, '#e9c45a'); Q(52, 36, 216, 6, '#8a1a2a'); for (var x = 52; x < 268; x += 6) Q(x, 42, 6, 4 + (x/6) % 2*2, '#a8202e');
+    Q(104, 50, 112, 16, '#0c0a18'); for (var k = 0; k < 24; k++){ var on = Math.floor(t*4 + k) % 4 !== 0; Q(105 + k*4.6, 51, 2, 2, on ? '#ffe9a0' : '#4a3a1a'); Q(105 + k*4.6, 63, 2, 2, on ? '#ffe9a0' : '#4a3a1a'); }
+    qt('TONIGHT', 116, 55, 1, '#8ae4ff'); qt('LET IT BE', 152, 55, 1, Math.floor(t*1.5) % 2 ? '#ffe066' : '#ff8ad8');
+    Q(56, 128, 208, 8, '#5a3a24'); Q(56, 128, 208, 2, '#8a6a44'); Q(56, 136, 208, 5, '#3a2418'); for (var x = 62; x < 262; x += 10){ Q(x, 127, 3, 2, '#ffe9a0'); glow(x + 1, 128, 8, 'rgba(255,230,160,A)', 0.25); }
+    c2.globalCompositeOperation = 'lighter'; [[96, 'rgba(255,176,232,.14)'], [160, 'rgba(255,236,170,.18)'], [224, 'rgba(138,228,255,.14)']].forEach(function(l, k){ var sw = Math.sin(u*0.8 + k*1.7)*22; c2.fillStyle = l[1]; c2.beginPath(); c2.moveTo(l[0] - 3, 36); c2.lineTo(l[0] + 3, 36); c2.lineTo(l[0] + 24 + sw, 130); c2.lineTo(l[0] - 24 + sw, 130); c2.fill(); }); c2.globalCompositeOperation = 'source-over';
+    // the band: the song led from the piano, guitar and bass either side, drums on a riser at the back
+    Q(186, 104, 44, 6, '#4a2e1e'); Q(186, 104, 44, 1, '#7a5a3a'); bandHi(208, 104, 3, 'play', t, false); drumsHi(208, 112, t);
+    amp(70, 128); amp(236, 128); micStand(96, 128); micStand(172, 128);
+    piano(110, 128); bandHi(92, 128, 0, 'sit', t, true);
+    bandHi(160, 128, 1, 'play', t, false); guitarHi(158, 128, true, t, 1);
+    bandHi(178, 128, 2, 'play', t, true); guitarHi(176, 128, false, t, 2);
+    for (var k = 0; k < 6; k++){ var ph = (u*0.35 + k/6) % 1, col = ['#ff8ad8', '#ffe066', '#8ae4ff', '#c77dff', '#ffb070', '#6ae0d0'][k]; c2.globalAlpha = (1 - ph)*0.9; var nx = 84 + k*26 + Math.sin(ph*6 + k)*10, ny = 104 - ph*62; Q(nx, ny, 4, 3, col); Q(nx + 3, ny - 8, 1, 8, col); Q(nx + 3, ny - 8, 3, 2, col); c2.globalAlpha = 1; }
+    // the audience: rows of seats; the royal box in the middle; our people in the front row, swaying; candles in the crowd for the ballad
+    for (var r = 0; r < 3; r++){ var ry = 150 + r*14; Q(0, ry, CWW, 10, ['#3a1424', '#4a1a2c', '#5a1e32'][r]); for (var x = (r % 2)*6; x < CWW; x += 12) Q(x, ry, 10, 3, ['#4a1a2c', '#5a2236', '#6a2a3e'][r]); }
+    for (var k = 0; k < 22; k++){ var x = 4 + k*15, y = 151 + (k % 2)*3; if (x < 76 || x > 270) continue; Q(x, y - 6, 6, 6, ['#2a1a3a', '#1a2a3a', '#3a2a1a'][k % 3]); if (Math.sin(k*3.1) > 0.3){ Q(x + 2, y - 12, 1, 5, '#f3efe6'); Q(x + 2, y - 14 + (Math.floor(t*6 + k) % 2), 1, 2, '#ffd36b'); glow(x + 2, y - 13, 5, 'rgba(255,210,120,A)', 0.6); } }
+    neptuneHi(38, 200, t); triton(290, 196, t, u > 9);
+    if (!CAST) CAST = castList(); var seats = [86, 102, 120, 138, 156, 174, 192, 210, 228, 246];
+    CAST.forEach(function(p, k){ var sway = Math.round(Math.sin(t*1.4 + k*0.7)*1.5); p.dir = k % 2 ? -1 : 1; stPerson(c2, p, seats[k] + sway, 199, t); if (k === 1 && Math.floor(t*2) % 2){ Q(seats[k] + sway + 4, 158, 1, 6, '#f3efe6'); Q(seats[k] + sway + 4, 156, 1, 2, '#ffd36b'); } });
+    heldHandsHi(seats[0], seats[1], 177);
+    if (u < 2.6){ Q(118, 4, 84, 14, 'rgba(4,10,30,.8)'); qtc('ONE SONG', 8, 1, '#ffe066'); }
+    if (u > 12.2){ Q(116, 2, 88, 18, 'rgba(4,10,30,.8)'); qtc('BRAVO!', 6, 2, '#ff8ad8'); for (var k = 0; k < 24; k++){ var px = (k*53 + u*40) % CWW, py = ((u - 12.2)*60 + k*17) % 120 + 40; Q(px, py, 2, 2, ['#ff8ad8', '#ffe066', '#8ae4ff'][k % 3]); } } }
+  function heldHandsHi(x1, x2, y){ c2.fillStyle = '#f0c6a0'; c2.fillRect(Math.min(x1, x2) + 3, y, Math.abs(x2 - x1) - 6, 1); }
+  function flashes2(t){ for (var k = 0; k < 6; k++) if (Math.sin(t*8 + k*2.9) > 0.9) glow(20 + k*55, 150 + (k % 2)*8, 18, 'rgba(255,255,255,A)', 0.8); }
   function drawCutHi(){ var c = G.ct, t = G.t;
     if (c < 9){   // A: the city of domes, the sub sailing in with the band at the portholes
       water([20, 70, 120], [6, 20, 50]); shafts(t, 0.06); domeCity(c*34, t); for (var k = 0; k < 9; k++) kelp(k*38 + 10 - (c*60) % 38, 200, 26 + (k % 3)*10, t);
@@ -4446,30 +4533,18 @@ ROOMS.block = function(ctx, W, H, t, go){
       var sx = c < 2 ? 70 : 70 + (c - 2)*30; bigSub(Math.min(CWW + 60, sx), 96 + Math.sin(c*1.5)*8, true, false);
       if (c > 0.6 && c < 5.5){ c2.globalAlpha = Math.min(1, (c - 0.6)*2, (5.5 - c)*2); Q(80, 22, 160, 24, 'rgba(4,10,30,.75)'); qtc('ATLANTIS', 27, 3, '#6ae0f0'); c2.globalAlpha = 1; } }
     else if (c < 19){   // B: the red carpet
-      var u = c - 9; water([16, 50, 96], [8, 22, 54]); shafts(t, 0.04); domeCity(0, t); hall(t); carpetRope(t); crowdBig(t, 0); lobster(204, 184, t);
+      var u = c - 9; water([16, 50, 96], [8, 22, 54]); shafts(t, 0.04); domeCity(0, t); hall(t);
+      if (!CAST) CAST = castList(); [[2, 110], [3, 138], [4, 236], [7, 258], [8, 282], [9, 306]].forEach(function(q, k){ var p = CAST[q[0]]; p.dir = q[1] < 160 ? 1 : -1; stPerson(c2, p, q[1] + Math.round(Math.sin(t*2 + k)), 172, t); if (Math.floor(t*2 + k) % 3 === 0) Q(q[1] + (p.dir > 0 ? 5 : -6), 146, 2, 2, '#f0c6a0'); });
+      carpetRope(t); crowdBig(t, 0); lobster(204, 184, t);
       var sx = Math.min(70, -40 + u*40); bigSub(sx, 160, u < 2.6, u > 2.4 && u < 8.8);
-      for (var i = 0; i < 4; i++){ var st = 2.8 + i*1.1, x; if (u < st) continue; var w = u - st; if (w < 0.6){ bandBig(sx + 2, 142 - w*10 + 0, i, 'wave', t); continue; }
-        x = Math.min(195 - i*2 + 0, sx + 6 + (w - 0.6)*30); if (u > 9.4 - (3 - i)*0.35) continue; bandBig(x, 186, i, x < 192 - i*2 ? 'walk' : 'wave', t); }
+      for (var i = 0; i < 4; i++){ var st = 2.8 + i*1.1, x; if (u < st) continue; var w = u - st; if (w < 0.6){ bandHi(sx + 2, 146 - w*10, i, 'wave', t, false); continue; }
+        x = Math.min(195 - i*2, sx + 6 + (w - 0.6)*30); if (u > 9.4 - (3 - i)*0.35) continue; bandHi(x, 188, i, x < 192 - i*2 ? 'walk' : 'wave', t, false); }
+      if (u > 6.6){ var cx = Math.min(190, -24 + (u - 6.6)*62), sy2 = CAST[0], jk = CAST[1]; if (cx < 189){ sy2.dir = 1; jk.dir = 1; sy2.v = 1; jk.v = 1; stPerson(c2, sy2, cx, 189, t); stPerson(c2, jk, cx + 9, 189, t); sy2.v = 0; jk.v = 0; heldHandsHi(cx, cx + 9, 172); flashes2(t); } }
       if (u > 1.6 && u < 6.5){ Q(8, 24, 80, 18, 'rgba(4,10,30,.8)'); qt('RED CARPET', 13, 28, 1, '#ff8a8a'); qt('ATLANTIS HALL', 13, 35, 1, '#ffe066'); } }
-    else if (c < 33){   // C: the concert
-      var u = c - 19, beat = Math.floor(u*2.4) % 2; Q(0, 0, CWW, CHH, '#120a22');
-      c2.fillStyle = '#1e1234'; c2.beginPath(); c2.arc(CWW/2, 110, 190, Math.PI, 0); c2.fill(); for (var k = 0; k < 9; k++){ c2.strokeStyle = 'rgba(201,164,58,.25)'; c2.beginPath(); c2.arc(CWW/2, 110, 70 + k*14, Math.PI, 0); c2.stroke(); }
-      for (var k = 0; k < 12; k++){ var a = Math.PI + k/11*Math.PI, px = CWW/2 + Math.cos(a)*22, py = 22 + Math.sin(a)*-8; Q(px, py, 1, 6, '#c9a43a'); Q(px - 1, py + 6, 3, 3, Math.floor(t*3 + k) % 2 ? '#fff6e6' : '#e8e0f0'); } glow(CWW/2, 30, 40, 'rgba(255,240,220,A)', 0.25);
-      [[4, 52], [CWW - 44, 52]].forEach(function(b){ Q(b[0], b[1], 40, 26, '#3a1430'); Q(b[0], b[1] + 18, 40, 8, '#c9a43a'); for (var k = 0; k < 3; k++) merPerson(b[0] + 8 + k*12, b[1] + 18, ['#e9c45a', '#c4473a', '#3a2a1a'][k], '#5a9a9a', t, k + 20); });
-      Q(52, 40, 216, 6, '#8a1a2a'); for (var x = 52; x < 268; x += 6) Q(x, 46, 6, 4 + (x/6) % 2*2, '#a8202e'); Q(52, 40, 18, 96, '#8a1a2a'); Q(250, 40, 18, 96, '#8a1a2a'); for (var y = 46; y < 136; y += 4){ Q(56, y, 2, 3, '#6a1020'); Q(262, y, 2, 3, '#6a1020'); }
-      Q(70, 50, 180, 80, '#22163a'); Q(60, 130, 200, 8, '#5a3a24'); Q(60, 130, 200, 2, '#8a6a44'); Q(60, 138, 200, 6, '#3a2418');
-      c2.globalCompositeOperation = 'lighter'; [[100, 'rgba(255,138,216,.16)'], [160, 'rgba(255,224,102,.16)'], [220, 'rgba(138,228,255,.16)']].forEach(function(l, k){ var sw = Math.sin(u*1.2 + k*1.7)*30; c2.fillStyle = l[1]; c2.beginPath(); c2.moveTo(l[0] - 3, 46); c2.lineTo(l[0] + 3, 46); c2.lineTo(l[0] + 26 + sw, 132); c2.lineTo(l[0] - 26 + sw, 132); c2.fill(); }); c2.globalCompositeOperation = 'source-over';
-      amp(76, 130); amp(228, 130); micStand(108, 130); micStand(146, 130); micStand(186, 130);
-      bandBig(104, 130, 0, 'play', t); guitar(104, 130, false, t, 0); bandBig(142, 130, 1, 'play', t); guitar(140, 130, true, t, 1); bandBig(182, 130, 2, 'play', t); guitar(182, 130, false, t, 2);
-      bandBig(212, 118, 3, 'play', t); drums(212, 130, t);
-      for (var k = 0; k < 6; k++){ var ph = (u*0.5 + k/6) % 1, col = ['#ff8ad8', '#ffe066', '#8ae4ff', '#c77dff', '#ff9a5a', '#6ae0d0'][k]; c2.globalAlpha = 1 - ph; var nx = 90 + k*26 + Math.sin(ph*7 + k)*8, ny = 96 - ph*60; Q(nx, ny, 4, 3, col); Q(nx + 3, ny - 8, 1, 8, col); Q(nx + 3, ny - 8, 3, 2, col); c2.globalAlpha = 1; }
-      neptune(118, 182, t); triton(196, 186, t, u > 8.5);
-      for (var k = 0; k < 18; k++){ var x = 6 + k*18, y = 196 - (beat && k % 2 ? 3 : 0); if (x > 96 && x < 140 || x > 180 && x < 222) continue; if (k % 3 === 0) merPerson(x, y, ['#e9c45a', '#c4473a', '#3a2a1a', '#ff8ad8'][k % 4], '#4aa0a0', t, k); else if (k % 3 === 1) fishB(x - 5, y - 18, ['#ff9a5a', '#5ad1ff', '#ffe066', '#c77dff'][k % 4], k, t); else seahorse(x, y - 2, t + k); }
-      octopus(300, 196, t*1.6);
-      if (u < 2.6){ Q(110, 62, 100, 16, 'rgba(4,10,30,.8)'); qtc('ONE SONG', 67, 1, '#ffe066'); } if (u > 12.2){ Q(116, 62, 88, 18, 'rgba(4,10,30,.8)'); qtc('BRAVO!', 66, 2, '#ff8ad8'); for (var k = 0; k < 20; k++){ var px = (k*53 + u*40) % CWW, py = ((u - 12.2)*60 + k*17) % 120 + 50; Q(px, py, 2, 2, ['#ff8ad8', '#ffe066', '#8ae4ff'][k % 3]); } } }
+    else if (c < 33){ drawConcert(c - 19, t); }
     else {   // D: leaving
       var u = c - 33; water([16, 50, 96], [8, 22, 54]); shafts(t, 0.04); domeCity(0, t); hall(t); carpetRope(t); crowdBig(t, 4); lobster(204, 184, t);
-      for (var i = 0; i < 4; i++){ var x = 192 - i*4 - u*34 - i*9; if (x > 76) bandBig(x, 186, i, 'walk', t); }
+      for (var i = 0; i < 4; i++){ var x = 192 - i*4 - u*34 - i*9; if (x > 76) bandHi(x, 188, i, x < 90 ? 'wave' : 'walk', t, false); }
       var lift = Math.max(0, u - 3.4), sy = 160 - lift*40, sx2 = 70 + lift*50; bigSub(sx2, sy, lift > 0, false);
       for (var k = 0; k < 30; k++){ var px = (k*37) % CWW, py = CHH - ((u*50 + k*23) % CHH); Q(px, py, 2, 2, ['#ff8ad8', '#ffe066', '#8ae4ff', 'rgba(220,245,255,.7)'][k % 4]); }
       if (u > 4.6){ Q(96, 96, 128, 18, 'rgba(4,10,30,.8)'); qtc('ON INTO THE DEEP', 102, 1, '#bfe6ff'); } } }
