@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T08:04:23+00:00",
+ "updated": "2026-11-05T19:14:11+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -675,6 +675,22 @@
    "minutes": 36,
    "in_progress": false,
    "topic": "HW7 Q5(a): identity map, inclusion, F|_D.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-05",
+   "day": "Thu",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "2:14 PM",
+   "end": "now",
+   "start_min": 854,
+   "end_min": 854,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "HW7: Q5(b) and remaining write-ups.",
    "refs": [
     "homework 7"
    ]
