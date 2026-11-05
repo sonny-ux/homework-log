@@ -545,7 +545,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <figure class="room" data-room="recording" aria-label="A recording studio seen from the side: the control room with its console, tape machine and session clock; the wall between, with the ON AIR light; and the booth, where you are at the microphone"><canvas></canvas></figure>
   </section>
 
-  <figure class="room" data-room="block" data-size="block" aria-label="The bottom of the building: your studio upstairs, the street at the door, the subway underneath"><canvas></canvas></figure>
+  <figure class="room" data-room="block" data-size="block" aria-label="The building: the recording studio on the top floor, where you are during a session; your room below it, where you are otherwise; the street at the door, the subway underneath"><canvas></canvas></figure>
   <p class="updated" id="upd"></p>
 <div id="rest" aria-hidden="true"><canvas id="restc"></canvas><canvas id="restswap"></canvas><div class="resthint">to the lighthouse</div><div class="rctl"><button data-go="x" aria-label="Close">close</button></div></div>
 <div class="sheetbg" id="sheetbg"></div><div class="sheet" id="sheet" role="dialog" aria-label="Day details"></div>
@@ -1163,7 +1163,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "2224bca22d";
+var APP_BUILD = "0de6a6ec66";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -3713,7 +3713,8 @@ ROOMS.studio = function(ctx, W, H, t, go){
   for (var k = 0; k < 2; k++){ var ph = (t*0.8 + k/2) % 1; ctx.fillStyle = 'rgba(255,255,255,' + (0.5*(1 - ph)) + ')'; ctx.fillRect(W - 10 + Math.round(Math.sin(ph*9)*1), F - 14 - Math.round(ph*8), 1, 1); }
   // a mattress on the floor; you on it, playing; a pizza box and a noodle cup
   ctx.fillStyle = '#d9cdb0'; ctx.fillRect(8, F - 5, 40, 5); ctx.fillStyle = '#b9ad94'; ctx.fillRect(8, F - 5, 40, 1); ctx.fillStyle = '#5a6a7a'; ctx.fillRect(28, F - 6, 18, 3); ctx.fillStyle = '#f3ead3'; ctx.fillRect(10, F - 8, 8, 3);
-  var me = usTwo()[1]; me.sit = 1; me.v = 0; me.dir = 1; me.ph = 4; me.guitar = 1; me.nocup = 0; stPerson(ctx, me, 30, F - 2, t);
+  if (!liveSession()){ var me = usTwo()[1]; me.sit = 1; me.v = 0; me.dir = 1; me.ph = 4; me.guitar = 1; me.nocup = 0; stPerson(ctx, me, 30, F - 2, t); }
+  else { ctx.fillStyle = '#b5651d'; ctx.fillRect(20, F - 8, 7, 3); ctx.fillStyle = '#d9822b'; ctx.fillRect(21, F - 7, 4, 1); ctx.fillStyle = '#5a4a3a'; ctx.fillRect(27, F - 7, 12, 1); }   // in a session you are upstairs in the recording studio; the guitar waits on the mattress
   var gp = go === 'gtr' ? 1 : 0; for (var k = 0; k < 2; k++){ var ph = (t*0.5 + k/2) % 1; ctx.globalAlpha = 1 - ph; ctx.fillStyle = '#f3ead3'; ctx.fillRect(40 + Math.round(ph*12), F - 30 - Math.round(ph*18 + Math.sin(ph*12)*2), 2, 2); ctx.globalAlpha = 1; }
   S.push({x: 22, y: F - 40, w: 26, h: 40, scene: 7, id: 'gtr'});
   ctx.fillStyle = '#c9a07a'; ctx.fillRect(52, F - 2, 10, 2); ctx.fillStyle = '#c4473a'; ctx.fillRect(55, F - 3, 4, 1); ctx.fillStyle = '#f3ead3'; ctx.fillRect(64, F - 4, 3, 4); ctx.fillStyle = '#c4473a'; ctx.fillRect(64, F - 4, 3, 1);
@@ -3948,7 +3949,7 @@ ROOMS.recording = function(ctx, W, H, t, go){
     B(px - 3, F - 37, 7, 1, '#151218'); B(px - 4, F - 35, 2, 4, '#151218'); B(px + 3, F - 35, 2, 4, '#151218'); B(px - 4, F - 34, 1, 2, '#c4473a');
     for (var k = 0; k < 3; k++){ var ph = (t*0.45 + k/3) % 1, nc = ['#ffd36b', '#f3ead3', '#ff8ad8'][k], ny = F - 34 - Math.round(ph*16 + Math.sin(ph*10 + k)*2), nx = px - 10 - Math.round(ph*10); ctx.globalAlpha = 1 - ph; B(nx, ny, 2, 2, nc); B(nx + 1, ny - 4, 1, 4, nc); ctx.globalAlpha = 1; } }
   else { var sx = mx + 14; B(sx - 3, F - 9, 7, 2, '#5a412f'); B(sx - 2, F - 7, 1, 7, '#3b2a24'); B(sx + 2, F - 7, 1, 7, '#3b2a24'); B(sx - 2, F - 3, 5, 1, '#3b2a24');
-    me.sit = 1; me.dir = -1; me.guitar = 0; me.nocup = 0; me.coffee = 1; stPerson(ctx, me, sx, F - 6, t); }
+    /* out of session you are downstairs in your room, so the booth is empty */ }
   // a music stand with the lyrics
   var ms = mx - 14; B(ms, F - 18, 1, 18, '#3a3a44'); B(ms - 3, F - 1, 7, 1, '#3a3a44'); B(ms - 5, F - 24, 11, 7, '#f3ead3'); for (var y = F - 23; y < F - 18; y += 2) B(ms - 4, y, 7 + (y % 3), 1, '#8a8070');
   // the wall between the rooms, edge-on: a thick line with the glass set into it; and the ON AIR light over it
@@ -3984,8 +3985,11 @@ ROOMS.recording = function(ctx, W, H, t, go){
   return S;
 };
 ROOMS.block = function(ctx, W, H, t, go){
-  var S = [], fh = 92;
-  function part(fn, x, y, w, h){ ctx.save(); ctx.translate(x, y); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip(); var sp = fn(ctx, w, h, t, go) || []; ctx.restore(); sp.forEach(function(q){ if (q.down) return; S.push({x: q.x + x, y: q.y + y, w: q.w, h: q.h, scene: q.scene, id: q.id}); }); }
+  var S = [], fh = 92, oy = 0;
+  function part(fn, x, y, w, h){ ctx.save(); ctx.translate(x, y); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip(); var sp = fn(ctx, w, h, t, go) || []; ctx.restore(); sp.forEach(function(q){ if (q.down) return; S.push({x: q.x + x, y: q.y + y + oy, w: q.w, h: q.h, scene: q.scene, id: q.id}); }); }
+  // top floor: the recording studio, where you are during a session
+  part(ROOMS.recording, 0, 0, W, fh); ctx.fillStyle = '#3a3644'; ctx.fillRect(0, fh - 4, W, 4); ctx.fillStyle = '#4a4656'; ctx.fillRect(0, fh - 4, W, 1);
+  oy = fh; ctx.save(); ctx.translate(0, fh);
   // upstairs: the studio on the left, the building's brick face on the right with windows and a fire escape
   part(ROOMS.studio, 0, 0, 92, fh);
   var day = isDay(), fx = 92; ctx.fillStyle = '#7a3b2e'; ctx.fillRect(fx, 0, W - fx, fh);
@@ -4003,7 +4007,7 @@ ROOMS.block = function(ctx, W, H, t, go){
             ctx.fillStyle = '#f0c6a0'; ctx.fillRect(wx + 4, hy2 - 5, 6, 6); ctx.fillStyle = '#c4652a'; ctx.fillRect(wx + 4, hy2 - 6, 6, 2); ctx.fillRect(wx + (look > 0 ? 4 : 8), hy2 - 5, 2, 2);
             ctx.fillStyle = '#241f1a'; ctx.fillRect(wx + (look > 0 ? 8 : 5), hy2 - 3, 1, 1); ctx.fillStyle = '#c98a6a'; ctx.fillRect(wx + 6, hy2 - 2, 1, 1); ctx.fillRect(wx + 8, hy2 - 2, 1, 1);
             if (dw > 35 && dw < 38){ var wv = Math.floor(t*5) % 2; ctx.fillStyle = '#c9b89a'; ctx.fillRect(wx + 12, hy2 - 3 - wv, 2, 4); ctx.fillStyle = '#f0c6a0'; ctx.fillRect(wx + 12 + wv, hy2 - 6 - wv, 2, 3); } } }
-      S.push({x: wx - 2, y: wy - 3, w: 18, h: 33, scene: 13, id: 'derek'});
+      S.push({x: wx - 2, y: wy - 3 + oy, w: 18, h: 33, scene: 13, id: 'derek'});
     }
     if (k === 1){ ctx.fillStyle = '#ffcf7a'; ctx.fillRect(wx, wy, 14, 28); ctx.fillStyle = '#e8dcc0'; ctx.fillRect(wx + 7, wy, 1, 28); ctx.fillRect(wx, wy + 13, 14, 1);
       ctx.fillStyle = '#3b2a3a'; ctx.fillRect(wx + 2, wy + 15, 5, 13); ctx.fillRect(wx + 3, wy + 10, 4, 5); ctx.fillRect(wx + 2, wy + 8, 6, 3); ctx.fillRect(wx + 4, wy + 7, 2, 1);
@@ -4018,12 +4022,13 @@ ROOMS.block = function(ctx, W, H, t, go){
   // underground
   part(ROOMS.platform, 0, fh*2, W, fh);
   turtleWalk(ctx, W, fh, t);
+  ctx.restore();
   return S;
 };
 (function(){
   var rooms = [].slice.call(document.querySelectorAll('.room')), t0 = performance.now(), visible = new Set();
   if ('IntersectionObserver' in window){ var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); }); }); rooms.forEach(function(r){ io.observe(r); }); } else rooms.forEach(function(r){ visible.add(r); });
-  function fit(r){ var c = r.querySelector('canvas'), cw = r.clientWidth; if (!cw) return false; var sc = cw >= 520 ? 3 : 2, sz = r.dataset.size || 'full', H = sz === 'tall' ? 112 : sz === 'block' ? 276 : 92, W = sz === 'square' ? 92 : Math.max(150, Math.min(260, Math.floor(cw/sc))); if (c.width !== W || c.height !== H){ c.width = W; c.height = H; c.style.width = (W*sc) + 'px'; c.style.height = (H*sc) + 'px'; } return true; }
+  function fit(r){ var c = r.querySelector('canvas'), cw = r.clientWidth; if (!cw) return false; var sc = cw >= 520 ? 3 : 2, sz = r.dataset.size || 'full', H = sz === 'tall' ? 112 : sz === 'block' ? 368 : 92, W = sz === 'square' ? 92 : Math.max(150, Math.min(260, Math.floor(cw/sc))); if (c.width !== W || c.height !== H){ c.width = W; c.height = H; c.style.width = (W*sc) + 'px'; c.style.height = (H*sc) + 'px'; } return true; }
   function tick(){ var t = (performance.now() - t0)/1000;
     visible.forEach(function(r){ if (!fit(r)) return; var c = r.querySelector('canvas'); r._spots = ROOMS[r.dataset.room](c.getContext('2d'), c.width, c.height, t, r._go || null); });
     setTimeout(function(){ requestAnimationFrame(tick); }, 110); }
