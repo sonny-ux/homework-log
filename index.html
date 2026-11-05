@@ -473,7 +473,7 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
 /* progress recorded at the end of each session */
 .prog { margin-top: 6px; font-size: 12px; }
 .prog .pgb { display: block; height: 6px; border: var(--thin) solid var(--ink); position: relative; margin-bottom: 3px; max-width: 220px; }
-.prog .pgb i { position: absolute; left: 0; top: 0 !important; bottom: 0; height: auto !important; min-width: 0 !important; border: 0 !important; margin: 0 !important; box-shadow: none !important; transform: none !important; flex: none; }   /* keep the swatch styles of the card around it off the fill */
+.prog .pgb i { position: absolute; left: 0; top: 0 !important; bottom: 0; height: auto !important; min-width: 0 !important; border: 0 !important; margin: 0 !important; box-shadow: none !important; outline: none !important; transform: none !important; flex: none; }   /* keep the swatch styles of the card around it off the fill */
 .prog em { font-style: normal; color: var(--ink); display: block; }
 .prog small { display: block; color: var(--muted); line-height: 1.35; }
 
@@ -1162,7 +1162,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "f64024a93e";
+var APP_BUILD = "1f5d1bd232";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
