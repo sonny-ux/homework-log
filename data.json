@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T06:06:28+00:00",
+ "updated": "2026-11-05T07:28:14+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -659,6 +659,22 @@
    "minutes": 29,
    "in_progress": false,
    "topic": "HW7 Q5: max(0, y) and the folding map; (a) plan.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-05",
+   "day": "Thu",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "2:27 AM",
+   "end": "now",
+   "start_min": 147,
+   "end_min": 148,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "HW7 write-up.",
    "refs": [
     "homework 7"
    ]
