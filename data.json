@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T07:28:14+00:00",
+ "updated": "2026-11-05T08:04:23+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -669,12 +669,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "2:27 AM",
-   "end": "now",
+   "end": "3:03 AM",
    "start_min": 147,
-   "end_min": 148,
-   "minutes": 1,
-   "in_progress": true,
-   "topic": "HW7 write-up.",
+   "end_min": 183,
+   "minutes": 36,
+   "in_progress": false,
+   "topic": "HW7 Q5(a): identity map, inclusion, F|_D.",
    "refs": [
     "homework 7"
    ]
@@ -757,7 +757,7 @@
      "Q1(a)",
      "Q3"
     ],
-    "note": "Q3 written; Q4 worked through; Q5(a) being written. Next: Q5(a)–(b), Q4 write-up, Q2, Q1(b) fixes, Q6 (Canvas open until Thu 11:59 PM)."
+    "note": "Q3 written; Q4 worked through; Q5(a) written with small fixes. Next: Q5(b), Q4 write-up, Q2, Q1(b) fixes, Q6 (Canvas open until Thu 11:59 PM)."
    }
   },
   {
