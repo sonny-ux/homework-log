@@ -836,7 +836,8 @@ function renderPlan(){
     var share = late ? left : left / Math.max(1, daysLeft + (a.time && /PM/.test(a.time) ? 1 : 0));
     return {a:a, left:left, daysLeft:daysLeft, late:late, today: Math.round(Math.min(left, Math.max(share, 30))/15)*15};
   }).filter(function(x){ return x.left > 10; });
-  items.sort(function(x, y){ return (x.late === y.late ? 0 : x.late ? -1 : 1) || x.daysLeft - y.daysLeft; });
+  // due today first (it closes soonest), then anything late, then by days left
+  items.sort(function(x, y){ var r = function(i){ return i.daysLeft === 0 ? 0 : i.late ? 1 : 2; }; return r(x) - r(y) || x.daysLeft - y.daysLeft; });
   var budget = 0; Object.keys(by).forEach(function(k){ budget += by[k].min; }); budget = Math.max(150, Math.min(360, budget / Math.max(1, Object.keys(by).length)));
   var plan = [], used = 0;
   items.forEach(function(x){ if (used >= budget) return; var m = Math.min(x.today, Math.max(30, budget - used)); plan.push({x:x, m:m}); used += m; });
@@ -1162,7 +1163,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "e2bcf0eef0";
+var APP_BUILD = "2224bca22d";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
