@@ -542,7 +542,6 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
     <div class="wkhead"><h2>Log <span class="sub" id="logsub"></span></h2>
       <div class="arrows"><button id="lprev" aria-label="Earlier week">‹</button><button id="lnow" aria-label="This week">Now</button><button id="lnext" aria-label="Later week">›</button></div></div>
     <div class="topics" id="topics"></div>
-    <figure class="room" data-room="recording" aria-label="A recording studio seen from the side: the control room with its console, tape machine and session clock; the wall between, with the ON AIR light; and the booth, where you are at the microphone"><canvas></canvas></figure>
   </section>
 
   <figure class="room" data-room="block" data-size="block" aria-label="The building: the recording studio on the top floor, where you are during a session; your room below it, where you are otherwise; the street at the door, the subway underneath"><canvas></canvas></figure>
@@ -1163,7 +1162,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "0de6a6ec66";
+var APP_BUILD = "4e93a52110";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
