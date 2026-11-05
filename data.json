@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T04:54:45+00:00",
+ "updated": "2026-11-05T05:37:26+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -643,6 +643,22 @@
    "minutes": 26,
    "in_progress": false,
    "topic": "HW7 Q4(c): why the projection is not closed.",
+   "refs": [
+    "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-05",
+   "day": "Thu",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "12:37 AM",
+   "end": "now",
+   "start_min": 37,
+   "end_min": 37,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "HW7: Q4 write-up, then Q2.",
    "refs": [
     "homework 7"
    ]
