@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T20:09:57+00:00",
+ "updated": "2026-11-06T01:04:15+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -695,6 +695,22 @@
     "homework 7",
     "homework 6",
     "paper 2"
+   ]
+  },
+  {
+   "date": "2026-11-05",
+   "day": "Thu",
+   "week": "2026-11-01",
+   "class": "Topology",
+   "start": "8:03 PM",
+   "end": "now",
+   "start_min": 1203,
+   "end_min": 1204,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "HW7: Q5 and remaining write-ups.",
+   "refs": [
+    "homework 7"
    ]
   }
  ],
