@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T08:50:51+00:00",
+ "updated": "2026-11-06T08:51:52+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -821,8 +821,8 @@
    "time": "11:59 PM",
    "class": "Topology",
    "title": "Homework 7",
-   "detail": "Homework 7 (30 pts; Canvas; open until Thu 11/5, 11:59 PM)",
-   "done": false,
+   "detail": "Homework 7 (30 pts; Canvas; open until Thu 11/5, 11:59 PM). Submitted Thu 11/5.",
+   "done": true,
    "source": "hand",
    "key": "homework 7",
    "about": "Six questions on §22 quotients: Q1 crushing a closed set (classes; X/∼ Hausdorff), Q2 is the sign map open or closed, Q3 projections open but not always closed, Q4 folding a plane region onto ℝ (quotient map, not open, not closed), Q5 quotient then subspace versus subspace then quotient, Q6 open bijections. 30 pts on Canvas, due 11:59 PM; open until Thu 11/5. Guides: sonny-ux.github.io/topology-ch2 (Homework 7).",
