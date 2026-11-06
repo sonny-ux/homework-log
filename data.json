@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T02:15:23+00:00",
+ "updated": "2026-11-06T03:52:57+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -720,12 +720,12 @@
    "week": "2026-11-01",
    "class": "Topology",
    "start": "9:15 PM",
-   "end": "now",
+   "end": "10:52 PM",
    "start_min": 1275,
-   "end_min": 1275,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "HW7: remaining write-ups.",
+   "end_min": 1372,
+   "minutes": 97,
+   "in_progress": false,
+   "topic": "HW7 finished; combined PDF built.",
    "refs": [
     "homework 7"
    ]
@@ -806,9 +806,13 @@
     ],
     "done": [
      "Q1(a)",
-     "Q3"
+     "Q1(b)",
+     "Q3",
+     "Q4",
+     "Q5",
+     "Q6"
     ],
-    "note": "Q3 written; Q4 worked through; Q5(a) written (redo in the pad if the draft was lost); Q5(b) understood. Next: Q5(b) sketch and (c), Q4 write-up, Q2, Q1(b) fixes, Q6 (Canvas closes tonight 11:59 PM)."
+    "note": "Finished and combined into one PDF; Q2 not found in the write-up. Submit by 11:59 PM tonight."
    }
   },
   {
