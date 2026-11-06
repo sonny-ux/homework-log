@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T04:38:48+00:00",
+ "updated": "2026-11-06T05:12:53+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -744,6 +744,22 @@
    "topic": "HW7 Q2; final PDF assembled.",
    "refs": [
     "homework 7"
+   ]
+  },
+  {
+   "date": "2026-11-06",
+   "day": "Fri",
+   "week": "2026-11-01",
+   "class": "Lit Study",
+   "start": "12:12 AM",
+   "end": "now",
+   "start_min": 12,
+   "end_min": 12,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Paper 2: Hamlet and the Ghost.",
+   "refs": [
+    "paper 2"
    ]
   }
  ],
