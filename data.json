@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T08:51:52+00:00",
+ "updated": "2026-11-07T19:41:54+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -853,8 +853,8 @@
    "time": null,
    "class": "Lit Study",
    "title": "Paper 2",
-   "detail": "Paper 2 (time and prompt to confirm)",
-   "done": false,
+   "detail": "Paper 2 (*Hamlet* 3.4, the Ghost: \"[ENTER GHOST]\"). Submitted.",
+   "done": true,
    "source": "hand",
    "key": "paper 2",
    "about": "Drama paper, 750–1000 words, 12 pt, double-spaced, with a real title. Argue how stagecraft (acting, staging, props, audience) is necessary to one scene's meaning, from Hamlet, Hedda Gabler, or Death and the King's Horseman. Your plan: Hamlet 3.4, the Ghost that Gertrude cannot see, with the other Ghost scenes as a 'play within the play'."
