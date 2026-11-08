@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T03:10:04+00:00",
+ "updated": "2026-11-08T03:16:22+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -768,12 +768,12 @@
    "week": "2026-11-01",
    "class": "Physics III",
    "start": "8:37 PM",
-   "end": "now",
+   "end": "10:16 PM",
    "start_min": 1237,
-   "end_min": 1330,
-   "minutes": 93,
-   "in_progress": true,
-   "topic": "Physics PS7, Problem 1(a)–(b): string speed √(T/μ), wavelength, length for the fundamental; modes and harmonics.",
+   "end_min": 1336,
+   "minutes": 99,
+   "in_progress": false,
+   "topic": "Physics PS7, Problem 1 (King 6-2): string speed √(T/μ), wavelength, length for the fundamental, sound in air; modes and harmonics.",
    "refs": [
     "problem set 7"
    ]
@@ -913,9 +913,10 @@
     ],
     "done": [
      "1(a)",
-     "1(b)"
+     "1(b)",
+     "1(c)"
     ],
-    "note": "1(a) λ ≈ 0.270 m and 1(b) L ≈ 0.135 m done. Next: 1(c), sound from the wire (same f; λ_air = 340/f)."
+    "note": "Problem 1 done (λ ≈ 0.270 m, L ≈ 0.135 m, sound 262 Hz, 1.30 m). Next: Problem 2(a), successive modes."
    }
   },
   {
