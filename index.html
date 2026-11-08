@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "9ced9b4c96";
+var APP_BUILD = "a456c09a3f";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4905,7 +4905,7 @@ ROOMS.block = function(ctx, W, H, t, go){
       if (f.k === 'suit'){ var sn2 = f.n || 0, p = f.p || (f.p = {hair: ['swept', 'short', 'swept', 'short', 'swept', 'short', 'swept'][sn2 % 7], hc: ['#6a5040', '#151218', '#2a1a14', '#c4a06a', '#151218', '#4a3020', '#1a1410'][sn2 % 7], jacket: sn2 % 2 ? '#22242c' : '#a8c8e8', open: sn2 % 2 ? '#e8ecf2' : undefined, neck: sn2 % 2 ? '#8a1a2a' : undefined, pants: sn2 % 2 ? '#22242c' : '#c9b896', skin: [0, 2, 1, 5, 3, 0, 2][sn2 % 7], ph: f.x % 4});
         p.dir = f.dir; p.v = 1; if (f.flee){ p.dir = f.vx > 0 ? 1 : -1; } stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t*(f.flee ? 2 : 1.2));
         if (sn2 % 2){ if (!f.flee){ var bx = Math.round(x0 + (f.dir > 0 ? 4 : -11)); R(bx, f.y + 18, 8, 6, '#5a3a22'); R(bx + 3, f.y + 17, 2, 1, '#3a2414'); R(bx, f.y + 20, 8, 1, '#3a2414'); } } else {
-        var vx = Math.round(x0) - 2, vy = Math.round(f.y + f.h + 1) - 24 + (p.v && Math.floor(G.t*(f.flee ? 2 : 1.2)*7 + p.ph) % 2 ? -1 : 0); R(vx, vy, 5, 9, '#2a3448'); R(vx + 2, vy, 1, 9, '#1a2232'); R(vx + (f.dir > 0 ? 3 : 0), vy + 2, 2, 1, '#e8e4dc'); R(vx + 1, vy - 1, 3, 1, '#a8c8e8');
+        var vx = Math.round(x0) - 2, vy = Math.round(f.y + f.h + 1) - 24 + (p.v && Math.floor(G.t*(f.flee ? 2 : 1.2)*7 + p.ph) % 2 ? -1 : 0); R(vx, vy - 1, 5, 11, '#6a7080'); R(vx, vy - 1, 5, 1, '#8a909e'); R(vx + 2, vy, 1, 10, '#3a3e4a'); var lg = vx + (f.dir > 0 ? 3 : 0); R(lg, vy + 2, 2, 1, '#151218'); R(lg, vy + 3, 1, 1, '#e8822a'); R(lg + 1, vy + 3, 1, 1, '#3ab0b8'); R(vx + 1, vy - 2, 3, 1, '#a8c8e8');
         R(Math.round(x0) + (f.dir > 0 ? -1 : 1), vy - 9, 1, 2, '#fbf7ee'); } }
       else { var n = f.n || 0, p = f.p || (f.p = {hair: ['cap', 'short', 'short', 'long', 'cap'][n % 5], bucket: n % 5 === 1 ? '#e9c45a' : undefined, hc: ['#e8402a', '#2f5f9e', '#5ac04a', '#c4652a', '#151218'][n % 5], jacket: ['#e8822a', '#e9c45a', '#8ad0e8', '#e88aa0', '#5ac04a'][(n*2) % 5], tee: '#fbf7ee', pants: ['#c9b896', '#3a4a6a', '#c9b896', '#6a7a4a', '#e8e2d0'][(n*3) % 5], skin: [0, 2, 3, 1, 5][n % 5], nocup: 1, tote: n % 2, ph: 0});
         p.dir = f.dir; p.v = f.vx ? 1 : 0; stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t);
