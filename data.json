@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T21:47:51+00:00",
+ "updated": "2026-11-08T22:07:11+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -770,8 +770,8 @@
    "start": "4:25 PM",
    "end": "now",
    "start_min": 985,
-   "end_min": 1007,
-   "minutes": 22,
+   "end_min": 1027,
+   "minutes": 42,
    "in_progress": true,
    "topic": "PS6: resuming at 2(iv).",
    "refs": [
@@ -911,8 +911,11 @@
      "5(a)",
      "5(b)"
     ],
-    "done": [],
-    "note": "Started at Problem 4: why the cavity modes are ν_n = nc/2L."
+    "done": [
+     "4(a)",
+     "4(b)"
+    ],
+    "note": "Problem 4 done (30 modes; L ≤ 3.3 cm). Next: Problems 1, 2, 3, 5."
    }
   },
   {
