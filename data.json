@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T19:41:54+00:00",
+ "updated": "2026-11-08T00:20:19+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -879,7 +879,25 @@
    "done": false,
    "source": "hand",
    "key": "problem set 7",
-   "about": "50 pts, on Canvas; still locked, so contents not yet known. Sets are due Sundays at 9 AM."
+   "about": "King 6-2, 6-3, 6-5, 6-10 and French 6-12 (standing waves, normal modes). 1: wavelength on a wire, length for a 262 Hz fundamental, the sound it makes. 2: mode numbers from successive wavelengths; microwave frequency from cold-spot spacing. 3: violin harmonics, audible count, finger position. 4: laser-cavity modes within a Doppler-broadened line. 5: energy of a centre-plucked string and how often its shape recurs. 50 pts, due Sun 11/8 9:00 AM, one merged PDF on Gradescope with all problems tagged, reasoning written beside the math. Waves Guide: Ch. 6 tab.",
+   "progress": {
+    "parts": [
+     "1(a)",
+     "1(b)",
+     "1(c)",
+     "2(a)",
+     "2(b)",
+     "3(a)",
+     "3(b)",
+     "3(c)",
+     "4(a)",
+     "4(b)",
+     "5(a)",
+     "5(b)"
+    ],
+    "done": [],
+    "note": "Not started. Guide ready: Waves Guide, Ch. 6 tab (one method per problem)."
+   }
   },
   {
    "due": "2026-11-11",
