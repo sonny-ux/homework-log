@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "c27b9bc5ba";
+var APP_BUILD = "e55033a6af";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -5160,7 +5160,7 @@ ROOMS.block = function(ctx, W, H, t, go){
   function build(){ el = document.createElement('div'); el.id = 'plat'; el.setAttribute('aria-hidden', 'true');
     el.innerHTML = '<canvas width="' + GW + '" height="' + GH + '" aria-label="Super Sidewalk, a platform game"></canvas>' +
       '<div class="pbar"><div class="pdir"><button data-k="l" aria-label="left">◀</button><button data-k="r" aria-label="right">▶</button></div>' +
-      '<div class="pmid"><button data-a="start">start</button><button data-a="x">done</button></div><div class="pjump"><button data-k="j" aria-label="jump">A</button></div></div>';
+      '<div class="pmid"><button data-a="start">start</button><button data-a="x">menu</button></div><div class="pjump"><button data-k="j" aria-label="jump">A</button></div></div>';
     document.body.appendChild(el); cv = el.querySelector('canvas'); g = cv.getContext('2d');
     el.querySelectorAll('[data-k]').forEach(function(b){ var k = b.dataset.k;
       function on(e){ e.preventDefault(); b.classList.add('down'); if (G.state === 'title'){ if (k === 'l') pick(-1); else if (k === 'r') pick(1); else startPressed(); return; } if (G.state === 'over' || G.state === 'clear'){ startPressed(); return; } if (!KEYS[k] && k === 'j') jPressed = 1; KEYS[k] = 1; }
@@ -5168,12 +5168,13 @@ ROOMS.block = function(ctx, W, H, t, go){
       b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointercancel', off); b.addEventListener('pointerleave', off); b.addEventListener('contextmenu', function(e){ e.preventDefault(); }); });
     ['start', 'x'].forEach(function(k){ var b = el.querySelector('[data-a="' + k + '"]'), fired = 0;
       b.addEventListener('pointerdown', function(e){ e.preventDefault(); e.stopPropagation(); b.classList.add('down'); });
-      b.addEventListener('pointerup', function(e){ e.preventDefault(); e.stopPropagation(); b.classList.remove('down'); fired = Date.now(); if (k === 'x') close(); else startPressed(); });
+      b.addEventListener('pointerup', function(e){ e.preventDefault(); e.stopPropagation(); b.classList.remove('down'); fired = Date.now(); if (k === 'x') done(); else startPressed(); });
       b.addEventListener('pointercancel', function(){ b.classList.remove('down'); });
-      b.addEventListener('click', function(e){ e.stopPropagation(); if (Date.now() - fired < 600) return; if (k === 'x') close(); else startPressed(); }); });
+      b.addEventListener('click', function(e){ e.stopPropagation(); if (Date.now() - fired < 600) return; if (k === 'x') done(); else startPressed(); }); });
     cv.addEventListener('pointerdown', function(e){ e.preventDefault(); if (G.state === 'title'){ var b = cv.getBoundingClientRect(), fx = (e.clientX - b.left)/b.width, fy = (e.clientY - b.top)/b.height; if (fy < 0.12){ G.world = G.world === 2 ? 1 : 2; return; } if (fx < 0.33) pick(-1); else if (fx > 0.67) pick(1); else startPressed(); } else if (G.state !== 'play') startPressed(); });
     window.addEventListener('resize', fit); window.addEventListener('orientationchange', function(){ setTimeout(fit, 200); }); }
   function close(){ el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); KEYS.l = KEYS.r = KEYS.j = 0; }
+  function done(){ if (G && G.state !== 'title'){ var s = G.sel, w = G.world; newRun(); G.sel = s; G.world = w; KEYS.l = KEYS.r = KEYS.j = 0; } else close(); }
   window.openPlat = function(){ if (!HEROES) HEROES = heroes(); if (!el) build(); fit(); newRun(); el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); last = 0; if (!raf) raf = requestAnimationFrame(loop); };
   window.__platG = function(){ return G; };
   var KMAP = {ArrowLeft: 'l', a: 'l', A: 'l', ArrowRight: 'r', d: 'r', D: 'r', ' ': 'j', ArrowUp: 'j', w: 'j', W: 'j', z: 'j', Z: 'j'};
