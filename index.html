@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "bb14d3bd50";
+var APP_BUILD = "d1975e6cac";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4688,6 +4688,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     function block(bx, bw, bh, kind){ L.solids.push({x: bx, y: GROUND - bh, w: bw, h: bh, k: kind}); }
     function ledge(bx, by, bw, kind){ L.oneway.push({x: bx, y: by, w: bw, k: kind}); }
     var sn = 0; function suit(fx){ sn++; L.foes.push({k: 'suit', n: sn, x: fx, y: GROUND - 34, w: 10, h: 34, vx: -38, dir: -1, alive: 1}); }
+    var pn = 0; function punk(fx){ pn++; L.foes.push({k: 'punk', n: pn, x: fx, y: GROUND - 34, w: 10, h: 34, vx: -60, dir: -1, alive: 1, board: pn % 2, hop: 1 + pn % 3}); }
     var tn = 0; function tourist(fx){ tn++; L.foes.push({k: 'tourist', n: tn, x: fx, y: GROUND - 34, w: 10, h: 34, vx: -10, dir: -1, alive: 1, snap: 2 + (fx % 3), flash: 0}); }
     function fireEscape(fx, floors){ for (var i = 0; i < floors; i++) ledge(fx, GROUND - 34 - i*30, 40, 'fire'); L.deco.push({k: 'firestair', x: fx, floors: floors}); }
     // 1. the block outside the bodega: learn to run, jump and bump boxes
@@ -4729,6 +4730,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     [[260, 18], [1100, 16], [1880, 18], [2140, 16]].forEach(function(d){ L.deco.push({k: 'pothole', x: d[0], w: d[1]}); });
     var cut = []; L.ground.forEach(function(s){ var segs = [{x: s.x, w: s.w}]; L.ditch.forEach(function(d){ var nx = []; segs.forEach(function(q){ if (d.x >= q.x + q.w || d.x + d.w <= q.x){ nx.push(q); return; } if (d.x > q.x) nx.push({x: q.x, w: d.x - q.x}); if (d.x + d.w < q.x + q.w) nx.push({x: d.x + d.w, w: q.x + q.w - d.x - d.w}); }); segs = nx; }); cut = cut.concat(segs); }); L.ground = cut;
     L.ditch.forEach(function(d){ L.deco.push({k: 'pit', x: d.x, w: d.w}); });
+    punk(1290); punk(1580); punk(2000); punk(2600);
     L.width = x;
     // pigeons gather on the sidewalk here and there and scatter when you run past
     var r = rnd(7); L.birds = [];
@@ -4809,16 +4811,17 @@ ROOMS.block = function(ctx, W, H, t, go){
     // foes
     L.foes.forEach(function(f){ if (!f.alive) { if (f.flee){ f.x += f.vx*dt; f.fleeT += dt; } return; }
       if (Math.abs(f.x - P.x) > GW + 60) return;
-      if (f.k === 'suit'){ f.vy = (f.vy || 0) + GRAV*dt; var fh = moveBody(f, dt, L); if (fh.wall || !floorAhead(f, L, f.dir)){ f.dir = -f.dir; f.vx = 38*f.dir; } }
+      if (f.k === 'suit' || f.k === 'punk'){ var sp = f.k === 'punk' ? (f.board ? 78 : 50) : 38; f.vx = sp*f.dir; f.vy = (f.vy || 0) + GRAV*dt; var fh = moveBody(f, dt, L); if (fh.wall || (fh.floor && !floorAhead(f, L, f.dir))){ f.dir = -f.dir; f.vx = sp*f.dir; }
+        if (f.k === 'punk' && fh.floor){ f.hop -= dt; if (f.hop < 0){ f.vy = -230; f.hop = 1.6 + Math.random()*1.6; } } }
       else { f.snap -= dt; if (f.snap < 0){ f.pose = 1; if (f.snap < -0.6){ f.flash = 0.18; var dx = (P.x - f.x)*f.dir; if (dx > 0 && dx < 70 && Math.abs(P.y - f.y) < 30 && P.daze <= 0){ P.daze = 0.7; pop(P.x - 2, P.y - 10, 'FLASH!', '#fbf7ee'); } f.snap = 2.5 + Math.random()*2; f.pose = 0; } }
         else { f.vx = (Math.sin(G.t*0.4 + f.x) > 0.3 ? f.dir*10 : 0); f.vy = (f.vy || 0) + GRAV*dt; var th = moveBody(f, dt, L); if (th.wall || !floorAhead(f, L, f.dir)) f.dir = -f.dir; }
         f.flash -= dt; }
       if (overlap(f, P) && !P.dead && P.star > 0){ f.alive = 0; f.flee = 1; f.fleeT = 0; f.vx = 180*(P.x < f.x ? 1 : -1); G.score += 200; pop(f.x, f.y - 6, '200'); burst(f.x + 5, f.y + 16, '#f0d24a', 6); return; }
       if (overlap(f, P) && !P.dead){
         var stomp = P.vy > 40 && P.y + P.h - f.y < 12;
-        if (stomp && f.k === 'suit'){ f.alive = 0; f.flee = 1; f.fleeT = 0; f.vx = 160*(P.x < f.x ? 1 : -1); P.vy = -260; G.score += 200; pop(f.x, f.y - 6, '200'); burst(f.x + 5, f.y + 20, '#e8e2d0', 5); G.parts.push({x: f.x, y: f.y + 18, vx: -30, vy: -120, t: 0, c: '#5a3a22', brief: 1}); }
+        if (stomp && f.k !== 'tourist'){ if (f.board) G.parts.push({x: f.x, y: f.y + 30, vx: 120*(P.x < f.x ? 1 : -1), vy: -160, t: 0, c: '#c4473a', board: 1}); f.board = 0; f.alive = 0; f.flee = 1; f.fleeT = 0; f.vx = 160*(P.x < f.x ? 1 : -1); P.vy = -260; G.score += 200; pop(f.x, f.y - 6, '200'); burst(f.x + 5, f.y + 20, '#e8e2d0', 5); G.parts.push({x: f.x, y: f.y + 18, vx: -30, vy: -120, t: 0, c: '#5a3a22', brief: 1}); }
         else if (stomp){ P.vy = -470; G.score += 50; pop(f.x - 4, f.y - 8, 'OOPS', '#9fd3f2'); }
-        else if (f.k === 'suit') hurt(P);
+        else if (f.k !== 'tourist') hurt(P);
         else { P.vx = (P.x < f.x ? -1 : 1)*90; } } });
     // the crosswalk: a cab comes through when the hand turns red
     L.cross.forEach(function(c){ c.t += dt; var cyc = c.t % 6; c.red = cyc > 3.4;
@@ -4908,6 +4911,8 @@ ROOMS.block = function(ctx, W, H, t, go){
           if (!f.flee){ var bx = Math.round(x0 + (f.dir > 0 ? 1 : -8)), byy = Math.round(f.y + f.h + 1) - 13; R(bx + 3, byy - 2, 1, 2, '#3a2414'); R(bx + 2, byy - 2, 3, 1, '#3a2414'); R(bx, byy, 7, 6, '#5a3a22'); R(bx, byy + 2, 7, 1, '#3a2414'); R(bx + 3, byy + 1, 1, 1, '#c9a43a'); } } else {
         var vx = Math.round(x0) - 2, vy = Math.round(f.y + f.h + 1) - 24 + (p.v && Math.floor(G.t*(f.flee ? 2 : 1.2)*7 + p.ph) % 2 ? -1 : 0); R(vx, vy - 1, 5, 11, '#6a7080'); R(vx, vy - 1, 5, 1, '#8a909e'); R(vx + 2, vy, 1, 10, '#3a3e4a'); var lg = vx + (f.dir > 0 ? 3 : 0); R(lg, vy + 2, 2, 1, '#151218'); R(lg, vy + 3, 1, 1, '#e8822a'); R(lg + 1, vy + 3, 1, 1, '#3ab0b8'); R(vx + 1, vy - 2, 3, 1, '#fbf7ee');
         R(Math.round(x0) + (f.dir > 0 ? -1 : 1), vy - 9, 1, 2, '#fbf7ee'); } }
+      else if (f.k === 'punk'){ var pn2 = f.n || 0, p = f.p || (f.p = {hair: 'mohawk', hc: ['#ff5a4e', '#5ac04a', '#8a4ad8', '#3a8ae8'][pn2 % 4], jacket: 'leather', pants: ['#1a1820', '#2a2a6a', '#1a1820', '#3a2a2a'][pn2 % 4], punk: 1, chain: 1, skin: [1, 0, 2, 5][pn2 % 4], nocup: 1, ph: pn2});
+        p.dir = f.dir; p.v = 1; p.board = f.board && f.alive ? 1 : 0; if (f.flee) p.dir = f.vx > 0 ? 1 : -1; stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t*(f.board ? 0 : 1.4)); }
       else { var n = f.n || 0, p = f.p || (f.p = {hair: ['cap', 'short', 'short', 'long', 'cap'][n % 5], bucket: n % 5 === 1 ? '#e9c45a' : undefined, hc: ['#e8402a', '#2f5f9e', '#5ac04a', '#c4652a', '#151218'][n % 5], jacket: ['#e8822a', '#e9c45a', '#8ad0e8', '#e88aa0', '#5ac04a'][(n*2) % 5], tee: '#fbf7ee', pants: ['#c9b896', '#3a4a6a', '#c9b896', '#6a7a4a', '#e8e2d0'][(n*3) % 5], skin: [0, 2, 3, 1, 5][n % 5], nocup: 1, tote: n % 2, ph: 0});
         p.dir = f.dir; p.v = f.vx ? 1 : 0; stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t);
         var px = Math.round(x0 + f.dir*6) - (f.dir < 0 ? 3 : 0); R(px, f.y + (f.pose ? 6 : 14), 4, 6, '#151218'); R(px + 1, f.y + (f.pose ? 7 : 15), 2, 3, '#6ab0e8');
@@ -4940,7 +4945,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     else if (it.k === 'metro'){ R(x0, y0 + 2, 11, 7, '#f0c41a'); R(x0, y0 + 4, 11, 1, '#151218'); R(x0 + 1, y0 + 6, 5, 1, '#2f5f9e'); if (Math.floor(G.t*8) % 2) R(x0 + 9, y0 + 1, 2, 2, '#fbf7ee'); }
     else { R(x0, y0 + 1, 10, 9, '#fbf7ee'); R(x0 - 2, y0 + 1, 2, 3, '#fbf7ee'); R(x0 + 10, y0 + 1, 2, 3, '#fbf7ee'); T('I', x0 + 1, y0 + 3, 1, '#151218'); R(x0 + 5, y0 + 4, 2, 2, '#e8402a'); R(x0 + 7, y0 + 4, 2, 2, '#e8402a'); R(x0 + 5, y0 + 5, 4, 2, '#e8402a'); R(x0 + 6, y0 + 7, 2, 1, '#e8402a'); } }); }
   function play(){ sky(); skyline(); facades(); sidewalk(); solids(); items(); birds(); foes(); cab(); hero();
-    G.parts.forEach(function(p){ var x0 = p.x - G.cam; if (p.tok){ R(x0 - 2, p.y - 3, 4, 7, '#f0d24a'); } else if (p.brief){ R(x0, p.y, 8, 6, p.c); } else R(x0, p.y, 2, 2, p.c); });
+    G.parts.forEach(function(p){ var x0 = p.x - G.cam; if (p.tok){ R(x0 - 2, p.y - 3, 4, 7, '#f0d24a'); } else if (p.brief){ R(x0, p.y, 8, 6, p.c); } else if (p.board){ R(x0 - 6, p.y, 14, 1, p.c); R(x0 - 4, p.y + 1, 2, 2, '#f3ead3'); R(x0 + 4, p.y + 1, 2, 2, '#f3ead3'); } else R(x0, p.y, 2, 2, p.c); });
     G.pops.forEach(function(p){ T(p.s, p.x - G.cam, p.y, 1, p.c); });
     if (G.flash > 0){ G.flash -= 1/60; g.fillStyle = 'rgba(232,64,42,.25)'; g.fillRect(0, 0, GW, GH); }
     hud(); }
