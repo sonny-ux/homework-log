@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T04:48:11+00:00",
+ "updated": "2026-11-08T05:06:05+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -790,6 +790,22 @@
    "minutes": 81,
    "in_progress": false,
    "topic": "Physics PS7, Problem 2 (King 6-3): successive modes (n = 4, 5, L = 1.10 m); microwave cold spots as nodes, λ = 2d.",
+   "refs": [
+    "problem set 7"
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "day": "Sun",
+   "week": "2026-11-08",
+   "class": "Physics III",
+   "start": "12:06 AM",
+   "end": "now",
+   "start_min": 6,
+   "end_min": 6,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Physics PS7: 2(b) onward (resumed).",
    "refs": [
     "problem set 7"
    ]
