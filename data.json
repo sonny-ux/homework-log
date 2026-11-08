@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T00:20:19+00:00",
+ "updated": "2026-11-08T01:37:36+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -760,6 +760,22 @@
    "topic": "Paper 2: plan reviewed.",
    "refs": [
     "paper 2"
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "day": "Sat",
+   "week": "2026-11-01",
+   "class": "Physics III",
+   "start": "8:37 PM",
+   "end": "now",
+   "start_min": 1237,
+   "end_min": 1237,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Physics PS7 (standing waves, normal modes): started.",
+   "refs": [
+    "problem set 7"
    ]
   }
  ],
