@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "8eff532b43";
+var APP_BUILD = "c27b9bc5ba";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -5166,8 +5166,11 @@ ROOMS.block = function(ctx, W, H, t, go){
       function on(e){ e.preventDefault(); b.classList.add('down'); if (G.state === 'title'){ if (k === 'l') pick(-1); else if (k === 'r') pick(1); else startPressed(); return; } if (G.state === 'over' || G.state === 'clear'){ startPressed(); return; } if (!KEYS[k] && k === 'j') jPressed = 1; KEYS[k] = 1; }
       function off(){ b.classList.remove('down'); KEYS[k] = 0; }
       b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointercancel', off); b.addEventListener('pointerleave', off); b.addEventListener('contextmenu', function(e){ e.preventDefault(); }); });
-    el.querySelector('[data-a="start"]').addEventListener('click', startPressed);
-    el.querySelector('[data-a="x"]').addEventListener('click', close);
+    ['start', 'x'].forEach(function(k){ var b = el.querySelector('[data-a="' + k + '"]'), fired = 0;
+      b.addEventListener('pointerdown', function(e){ e.preventDefault(); e.stopPropagation(); b.classList.add('down'); });
+      b.addEventListener('pointerup', function(e){ e.preventDefault(); e.stopPropagation(); b.classList.remove('down'); fired = Date.now(); if (k === 'x') close(); else startPressed(); });
+      b.addEventListener('pointercancel', function(){ b.classList.remove('down'); });
+      b.addEventListener('click', function(e){ e.stopPropagation(); if (Date.now() - fired < 600) return; if (k === 'x') close(); else startPressed(); }); });
     cv.addEventListener('pointerdown', function(e){ e.preventDefault(); if (G.state === 'title'){ var b = cv.getBoundingClientRect(), fx = (e.clientX - b.left)/b.width, fy = (e.clientY - b.top)/b.height; if (fy < 0.12){ G.world = G.world === 2 ? 1 : 2; return; } if (fx < 0.33) pick(-1); else if (fx > 0.67) pick(1); else startPressed(); } else if (G.state !== 'play') startPressed(); });
     window.addEventListener('resize', fit); window.addEventListener('orientationchange', function(){ setTimeout(fit, 200); }); }
   function close(){ el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); KEYS.l = KEYS.r = KEYS.j = 0; }
