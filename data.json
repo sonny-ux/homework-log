@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T22:07:11+00:00",
+ "updated": "2026-11-08T22:37:09+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -768,14 +768,15 @@
    "week": "2026-11-08",
    "class": "Physics III",
    "start": "4:25 PM",
-   "end": "now",
+   "end": "5:36 PM",
    "start_min": 985,
-   "end_min": 1027,
-   "minutes": 42,
-   "in_progress": true,
-   "topic": "PS6: resuming at 2(iv).",
+   "end_min": 1056,
+   "minutes": 71,
+   "in_progress": false,
+   "topic": "PS7: cavity modes, plucked string; finished.",
    "refs": [
-    "problem set 6"
+    "problem set 6",
+    "problem set 7"
    ]
   }
  ],
@@ -829,7 +830,7 @@
      "2(ii)",
      "2(iii)"
     ],
-    "note": "Next: 2(iv) Ae^(i(ωt+kx)), then 2(v), 2(b) and Problem 3."
+    "note": "Next: 2(iv) Ae^(i(ωt+kx)) (set up 11/8), then 2(v), 2(b) and Problem 3."
    }
   },
   {
@@ -891,7 +892,7 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 7",
-   "detail": "Problem Set 7 (50 pts; Gradescope; King 6-2, 6-3, 6-5, 6-10, French 6-12; PDF in School/). Working on it late, from 11/8. Physics sets are now due weekly, Sundays at 9:00 AM.",
+   "detail": "Problem Set 7 (50 pts; Gradescope; King 6-2, 6-3, 6-5, 6-10, French 6-12; PDF in School/). Finished Sun 11/8, 5:36 PM (submission not yet confirmed). Physics sets are now due weekly, Sundays at 9:00 AM.",
    "done": false,
    "source": "hand",
    "key": "problem set 7",
@@ -912,10 +913,20 @@
      "5(b)"
     ],
     "done": [
+     "1(a)",
+     "1(b)",
+     "1(c)",
+     "2(a)",
+     "2(b)",
+     "3(a)",
+     "3(b)",
+     "3(c)",
      "4(a)",
-     "4(b)"
+     "4(b)",
+     "5(a)",
+     "5(b)"
     ],
-    "note": "Problem 4 done (30 modes; L ≤ 3.3 cm). Next: Problems 1, 2, 3, 5."
+    "note": "Finished 11/8 5:36 PM; submit as one merged PDF on Gradescope, all problems tagged. PS6 still open at 2(iv)."
    }
   },
   {
