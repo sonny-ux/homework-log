@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "d1975e6cac";
+var APP_BUILD = "f596960d15";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4731,6 +4731,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     var cut = []; L.ground.forEach(function(s){ var segs = [{x: s.x, w: s.w}]; L.ditch.forEach(function(d){ var nx = []; segs.forEach(function(q){ if (d.x >= q.x + q.w || d.x + d.w <= q.x){ nx.push(q); return; } if (d.x > q.x) nx.push({x: q.x, w: d.x - q.x}); if (d.x + d.w < q.x + q.w) nx.push({x: d.x + d.w, w: q.x + q.w - d.x - d.w}); }); segs = nx; }); cut = cut.concat(segs); }); L.ground = cut;
     L.ditch.forEach(function(d){ L.deco.push({k: 'pit', x: d.x, w: d.w}); });
     punk(1290); punk(1580); punk(2000); punk(2600);
+    [[1062, 0], [1936, 1]].forEach(function(c){ L.foes.push({k: 'crust', n: c[1], x: c[0], y: GROUND - 20, w: 14, h: 20, vx: 0, dir: 1, alive: 1, gave: 0, bark: 0, ask: 0}); });
     L.width = x;
     // pigeons gather on the sidewalk here and there and scatter when you run past
     var r = rnd(7); L.birds = [];
@@ -4811,6 +4812,11 @@ ROOMS.block = function(ctx, W, H, t, go){
     // foes
     L.foes.forEach(function(f){ if (!f.alive) { if (f.flee){ f.x += f.vx*dt; f.fleeT += dt; } return; }
       if (Math.abs(f.x - P.x) > GW + 60) return;
+      if (f.k === 'crust'){ var dxp = P.x + 5 - (f.x + 50); f.bark = Math.max(0, f.bark - dt); f.ask = Math.max(0, f.ask - dt);
+        if (Math.abs(dxp) < 34 && Math.abs(P.y + P.h - GROUND) < 8 && f.bark <= 0){ f.bark = 1.2; pop(f.x + 22, f.y - 12, 'WOOF', '#e9c45a'); }
+        if (Math.abs(dxp) < 7 && Math.abs(P.y + P.h - GROUND) < 6 && f.bark > 0.9 && !(P.star > 0)) hurt(P);
+        if (overlap(f, P) && f.ask <= 0){ f.ask = 2; if (!f.gave && G.tokens > 0){ f.gave = 1; G.tokens--; G.items.push({k: f.n % 2 ? 'coffee' : 'pizza', x: f.x + 2, y: f.y - 14, w: 10, h: 10, vx: P.x < f.x ? -30 : 30, vy: -80, out: 0}); pop(f.x - 6, f.y - 20, 'THANKS, MAN', '#9fd3f2'); } else if (!f.gave) pop(f.x - 14, f.y - 20, 'SPARE A TOKEN?', '#e8e2d0'); }
+        return; }
       if (f.k === 'suit' || f.k === 'punk'){ var sp = f.k === 'punk' ? (f.board ? 78 : 50) : 38; f.vx = sp*f.dir; f.vy = (f.vy || 0) + GRAV*dt; var fh = moveBody(f, dt, L); if (fh.wall || (fh.floor && !floorAhead(f, L, f.dir))){ f.dir = -f.dir; f.vx = sp*f.dir; }
         if (f.k === 'punk' && fh.floor){ f.hop -= dt; if (f.hop < 0){ f.vy = -230; f.hop = 1.6 + Math.random()*1.6; } } }
       else { f.snap -= dt; if (f.snap < 0){ f.pose = 1; if (f.snap < -0.6){ f.flash = 0.18; var dx = (P.x - f.x)*f.dir; if (dx > 0 && dx < 70 && Math.abs(P.y - f.y) < 30 && P.daze <= 0){ P.daze = 0.7; pop(P.x - 2, P.y - 10, 'FLASH!', '#fbf7ee'); } f.snap = 2.5 + Math.random()*2; f.pose = 0; } }
@@ -4911,6 +4917,14 @@ ROOMS.block = function(ctx, W, H, t, go){
           if (!f.flee){ var bx = Math.round(x0 + (f.dir > 0 ? 1 : -8)), byy = Math.round(f.y + f.h + 1) - 13; R(bx + 3, byy - 2, 1, 2, '#3a2414'); R(bx + 2, byy - 2, 3, 1, '#3a2414'); R(bx, byy, 7, 6, '#5a3a22'); R(bx, byy + 2, 7, 1, '#3a2414'); R(bx + 3, byy + 1, 1, 1, '#c9a43a'); } } else {
         var vx = Math.round(x0) - 2, vy = Math.round(f.y + f.h + 1) - 24 + (p.v && Math.floor(G.t*(f.flee ? 2 : 1.2)*7 + p.ph) % 2 ? -1 : 0); R(vx, vy - 1, 5, 11, '#6a7080'); R(vx, vy - 1, 5, 1, '#8a909e'); R(vx + 2, vy, 1, 10, '#3a3e4a'); var lg = vx + (f.dir > 0 ? 3 : 0); R(lg, vy + 2, 2, 1, '#151218'); R(lg, vy + 3, 1, 1, '#e8822a'); R(lg + 1, vy + 3, 1, 1, '#3ab0b8'); R(vx + 1, vy - 2, 3, 1, '#fbf7ee');
         R(Math.round(x0) + (f.dir > 0 ? -1 : 1), vy - 9, 1, 2, '#fbf7ee'); } }
+      else if (f.k === 'crust'){ var cn = f.n || 0, p = f.p || (f.p = {hair: 'beanie', hc: '#6a5a3a', jacket: ['#4a4436', '#3a3a32'][cn], pants: ['#2a2620', '#3a3428'][cn], punk: 1, chain: 1, skin: [0, 3][cn], nocup: 1, sit: 1, ph: 0});
+        var cx0 = Math.round(f.x - G.cam + 5), cy0 = GROUND + 1; p.dir = 1; p.v = 0; R(cx0 - 9, cy0 - 26, 7, 16, '#5a4a32'); R(cx0 - 9, cy0 - 26, 7, 2, '#3a3022'); R(cx0 - 8, cy0 - 20, 5, 1, '#3a3022');
+        stPerson(g, p, cx0, cy0, G.t); R(cx0 - 1, cy0 - 28, 1, 6, '#6a5a3a'); R(cx0 + 3, cy0 - 28, 1, 5, '#6a5a3a');
+        [[0, -20, '#e8402a'], [2, -17, '#e8e2d0'], [-1, -15, '#3a8ae8'], [3, -14, '#c9a43a']].forEach(function(q){ R(cx0 + q[0], cy0 + q[1], 2, 2, q[2]); }); for (var k = -2; k < 5; k++) R(cx0 + k, cy0 - 12, 1, 1, k % 2 ? '#c9a43a' : '#6a5a3a');
+        R(cx0 + 9, cy0 - 12, 27, 9, '#b8946a'); R(cx0 + 9, cy0 - 12, 27, 1, '#9a7a52'); T(cn ? 'BROKE' : 'TOKEN?', cx0 + 11, cy0 - 10, 1, '#3a2a1a');
+        var up = f.bark > 0, dgx = cx0 + 40, dgy = cy0 - 1; R(cx0 + 6, cy0 - 10, Math.max(1, dgx - cx0 - 6), 1, '#c9b896');
+        if (up){ R(dgx, dgy - 9, 10, 5, '#6a4a2a'); R(dgx + 9, dgy - 13, 5, 5, '#6a4a2a'); R(dgx + 13, dgy - 11, 2, 2, '#4a3220'); R(dgx + 10, dgy - 14, 2, 2, '#3a2414'); R(dgx + 1, dgy - 4, 2, 4, '#6a4a2a'); R(dgx + 7, dgy - 4, 2, 4, '#6a4a2a'); R(dgx - 2, dgy - 11 - (Math.floor(G.t*12) % 2), 2, 2, '#6a4a2a'); R(dgx + 9, dgy - 8, 4, 1, '#e8402a'); if (Math.floor(G.t*6) % 2) R(dgx + 15, dgy - 10, 1, 1, '#fbf7ee'); }
+        else { R(dgx, dgy - 5, 11, 5, '#6a4a2a'); R(dgx + 9, dgy - 8, 5, 4, '#6a4a2a'); R(dgx + 10, dgy - 9, 2, 1, '#3a2414'); R(dgx + 9, dgy - 4, 4, 1, '#e8402a'); R(dgx - 2, dgy - 2, 2, 1, '#6a4a2a'); } }
       else if (f.k === 'punk'){ var pn2 = f.n || 0, p = f.p || (f.p = {hair: 'mohawk', hc: ['#ff5a4e', '#5ac04a', '#8a4ad8', '#3a8ae8'][pn2 % 4], jacket: 'leather', pants: ['#1a1820', '#2a2a6a', '#1a1820', '#3a2a2a'][pn2 % 4], punk: 1, chain: 1, skin: [1, 0, 2, 5][pn2 % 4], nocup: 1, ph: pn2});
         p.dir = f.dir; p.v = 1; p.board = f.board && f.alive ? 1 : 0; if (f.flee) p.dir = f.vx > 0 ? 1 : -1; stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t*(f.board ? 0 : 1.4)); }
       else { var n = f.n || 0, p = f.p || (f.p = {hair: ['cap', 'short', 'short', 'long', 'cap'][n % 5], bucket: n % 5 === 1 ? '#e9c45a' : undefined, hc: ['#e8402a', '#2f5f9e', '#5ac04a', '#c4652a', '#151218'][n % 5], jacket: ['#e8822a', '#e9c45a', '#8ad0e8', '#e88aa0', '#5ac04a'][(n*2) % 5], tee: '#fbf7ee', pants: ['#c9b896', '#3a4a6a', '#c9b896', '#6a7a4a', '#e8e2d0'][(n*3) % 5], skin: [0, 2, 3, 1, 5][n % 5], nocup: 1, tote: n % 2, ph: 0});
