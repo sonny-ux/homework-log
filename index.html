@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "7b9b85ebdc";
+var APP_BUILD = "8b2685cbbf";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4688,7 +4688,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     function block(bx, bw, bh, kind){ L.solids.push({x: bx, y: GROUND - bh, w: bw, h: bh, k: kind}); }
     function ledge(bx, by, bw, kind){ L.oneway.push({x: bx, y: by, w: bw, k: kind}); }
     function suit(fx){ L.foes.push({k: 'suit', x: fx, y: GROUND - 34, w: 10, h: 34, vx: -38, dir: -1, alive: 1}); }
-    function tourist(fx){ L.foes.push({k: 'tourist', x: fx, y: GROUND - 34, w: 10, h: 34, vx: -10, dir: -1, alive: 1, snap: 2 + (fx % 3), flash: 0}); }
+    var tn = 0; function tourist(fx){ tn++; L.foes.push({k: 'tourist', n: tn, x: fx, y: GROUND - 34, w: 10, h: 34, vx: -10, dir: -1, alive: 1, snap: 2 + (fx % 3), flash: 0}); }
     function fireEscape(fx, floors){ for (var i = 0; i < floors; i++) ledge(fx, GROUND - 34 - i*30, 40, 'fire'); L.deco.push({k: 'firestair', x: fx, floors: floors}); }
     // 1. the block outside the bodega: learn to run, jump and bump boxes
     walk(420);
@@ -4905,7 +4905,7 @@ ROOMS.block = function(ctx, W, H, t, go){
       if (f.k === 'suit'){ var p = f.p || (f.p = {hair: 'swept', hc: ['#2a1a14', '#6a5040', '#1a1410'][Math.floor(f.x) % 3], jacket: '#22242c', open: '#e8ecf2', neck: '#8a1a2a', pants: '#22242c', skin: Math.floor(f.x/7) % 3, ph: f.x % 4});
         p.dir = f.dir; p.v = 1; if (f.flee){ p.dir = f.vx > 0 ? 1 : -1; } stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t*(f.flee ? 2 : 1.2));
         if (!f.flee){ var bx = Math.round(x0 + (f.dir > 0 ? 4 : -11)); R(bx, f.y + 18, 8, 6, '#5a3a22'); R(bx + 3, f.y + 17, 2, 1, '#3a2414'); R(bx, f.y + 20, 8, 1, '#3a2414'); } }
-      else { var p = f.p || (f.p = {hair: 'cap', hc: ['#e8402a', '#2f5f9e', '#5ac04a'][Math.floor(f.x) % 3], jacket: ['#e8822a', '#e9c45a', '#8ad0e8'][Math.floor(f.x/5) % 3], tee: '#fbf7ee', pants: '#c9b896', skin: Math.floor(f.x/3) % 4, nocup: 1, tote: 1, ph: 0});
+      else { var n = f.n || 0, p = f.p || (f.p = {hair: ['cap', 'bucket', 'short', 'long', 'cap'][n % 5], bucket: '#e9c45a', hc: ['#e8402a', '#2f5f9e', '#5ac04a', '#c4652a', '#151218'][n % 5], jacket: ['#e8822a', '#e9c45a', '#8ad0e8', '#e88aa0', '#5ac04a'][(n*2) % 5], tee: '#fbf7ee', pants: ['#c9b896', '#3a4a6a', '#c9b896', '#6a7a4a', '#e8e2d0'][(n*3) % 5], skin: [0, 2, 3, 1, 5][n % 5], nocup: 1, tote: n % 2, ph: 0});
         p.dir = f.dir; p.v = f.vx ? 1 : 0; stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t);
         var px = Math.round(x0 + f.dir*6) - (f.dir < 0 ? 3 : 0); R(px, f.y + (f.pose ? 6 : 14), 4, 6, '#151218'); R(px + 1, f.y + (f.pose ? 7 : 15), 2, 3, '#6ab0e8');
         if (f.flash > 0){ g.globalAlpha = Math.min(1, f.flash*6); g.fillStyle = '#fffbe0'; g.beginPath(); g.moveTo(px + 2, f.y + 8); g.lineTo(px + 2 + f.dir*70, f.y - 10); g.lineTo(px + 2 + f.dir*70, f.y + 40); g.closePath(); g.fill(); g.globalAlpha = 1; } } }); }
