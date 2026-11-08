@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T21:44:01+00:00",
+ "updated": "2026-11-08T21:47:51+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -770,8 +770,8 @@
    "start": "4:25 PM",
    "end": "now",
    "start_min": 985,
-   "end_min": 1004,
-   "minutes": 19,
+   "end_min": 1007,
+   "minutes": 22,
    "in_progress": true,
    "topic": "PS6: resuming at 2(iv).",
    "refs": [
@@ -891,11 +891,29 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 7",
-   "detail": "Problem Set 7 (50 pts; Canvas; locked as of 11/2). Physics sets are now due weekly, Sundays at 9:00 AM.",
+   "detail": "Problem Set 7 (50 pts; Gradescope; King 6-2, 6-3, 6-5, 6-10, French 6-12; PDF in School/). Working on it late, from 11/8. Physics sets are now due weekly, Sundays at 9:00 AM.",
    "done": false,
    "source": "hand",
    "key": "problem set 7",
-   "about": "50 pts, on Canvas; still locked, so contents not yet known. Sets are due Sundays at 9 AM."
+   "about": "King 6-2, 6-3, 6-5, 6-10 and French 6-12 (standing waves, normal modes). 1: wave on a wire, length for middle C, sound from the wire. 2: mode numbers from successive wavelengths; microwave cold spots. 3: violin harmonics, audible harmonics, finger position for C. 4: laser cavity modes inside the Doppler width. 5: plucked string energy and repeat time. 50 pts, one merged PDF on Gradescope, reasoning written beside the math; was due Sun 11/8 9 AM.",
+   "progress": {
+    "parts": [
+     "1(a)",
+     "1(b)",
+     "1(c)",
+     "2(a)",
+     "2(b)",
+     "3(a)",
+     "3(b)",
+     "3(c)",
+     "4(a)",
+     "4(b)",
+     "5(a)",
+     "5(b)"
+    ],
+    "done": [],
+    "note": "Started at Problem 4: why the cavity modes are ν_n = nc/2L."
+   }
   },
   {
    "due": "2026-11-11",
