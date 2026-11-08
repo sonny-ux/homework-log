@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "62bf53a823";
+var APP_BUILD = "953aa469aa";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4687,7 +4687,7 @@ ROOMS.block = function(ctx, W, H, t, go){
     function box(bx, by, what){ L.boxes.push({x: bx, y: by, w: 14, h: 14, what: what || 'token', used: 0, bump: 0}); }
     function block(bx, bw, bh, kind){ L.solids.push({x: bx, y: GROUND - bh, w: bw, h: bh, k: kind}); }
     function ledge(bx, by, bw, kind){ L.oneway.push({x: bx, y: by, w: bw, k: kind}); }
-    function suit(fx){ L.foes.push({k: 'suit', x: fx, y: GROUND - 34, w: 10, h: 34, vx: -38, dir: -1, alive: 1}); }
+    var sn = 0; function suit(fx){ sn++; L.foes.push({k: 'suit', n: sn, x: fx, y: GROUND - 34, w: 10, h: 34, vx: -38, dir: -1, alive: 1}); }
     var tn = 0; function tourist(fx){ tn++; L.foes.push({k: 'tourist', n: tn, x: fx, y: GROUND - 34, w: 10, h: 34, vx: -10, dir: -1, alive: 1, snap: 2 + (fx % 3), flash: 0}); }
     function fireEscape(fx, floors){ for (var i = 0; i < floors; i++) ledge(fx, GROUND - 34 - i*30, 40, 'fire'); L.deco.push({k: 'firestair', x: fx, floors: floors}); }
     // 1. the block outside the bodega: learn to run, jump and bump boxes
@@ -4902,7 +4902,7 @@ ROOMS.block = function(ctx, W, H, t, go){
       R(x0 - w/2, k.y - 3, w, 7, '#c9a43a'); R(x0 - w/2 + 1, k.y - 3, Math.max(1, w - 2), 7, '#f0d24a'); if (w >= 4) R(x0 - 1, k.y - 1, 2, 3, '#c9a43a'); }); }
   function foes(){ var L = G.L, cam = G.cam;
     L.foes.forEach(function(f){ var x0 = f.x - cam + 5; if (x0 < -30 || x0 > GW + 30) return; if (f.flee && f.fleeT > 1.5) return;
-      if (f.k === 'suit'){ var p = f.p || (f.p = {hair: 'swept', hc: '#6a5040', jacket: '#22242c', open: '#e8ecf2', neck: '#8a1a2a', pants: '#22242c', skin: 0, ph: f.x % 4});
+      if (f.k === 'suit'){ var sn2 = f.n || 0, p = f.p || (f.p = {hair: ['swept', 'short', 'swept', 'short', 'swept', 'short', 'swept'][sn2 % 7], hc: ['#6a5040', '#151218', '#2a1a14', '#c4a06a', '#151218', '#4a3020', '#1a1410'][sn2 % 7], jacket: '#22242c', open: '#e8ecf2', neck: '#8a1a2a', pants: '#22242c', skin: [0, 2, 1, 5, 3, 0, 2][sn2 % 7], ph: f.x % 4});
         p.dir = f.dir; p.v = 1; if (f.flee){ p.dir = f.vx > 0 ? 1 : -1; } stPerson(g, p, Math.round(x0), Math.round(f.y + f.h + 1), G.t*(f.flee ? 2 : 1.2));
         if (!f.flee){ var bx = Math.round(x0 + (f.dir > 0 ? 4 : -11)); R(bx, f.y + 18, 8, 6, '#5a3a22'); R(bx + 3, f.y + 17, 2, 1, '#3a2414'); R(bx, f.y + 20, 8, 1, '#3a2414'); } }
       else { var n = f.n || 0, p = f.p || (f.p = {hair: ['cap', 'short', 'short', 'long', 'cap'][n % 5], bucket: n % 5 === 1 ? '#e9c45a' : undefined, hc: ['#e8402a', '#2f5f9e', '#5ac04a', '#c4652a', '#151218'][n % 5], jacket: ['#e8822a', '#e9c45a', '#8ad0e8', '#e88aa0', '#5ac04a'][(n*2) % 5], tee: '#fbf7ee', pants: ['#c9b896', '#3a4a6a', '#c9b896', '#6a7a4a', '#e8e2d0'][(n*3) % 5], skin: [0, 2, 3, 1, 5][n % 5], nocup: 1, tote: n % 2, ph: 0});
