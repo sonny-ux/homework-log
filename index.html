@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "e55033a6af";
+var APP_BUILD = "8e760d938c";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4666,7 +4666,7 @@ ROOMS.block = function(ctx, W, H, t, go){
   var KEYS = {l: 0, r: 0, j: 0}, jPressed = 0, G = null;
   function heroes(){ var u = usTwo();
     return [['JACKSON', u[1]], ['NICO', {hair: 'tousled', hc: '#120e10', glasses: 1, glassC: '#8a7a6a', jacket: '#3a2448', hoodie: '#2a1a36', big: 1, pants: '#c9b896', skin: 0}],
-      ['ZACH', zachGuy()], ['WALTER', walterGuy()], ['LUCY', lucyGirl()], ['ALFIE', alfieGuy()], ['GINGER', gingerGuy()], ['GIRLFRIEND', u[0]]]
+      ['ZACH', zachGuy()], ['WALTER', walterGuy()], ['LUCY', lucyGirl()], ['ALFIE', alfieGuy()], ['DEREK', gingerGuy()], ['SYDNEY', u[0]]]
       .map(function(a){ var p = a[1]; p.nocup = 1; p.v = 0; p.sit = 0; p.dir = 1; p.ph = 0; return {name: a[0], p: p}; }); }
   var HEROES = null;
   function best(){ try { return +localStorage.getItem(BEST_KEY) || 0; } catch(e){ return 0; } }
