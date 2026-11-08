@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T08:51:52+00:00",
+ "updated": "2026-11-08T21:26:24+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -760,6 +760,22 @@
    "topic": "Paper 2: plan reviewed.",
    "refs": [
     "paper 2"
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "day": "Sun",
+   "week": "2026-11-08",
+   "class": "Physics III",
+   "start": "4:25 PM",
+   "end": "now",
+   "start_min": 985,
+   "end_min": 986,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "PS6: resuming at 2(iv).",
+   "refs": [
+    "problem set 6"
    ]
   }
  ],
