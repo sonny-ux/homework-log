@@ -1175,7 +1175,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "13dadedde7";
+var APP_BUILD = "7b9b85ebdc";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -4694,12 +4694,12 @@ ROOMS.block = function(ctx, W, H, t, go){
     walk(420);
     L.facades.push({x: 0, w: 420, k: 'bodega'});
     box(150, GROUND - 62, 'token'); box(164, GROUND - 62, 'pizza'); box(178, GROUND - 62, 'metro');
-    tok(230, GROUND - 22, 4); tourist(330);
+    tok(230, GROUND - 22, 4); suit(330);
     block(270, 14, 16, 'hydrant'); block(380, 16, 18, 'trash');
     // 2. a construction pit, then a fire escape up to a run of rooftops
     pit(42);
     walk(520); L.facades.push({x: 462, w: 520, k: 'brick'});
-    suit(520); fireEscape(570, 3);
+    tourist(520); fireEscape(570, 3);
     block(640, 70, 92, 'roof'); block(740, 64, 96, 'roof'); block(836, 80, 82, 'roof');
     tok(650, GROUND - 112, 4); tok(752, GROUND - 116, 4); tok(850, GROUND - 102, 5);
     box(785, GROUND - 146, 'coffee');
