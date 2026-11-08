@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T05:31:32+00:00",
+ "updated": "2026-11-06T08:51:52+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -761,54 +761,6 @@
    "refs": [
     "paper 2"
    ]
-  },
-  {
-   "date": "2026-11-07",
-   "day": "Sat",
-   "week": "2026-11-01",
-   "class": "Physics III",
-   "start": "8:37 PM",
-   "end": "10:16 PM",
-   "start_min": 1237,
-   "end_min": 1336,
-   "minutes": 99,
-   "in_progress": false,
-   "topic": "Physics PS7, Problem 1 (King 6-2): string speed √(T/μ), wavelength, length for the fundamental, sound in air; modes and harmonics.",
-   "refs": [
-    "problem set 7"
-   ]
-  },
-  {
-   "date": "2026-11-07",
-   "day": "Sat",
-   "week": "2026-11-01",
-   "class": "Physics III",
-   "start": "10:27 PM",
-   "end": "11:48 PM",
-   "start_min": 1347,
-   "end_min": 1428,
-   "minutes": 81,
-   "in_progress": false,
-   "topic": "Physics PS7, Problem 2 (King 6-3): successive modes (n = 4, 5, L = 1.10 m); microwave cold spots as nodes, λ = 2d.",
-   "refs": [
-    "problem set 7"
-   ]
-  },
-  {
-   "date": "2026-11-08",
-   "day": "Sun",
-   "week": "2026-11-08",
-   "class": "Physics III",
-   "start": "12:06 AM",
-   "end": "12:31 AM",
-   "start_min": 6,
-   "end_min": 31,
-   "minutes": 25,
-   "in_progress": false,
-   "topic": "Physics PS7: 2(b) setup; Doppler broadening (background for Problem 4).",
-   "refs": [
-    "problem set 7"
-   ]
   }
  ],
  "assignments": [
@@ -901,8 +853,8 @@
    "time": null,
    "class": "Lit Study",
    "title": "Paper 2",
-   "detail": "Paper 2 (*Hamlet* 3.4, the Ghost: \"[ENTER GHOST]\"). Submitted.",
-   "done": true,
+   "detail": "Paper 2 (time and prompt to confirm)",
+   "done": false,
    "source": "hand",
    "key": "paper 2",
    "about": "Drama paper, 750–1000 words, 12 pt, double-spaced, with a real title. Argue how stagecraft (acting, staging, props, audience) is necessary to one scene's meaning, from Hamlet, Hedda Gabler, or Death and the King's Horseman. Your plan: Hamlet 3.4, the Ghost that Gertrude cannot see, with the other Ghost scenes as a 'play within the play'."
@@ -927,30 +879,7 @@
    "done": false,
    "source": "hand",
    "key": "problem set 7",
-   "about": "King 6-2, 6-3, 6-5, 6-10 and French 6-12 (standing waves, normal modes). 1: wavelength on a wire, length for a 262 Hz fundamental, the sound it makes. 2: mode numbers from successive wavelengths; microwave frequency from cold-spot spacing. 3: violin harmonics, audible count, finger position. 4: laser-cavity modes within a Doppler-broadened line. 5: energy of a centre-plucked string and how often its shape recurs. 50 pts, due Sun 11/8 9:00 AM, one merged PDF on Gradescope with all problems tagged, reasoning written beside the math. Waves Guide: Ch. 6 tab.",
-   "progress": {
-    "parts": [
-     "1(a)",
-     "1(b)",
-     "1(c)",
-     "2(a)",
-     "2(b)",
-     "3(a)",
-     "3(b)",
-     "3(c)",
-     "4(a)",
-     "4(b)",
-     "5(a)",
-     "5(b)"
-    ],
-    "done": [
-     "1(a)",
-     "1(b)",
-     "1(c)",
-     "2(a)"
-    ],
-    "note": "Problem 1 and 2(a) done; 2(b) at λ = 0.010 m. Next: f = c/λ, then Problem 3 (violin)."
-   }
+   "about": "50 pts, on Canvas; still locked, so contents not yet known. Sets are due Sundays at 9 AM."
   },
   {
    "due": "2026-11-11",
