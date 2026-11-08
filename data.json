@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T05:06:05+00:00",
+ "updated": "2026-11-08T05:31:32+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -800,12 +800,12 @@
    "week": "2026-11-08",
    "class": "Physics III",
    "start": "12:06 AM",
-   "end": "now",
+   "end": "12:31 AM",
    "start_min": 6,
-   "end_min": 6,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "Physics PS7: 2(b) onward (resumed).",
+   "end_min": 31,
+   "minutes": 25,
+   "in_progress": false,
+   "topic": "Physics PS7: 2(b) setup; Doppler broadening (background for Problem 4).",
    "refs": [
     "problem set 7"
    ]
