@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T21:26:24+00:00",
+ "updated": "2026-11-08T21:44:01+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -770,8 +770,8 @@
    "start": "4:25 PM",
    "end": "now",
    "start_min": 985,
-   "end_min": 986,
-   "minutes": 1,
+   "end_min": 1004,
+   "minutes": 19,
    "in_progress": true,
    "topic": "PS6: resuming at 2(iv).",
    "refs": [
