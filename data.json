@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T18:00:52+00:00",
+ "updated": "2026-11-09T18:01:10+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -897,11 +897,11 @@
    "week": "2026-11-08",
    "class": "Phil of Sci",
    "start": "12:31 PM",
-   "end": "now",
+   "end": "1:00 PM",
    "start_min": 751,
    "end_min": 780,
    "minutes": 29,
-   "in_progress": true,
+   "in_progress": false,
    "topic": "Goodman before class.",
    "refs": []
   }
