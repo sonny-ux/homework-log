@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T00:36:07+00:00",
+ "updated": "2026-11-09T00:36:43+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -939,6 +939,17 @@
    "source": "reminders",
    "key": "midterm 2",
    "about": "Second midterm. Midterm 1 was 28.5/60, so reviewing the homework since then (quotient maps, subspace topology, and later sections) is the priority."
+  },
+  {
+   "due": "2026-11-15",
+   "time": "9:00 AM",
+   "class": "Physics III",
+   "title": "Problem Set 8",
+   "detail": "Problem Set 8 (Gradescope; contents not yet known)",
+   "done": false,
+   "source": "hand",
+   "key": "problem set 8",
+   "about": ""
   }
  ]
 }
