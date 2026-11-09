@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T05:56:50+00:00",
+ "updated": "2026-11-09T06:30:07+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -881,8 +881,8 @@
    "start": "12:44 AM",
    "end": "now",
    "start_min": 44,
-   "end_min": 56,
-   "minutes": 12,
+   "end_min": 90,
+   "minutes": 46,
    "in_progress": true,
    "topic": "HW8 reading before bed.",
    "refs": [
