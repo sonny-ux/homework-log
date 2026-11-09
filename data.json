@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T00:36:43+00:00",
+ "updated": "2026-11-09T02:13:47+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -927,6 +927,30 @@
      "5(b)"
     ],
     "note": "Finished 11/8 5:36 PM; submit as one merged PDF on Gradescope, all problems tagged. PS6 still open at 2(iv)."
+   }
+  },
+  {
+   "due": "2026-11-09",
+   "time": "11:59 PM",
+   "class": "Topology",
+   "title": "Homework 8",
+   "detail": "Homework 8 (Gradescope; 5 questions, 2% of grade; §23–24 connectedness and path connectedness; worked into the Topology Reference Guide)",
+   "done": false,
+   "source": "hand",
+   "key": "homework 8",
+   "about": "§23–24. 1: connected iff every continuous map to discrete {0,1} is constant. 2: 'no map to {0,1} separates them' is an equivalence relation with closed classes. 3: products of path connected spaces are path connected. 4: Sierpiński space is path connected. 5: (X×Y)∖(A×B) is connected for proper A, B. Gradescope, due Mon 11/9 11:59 PM.",
+   "progress": {
+    "parts": [
+     "Q1(a)",
+     "Q1(b)",
+     "Q2(a)",
+     "Q2(b)",
+     "Q3",
+     "Q4",
+     "Q5"
+    ],
+    "done": [],
+    "note": "Guides for all five questions are in the Topology Reference Guide (Homework 8). Not started."
    }
   },
   {
