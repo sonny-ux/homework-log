@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T22:37:09+00:00",
+ "updated": "2026-11-09T00:36:07+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -797,8 +797,8 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 5",
-   "detail": "Problem Set 5 (20 pts; Canvas, not yet submitted). Plan: turn in one day late, Wed 10/28",
-   "done": false,
+   "detail": "Problem Set 5 (20 pts; Canvas, not yet submitted). Dropped 11/9: late submission no longer accepted, so the rest will not be done",
+   "done": true,
    "source": "hand",
    "key": "problem set 5",
    "about": "French 5-8 and 5-16: pendulum equilibrium; two coupled pendulums (equations, normal modes, frequencies); a driven chain of N oscillators. 20 pts, Canvas."
@@ -808,8 +808,8 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 6",
-   "detail": "Problem Set 6 (30 pts; Canvas). Not submitted as of Mon 11/2 (Canvas: No Submission); working on it late.",
-   "done": false,
+   "detail": "Problem Set 6 (30 pts; Canvas). Dropped 11/9: late submission no longer accepted; stopped at Problem 2(iv)",
+   "done": true,
    "source": "hand",
    "key": "problem set 6",
    "about": "King 5-2, 5-3, 5-6 (travelling waves). 1: write a wave's equation from amplitude, frequency, speed and start. 2: show functions solve the 1D and 3D wave equation. 3: convert wavelength and frequency for light and sound. 30 pts, one merged PDF on Gradescope, reasoning written beside the math.",
@@ -830,7 +830,7 @@
      "2(ii)",
      "2(iii)"
     ],
-    "note": "Next: 2(iv) Ae^(i(ωt+kx)) (set up 11/8), then 2(v), 2(b) and Problem 3."
+    "note": "Dropped 11/9 (late submission not accepted); stopped at 2(iv)."
    }
   },
   {
