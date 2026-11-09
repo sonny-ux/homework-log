@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T06:57:28+00:00",
+ "updated": "2026-11-09T14:06:15+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -879,15 +879,16 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "12:44 AM",
-   "end": "now",
+   "end": "2:00 AM",
    "start_min": 44,
-   "end_min": 117,
-   "minutes": 73,
-   "in_progress": true,
-   "topic": "HW8 reading before bed.",
+   "end_min": 120,
+   "minutes": 76,
+   "in_progress": false,
+   "topic": "IVT, connectedness, notation; reading.",
    "refs": [
     "reading",
-    "homework 8"
+    "homework 8",
+    "midterm 2"
    ]
   }
  ],
@@ -1064,7 +1065,7 @@
      "Q1(a)",
      "Q1(b)"
     ],
-    "note": "Q1 written (Q1(b) fixes pending). Q2(b) drafted: add A = ⋂ f⁻¹({f(x)}) and apply the facts to it. Then Q2(a), Q3–Q5."
+    "note": "Q1 written (Q1(b) fixes pending); Q2 written by Jackson, not yet checked. Next: Q4, Q3, Q5 in the 2:25 gap, then submit by 11:59 PM."
    }
   },
   {
