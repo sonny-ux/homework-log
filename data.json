@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T04:54:52+00:00",
+ "updated": "2026-11-09T05:11:28+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1083,5 +1083,95 @@
    "key": "problem set 8",
    "about": ""
   }
- ]
+ ],
+ "plan": {
+  "week": "2026-11-08",
+  "days": [
+   {
+    "date": "2026-11-08",
+    "classes": [],
+    "plan": [
+     "Physics PS7 finished",
+     "Topology HW8: Q1, Q2"
+    ]
+   },
+   {
+    "date": "2026-11-09",
+    "classes": [
+     "Topology 10:10",
+     "Phil of Sci ~1:10",
+     "Arts of Islam ~4:10",
+     "Approaches 6:10–8:00"
+    ],
+    "plan": [
+     "Goodman reading, before Phil of Sci",
+     "Topology: finish and submit HW8 (the 2:25–4:10 gap is the best slot), then the practice midterm",
+     "Physics, about an hour",
+     "Some Woolf before bed"
+    ],
+    "goal": "HW8 submitted before the seminar"
+   },
+   {
+    "date": "2026-11-10",
+    "classes": [
+     "Woolf 10:10",
+     "Physics 2:40"
+    ],
+    "plan": [
+     "After Woolf: waves study before Physics class",
+     "After Physics: Topology until bed, Midterm 2 practice problems and the homework since Midterm 1 (HW4, HW6, HW7, HW8)"
+    ],
+    "goal": "Asleep early"
+   },
+   {
+    "date": "2026-11-11",
+    "classes": [
+     "Topology Midterm 2, 10:10",
+     "Phil of Sci ~1:10",
+     "Arts of Islam ~4:10",
+     "Physics recitation ~6:10"
+    ],
+    "plan": [
+     "Goodman, if a new section is assigned",
+     "Evening: start PS8 (~1.5h)"
+    ],
+    "goal": "Midterm done"
+   },
+   {
+    "date": "2026-11-12",
+    "classes": [
+     "Woolf 10:10",
+     "Physics 2:40"
+    ],
+    "plan": [
+     "PS8 (~2h)",
+     "Lit Study prep for Friday"
+    ]
+   },
+   {
+    "date": "2026-11-13",
+    "classes": [
+     "Approaches 10:10"
+    ],
+    "plan": [
+     "PS8 (~1.5h)",
+     "Goodman for Monday"
+    ]
+   },
+   {
+    "date": "2026-11-14",
+    "classes": [],
+    "plan": [
+     "Finish PS8 and submit tonight (due Sun 9 AM)"
+    ],
+    "goal": "PS8 submitted"
+   }
+  ],
+  "unknown": [
+   "Lit Study readings or assignments",
+   "Topology HW9 (likely after the midterm)",
+   "PS8 contents",
+   "Which Goodman section each week"
+  ]
+ }
 }

@@ -242,6 +242,20 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .pl .pn { font-weight: 600; color: var(--muted); } .pl i { width: 14px; height: 14px; outline: 1.5px solid var(--ink); }
 .pl small { color: var(--muted); } .pl p { font-size: 13px; color: var(--muted); margin-top: 2px; } .pl .pm { font-weight: 600; }
 .plan .tip { border-top: var(--thin) solid var(--ink); padding: 8px 12px; font-size: 13px; }
+.wplan { border: var(--rule) solid var(--ink); }
+.wplan details + details { border-top: var(--thin) solid var(--ink); }
+.wplan summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: max-content 1fr auto; gap: 12px; align-items: center; padding: 9px 12px; }
+.wplan summary::-webkit-details-marker { display: none; }
+.wplan summary .wd { font-weight: 600; } .wplan summary .wn { color: var(--muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wplan summary .wa { color: var(--muted); font-size: 12px; transition: transform .15s; } .wplan details[open] summary .wa { transform: rotate(90deg); }
+.wplan details.today summary { background: var(--off); } .wplan details.today .wd::after { content: ' · today'; color: var(--muted); font-weight: 400; }
+.wplan details.past summary { opacity: .55; }
+.wplan .wb { padding: 2px 12px 12px 12px; font-size: 14px; line-height: 1.45; }
+.wplan .wb h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 8px 0 3px; font-weight: 600; }
+.wplan .wb ol { margin: 0; padding-left: 20px; } .wplan .wb .wc { color: var(--muted); font-size: 13px; }
+.wplan .wb .wdue { display: flex; gap: 8px; align-items: center; margin: 2px 0; } .wplan .wb .wdue i { width: 12px; height: 12px; outline: 1.5px solid var(--ink); flex: none; }
+.wplan .wb .wdue.done { opacity: .5; text-decoration: line-through; } .wplan .wb .wgoal { margin-top: 6px; font-weight: 600; }
+.wplan .wunk { border-top: var(--thin) solid var(--ink); padding: 8px 12px; font-size: 13px; color: var(--muted); }
 .subnav { display: flex; gap: 0; margin-bottom: 12px; border: var(--thin) solid var(--ink); width: max-content; }
 .subnav a { padding: 5px 14px; font-size: 13px; font-weight: 500; color: inherit; text-decoration: none; }
 .subnav a + a { border-left: var(--thin) solid var(--ink); }
@@ -527,6 +541,8 @@ h2 { font-size: 14px; } .scenewin figcaption { font-size: 11px !important; color
   <section id="asg">
     <h2>Suggested for today <span class="sub" id="plansub"></span></h2>
     <div class="plan" id="plan"></div>
+    <h2 style="margin-top:18px">Week plan <span class="sub" id="wpsub"></span></h2>
+    <div class="wplan" id="wplan"></div>
     <h2 style="margin-top:18px">HW <span class="sub" id="asgsub"></span></h2>
     <div class="wkhead"><h2 style="margin:0"><span id="calname">This week and next</span> <span class="sub" id="calsub"></span></h2>
       <div class="arrows"><button id="cprev" aria-label="Earlier weeks">‹</button><button id="cnow" aria-label="Back to this week">Now</button><button id="cnext" aria-label="Later weeks">›</button></div></div>
@@ -1110,8 +1126,27 @@ function renderCal(){
   }
   el('cal').innerHTML = html;
 }
+// the week plan: one openable row per day (today open), with classes, the study plan in order, and what is due that day
+function renderWeekPlan(){ var P = DATA.plan, box = el('wplan'); if (!box) return;
+  if (!P || !P.days || !P.days.length){ box.innerHTML = '<p class="nz" style="padding:10px 12px">No week plan yet.</p>'; el('wpsub').textContent = ''; return; }
+  var t = iso(today), DN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], open = {};
+  box.querySelectorAll('details[data-wday]').forEach(function(d){ open[d.dataset.wday] = d.open; });
+  var first = parse(P.days[0].date), last = parse(P.days[P.days.length - 1].date);
+  el('wpsub').textContent = MON[first.getMonth()] + ' ' + first.getDate() + '–' + (last.getMonth() !== first.getMonth() ? MON[last.getMonth()] + ' ' : '') + last.getDate();
+  box.innerHTML = P.days.map(function(d){ var dt = parse(d.date), past = d.date < t, isT = d.date === t;
+    var due = DATA.assignments.filter(function(a){ return a.due === d.date; });
+    var tests = (d.classes || []).filter(function(c){ return /midterm|exam/i.test(c); });
+    var peek = tests.length ? tests[0] : due.length ? due.length + ' due' : (d.plan && d.plan[0]) || '';
+    var isOpen = d.date in open ? open[d.date] : isT;
+    return '<details data-wday="' + d.date + '"' + (isOpen ? ' open' : '') + ' class="' + (isT ? 'today' : past ? 'past' : '') + '"><summary><span class="wd">' + DN[dt.getDay()] + ' ' + (dt.getMonth() + 1) + '/' + dt.getDate() + '</span><span class="wn">' + esc(peek) + '</span><span class="wa">▸</span></summary><div class="wb">'
+      + (d.classes && d.classes.length ? '<h4>Classes</h4><div class="wc">' + d.classes.map(esc).join(' · ') + '</div>' : '')
+      + (due.length ? '<h4>Due</h4>' + due.map(function(a){ return '<div class="wdue' + (a.done ? ' done' : '') + '"><i class="' + cls(a['class']) + '"></i><span>' + esc(a['class']) + ' · ' + esc(a.title) + (a.time ? ' <small>' + esc(a.time) + '</small>' : '') + '</span></div>'; }).join('') : '')
+      + (d.plan && d.plan.length ? '<h4>Plan</h4><ol>' + d.plan.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>' : '')
+      + (d.goal ? '<div class="wgoal">Goal: ' + esc(d.goal) + '</div>' : '') + '</div></details>'; }).join('')
+    + (P.unknown && P.unknown.length ? '<div class="wunk">Not yet known: ' + P.unknown.map(esc).join('; ') + '</div>' : '');
+}
 function renderAssignments(){
-  renderCal(); renderForecast();
+  renderWeekPlan(); renderCal(); renderForecast();
   var rows = DATA.assignments.map(function(a){
     var due = parse(a.due); return {a:a, due:due, days:Math.round((due - today) / 864e5)};
   });
@@ -1175,7 +1210,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "441390aa5c";
+var APP_BUILD = "92b6d7e675";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
