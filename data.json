@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T06:40:28+00:00",
+ "updated": "2026-11-09T06:57:28+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -881,8 +881,8 @@
    "start": "12:44 AM",
    "end": "now",
    "start_min": 44,
-   "end_min": 100,
-   "minutes": 56,
+   "end_min": 117,
+   "minutes": 73,
    "in_progress": true,
    "topic": "HW8 reading before bed.",
    "refs": [
@@ -1099,6 +1099,28 @@
    "source": "hand",
    "key": "problem set 8",
    "about": ""
+  },
+  {
+   "due": "2026-11-16",
+   "time": null,
+   "class": "Topology",
+   "title": "Homework 9",
+   "detail": "Homework 9 (from the course schedule; posting and time to confirm)",
+   "done": false,
+   "source": "hand",
+   "key": "homework 9",
+   "about": ""
+  },
+  {
+   "due": "2026-11-23",
+   "time": null,
+   "class": "Topology",
+   "title": "Homework 10",
+   "detail": "Homework 10 (from the course schedule; posting and time to confirm)",
+   "done": false,
+   "source": "hand",
+   "key": "homework 10",
+   "about": ""
   }
  ],
  "plan": {
@@ -1115,7 +1137,7 @@
    {
     "date": "2026-11-09",
     "classes": [
-     "Topology 10:10",
+     "Topology 10:10 (components and path components, §25)",
      "Phil of Sci ~1:10",
      "Arts of Islam ~4:10",
      "Approaches 6:10–8:00"
@@ -1186,7 +1208,7 @@
   ],
   "unknown": [
    "Lit Study readings or assignments",
-   "Topology HW9 (likely after the midterm)",
+   "Topology HW9 contents (due Mon 11/16 per the course schedule)",
    "PS8 contents",
    "Which Goodman section each week"
   ],
