@@ -1145,7 +1145,7 @@ function renderWeekPlan(){ var P = DATA.plan, box = el('wplan'); if (!box) retur
   if (tot || P.last_week){ var L = P.last_week || {}, sec = function(t, xs){ return xs && xs.length ? '<h4>' + t + '</h4><ul>' + xs.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; };
     var lwOpen = 'last' in open ? open.last : true;
     lw = '<details data-wday="last" class="lastwk"' + (lwOpen ? ' open' : '') + '><summary><span class="wd">Last week</span><span class="wn">' + (ls.getMonth() + 1) + '/' + ls.getDate() + '–' + (we.getMonth() + 1) + '/' + we.getDate() + ' · ' + hm(tot) + (order[0] ? ' · most on ' + esc(order[0]) : '') + '</span><span class="wa">▸</span></summary><div class="wb">'
-      + (tot ? '<h4>Hours</h4><div class="lwh">' + order.map(function(c){ return '<div><i class="' + cls(c) + '"></i><span>' + esc(c) + '</span><b>' + hm(mins[c]) + '</b><em style="width:' + Math.round(100*mins[c]/mins[order[0]]) + '%" class="' + cls(c) + '"></em></div>'; }).join('') + '</div>' : '')
+      + (tot ? '<h4>Hours</h4><div class="lwh">' + order.map(function(c){ return '<div><i class="' + cls(c) + '"></i><span>' + esc(c) + '</span><b>' + hm(mins[c]) + '</b><em style="width:calc((100% - 20px)*' + (mins[c]/mins[order[0]]).toFixed(3) + ')" class="' + cls(c) + '"></em></div>'; }).join('') + '</div>' : '')
       + sec('Done', L.done) + sec('Slipped', L.slipped) + sec('Patterns', L.patterns) + sec('Carry into this week', L.carry) + '</div></details>'; }
   box.innerHTML = lw + P.days.map(function(d){ var dt = parse(d.date), past = d.date < t, isT = d.date === t;
     var due = DATA.assignments.filter(function(a){ return a.due === d.date; });
@@ -1224,7 +1224,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "a670afdf8e";
+var APP_BUILD = "5824824933";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
