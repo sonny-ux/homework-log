@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T21:22:07+00:00",
+ "updated": "2026-11-09T22:35:31+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -911,12 +911,12 @@
    "week": "2026-11-08",
    "class": "Lit Study",
    "start": "4:21 PM",
-   "end": "now",
+   "end": "5:07 PM",
    "start_min": 981,
-   "end_min": 982,
-   "minutes": 1,
-   "in_progress": true,
-   "topic": "Discussion posts.",
+   "end_min": 1027,
+   "minutes": 46,
+   "in_progress": false,
+   "topic": "Discussion post; Charlotte Temple.",
    "refs": [
     "discussion post"
    ]
@@ -1023,11 +1023,11 @@
    "time": null,
    "class": "Lit Study",
    "title": "Discussion Post",
-   "detail": "",
-   "done": false,
-   "source": "reminders",
+   "detail": "Discussion Post (sentimentalism). Submitted Mon 11/9, 5:07 PM.",
+   "done": true,
+   "source": "hand",
    "key": "discussion post",
-   "about": "Weekly discussion post for Approaches to Literary Study; prompt not yet seen here."
+   "about": "Weekly discussion post for Approaches to Literary Study. The 11/8 post (on sentimentalism and its climactic structure: Uncle Tom's Cabin, Charlotte Temple) was submitted Mon 11/9 at 5:07 PM."
   },
   {
    "due": "2026-11-08",
