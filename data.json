@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T04:46:46+00:00",
+ "updated": "2026-11-09T04:54:52+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -162,7 +162,9 @@
    "minutes": 13,
    "in_progress": false,
    "topic": "Lit Study reading, Haywood's Fantomina: started reading.",
-   "refs": []
+   "refs": [
+    "reading"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -176,7 +178,9 @@
    "minutes": 31,
    "in_progress": false,
    "topic": "Lit Study reading, Fantomina: read on and wrote a reflection.",
-   "refs": []
+   "refs": [
+    "reading"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -190,7 +194,9 @@
    "minutes": 23,
    "in_progress": false,
    "topic": "Woolf reading, To the Lighthouse.",
-   "refs": []
+   "refs": [
+    "reading"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -205,7 +211,8 @@
    "in_progress": false,
    "topic": "Phil of Sci Paper 1 (laws, causation, counterfactuals): chose this prompt; read Russell, Cartwright, Maudlin; first draft.",
    "refs": [
-    "paper 1"
+    "paper 1",
+    "reading"
    ]
   },
   {
@@ -220,7 +227,9 @@
    "minutes": 5,
    "in_progress": false,
    "topic": "Lit Study reading, Fantomina.",
-   "refs": []
+   "refs": [
+    "reading"
+   ]
   },
   {
    "date": "2026-10-27",
@@ -284,7 +293,8 @@
    "in_progress": false,
    "topic": "Phil of Sci Paper 1: shaped the thesis and plan; read Goodman, Fact, Fiction, and Forecast (induction chapters), ahead of class.",
    "refs": [
-    "paper 1"
+    "paper 1",
+    "reading"
    ]
   },
   {
@@ -377,7 +387,9 @@
    "minutes": 65,
    "in_progress": false,
    "topic": "Lit Study reading, Fantomina.",
-   "refs": []
+   "refs": [
+    "reading"
+   ]
   },
   {
    "date": "2026-10-29",
@@ -564,6 +576,7 @@
    "in_progress": false,
    "topic": "Reading in the guide; problem-approach pages.",
    "refs": [
+    "reading",
     "homework 7"
    ]
   },
@@ -1036,6 +1049,17 @@
     ],
     "note": "Q1 written (Q1(b) fixes pending). Q2(b) drafted: add A = ⋂ f⁻¹({f(x)}) and apply the facts to it. Then Q2(a), Q3–Q5."
    }
+  },
+  {
+   "due": "2026-11-09",
+   "time": "1:10 PM",
+   "class": "Phil of Sci",
+   "title": "Reading: Goodman, Fact, Fiction, and Forecast",
+   "detail": "Reading: Goodman, Fact, Fiction, and Forecast (the course is reading this book for the foreseeable future; next section to confirm). Plan: read after Topology on Mon 11/9, before class at ~1:10 PM",
+   "done": false,
+   "source": "hand",
+   "key": "reading",
+   "about": "Nelson Goodman, Fact, Fiction, and Forecast; the class is reading it for the foreseeable future. Read Ch. 3–4 on 11/3. Next section to confirm. Read after Topology on Mon 11/9, before class (~1:10 PM)."
   },
   {
    "due": "2026-11-11",
