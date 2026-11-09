@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T05:11:28+00:00",
+ "updated": "2026-11-09T05:12:58+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1172,6 +1172,28 @@
    "Topology HW9 (likely after the midterm)",
    "PS8 contents",
    "Which Goodman section each week"
-  ]
+  ],
+  "last_week": {
+   "done": [
+    "Topology HW7 submitted Thu 11/5 (15-page PDF; Q2 written at 11:15 PM, just before the deadline)",
+    "Lit Study Paper 2, \"[ENTER GHOST]\", written Fri 11/6, 12:12–3:50 AM",
+    "Phil of Sci: Goodman, Fact, Fiction, and Forecast, Ch. 3–4 (Tue 11/3)",
+    "Physics PS7 Problems 1–2 on Sat 11/7 (finished Sun 11/8, after the 9 AM deadline)"
+   ],
+   "slipped": [
+    "Physics PS5 and PS6 dropped: late submission no longer accepted",
+    "PS7 started Saturday night for a Sunday 9 AM deadline"
+   ],
+   "patterns": [
+    "Topology took half the week's hours, almost all of it Wed–Thu before the HW7 deadline",
+    "Many sessions ran past midnight (HW7 to 3:40 AM; Paper 2 until 3:50 AM)",
+    "Recurring slips: units not converted before substituting; a conclusion line that contradicts the argument above it"
+   ],
+   "carry": [
+    "Start PS8 by Wednesday evening, not Saturday",
+    "Submit HW8 in the afternoon gap, not at 11:59 PM",
+    "Midterm 2 Wed: review the homework since Midterm 1 (HW4, HW6, HW7, HW8)"
+   ]
+  }
  }
 }

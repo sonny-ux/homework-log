@@ -255,6 +255,11 @@ details.donebox summary { cursor: pointer; font-size: 12px; text-transform: uppe
 .wplan .wb ol { margin: 0; padding-left: 20px; } .wplan .wb .wc { color: var(--muted); font-size: 13px; }
 .wplan .wb .wdue { display: flex; gap: 8px; align-items: center; margin: 2px 0; } .wplan .wb .wdue i { width: 12px; height: 12px; outline: 1.5px solid var(--ink); flex: none; }
 .wplan .wb .wdue.done { opacity: .5; text-decoration: line-through; } .wplan .wb .wgoal { margin-top: 6px; font-weight: 600; }
+.wplan details.lastwk summary { background: var(--off); } .wplan details.lastwk { border-bottom: var(--rule) solid var(--ink); }
+.wplan .wb ul { margin: 0; padding-left: 18px; } .wplan .wb li { margin: 2px 0; }
+.lwh > div { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; position: relative; padding: 2px 0 6px; }
+.lwh i { width: 12px; height: 12px; outline: 1.5px solid var(--ink); } .lwh b { font-weight: 600; font-size: 13px; }
+.lwh em { position: absolute; left: 20px; bottom: 1px; height: 3px; opacity: .8; }
 .wplan .wunk { border-top: var(--thin) solid var(--ink); padding: 8px 12px; font-size: 13px; color: var(--muted); }
 .subnav { display: flex; gap: 0; margin-bottom: 12px; border: var(--thin) solid var(--ink); width: max-content; }
 .subnav a { padding: 5px 14px; font-size: 13px; font-weight: 500; color: inherit; text-decoration: none; }
@@ -1133,7 +1138,16 @@ function renderWeekPlan(){ var P = DATA.plan, box = el('wplan'); if (!box) retur
   box.querySelectorAll('details[data-wday]').forEach(function(d){ open[d.dataset.wday] = d.open; });
   var first = parse(P.days[0].date), last = parse(P.days[P.days.length - 1].date);
   el('wpsub').textContent = MON[first.getMonth()] + ' ' + first.getDate() + '–' + (last.getMonth() !== first.getMonth() ? MON[last.getMonth()] + ' ' : '') + last.getDate();
-  box.innerHTML = P.days.map(function(d){ var dt = parse(d.date), past = d.date < t, isT = d.date === t;
+  // last week first: hours by class (from the log) and what was done, slipped and carried over (from the plan file)
+  var lw = '', ws = parse(P.week), we = new Date(ws.getTime() - 864e5), ls = new Date(ws.getTime() - 7*864e5), lsI = iso(ls), weI = iso(we);
+  var mins = {}, tot = 0; DATA.sessions.forEach(function(s){ if (s.date >= lsI && s.date <= weI){ mins[s['class']] = (mins[s['class']] || 0) + (s.minutes || 0); tot += s.minutes || 0; } });
+  var order = Object.keys(mins).sort(function(a, b){ return mins[b] - mins[a]; });
+  if (tot || P.last_week){ var L = P.last_week || {}, sec = function(t, xs){ return xs && xs.length ? '<h4>' + t + '</h4><ul>' + xs.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; };
+    var lwOpen = 'last' in open ? open.last : true;
+    lw = '<details data-wday="last" class="lastwk"' + (lwOpen ? ' open' : '') + '><summary><span class="wd">Last week</span><span class="wn">' + (ls.getMonth() + 1) + '/' + ls.getDate() + '–' + (we.getMonth() + 1) + '/' + we.getDate() + ' · ' + hm(tot) + (order[0] ? ' · most on ' + esc(order[0]) : '') + '</span><span class="wa">▸</span></summary><div class="wb">'
+      + (tot ? '<h4>Hours</h4><div class="lwh">' + order.map(function(c){ return '<div><i class="' + cls(c) + '"></i><span>' + esc(c) + '</span><b>' + hm(mins[c]) + '</b><em style="width:' + Math.round(100*mins[c]/mins[order[0]]) + '%" class="' + cls(c) + '"></em></div>'; }).join('') + '</div>' : '')
+      + sec('Done', L.done) + sec('Slipped', L.slipped) + sec('Patterns', L.patterns) + sec('Carry into this week', L.carry) + '</div></details>'; }
+  box.innerHTML = lw + P.days.map(function(d){ var dt = parse(d.date), past = d.date < t, isT = d.date === t;
     var due = DATA.assignments.filter(function(a){ return a.due === d.date; });
     var tests = (d.classes || []).filter(function(c){ return /midterm|exam/i.test(c); });
     var peek = tests.length ? tests[0] : due.length ? due.length + ' due' : (d.plan && d.plan[0]) || '';
@@ -1210,7 +1224,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "92b6d7e675";
+var APP_BUILD = "a670afdf8e";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
