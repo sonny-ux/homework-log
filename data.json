@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T02:55:34+00:00",
+ "updated": "2026-11-10T04:21:49+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -927,12 +927,12 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "9:55 PM",
-   "end": "now",
+   "end": "11:21 PM",
    "start_min": 1315,
-   "end_min": 1315,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "HW8 finish and submit.",
+   "end_min": 1401,
+   "minutes": 86,
+   "in_progress": false,
+   "topic": "HW8 finished.",
    "refs": [
     "homework 8"
    ]
@@ -1092,7 +1092,7 @@
    "time": "11:59 PM",
    "class": "Topology",
    "title": "Homework 8",
-   "detail": "Homework 8 (Gradescope; 5 questions, 2% of grade; §23–24 connectedness and path connectedness; worked into the Topology Reference Guide)",
+   "detail": "Homework 8 (Gradescope; 5 questions, 2% of grade; §23–24 connectedness and path connectedness; worked into the Topology Reference Guide) Finished Mon 11/9, 11:21 PM (submission not yet confirmed).",
    "done": false,
    "source": "hand",
    "key": "homework 8",
@@ -1109,9 +1109,14 @@
     ],
     "done": [
      "Q1(a)",
-     "Q1(b)"
+     "Q1(b)",
+     "Q2(a)",
+     "Q2(b)",
+     "Q3",
+     "Q4",
+     "Q5"
     ],
-    "note": "Q1 written (Q1(b) fixes pending); Q2 written by Jackson, not yet checked. Next: Q4, Q3, Q5 in the 2:25 gap, then submit by 11:59 PM."
+    "note": "Finished Mon 11/9, 11:21 PM; submit on Gradescope by 11:59 PM with all questions tagged."
    }
   },
   {
