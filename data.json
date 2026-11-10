@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T22:35:31+00:00",
+ "updated": "2026-11-10T02:55:34+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -919,6 +919,22 @@
    "topic": "Discussion post; Charlotte Temple.",
    "refs": [
     "discussion post"
+   ]
+  },
+  {
+   "date": "2026-11-09",
+   "day": "Mon",
+   "week": "2026-11-08",
+   "class": "Topology",
+   "start": "9:55 PM",
+   "end": "now",
+   "start_min": 1315,
+   "end_min": 1315,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "HW8 finish and submit.",
+   "refs": [
+    "homework 8"
    ]
   }
  ],
