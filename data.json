@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T22:13:29+00:00",
+ "updated": "2026-11-10T23:13:10+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -961,8 +961,8 @@
    "start": "5:13 PM",
    "end": "now",
    "start_min": 1033,
-   "end_min": 1033,
-   "minutes": 0,
+   "end_min": 1093,
+   "minutes": 60,
    "in_progress": true,
    "topic": "MT2 practice, continued.",
    "refs": [
