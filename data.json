@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T04:21:49+00:00",
+ "updated": "2026-11-10T17:22:51+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -935,6 +935,22 @@
    "topic": "HW8 finished.",
    "refs": [
     "homework 8"
+   ]
+  },
+  {
+   "date": "2026-11-10",
+   "day": "Tue",
+   "week": "2026-11-08",
+   "class": "Topology",
+   "start": "12:22 PM",
+   "end": "now",
+   "start_min": 742,
+   "end_min": 742,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Midterm 2 prep.",
+   "refs": [
+    "midterm 2"
    ]
   }
  ],
