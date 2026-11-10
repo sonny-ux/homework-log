@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T18:02:39+00:00",
+ "updated": "2026-11-10T19:31:44+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -943,12 +943,12 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "12:22 PM",
-   "end": "now",
+   "end": "2:31 PM",
    "start_min": 742,
-   "end_min": 782,
-   "minutes": 40,
-   "in_progress": true,
-   "topic": "Midterm 2 prep.",
+   "end_min": 871,
+   "minutes": 129,
+   "in_progress": false,
+   "topic": "MT2 practice: Q1(b) radius, Q3(b) saturation.",
    "refs": [
     "midterm 2"
    ]
@@ -1155,7 +1155,21 @@
    "done": false,
    "source": "reminders",
    "key": "midterm 2",
-   "about": "In class Wed 11/11, 10:10–11:25, closed book, six problems. Practice exam (School/Midterm 2 practice (Topology).pdf): 1 metric topology, closed ball closed; 2 quotient map definition, quotient topology on {0,1}; 3 'no map to [0,1] separates them' relation, quotient Hausdorff; 4 connected subspace of a 3-point space; 5 true/false on connectedness, open and quotient maps; 6 partition into open sets of a connected space. Plan: practice exam on Mon 11/9 after HW8."
+   "about": "In class Wed 11/11, 10:10–11:25, closed book, six problems. Practice exam (School/Midterm 2 practice (Topology).pdf): 1 metric topology, closed ball closed; 2 quotient map definition, quotient topology on {0,1}; 3 'no map to [0,1] separates them' relation, quotient Hausdorff; 4 connected subspace of a 3-point space; 5 true/false on connectedness, open and quotient maps; 6 partition into open sets of a connected space. Plan: practice exam on Mon 11/9 after HW8.",
+   "progress": {
+    "parts": [
+     "Q1",
+     "Q2",
+     "Q3",
+     "Q4",
+     "Q5",
+     "Q6"
+    ],
+    "done": [
+     "Q1"
+    ],
+    "note": "Practice exam: Q1 reviewed; Q3(b) proof in progress (finish with the saturation steps); Q2, Q4–Q6 next."
+   }
   },
   {
    "due": "2026-11-15",
