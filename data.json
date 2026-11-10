@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T19:31:44+00:00",
+ "updated": "2026-11-10T22:13:29+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -949,6 +949,22 @@
    "minutes": 129,
    "in_progress": false,
    "topic": "MT2 practice: Q1(b) radius, Q3(b) saturation.",
+   "refs": [
+    "midterm 2"
+   ]
+  },
+  {
+   "date": "2026-11-10",
+   "day": "Tue",
+   "week": "2026-11-08",
+   "class": "Topology",
+   "start": "5:13 PM",
+   "end": "now",
+   "start_min": 1033,
+   "end_min": 1033,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "MT2 practice, continued.",
    "refs": [
     "midterm 2"
    ]
