@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T18:00:32+00:00",
+ "updated": "2026-11-10T18:01:11+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -945,8 +945,8 @@
    "start": "12:22 PM",
    "end": "now",
    "start_min": 742,
-   "end_min": 780,
-   "minutes": 38,
+   "end_min": 781,
+   "minutes": 39,
    "in_progress": true,
    "topic": "Midterm 2 prep.",
    "refs": [
