@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T02:53:08+00:00",
+ "updated": "2026-11-11T05:17:48+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1000,6 +1000,22 @@
    "in_progress": false,
    "topic": "MT2 Q5 expanded; Q2 started.",
    "refs": []
+  },
+  {
+   "date": "2026-11-10",
+   "day": "Tue",
+   "week": "2026-11-08",
+   "class": "Topology",
+   "start": "12:17 AM",
+   "end": "now",
+   "start_min": 17,
+   "end_min": 17,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "MT2 Q2; Q4, Q6 read.",
+   "refs": [
+    "midterm"
+   ]
   }
  ],
  "assignments": [
