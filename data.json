@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T05:18:02+00:00",
+ "updated": "2026-11-11T05:19:21+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1007,12 +1007,12 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "12:17 AM",
-   "end": "now",
+   "end": "12:18 AM",
    "start_min": 17,
    "end_min": 18,
    "minutes": 1,
-   "in_progress": true,
-   "topic": "MT2 Q2; Q4, Q6 read.",
+   "in_progress": false,
+   "topic": "MT2 Q2 (brief).",
    "refs": [
     "midterm"
    ]
@@ -1234,7 +1234,7 @@
      "Q3",
      "Q5"
     ],
-    "note": "Practice exam: Q1, Q3, Q5 done; Q2 in progress (preimages of {0} and {1}); then Q4, Q6."
+    "note": "Q1, Q3, Q5 done; Q2(b): f⁻¹({0}) = [1,2), test openness; read Q4, Q6 clean solutions before the exam."
    }
   },
   {
