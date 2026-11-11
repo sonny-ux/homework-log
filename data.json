@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T05:19:21+00:00",
+ "updated": "2026-11-11T07:10:00+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1007,10 +1007,10 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "12:17 AM",
-   "end": "12:18 AM",
+   "end": "1:29 AM",
    "start_min": 17,
-   "end_min": 18,
-   "minutes": 1,
+   "end_min": 89,
+   "minutes": 72,
    "in_progress": false,
    "topic": "MT2 Q2 (brief).",
    "refs": [
