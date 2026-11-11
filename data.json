@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T00:32:07+00:00",
+ "updated": "2026-11-11T02:01:39+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -976,14 +976,15 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "7:31 PM",
-   "end": "now",
+   "end": "9:01 PM",
    "start_min": 1171,
-   "end_min": 1172,
-   "minutes": 1,
-   "in_progress": true,
-   "topic": "MT2 practice, evening.",
+   "end_min": 1261,
+   "minutes": 90,
+   "in_progress": false,
+   "topic": "Product vs box; MT2 Q3(b) fixed.",
    "refs": [
-    "midterm 2"
+    "midterm 2",
+    "homework 3"
    ]
   }
  ],
@@ -1199,9 +1200,10 @@
      "Q6"
     ],
     "done": [
-     "Q1"
+     "Q1",
+     "Q3"
     ],
-    "note": "Practice exam: Q1 reviewed; quotient/gluing groundwork done; finish Q3(b) (saturation steps), then Q2, Q4–Q6."
+    "note": "Practice exam: Q1, Q3 done (Q3(b) corrected; copy the ending in). Next: Q2 quotient topology on {0,1}, then Q4–Q6."
    }
   },
   {
