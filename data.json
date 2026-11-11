@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T02:18:23+00:00",
+ "updated": "2026-11-11T02:53:08+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -993,12 +993,12 @@
    "week": "2026-11-08",
    "class": "Topology",
    "start": "9:11 PM",
-   "end": "now",
+   "end": "9:53 PM",
    "start_min": 1271,
-   "end_min": 1278,
-   "minutes": 7,
-   "in_progress": true,
-   "topic": "MT2 Q5 true/false, expanded.",
+   "end_min": 1313,
+   "minutes": 42,
+   "in_progress": false,
+   "topic": "MT2 Q5 expanded; Q2 started.",
    "refs": []
   }
  ],
@@ -1215,9 +1215,10 @@
     ],
     "done": [
      "Q1",
-     "Q3"
+     "Q3",
+     "Q5"
     ],
-    "note": "Practice exam: Q1, Q3 done (Q3(b) corrected; copy the ending in). Next: Q2 quotient topology on {0,1}, then Q4–Q6."
+    "note": "Practice exam: Q1, Q3, Q5 done; Q2 in progress (preimages of {0} and {1}); then Q4, Q6."
    }
   },
   {
