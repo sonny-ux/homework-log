@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T07:10:00+00:00",
+ "updated": "2026-11-12T04:56:21+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1242,11 +1242,27 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 8",
-   "detail": "Problem Set 8 (Gradescope; contents not yet known)",
+   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required)",
    "done": false,
    "source": "hand",
    "key": "problem set 8",
-   "about": ""
+   "about": "French 6-1, King 6.4, King 6.8, French 6-8, King 6.15 (10 pts each; due Sun 11/15, 9:00 AM; written reasoning required). 1: string fundamental from mass, length, tension; touched at 0.5 m, which frequencies persist. 2: incoming plus partly reflected wave, standing wave ratio (1+R)/(1−R). 3: guitar strings at equal tension: diameter for two octaves lower, total force on the neck, nylon vs steel. 4: air column ends: open end pressure node/displacement antinode, closed end the reverse. 5: particle in an infinite well, E_n = n²h²/8mL², E_1 for an electron in 0.2 nm. Background and a method per problem in the Waves Guide (Ch. 6 and Concepts).",
+   "progress": {
+    "parts": [
+     "P1(a)",
+     "P1(b)",
+     "P2",
+     "P3(a)",
+     "P3(b)",
+     "P3(c)",
+     "P4(a)",
+     "P4(b)",
+     "P5(a)",
+     "P5(b)"
+    ],
+    "done": [],
+    "note": "Not started; background read-ahead in the Waves Guide."
+   }
   },
   {
    "due": "2026-11-16",
