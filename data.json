@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T23:47:48+00:00",
+ "updated": "2026-11-15T23:57:18+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1025,8 +1025,8 @@
    "start": "5:44 PM",
    "end": "now",
    "start_min": 1064,
-   "end_min": 1127,
-   "minutes": 63,
+   "end_min": 1137,
+   "minutes": 73,
    "in_progress": true,
    "topic": "Lit Study session.",
    "refs": []
@@ -1256,7 +1256,7 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 8",
-   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required)",
+   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; you plan to submit late, Sun night or Mon after class (late acceptance to check)",
    "done": false,
    "source": "hand",
    "key": "problem set 8",
@@ -1283,10 +1283,21 @@
    "time": null,
    "class": "Topology",
    "title": "Homework 9",
-   "detail": "Homework 9 (from the course schedule; posting and time to confirm)",
+   "detail": "Homework 9 (from the course schedule; you say due end of day Mon; posting to confirm)",
    "done": false,
    "source": "hand",
    "key": "homework 9",
+   "about": ""
+  },
+  {
+   "due": "2026-11-16",
+   "time": "6:10 PM",
+   "class": "Lit Study",
+   "title": "Performance exercise",
+   "detail": "Performance exercise (catch-up assignment, extension granted)",
+   "done": false,
+   "source": "hand",
+   "key": "",
    "about": ""
   },
   {
@@ -1302,115 +1313,80 @@
   }
  ],
  "plan": {
-  "week": "2026-11-08",
+  "week": "2026-11-15",
   "days": [
    {
-    "date": "2026-11-08",
+    "date": "2026-11-15",
     "classes": [],
     "plan": [
-     "Physics PS7 finished",
-     "Topology HW8: Q1, Q2"
-    ]
+     "Finish Klara and the Sun",
+     "Lit Study discussion post on Klara and the Sun",
+     "Lit Study performance exercise (catch-up, extension; due in class Mon)",
+     "Check Gradescope: is PS8 still open for late submission?",
+     "Open Topology HW9 and read it, about 10 minutes, to see how long it is",
+     "Physics PS8 until bed; submit tonight if finished"
+    ],
+    "goal": "Asleep by 1–2 AM for Topology at 10:10"
    },
    {
-    "date": "2026-11-09",
+    "date": "2026-11-16",
     "classes": [
-     "Topology 10:10 (components and path components, §25)",
+     "Topology 10:10",
      "Phil of Sci ~1:10",
      "Arts of Islam ~4:10",
-     "Approaches 6:10–8:00"
+     "Approaches 6:10–8:00 (performance exercise due)"
     ],
     "plan": [
-     "Goodman reading, before Phil of Sci",
-     "Topology: finish and submit HW8 (the 2:25–4:10 gap is the best slot), then the practice midterm",
-     "Physics, about an hour",
-     "Some Woolf before bed"
+     "11:25–1:10 gap: Topology HW9",
+     "2:25–4:10 gap: Topology HW9, or finish PS8 if HW9 is short",
+     "After the seminar: whatever is left of HW9 (due end of day), then PS8 if still unsubmitted"
     ],
-    "goal": "HW8 submitted before the seminar"
+    "goal": "HW9 submitted by 11:59 PM; PS8 submitted"
    },
    {
-    "date": "2026-11-10",
+    "date": "2026-11-17",
     "classes": [
      "Woolf 10:10",
      "Physics 2:40"
     ],
-    "plan": [
-     "After Woolf: waves study before Physics class",
-     "After Physics: Topology until bed, Midterm 2 practice problems and the homework since Midterm 1 (HW4, HW6, HW7, HW8)"
-    ],
-    "goal": "Asleep early"
+    "plan": []
    },
    {
-    "date": "2026-11-11",
+    "date": "2026-11-18",
     "classes": [
-     "Topology Midterm 2, 10:10",
+     "Topology 10:10",
      "Phil of Sci ~1:10",
      "Arts of Islam ~4:10",
      "Physics recitation ~6:10"
     ],
-    "plan": [
-     "Goodman, if a new section is assigned",
-     "Evening: start PS8 (~1.5h)"
-    ],
-    "goal": "Midterm done"
+    "plan": []
    },
    {
-    "date": "2026-11-12",
+    "date": "2026-11-19",
     "classes": [
      "Woolf 10:10",
      "Physics 2:40"
     ],
-    "plan": [
-     "PS8 (~2h)",
-     "Lit Study prep for Friday"
-    ]
+    "plan": []
    },
    {
-    "date": "2026-11-13",
+    "date": "2026-11-20",
     "classes": [
      "Approaches 10:10"
     ],
-    "plan": [
-     "PS8 (~1.5h)",
-     "Goodman for Monday"
-    ]
+    "plan": []
    },
    {
-    "date": "2026-11-14",
+    "date": "2026-11-21",
     "classes": [],
-    "plan": [
-     "Finish PS8 and submit tonight (due Sun 9 AM)"
-    ],
-    "goal": "PS8 submitted"
+    "plan": []
    }
   ],
   "unknown": [
-   "Lit Study readings or assignments",
-   "Topology HW9 contents (due Mon 11/16 per the course schedule)",
-   "PS8 contents",
-   "Which Goodman section each week"
-  ],
-  "last_week": {
-   "done": [
-    "Topology HW7 submitted Thu 11/5 (15-page PDF; Q2 written at 11:15 PM, just before the deadline)",
-    "Lit Study Paper 2, \"[ENTER GHOST]\", written Fri 11/6, 12:12–3:50 AM",
-    "Phil of Sci: Goodman, Fact, Fiction, and Forecast, Ch. 3–4 (Tue 11/3)",
-    "Physics PS7 Problems 1–2 on Sat 11/7 (finished Sun 11/8, after the 9 AM deadline)"
-   ],
-   "slipped": [
-    "Physics PS5 and PS6 dropped: late submission no longer accepted",
-    "PS7 started Saturday night for a Sunday 9 AM deadline"
-   ],
-   "patterns": [
-    "Topology took half the week's hours, almost all of it Wed–Thu before the HW7 deadline",
-    "Many sessions ran past midnight (HW7 to 3:40 AM; Paper 2 until 3:50 AM)",
-    "Recurring slips: units not converted before substituting; a conclusion line that contradicts the argument above it"
-   ],
-   "carry": [
-    "Start PS8 by Wednesday evening, not Saturday",
-    "Submit HW8 in the afternoon gap, not at 11:59 PM",
-    "Midterm 2 Wed: review the homework since Midterm 1 (HW4, HW6, HW7, HW8)"
-   ]
-  }
+   "Topology HW9 contents and exact deadline (end of day Mon 11/16)",
+   "Whether PS8 is still accepted late (PS5 and PS6 were dropped when late submission closed)",
+   "Discussion post due date and the performance exercise's instructions",
+   "Physics PS9 contents (due Sun 11/22, 9 AM, if the weekly pattern holds)"
+  ]
  }
 }
