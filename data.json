@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12T04:56:21+00:00",
+ "updated": "2026-11-15T22:44:48+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1015,6 +1015,22 @@
    "topic": "MT2 Q2 (brief).",
    "refs": [
     "midterm"
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "day": "Fri",
+   "week": "2026-11-08",
+   "class": "Lit Study",
+   "start": "4:00 PM",
+   "end": "now",
+   "start_min": 960,
+   "end_min": 960,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Reading Klara and the Sun.",
+   "refs": [
+    "reading"
    ]
   }
  ],
