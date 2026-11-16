@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16T20:33:21+00:00",
+ "updated": "2026-11-16T21:47:12+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1071,8 +1071,8 @@
    "start": "3:33 PM",
    "end": "now",
    "start_min": 933,
-   "end_min": 933,
-   "minutes": 0,
+   "end_min": 1007,
+   "minutes": 74,
    "in_progress": true,
    "topic": "Performance exercise.",
    "refs": []
