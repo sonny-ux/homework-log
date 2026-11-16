@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16T00:05:43+00:00",
+ "updated": "2026-11-16T00:05:59+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1256,7 +1256,7 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 8",
-   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; you plan to submit late, Sun night or Mon after class (late acceptance to check)",
+   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; late submission accepted for a week, until Sun 11/22, 9:00 AM (you, 11/16). Plan: submit Sun night or Mon after class",
    "done": false,
    "source": "hand",
    "key": "problem set 8",
@@ -1322,9 +1322,8 @@
      "Finish Klara and the Sun",
      "Lit Study discussion post on Klara and the Sun",
      "Lit Study performance exercise (catch-up, extension; due in class Mon)",
-     "Check Gradescope: is PS8 still open for late submission?",
      "Open Topology HW9 and read it, about 10 minutes, to see how long it is",
-     "Physics PS8 until bed; submit tonight if finished"
+     "Physics PS8 until bed (late window open until Sun 11/22, 9 AM)"
     ],
     "goal": "Asleep by 1–2 AM for Topology at 10:10"
    },
@@ -1338,10 +1337,10 @@
     ],
     "plan": [
      "11:25–1:10 gap: Topology HW9",
-     "2:25–4:10 gap: Topology HW9, or finish PS8 if HW9 is short",
-     "After the seminar: whatever is left of HW9 (due end of day), then PS8 if still unsubmitted"
+     "2:25–4:10 gap: Topology HW9",
+     "After the seminar: finish HW9 (due end of day), then PS8 if time is left"
     ],
-    "goal": "HW9 submitted by 11:59 PM; PS8 submitted"
+    "goal": "HW9 submitted by 11:59 PM"
    },
    {
     "date": "2026-11-17",
@@ -1349,7 +1348,9 @@
      "Woolf 10:10",
      "Physics 2:40"
     ],
-    "plan": []
+    "plan": [
+     "PS8: finish and submit (late window closes Sun 11/22, 9 AM)"
+    ]
    },
    {
     "date": "2026-11-18",
@@ -1384,7 +1385,6 @@
   ],
   "unknown": [
    "Topology HW9 contents and exact deadline (end of day Mon 11/16)",
-   "Whether PS8 is still accepted late (PS5 and PS6 were dropped when late submission closed)",
    "Discussion post due date and the performance exercise's instructions",
    "Physics PS9 contents (due Sun 11/22, 9 AM, if the weekly pattern holds)"
   ]
