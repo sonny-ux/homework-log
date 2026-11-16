@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16T00:26:54+00:00",
+ "updated": "2026-11-16T00:27:10+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1023,13 +1023,17 @@
    "week": "2026-11-15",
    "class": "Lit Study",
    "start": "5:44 PM",
-   "end": "now",
+   "end": "7:27 PM",
    "start_min": 1064,
-   "end_min": 1166,
-   "minutes": 102,
-   "in_progress": true,
-   "topic": "Lit Study session.",
-   "refs": []
+   "end_min": 1167,
+   "minutes": 103,
+   "in_progress": false,
+   "topic": "Finishing Klara and the Sun; planned the night.",
+   "refs": [
+    "discussion post",
+    "problem set 8",
+    "homework 9"
+   ]
   }
  ],
  "assignments": [
