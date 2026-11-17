@@ -592,14 +592,15 @@ function hm(m){ var h = Math.floor(m/60), r = m%60; return h ? h + 'h' + (r ? St
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function el(id){ return document.getElementById(id); }
 
-var DATA = null, today = new Date(), weekStart = null;
-today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+// The study day runs until 5 AM: after midnight it is still the night before (matches sday below).
+function studyToday(){ var n = new Date(); if (n.getHours() < 5) n.setDate(n.getDate() - 1); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+var DATA = null, today = studyToday(), weekStart = null;
 function sunday(d){ var x = new Date(d); x.setDate(x.getDate() - x.getDay()); return x; }
 
 function renderToday(){
   var t = iso(today);
   el('today').textContent = DAYS[today.getDay()] + ' ' + MON[today.getMonth()] + ' ' + today.getDate();
-  var ss = DATA.sessions.filter(function(s){ return s.date === t; }).sort(function(a,b){ return a.start_min - b.start_min; });
+  var ss = DATA.sessions.filter(function(s){ return sday(s) === t; }).sort(function(a,b){ return a.start_min - b.start_min; });
   var total = ss.reduce(function(a,s){ return a + (s.minutes||0); }, 0);
   var band = el('band');
   if (!ss.length) band.innerHTML = '<div class="empty">No sessions yet today.</div><div class="tot"><b>0m</b><span>today</span></div>';
@@ -653,7 +654,7 @@ function renderWeek(){
     html += '<div class="col" style="height:' + height + 'px">';
     ss.filter(function(s){ return s.date === ds; }).forEach(function(s){
       var nowMin = new Date().getHours()*60 + new Date().getMinutes();
-      var end = s.in_progress ? (s.date === iso(today) ? Math.max(nowMin, s.start_min + 10) : s.start_min + 30) : (s.end_min > s.start_min ? s.end_min : 24*60);
+      var end = s.in_progress ? (s.date === iso(new Date()) ? Math.max(nowMin, s.start_min + 10) : s.start_min + 30) : (s.end_min > s.start_min ? s.end_min : 24*60);
       var top = (s.start_min - lo)*px, h = Math.max((end - s.start_min)*px, 6);
       tot += s.minutes||0;
       html += '<div class="s ' + cls(s['class']) + '" style="top:' + top + 'px;height:' + h + 'px" title="' + esc(s['class'] + ' ' + s.start + '–' + s.end) + '">' + (h > 22 ? esc(SHORT[s['class']] || s['class']) : '') + '</div>';
@@ -907,7 +908,7 @@ function renderLog(){
 }
 
 function renderHome(){
-  var t = iso(today), todayMin = DATA.sessions.filter(function(s){ return s.date === t; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+  var t = iso(today), todayMin = DATA.sessions.filter(function(s){ return sday(s) === t; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
   var ws = iso(sunday(today)), wk = DATA.sessions.filter(function(s){ return s.week === ws; });
   var wkMin = wk.reduce(function(a,s){ return a+(s.minutes||0); },0), by = {};
   wk.forEach(function(s){ by[s['class']] = (by[s['class']]||0) + (s.minutes||0); });
@@ -1224,7 +1225,7 @@ document.querySelectorAll('nav.seg a').forEach(function(a){
   window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('load', onScroll);
 })();
 
-var APP_BUILD = "5824824933";
+var APP_BUILD = "0d4a064aa9";
 window.checkBuild = function(){
   if (APP_BUILD === "dev") return;
   fetch('index.html?check=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(t){
@@ -1245,7 +1246,7 @@ function textW(str, sc){ return String(str).length * 4 * sc - sc; }
 function boardData(){
   if (!DATA) return {};
   var t = iso(today), ws = iso(sunday(today));
-  var td = DATA.sessions.filter(function(s){ return s.date === t; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
+  var td = DATA.sessions.filter(function(s){ return sday(s) === t; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
   var wk = DATA.sessions.filter(function(s){ return s.week === ws; }).reduce(function(a,s){ return a+(s.minutes||0); },0);
   var open = DATA.assignments.filter(function(a){ return !a.done && a.due >= t; });
   var next = open[0], nd = next ? Math.round((parse(next.due) - today)/864e5) : null;
@@ -1694,7 +1695,7 @@ function liveSession(){ if (!DATA) return null; var lv = DATA.sessions.filter(fu
   return m >= 0 && m < 16*60 ? {cls: lv['class'], min: m} : null; }
 function todayColour(){
   if (!DATA) return '#e9c45a'; var t = iso(today), by = {};
-  DATA.sessions.forEach(function(s){ if (s.date === t) by[s['class']] = (by[s['class']] || 0) + (s.minutes || 0); });
+  DATA.sessions.forEach(function(s){ if (sday(s) === t) by[s['class']] = (by[s['class']] || 0) + (s.minutes || 0); });
   var top = Object.keys(by).sort(function(a, b){ return by[b] - by[a]; })[0];
   return {'Topology':'#c4473a', 'Physics III':'#4d8fe0', 'Phil of Sci':'#e9c45a', 'Lit Study':'#3d9a65', 'Woolf':'#f3ead3'}[top] || '#e9c45a';
 }
@@ -5347,7 +5348,7 @@ function unifySessions(d){ var ss = (d.sessions || []).slice().sort(function(a, 
   d.sessions = out; return d; }
 function liveMinutes(d){ var now = new Date(), nowMin = now.getHours()*60 + now.getMinutes(), t = iso(now), y = iso(addDays(new Date(now.getFullYear(), now.getMonth(), now.getDate()), -1));
   (d.sessions || []).forEach(function(s){ if (!s.in_progress) return; var m = s.date === t ? nowMin - s.start_min : s.date === y ? nowMin + 1440 - s.start_min : null; if (m != null && m >= 0 && m < 16*60) s.minutes = m; }); }
-function freshToday(){ var n = new Date(), d = new Date(n.getFullYear(), n.getMonth(), n.getDate()); if (+d !== +today){ var onThis = weekStart && +weekStart === +sunday(today); today = d; if (!weekStart || onThis) weekStart = sunday(today); return true; } return false; }
+function freshToday(){ var d = studyToday(); if (+d !== +today){ var onThis = weekStart && +weekStart === +sunday(today); today = d; if (!weekStart || onThis) weekStart = sunday(today); return true; } return false; }
 function busy(){ var sh = el('sheet'); return document.hidden || (sh && sh.classList.contains('on')) || document.getElementById('rest').classList.contains('on'); }
 function loadData(first){
   return fetch('data.json?' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.json(); }).then(function(d){
