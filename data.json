@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T07:12:53+00:00",
+ "updated": "2026-11-17T19:10:08+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1091,6 +1091,22 @@
    "minutes": 101,
    "in_progress": false,
    "topic": "Topology HW9: set up in the guide; Q2 restrictions and why constancy gives f(x)=f(y).",
+   "refs": [
+    "homework 9"
+   ]
+  },
+  {
+   "date": "2026-11-17",
+   "day": "Tue",
+   "week": "2026-11-15",
+   "class": "Topology",
+   "start": "2:09 PM",
+   "end": "now",
+   "start_min": 849,
+   "end_min": 850,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "Topology HW9: write up Q2, then Q1, Q3, Q4.",
    "refs": [
     "homework 9"
    ]
