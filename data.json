@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T19:10:08+00:00",
+ "updated": "2026-11-17T19:12:27+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1101,12 +1101,12 @@
    "week": "2026-11-15",
    "class": "Topology",
    "start": "2:09 PM",
-   "end": "now",
+   "end": "2:12 PM",
    "start_min": 849,
-   "end_min": 850,
-   "minutes": 1,
-   "in_progress": true,
-   "topic": "Topology HW9: write up Q2, then Q1, Q3, Q4.",
+   "end_min": 852,
+   "minutes": 3,
+   "in_progress": false,
+   "topic": "Topology HW9: Q2 outline reviewed; paused before Physics III.",
    "refs": [
     "homework 9"
    ]
