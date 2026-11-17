@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T02:50:30+00:00",
+ "updated": "2026-11-17T05:31:01+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1271,33 +1271,6 @@
    "source": "hand",
    "key": "reading",
    "about": "Nelson Goodman, Fact, Fiction, and Forecast; the class is reading it for the foreseeable future. Read Ch. 3–4 on 11/3. Next section to confirm. Read after Topology on Mon 11/9, before class (~1:10 PM)."
-  },
-  {
-   "due": "2026-11-11",
-   "time": null,
-   "class": "Topology",
-   "title": "Midterm 2",
-   "detail": "",
-   "done": false,
-   "source": "reminders",
-   "key": "midterm 2",
-   "about": "In class Wed 11/11, 10:10–11:25, closed book, six problems. Practice exam (School/Midterm 2 practice (Topology).pdf): 1 metric topology, closed ball closed; 2 quotient map definition, quotient topology on {0,1}; 3 'no map to [0,1] separates them' relation, quotient Hausdorff; 4 connected subspace of a 3-point space; 5 true/false on connectedness, open and quotient maps; 6 partition into open sets of a connected space. Plan: practice exam on Mon 11/9 after HW8.",
-   "progress": {
-    "parts": [
-     "Q1",
-     "Q2",
-     "Q3",
-     "Q4",
-     "Q5",
-     "Q6"
-    ],
-    "done": [
-     "Q1",
-     "Q3",
-     "Q5"
-    ],
-    "note": "Q1, Q3, Q5 done; Q2(b): f⁻¹({0}) = [1,2), test openness; read Q4, Q6 clean solutions before the exam."
-   }
   },
   {
    "due": "2026-11-15",
