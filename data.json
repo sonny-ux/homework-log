@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T22:03:23+00:00",
+ "updated": "2026-11-17T22:03:47+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1117,14 +1117,15 @@
    "week": "2026-11-15",
    "class": "Topology",
    "start": "3:42 PM",
-   "end": "now",
+   "end": "5:03 PM",
    "start_min": 942,
    "end_min": 1023,
    "minutes": 81,
-   "in_progress": true,
-   "topic": "Topology HW9: write up Q2, then Q1, Q3, Q4.",
+   "in_progress": false,
+   "topic": "Topology HW9 Q3: (b) by sequences, (c) by cutting between segments.",
    "refs": [
-    "homework 9"
+    "homework 9",
+    "homework"
    ]
   }
  ],
@@ -1365,7 +1366,7 @@
      "Q4"
     ],
     "done": [],
-    "note": "Q2 understood (restrict f to the component, which is connected, so f|_C is constant); write it up, then Q1, Q3, Q4. Late window closes about Wed 11/18 5:30 AM."
+    "note": "Q2 and Q3 understood (Q3(a) sketched); write Q2, Q3(b) by sequences and Q3(c) by vertical cuts, then Q1 and Q4. Late window closes about Wed 11/18 5:30 AM."
    }
   },
   {
