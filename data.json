@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T05:34:21+00:00",
+ "updated": "2026-11-17T05:34:42+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1317,14 +1317,14 @@
   },
   {
    "due": "2026-11-16",
-   "time": null,
+   "time": "11:59 PM",
    "class": "Topology",
    "title": "Homework 9",
-   "detail": "Homework 9 (from the course schedule; you say due end of day Mon; posting to confirm)",
+   "detail": "Homework 9 (Gradescope; 4 questions in the PDF, header says 5; §23–25). Missed the deadline; late window about 1 day 5 hours from 12:22 AM Tue 11/17, so about Wed 11/18 5:30 AM per you (exact time to confirm). Worked into the Topology guide 11/17.",
    "done": false,
    "source": "hand",
    "key": "homework 9",
-   "about": ""
+   "about": "§23–25, four questions (header says five). 1: components of a 3-point space ({0} and {1,2}). 2: same component implies x ∼ y (HW8 relation). 3: segments at x = 1/n plus (0,0), (0,1): sketch; (0,0) ∼ (0,1); different components. 4: graph of f homeomorphic to X when f is continuous; path connected graph on [0,1] forces f continuous. Worked in the Topology guide."
   },
   {
    "due": "2026-11-16",
@@ -1386,8 +1386,11 @@
      "Physics 2:40"
     ],
     "plan": [
-     "PS8: finish and submit (late window closes Sun 11/22, 9 AM)"
-    ]
+     "After midnight: Topology HW9 (late window, about Wed 11/18 5:30 AM per Jackson; confirm on Gradescope); guide has HW9 now",
+     "Between classes (11:25–2:40): Physics PS8 (late window closes Sun 11/22, 9 AM)",
+     "Evening: finish HW9 if not done, then more PS8"
+    ],
+    "goal": "HW9 submitted before the late window closes"
    },
    {
     "date": "2026-11-18",
@@ -1397,7 +1400,9 @@
      "Arts of Islam ~4:10",
      "Physics recitation ~6:10"
     ],
-    "plan": []
+    "plan": [
+     "Morning, before Phil of Sci ~1:10: start one of the new Phil of Sci readings (files to save into the course folder)"
+    ]
    },
    {
     "date": "2026-11-19",
@@ -1421,9 +1426,10 @@
    }
   ],
   "unknown": [
-   "Topology HW9 contents and exact deadline (end of day Mon 11/16)",
    "Discussion post due date and the performance exercise's instructions",
-   "Physics PS9 contents (due Sun 11/22, 9 AM, if the weekly pattern holds)"
+   "Physics PS9 contents (due Sun 11/22, 9 AM, if the weekly pattern holds)",
+   "Topology HW9 exact late deadline (Gradescope)",
+   "New Phil of Sci readings (titles; not yet in the course folder)"
   ]
  }
 }
