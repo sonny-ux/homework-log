@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T06:22:26+00:00",
+ "updated": "2026-11-17T07:12:27+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1087,8 +1087,8 @@
    "start": "12:31 AM",
    "end": "now",
    "start_min": 31,
-   "end_min": 82,
-   "minutes": 51,
+   "end_min": 132,
+   "minutes": 101,
    "in_progress": true,
    "topic": "Topology HW9: set up in the guide, then working the problems.",
    "refs": [
