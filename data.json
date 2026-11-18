@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T23:17:46+00:00",
+ "updated": "2026-11-18T23:18:14+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1201,12 +1201,12 @@
    "week": "2026-11-15",
    "class": "Physics III",
    "start": "3:31 PM",
-   "end": "now",
+   "end": "6:17 PM",
    "start_min": 931,
    "end_min": 1097,
    "minutes": 166,
-   "in_progress": true,
-   "topic": "Physics III: PS8 P3 (guitar strings) written and checked; air columns; symbols.",
+   "in_progress": false,
+   "topic": "Physics III: PS8 finished and submitted; guitar strings, air columns, particle in a box.",
    "refs": [
     "midterm 2",
     "problem set 8"
@@ -1410,8 +1410,8 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 8",
-   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; late submission accepted for a week, until Sun 11/22, 9:00 AM (you, 11/16). Plan: submit Sun night or Mon after class. All five problems written Wed 11/18 (School/Problem Set 8 (Physics III).pdf); not yet submitted",
-   "done": false,
+   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; late submission accepted for a week, until Sun 11/22, 9:00 AM (you, 11/16). Plan: submit Sun night or Mon after class. All five problems written Wed 11/18 (School/Problem Set 8 (Physics III).pdf). Submitted Wed 11/18, about 6:15 PM.",
+   "done": true,
    "source": "hand",
    "key": "problem set 8",
    "about": "French 6-1, King 6.4, King 6.8, French 6-8, King 6.15 (10 pts each; due Sun 11/15, 9:00 AM; written reasoning required). 1: string fundamental from mass, length, tension; touched at 0.5 m, which frequencies persist. 2: incoming plus partly reflected wave, standing wave ratio (1+R)/(1−R). 3: guitar strings at equal tension: diameter for two octaves lower, total force on the neck, nylon vs steel. 4: air column ends: open end pressure node/displacement antinode, closed end the reverse. 5: particle in an infinite well, E_n = n²h²/8mL², E_1 for an electron in 0.2 nm. Background and a method per problem in the Waves Guide (Ch. 6 and Concepts).",
@@ -1440,7 +1440,7 @@
      "P5(a)",
      "P5(b)"
     ],
-    "note": "All five written (School/Problem Set 8 (Physics III).pdf, re-cut so no line is split). Submit on Gradescope by Sun 11/22, 9:00 AM, problems tagged."
+    "note": "Submitted Wed 11/18, about 6:15 PM."
    }
   },
   {
@@ -1498,7 +1498,7 @@
      "P4"
     ],
     "done": [],
-    "note": "Practice exam not yet attempted; Wed: P1, then P2 (junction), P3, P4, with the guide's pages."
+    "note": "Practice exam not yet attempted; worked pages in the Waves Guide (P1–P4). Exam Thu 11/19, 2:40 PM."
    }
   },
   {
