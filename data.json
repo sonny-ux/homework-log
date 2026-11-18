@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T00:15:43+00:00",
+ "updated": "2026-11-18T00:15:51+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1381,8 +1381,10 @@
      "Q3",
      "Q4"
     ],
-    "done": [],
-    "note": "Q2 and Q3 understood (Q3(a) sketched); write Q2, Q3(b) by sequences and Q3(c) by vertical cuts, then Q1 and Q4. Late window closes about Wed 11/18 5:30 AM."
+    "done": [
+     "Q4"
+    ],
+    "note": "Q4 written. Next: Q2 and Q1 (drafts on the Mac), Q3(b) by sequences, Q3(c) by vertical cuts. Late window closes about Wed 11/18 5:30 AM."
    }
   },
   {
