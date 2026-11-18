@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T23:09:11+00:00",
+ "updated": "2026-11-18T23:12:04+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1203,8 +1203,8 @@
    "start": "3:31 PM",
    "end": "now",
    "start_min": 931,
-   "end_min": 1089,
-   "minutes": 158,
+   "end_min": 1092,
+   "minutes": 161,
    "in_progress": true,
    "topic": "Physics III: PS8 P3 (guitar strings) written and checked; air columns; symbols.",
    "refs": [
@@ -1410,7 +1410,7 @@
    "time": "9:00 AM",
    "class": "Physics III",
    "title": "Problem Set 8",
-   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; late submission accepted for a week, until Sun 11/22, 9:00 AM (you, 11/16). Plan: submit Sun night or Mon after class",
+   "detail": "Problem Set 8 (50 pts, Gradescope, one merged PDF with all problems tagged; French 6-1, King 6.4, King 6.8, French 6-8, King 6.15; written comments required). Not done by the deadline; late submission accepted for a week, until Sun 11/22, 9:00 AM (you, 11/16). Plan: submit Sun night or Mon after class. All five problems written Wed 11/18 (School/Problem Set 8 (Physics III).pdf); not yet submitted",
    "done": false,
    "source": "hand",
    "key": "problem set 8",
@@ -1428,8 +1428,19 @@
      "P5(a)",
      "P5(b)"
     ],
-    "done": [],
-    "note": "P3 written (Jackson); fix (c): use one string's tension (~100 N) and the same L as (b), giving 0.73 mm. Remaining: P1, P2, P4, P5 by Sun 11/22 9:00 AM."
+    "done": [
+     "P1(a)",
+     "P1(b)",
+     "P2",
+     "P3(a)",
+     "P3(b)",
+     "P3(c)",
+     "P4(a)",
+     "P4(b)",
+     "P5(a)",
+     "P5(b)"
+    ],
+    "note": "All five written (School/Problem Set 8 (Physics III).pdf, re-cut so no line is split). Submit on Gradescope by Sun 11/22, 9:00 AM, problems tagged."
    }
   },
   {
