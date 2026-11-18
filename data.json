@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T06:45:35+00:00",
+ "updated": "2026-11-18T06:46:24+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1168,14 +1168,15 @@
    "week": "2026-11-15",
    "class": "Physics III",
    "start": "12:35 AM",
-   "end": "now",
+   "end": "1:45 AM",
    "start_min": 35,
    "end_min": 105,
    "minutes": 70,
-   "in_progress": true,
-   "topic": "Physics III: Midterm 2 practice, Problem 1 (travelling-wave basics).",
+   "in_progress": false,
+   "topic": "Physics III: mode shapes and the touch, standing vs travelling waves, sum to product.",
    "refs": [
-    "midterm 2"
+    "midterm 2",
+    "problem set 8"
    ]
   }
  ],
@@ -1453,7 +1454,7 @@
      "P4"
     ],
     "done": [],
-    "note": "Practice exam worked in the Waves Guide; next: try P1, then P2 (junction)."
+    "note": "Practice exam not yet attempted; Wed: P1, then P2 (junction), P3, P4, with the guide's pages."
    }
   },
   {
