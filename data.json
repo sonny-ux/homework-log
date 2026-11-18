@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T21:54:58+00:00",
+ "updated": "2026-11-18T21:55:07+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1203,8 +1203,8 @@
    "start": "3:31 PM",
    "end": "now",
    "start_min": 931,
-   "end_min": 1014,
-   "minutes": 83,
+   "end_min": 1015,
+   "minutes": 84,
    "in_progress": true,
    "topic": "Physics III: Midterm 2 practice, Problem 1 then Problem 2.",
    "refs": [
@@ -1428,7 +1428,7 @@
      "P5(b)"
     ],
     "done": [],
-    "note": "Worked pages in the Waves Guide (Homework tab). Next: P1 and P2 before the midterm; P3–P5 after, by Sun 11/22 9:00 AM."
+    "note": "P3 written (Jackson); fix (c): use one string's tension (~100 N) and the same L as (b), giving 0.73 mm. Remaining: P1, P2, P4, P5 by Sun 11/22 9:00 AM."
    }
   },
   {
