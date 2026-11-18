@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T00:12:45+00:00",
+ "updated": "2026-11-18T00:15:43+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1136,8 +1136,8 @@
    "start": "5:48 PM",
    "end": "now",
    "start_min": 1068,
-   "end_min": 1152,
-   "minutes": 84,
+   "end_min": 1155,
+   "minutes": 87,
    "in_progress": true,
    "topic": "Topology HW9: writing Q2 and Q3, then Q1, Q4.",
    "refs": [
