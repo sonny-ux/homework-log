@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T06:46:24+00:00",
+ "updated": "2026-11-18T19:52:20+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1177,6 +1177,22 @@
    "refs": [
     "midterm 2",
     "problem set 8"
+   ]
+  },
+  {
+   "date": "2026-11-18",
+   "day": "Wed",
+   "week": "2026-11-15",
+   "class": "Woolf",
+   "start": "2:18 PM",
+   "end": "2:51 PM",
+   "start_min": 858,
+   "end_min": 891,
+   "minutes": 33,
+   "in_progress": false,
+   "topic": "Woolf: reading.",
+   "refs": [
+    "reading"
    ]
   }
  ],
