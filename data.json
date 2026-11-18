@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T21:55:07+00:00",
+ "updated": "2026-11-18T22:36:27+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1203,8 +1203,8 @@
    "start": "3:31 PM",
    "end": "now",
    "start_min": 931,
-   "end_min": 1015,
-   "minutes": 84,
+   "end_min": 1056,
+   "minutes": 125,
    "in_progress": true,
    "topic": "Physics III: Midterm 2 practice, Problem 1 then Problem 2.",
    "refs": [
