@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T04:47:34+00:00",
+ "updated": "2026-11-18T05:35:47+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1160,6 +1160,22 @@
     "midterm 2",
     "problem set 8",
     "homework"
+   ]
+  },
+  {
+   "date": "2026-11-18",
+   "day": "Wed",
+   "week": "2026-11-15",
+   "class": "Physics III",
+   "start": "12:35 AM",
+   "end": "now",
+   "start_min": 35,
+   "end_min": 35,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Physics III: Midterm 2 practice, Problem 1 (travelling-wave basics).",
+   "refs": [
+    "midterm 2"
    ]
   }
  ],
