@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T04:47:14+00:00",
+ "updated": "2026-11-18T04:47:34+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1150,16 +1150,16 @@
    "week": "2026-11-15",
    "class": "Physics III",
    "start": "10:24 PM",
-   "end": "now",
+   "end": "11:47 PM",
    "start_min": 1344,
    "end_min": 1427,
    "minutes": 83,
-   "in_progress": true,
-   "topic": "Physics III: midterm prep; Waves Guide with homework pages and a map of the subject.",
+   "in_progress": false,
+   "topic": "Physics III: midterm prep; Waves Guide reworked (map of the subject, problem pages by method).",
    "refs": [
     "midterm 2",
-    "homework",
-    "problem set 8"
+    "problem set 8",
+    "homework"
    ]
   }
  ],
@@ -1379,7 +1379,7 @@
      "P5(b)"
     ],
     "done": [],
-    "note": "Not started; background read-ahead in the Waves Guide."
+    "note": "Worked pages in the Waves Guide (Homework tab). Next: P1 and P2 before the midterm; P3–P5 after, by Sun 11/22 9:00 AM."
    }
   },
   {
@@ -1428,7 +1428,17 @@
    "done": false,
    "source": "hand",
    "key": "midterm 2",
-   "about": "In class Thu 11/19, 2:40 PM, 75 minutes. Practice exam (School/Midterm 2 practice (Physics III).pdf, 64 pts): 1 travelling-wave basics (λ, T, v, direction, sketches, transverse velocity, energy and power ⟨P⟩ = ½μvω²A²); 2 two strings μ and 2μ joined at x = 0: k, ω, transmission and reflection coefficients from continuity of displacement and slope, power fractions; 3 fixed–fixed string: k_n, ω_n, mode sketches, a two-mode superposition, nodes, frequency spectrum; 4 nonuniform string μ(x) = μ₀(1 + x/L)²: local speed, travel time by integrating dx/v."
+   "about": "In class Thu 11/19, 2:40 PM, 75 minutes. Practice exam (School/Midterm 2 practice (Physics III).pdf, 64 pts): 1 travelling-wave basics (λ, T, v, direction, sketches, transverse velocity, energy and power ⟨P⟩ = ½μvω²A²); 2 two strings μ and 2μ joined at x = 0: k, ω, transmission and reflection coefficients from continuity of displacement and slope, power fractions; 3 fixed–fixed string: k_n, ω_n, mode sketches, a two-mode superposition, nodes, frequency spectrum; 4 nonuniform string μ(x) = μ₀(1 + x/L)²: local speed, travel time by integrating dx/v.",
+   "progress": {
+    "parts": [
+     "P1",
+     "P2",
+     "P3",
+     "P4"
+    ],
+    "done": [],
+    "note": "Practice exam worked in the Waves Guide; next: try P1, then P2 (junction)."
+   }
   },
   {
    "due": "2026-11-23",
