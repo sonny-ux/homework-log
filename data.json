@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T02:28:45+00:00",
+ "updated": "2026-11-18T02:32:04+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1152,8 +1152,8 @@
    "start": "9:27 PM",
    "end": "now",
    "start_min": 1287,
-   "end_min": 1288,
-   "minutes": 1,
+   "end_min": 1292,
+   "minutes": 5,
    "in_progress": true,
    "topic": "Physics III: midterm prep, starting with Problem Set 8.",
    "refs": [
