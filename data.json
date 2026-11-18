@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T02:20:47+00:00",
+ "updated": "2026-11-18T02:28:45+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1143,6 +1143,23 @@
    "refs": [
     "homework 9"
    ]
+  },
+  {
+   "date": "2026-11-17",
+   "day": "Tue",
+   "week": "2026-11-15",
+   "class": "Physics III",
+   "start": "9:27 PM",
+   "end": "now",
+   "start_min": 1287,
+   "end_min": 1288,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "Physics III: midterm prep, starting with Problem Set 8.",
+   "refs": [
+    "midterm",
+    "problem set 8"
+   ]
   }
  ],
  "assignments": [
@@ -1369,8 +1386,8 @@
    "time": "11:59 PM",
    "class": "Topology",
    "title": "Homework 9",
-   "detail": "Homework 9 (Gradescope; 4 questions in the PDF, header says 5; §23–25). Missed the deadline; late window about 1 day 5 hours from 12:22 AM Tue 11/17, so about Wed 11/18 5:30 AM per you (exact time to confirm). Worked into the Topology guide 11/17.",
-   "done": false,
+   "detail": "Homework 9 (Gradescope; 4 questions in the PDF, header says 5; §23–25). Missed the deadline; late window until about Wed 11/18 5:30 AM. Submitted Tue 11/17, about 9:25 PM (School/Homework 9 (Complete).pdf).",
+   "done": true,
    "source": "hand",
    "key": "homework 9",
    "about": "§23–25, four questions (header says five). 1: components of a 3-point space ({0} and {1,2}). 2: same component implies x ∼ y (HW8 relation). 3: segments at x = 1/n plus (0,0), (0,1): sketch; (0,0) ∼ (0,1); different components. 4: graph of f homeomorphic to X when f is continuous; path connected graph on [0,1] forces f continuous. Worked in the Topology guide.",
@@ -1387,7 +1404,7 @@
      "Q3",
      "Q4"
     ],
-    "note": "All four written; combined PDF in School/Homework 9 (Complete).pdf. Submit on Gradescope before about Wed 11/18 5:30 AM, with all questions tagged."
+    "note": "Submitted Tue 11/17, about 9:25 PM."
    }
   },
   {
@@ -1399,6 +1416,17 @@
    "done": false,
    "source": "hand",
    "key": "",
+   "about": ""
+  },
+  {
+   "due": "2026-11-19",
+   "time": "2:40 PM",
+   "class": "Physics III",
+   "title": "Midterm",
+   "detail": "Midterm (you must attend in person; practice exam exists, not yet received)",
+   "done": false,
+   "source": "hand",
+   "key": "midterm",
    "about": ""
   },
   {
