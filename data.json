@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T19:52:20+00:00",
+ "updated": "2026-11-18T20:32:15+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1193,6 +1193,22 @@
    "topic": "Woolf: reading.",
    "refs": [
     "reading"
+   ]
+  },
+  {
+   "date": "2026-11-18",
+   "day": "Wed",
+   "week": "2026-11-15",
+   "class": "Physics III",
+   "start": "3:31 PM",
+   "end": "now",
+   "start_min": 931,
+   "end_min": 932,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "Physics III: Midterm 2 practice, Problem 1 then Problem 2.",
+   "refs": [
+    "midterm 2"
    ]
   }
  ],
