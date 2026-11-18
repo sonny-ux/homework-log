@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T02:32:13+00:00",
+ "updated": "2026-11-18T02:57:43+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1405,12 +1405,12 @@
    "due": "2026-11-19",
    "time": "2:40 PM",
    "class": "Physics III",
-   "title": "Midterm",
-   "detail": "Midterm (you must attend in person; practice exam exists, not yet received)",
+   "title": "Midterm 2",
+   "detail": "Midterm 2 (in person, 75 min; practice exam saved as School/Midterm 2 practice (Physics III).pdf)",
    "done": false,
    "source": "hand",
-   "key": "midterm",
-   "about": ""
+   "key": "midterm 2",
+   "about": "In class Thu 11/19, 2:40 PM, 75 minutes. Practice exam (School/Midterm 2 practice (Physics III).pdf, 64 pts): 1 travelling-wave basics (λ, T, v, direction, sketches, transverse velocity, energy and power ⟨P⟩ = ½μvω²A²); 2 two strings μ and 2μ joined at x = 0: k, ω, transmission and reflection coefficients from continuity of displacement and slope, power fractions; 3 fixed–fixed string: k_n, ω_n, mode sketches, a two-mode superposition, nodes, frequency spectrum; 4 nonuniform string μ(x) = μ₀(1 + x/L)²: local speed, travel time by integrating dx/v."
   },
   {
    "due": "2026-11-23",
