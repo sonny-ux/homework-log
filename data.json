@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T22:36:49+00:00",
+ "updated": "2026-11-18T22:37:59+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1201,11 +1201,11 @@
    "week": "2026-11-15",
    "class": "Physics III",
    "start": "3:31 PM",
-   "end": "5:36 PM",
+   "end": "now",
    "start_min": 931,
-   "end_min": 1056,
-   "minutes": 125,
-   "in_progress": false,
+   "end_min": 1057,
+   "minutes": 126,
+   "in_progress": true,
    "topic": "Physics III: PS8 P3 (guitar strings) written and checked; air columns; symbols.",
    "refs": [
     "midterm 2",
