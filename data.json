@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T15:18:45+00:00",
+ "updated": "2026-11-19T15:19:16+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1250,16 +1250,15 @@
    "week": "2026-11-15",
    "class": "Physics III",
    "start": "1:36 AM",
-   "end": "now",
+   "end": "3:00 AM",
    "start_min": 96,
-   "end_min": 618,
-   "minutes": 522,
-   "in_progress": true,
-   "topic": "Physics III: reading the Waves Guide before sleep (Midterm 2).",
+   "end_min": 180,
+   "minutes": 84,
+   "in_progress": false,
+   "topic": "Physics III: Waves Guide reading before Midterm 2: phase, bulk modulus, force triangle, reflection.",
    "refs": [
     "reading",
-    "midterm 2",
-    "midterm"
+    "midterm 2"
    ]
   }
  ],
@@ -1548,7 +1547,7 @@
      "P4"
     ],
     "done": [],
-    "note": "Practice P1(a) done; next: P1(c), (d), then P2 (junction)."
+    "note": "Practice P1(a) done; P2 ideas read (reflection card). Thu 8:30: P1(c), (d), P2, P3, P4, drill, timed run 12:15–1:30."
    }
   },
   {
