@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T03:03:03+00:00",
+ "updated": "2026-11-19T06:36:55+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1242,6 +1242,24 @@
    "topic": "Physics III: Midterm 2 practice P1 (a) done, (b) sketch, (c) transverse velocity.",
    "refs": [
     "midterm 2"
+   ]
+  },
+  {
+   "date": "2026-11-19",
+   "day": "Thu",
+   "week": "2026-11-15",
+   "class": "Physics III",
+   "start": "1:36 AM",
+   "end": "now",
+   "start_min": 96,
+   "end_min": 96,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Physics III: reading the Waves Guide before sleep (Midterm 2).",
+   "refs": [
+    "reading",
+    "midterm 2",
+    "midterm"
    ]
   }
  ],
