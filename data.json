@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T00:42:03+00:00",
+ "updated": "2026-11-19T00:42:19+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1218,12 +1218,12 @@
    "week": "2026-11-15",
    "class": "Physics III",
    "start": "7:14 PM",
-   "end": "now",
+   "end": "7:42 PM",
    "start_min": 1154,
    "end_min": 1182,
    "minutes": 28,
-   "in_progress": true,
-   "topic": "Physics III: Midterm 2 practice exam.",
+   "in_progress": false,
+   "topic": "Physics III: Midterm 2 practice P1; naming every symbol before the equations.",
    "refs": [
     "midterm 2"
    ]
@@ -1514,7 +1514,7 @@
      "P4"
     ],
     "done": [],
-    "note": "Practice exam not yet attempted; worked pages in the Waves Guide (P1–P4). Exam Thu 11/19, 2:40 PM."
+    "note": "Practice P1(a) in progress; next: finish P1, then P2 (junction)."
    }
   },
   {
