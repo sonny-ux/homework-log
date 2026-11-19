@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T15:19:16+00:00",
+ "updated": "2026-11-19T16:01:09+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1260,6 +1260,22 @@
     "reading",
     "midterm 2"
    ]
+  },
+  {
+   "date": "2026-11-19",
+   "day": "Thu",
+   "week": "2026-11-15",
+   "class": "Physics III",
+   "start": "10:20 AM",
+   "end": "now",
+   "start_min": 620,
+   "end_min": 661,
+   "minutes": 41,
+   "in_progress": true,
+   "topic": "Physics III: Midterm 2 practice problems (P1 done, P2 junction next).",
+   "refs": [
+    "midterm 2"
+   ]
   }
  ],
  "assignments": [
@@ -1546,8 +1562,10 @@
      "P3",
      "P4"
     ],
-    "done": [],
-    "note": "Practice P1(a) done; P2 ideas read (reflection card). Thu 8:30: P1(c), (d), P2, P3, P4, drill, timed run 12:15–1:30."
+    "done": [
+     "P1"
+    ],
+    "note": "P1 done; next: P2 (junction), P3, lunch, P4, drill; stop 2:15 for the 2:40 exam."
    }
   },
   {
