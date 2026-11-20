@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T19:32:52+00:00",
+ "updated": "2026-11-20T20:48:28+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1276,6 +1276,20 @@
    "refs": [
     "midterm 2"
    ]
+  },
+  {
+   "date": "2026-11-20",
+   "day": "Fri",
+   "week": "2026-11-15",
+   "class": "Lit Study",
+   "start": "3:48 PM",
+   "end": "now",
+   "start_min": 948,
+   "end_min": 948,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Lit Study: literary theory work.",
+   "refs": []
   }
  ],
  "assignments": [
