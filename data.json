@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21T21:09:06+00:00",
+ "updated": "2026-11-21T21:09:15+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1297,11 +1297,11 @@
    "week": "2026-11-15",
    "class": "Woolf",
    "start": "3:34 PM",
-   "end": "now",
+   "end": "4:09 PM",
    "start_min": 934,
    "end_min": 969,
    "minutes": 35,
-   "in_progress": true,
+   "in_progress": false,
    "topic": "Woolf: reading.",
    "refs": [
     "reading"
