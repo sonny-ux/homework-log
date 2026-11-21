@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21T20:34:59+00:00",
+ "updated": "2026-11-21T20:35:31+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1283,13 +1283,29 @@
    "week": "2026-11-15",
    "class": "Lit Study",
    "start": "3:48 PM",
-   "end": "now",
+   "end": "4:50 PM",
    "start_min": 948,
-   "end_min": 948,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "Lit Study: literary theory work.",
+   "end_min": 1010,
+   "minutes": 62,
+   "in_progress": false,
+   "topic": "Lit Study: performance exercise, Burton Hamlet 1964, Ghost scene.",
    "refs": []
+  },
+  {
+   "date": "2026-11-21",
+   "day": "Sat",
+   "week": "2026-11-15",
+   "class": "Woolf",
+   "start": "3:34 PM",
+   "end": "now",
+   "start_min": 934,
+   "end_min": 935,
+   "minutes": 1,
+   "in_progress": true,
+   "topic": "Woolf: reading.",
+   "refs": [
+    "reading"
+   ]
   }
  ],
  "assignments": [
