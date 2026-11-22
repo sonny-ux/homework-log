@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T00:30:22+00:00",
+ "updated": "2026-11-22T00:30:31+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1313,12 +1313,12 @@
    "week": "2026-11-15",
    "class": "Topology",
    "start": "6:25 PM",
-   "end": "now",
+   "end": "7:30 PM",
    "start_min": 1105,
    "end_min": 1170,
    "minutes": 65,
-   "in_progress": true,
-   "topic": "Topology: study (HW10 due Mon 11/23, to confirm).",
+   "in_progress": false,
+   "topic": "Topology: §25 components and local connectedness; relations; equivalence classes.",
    "refs": [
     "homework 10"
    ]
