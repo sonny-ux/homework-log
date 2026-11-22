@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T00:19:04+00:00",
+ "updated": "2026-11-22T00:19:13+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1596,7 +1596,7 @@
    "time": "2:40 PM",
    "class": "Physics III",
    "title": "Midterm 2",
-   "detail": "Midterm 2 (in person, 75 min; practice exam saved as School/Midterm 2 practice (Physics III).pdf)",
+   "detail": "Midterm 2 (in person, 75 min; practice exam saved as School/Midterm 2 practice (Physics III).pdf). Taken Thu 11/19.",
    "done": false,
    "source": "hand",
    "key": "midterm 2",
@@ -1609,9 +1609,12 @@
      "P4"
     ],
     "done": [
-     "P1"
+     "P1",
+     "P2",
+     "P3",
+     "P4"
     ],
-    "note": "Exam taken Thu 11/19, 2:40 PM. Practice P1 done; P2–P4 worked through before the exam as time allowed."
+    "note": "Taken in class Thu 11/19, 2:40 PM. Done."
    }
   },
   {
