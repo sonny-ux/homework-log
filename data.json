@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21T23:25:31+00:00",
+ "updated": "2026-11-22T00:19:04+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1315,8 +1315,8 @@
    "start": "6:25 PM",
    "end": "now",
    "start_min": 1105,
-   "end_min": 1105,
-   "minutes": 0,
+   "end_min": 1159,
+   "minutes": 54,
    "in_progress": true,
    "topic": "Topology: study (HW10 due Mon 11/23, to confirm).",
    "refs": [
