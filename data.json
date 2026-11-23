@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T20:14:50+00:00",
+ "updated": "2026-11-23T20:16:26+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1331,8 +1331,8 @@
    "start": "3:14 PM",
    "end": "now",
    "start_min": 914,
-   "end_min": 914,
-   "minutes": 0,
+   "end_min": 916,
+   "minutes": 2,
    "in_progress": true,
    "topic": "Lit Study: essay 3 (due today).",
    "refs": []
@@ -1635,8 +1635,8 @@
    "due": "2026-11-23",
    "time": null,
    "class": "Lit Study",
-   "title": "Essay 3",
-   "detail": "Essay 3 (Approaches to Literary Study; prompt to come)",
+   "title": "Essay 3: prose fiction argument, 750–1000 words",
+   "detail": "Essay 3: prose fiction argument, 750–1000 words (prompt in School/syllabi/Approaches Paper 3.md)",
    "done": false,
    "source": "hand",
    "key": "",
