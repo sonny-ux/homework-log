@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T00:30:31+00:00",
+ "updated": "2026-11-23T20:14:50+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1322,6 +1322,20 @@
    "refs": [
     "homework 10"
    ]
+  },
+  {
+   "date": "2026-11-23",
+   "day": "Mon",
+   "week": "2026-11-22",
+   "class": "Lit Study",
+   "start": "3:14 PM",
+   "end": "now",
+   "start_min": 914,
+   "end_min": 914,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Lit Study: essay 3 (due today).",
+   "refs": []
   }
  ],
  "assignments": [
@@ -1616,6 +1630,17 @@
     ],
     "note": "Taken in class Thu 11/19, 2:40 PM. Done."
    }
+  },
+  {
+   "due": "2026-11-23",
+   "time": null,
+   "class": "Lit Study",
+   "title": "Essay 3",
+   "detail": "Essay 3 (Approaches to Literary Study; prompt to come)",
+   "done": false,
+   "source": "hand",
+   "key": "",
+   "about": ""
   },
   {
    "due": "2026-11-23",
