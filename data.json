@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T20:16:26+00:00",
+ "updated": "2026-11-24T02:20:27+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1331,8 +1331,8 @@
    "start": "3:14 PM",
    "end": "now",
    "start_min": 914,
-   "end_min": 916,
-   "minutes": 2,
+   "end_min": 1280,
+   "minutes": 366,
    "in_progress": true,
    "topic": "Lit Study: essay 3 (due today).",
    "refs": []
