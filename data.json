@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T06:56:17+00:00",
+ "updated": "2026-11-24T07:54:43+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1361,8 +1361,8 @@
    "start": "1:05 AM",
    "end": "now",
    "start_min": 65,
-   "end_min": 116,
-   "minutes": 51,
+   "end_min": 174,
+   "minutes": 109,
    "in_progress": true,
    "topic": "Topology: Homework 10, continued.",
    "refs": [
