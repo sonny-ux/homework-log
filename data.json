@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T02:28:32+00:00",
+ "updated": "2026-11-24T05:57:59+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1343,12 +1343,12 @@
    "week": "2026-11-22",
    "class": "Topology",
    "start": "9:28 PM",
-   "end": "now",
+   "end": "9:58 PM",
    "start_min": 1288,
-   "end_min": 1288,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "Topology: Homework 10 (compactness).",
+   "end_min": 1318,
+   "minutes": 30,
+   "in_progress": false,
+   "topic": "Topology: Homework 10, Q4 (closed map lemma).",
    "refs": [
     "homework 10"
    ]
@@ -1678,7 +1678,7 @@
      "Q6"
     ],
     "done": [],
-    "note": "Guide pages ready; start with Q1 and Q4 (shortest), then Q2–Q3, Q5–Q6."
+    "note": "Q4 worked through (write-up status not reported); next: Q1, Q5, Q6, then Q2–Q3."
    }
   }
  ],
