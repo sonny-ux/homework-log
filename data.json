@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T02:20:37+00:00",
+ "updated": "2026-11-24T02:26:57+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1644,14 +1644,26 @@
   },
   {
    "due": "2026-11-23",
-   "time": null,
+   "time": "11:59 PM",
    "class": "Topology",
    "title": "Homework 10",
-   "detail": "Homework 10 (from the course schedule; posting and time to confirm)",
+   "detail": "Homework 10 (Gradescope; 6 questions, 2% of grade; §26–29: compactness, one-point compactification, compact-to-Hausdorff quotients, binary map ∏{0,1} → [0,1]; worked into the Topology Reference Guide)",
    "done": false,
    "source": "hand",
    "key": "homework 10",
-   "about": ""
+   "about": "Six questions: (1) balls cover a metric space, compact ⇒ one ball, (0,1) example; (2) one-point compactification T+ is closed under unions and finite intersections; (3) X+ compact, Hausdorff if locally compact; (4) compact → Hausdorff continuous surjection is a quotient map; (5) binary map on ∏{0,1} is continuous; (6) its image is [0,1], compact, a quotient. Pages in the Topology guide (Homework 10).",
+   "progress": {
+    "parts": [
+     "Q1",
+     "Q2",
+     "Q3",
+     "Q4",
+     "Q5",
+     "Q6"
+    ],
+    "done": [],
+    "note": "Guide pages ready; start with Q1 and Q4 (shortest), then Q2–Q3, Q5–Q6."
+   }
   }
  ],
  "plan": {
