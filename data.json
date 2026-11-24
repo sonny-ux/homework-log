@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T02:20:27+00:00",
+ "updated": "2026-11-24T02:20:37+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1329,12 +1329,12 @@
    "week": "2026-11-22",
    "class": "Lit Study",
    "start": "3:14 PM",
-   "end": "now",
+   "end": "5:40 PM",
    "start_min": 914,
-   "end_min": 1280,
-   "minutes": 366,
-   "in_progress": true,
-   "topic": "Lit Study: essay 3 (due today).",
+   "end_min": 1060,
+   "minutes": 146,
+   "in_progress": false,
+   "topic": "Lit Study: Essay 3 on Fantomina (unnaming, disguises); quotes found.",
    "refs": []
   }
  ],
