@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T00:44:17+00:00",
+ "updated": "2026-11-25T01:07:16+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1377,8 +1377,8 @@
    "start": "7:44 PM",
    "end": "now",
    "start_min": 1184,
-   "end_min": 1184,
-   "minutes": 0,
+   "end_min": 1207,
+   "minutes": 23,
    "in_progress": true,
    "topic": "Phil of Sci: Paper 2, Popper on induction.",
    "refs": [
