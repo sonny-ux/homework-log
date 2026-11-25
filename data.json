@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T00:40:23+00:00",
+ "updated": "2026-11-25T00:44:17+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1367,6 +1367,22 @@
    "topic": "Topology: HW10 Q1; the point at infinity; guide problem pages reworked.",
    "refs": [
     "homework 10"
+   ]
+  },
+  {
+   "date": "2026-11-24",
+   "day": "Tue",
+   "week": "2026-11-22",
+   "class": "Phil of Sci",
+   "start": "7:44 PM",
+   "end": "now",
+   "start_min": 1184,
+   "end_min": 1184,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Phil of Sci: Paper 2, Popper on induction.",
+   "refs": [
+    "paper 2"
    ]
   }
  ],
