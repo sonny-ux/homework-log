@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T08:39:24+00:00",
+ "updated": "2026-11-25T08:39:37+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1391,14 +1391,16 @@
    "week": "2026-11-22",
    "class": "Phil of Sci",
    "start": "1:47 AM",
-   "end": "now",
+   "end": "3:39 AM",
    "start_min": 107,
    "end_min": 219,
    "minutes": 112,
-   "in_progress": true,
-   "topic": "Phil of Sci: Paper 2, Popper on induction (continued).",
+   "in_progress": false,
+   "topic": "Phil of Sci: Carnap on metaphysics; Paper 2 narrowed to Goodman or Popper.",
    "refs": [
-    "paper 2"
+    "paper 2",
+    "problem set",
+    "paper"
    ]
   }
  ],
@@ -1748,7 +1750,7 @@
      "Revise"
     ],
     "done": [],
-    "note": "Check whether a Popper text was assigned (email, CourseWorks); otherwise start with Conjectures and Refutations ch. 1."
+    "note": "Choosing between prompt 7 (Goodman: FFF ch. 3, then ch. 4) and prompt 8 (Popper: confirm the text; likely Conjectures and Refutations ch. 1)."
    }
   }
  ],
