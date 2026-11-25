@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T07:54:53+00:00",
+ "updated": "2026-11-25T00:40:23+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1695,6 +1695,28 @@
     ],
     "done": [],
     "note": "Q4 and Q1 worked through (write-ups not reported); next: Q5, Q6, then Q2–Q3."
+   }
+  },
+  {
+   "due": "2026-12-02",
+   "time": null,
+   "class": "Phil of Sci",
+   "title": "Paper 2",
+   "detail": "Paper 2 (5 pages, double spaced; eight prompts in School/syllabi/Philosophy of Science paper 2.md; leaning toward 8, Popper on the descriptive and justificatory problems of induction)",
+   "done": false,
+   "source": "hand",
+   "key": "paper 2",
+   "about": "Second paper, 5 pages double spaced, due Wed 12/2. Eight prompts on laws (Humean vs governing; Hempel, Lewis, Goodman, Armstrong, Maudlin, van Fraassen, Cartwright) and induction (Hempel, Goodman, Popper). Leaning toward prompt 8: Popper's attitude to the descriptive and justificatory problems of induction and his proposed solution.",
+   "progress": {
+    "parts": [
+     "Choose prompt",
+     "Read",
+     "Outline",
+     "Draft",
+     "Revise"
+    ],
+    "done": [],
+    "note": "Leaning toward prompt 8 (Popper); next: confirm the prompt and the Popper reading."
    }
   }
  ],
