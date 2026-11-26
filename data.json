@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T08:39:37+00:00",
+ "updated": "2026-11-26T00:02:12+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1401,6 +1401,22 @@
     "paper 2",
     "problem set",
     "paper"
+   ]
+  },
+  {
+   "date": "2026-11-25",
+   "day": "Wed",
+   "week": "2026-11-22",
+   "class": "Phil of Sci",
+   "start": "7:02 PM",
+   "end": "now",
+   "start_min": 1142,
+   "end_min": 1142,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Phil of Sci: Paper 2 (Goodman or Popper).",
+   "refs": [
+    "paper 2"
    ]
   }
  ],
