@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T21:43:42+00:00",
+ "updated": "2026-11-27T23:17:38+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1443,12 +1443,12 @@
    "week": "2026-11-22",
    "class": "Topology",
    "start": "4:43 PM",
-   "end": "now",
+   "end": "6:17 PM",
    "start_min": 1003,
-   "end_min": 1003,
-   "minutes": 0,
-   "in_progress": true,
-   "topic": "Topology: HW11 write-ups, Q1 then Q2.",
+   "end_min": 1097,
+   "minutes": 94,
+   "in_progress": false,
+   "topic": "Topology: HW11 Q1 written; Q2 started (cover from Lemma 26.4).",
    "refs": [
     "homework 11"
    ]
@@ -1800,8 +1800,10 @@
      "Q5",
      "Q6"
     ],
-    "done": [],
-    "note": "Q1 idea understood (cover closing in on an irrational); no write-ups yet. Next: write Q1, then Q2–Q6."
+    "done": [
+     "Q1"
+    ],
+    "note": "Q1 drafted (apply the fixes noted 11/27); Q2 started. Next: finish Q2 with the cover {U_z} from Lemma 26.4, then Q3–Q4."
    }
   },
   {
