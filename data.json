@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T08:56:31+00:00",
+ "updated": "2026-11-27T09:01:11+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1417,6 +1417,23 @@
    "topic": "Phil of Sci: Paper 2 (Goodman or Popper).",
    "refs": [
     "paper 2"
+   ]
+  },
+  {
+   "date": "2026-11-27",
+   "day": "Fri",
+   "week": "2026-11-22",
+   "class": "Topology",
+   "start": "3:42 AM",
+   "end": "now",
+   "start_min": 222,
+   "end_min": 241,
+   "minutes": 19,
+   "in_progress": true,
+   "topic": "Topology: Homework 11 set up in the guide.",
+   "refs": [
+    "homework 11",
+    "problem set 9"
    ]
   }
  ],
