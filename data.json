@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T10:08:34+00:00",
+ "updated": "2026-11-27T10:09:04+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1852,11 +1852,13 @@
     ],
     "plan": [
      "Sleep first",
-     "Topology HW11 (~1.5 h): write up Q1, then Q2",
-     "Break, then Phil of Sci Paper 2 (~1 h): choose prompt 7 or 8 and start the reading",
-     "Short evening block (~30 min): Physics PS9 P1, the plot and the description"
+     "Block 1 · Topology HW11 (~1.5 h): write up Q1, then Q2",
+     "Break",
+     "Block 2 · Phil of Sci Paper 2 (~1.5 h): choose prompt 7 or 8, start the reading, notes as you go",
+     "Break",
+     "Block 3 · Physics PS9 (~1 h): P1 (plot and describe), then P2(b), the one-line part"
     ],
-    "goal": "HW11 Q1–Q2 written; Paper 2 prompt chosen"
+    "goal": "Three blocks: HW11 Q1–Q2 written, paper prompt chosen, PS9 P1 and P2(b) done"
    },
    {
     "date": "2026-11-28",
@@ -1865,7 +1867,7 @@
      "Start with 10 minutes recalling Q1–Q2 from memory, no notes",
      "Topology HW11 (~1.5 h): Q3, then Q4 (Q3 uses Q2; Q4 uses Q1's idea)",
      "Phil of Sci Paper 2 (~1.5 h): finish the reading, notes, one working thesis sentence",
-     "Physics PS9 (~1 h): P2(b), then start P2(a)"
+     "Physics PS9 (~1 h): start P2(a)"
     ],
     "goal": "HW11 Q1–Q4 written"
    },
