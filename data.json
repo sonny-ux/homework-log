@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T09:52:04+00:00",
+ "updated": "2026-11-27T10:00:36+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1425,14 +1425,15 @@
    "week": "2026-11-22",
    "class": "Topology",
    "start": "3:42 AM",
-   "end": "now",
+   "end": "5:00 AM",
    "start_min": 222,
-   "end_min": 292,
-   "minutes": 70,
-   "in_progress": true,
-   "topic": "Topology: Homework 11 set up in the guide.",
+   "end_min": 300,
+   "minutes": 78,
+   "in_progress": false,
+   "topic": "Topology: HW11 set up; Q1 cover and missing points (Dedekind cuts).",
    "refs": [
     "homework 11",
+    "homework 10",
     "problem set 9"
    ]
   }
@@ -1784,7 +1785,7 @@
      "Q6"
     ],
     "done": [],
-    "note": "Not started; pages are in the topology guide (Homework 11)."
+    "note": "Q1 idea understood (cover closing in on an irrational); no write-ups yet. Next: write Q1, then Q2–Q6."
    }
   },
   {
