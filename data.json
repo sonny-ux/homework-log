@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26T02:50:37+00:00",
+ "updated": "2026-11-27T08:47:41+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1745,6 +1745,50 @@
     ],
     "done": [],
     "note": "Q4 and Q1 worked through (write-ups not reported); next: Q5, Q6, then Q2–Q3."
+   }
+  },
+  {
+   "due": "2026-11-30",
+   "time": "11:59 PM",
+   "class": "Topology",
+   "title": "Homework 11",
+   "detail": "Homework 11 (Gradescope; 6 questions, 2% of grade; §26 and §29: ℚ∩[0,1] not compact, separating compact sets, local compactness, ℚ not locally compact, X⁺ connected, proper maps; worked into the Topology Reference Guide)",
+   "done": false,
+   "source": "hand",
+   "key": "homework 11",
+   "about": "Six questions on §26 and §29: Q1 an open cover of ℚ∩[0,1] with no finite subcover; Q2 separating two disjoint compact sets in a Hausdorff space; Q3 open subsets of compact Hausdorff spaces are locally compact; Q4 ℚ is not locally compact; Q5 X⁺ connected when X is connected and not compact; Q6 f⁺ continuous iff f is proper. 2% of the grade, Gradescope, due Mon 11/30 11:59 PM. Topology guide: Homework 11 pages.",
+   "progress": {
+    "parts": [
+     "Q1",
+     "Q2",
+     "Q3",
+     "Q4",
+     "Q5",
+     "Q6"
+    ],
+    "done": [],
+    "note": "Not started; pages are in the topology guide (Homework 11)."
+   }
+  },
+  {
+   "due": "2026-12-01",
+   "time": "9:00 AM",
+   "class": "Physics III",
+   "title": "Problem Set 9",
+   "detail": "Problem Set 9 (20 pts, Gradescope, one merged PDF with problems tagged, written reasoning; King 6.14 and French 6-14, Fourier series)",
+   "done": false,
+   "source": "hand",
+   "key": "problem set 9",
+   "about": "Fourier series. 1 (King 6.14): plot f(x) = (4/π)(cos x − cos 3x/3 + cos 5x/5 − …) on 0 ≤ x ≤ 4π and describe its shape. 2 (French 6-14): Fourier series on 0 ≤ x ≤ L of (a) Ax(L−x), (b) A sin(πx/L), (c) A sin(2πx/L) on the first half, 0 on the second. 20 pts, one merged PDF on Gradescope with problems tagged and written reasoning, due Tue 12/1 9:00 AM.",
+   "progress": {
+    "parts": [
+     "P1 (King 6.14)",
+     "P2(a)",
+     "P2(b)",
+     "P2(c)"
+    ],
+    "done": [],
+    "note": "Not started."
    }
   },
   {
