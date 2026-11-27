@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T09:01:11+00:00",
+ "updated": "2026-11-27T09:52:04+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1427,8 +1427,8 @@
    "start": "3:42 AM",
    "end": "now",
    "start_min": 222,
-   "end_min": 241,
-   "minutes": 19,
+   "end_min": 292,
+   "minutes": 70,
    "in_progress": true,
    "topic": "Topology: Homework 11 set up in the guide.",
    "refs": [
