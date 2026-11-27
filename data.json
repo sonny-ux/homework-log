@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T23:21:44+00:00",
+ "updated": "2026-11-27T23:45:44+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1461,8 +1461,8 @@
    "start": "6:21 PM",
    "end": "now",
    "start_min": 1101,
-   "end_min": 1101,
-   "minutes": 0,
+   "end_min": 1125,
+   "minutes": 24,
    "in_progress": true,
    "topic": "Virginia Woolf",
    "refs": [
@@ -1743,7 +1743,7 @@
    "class": "Physics III",
    "title": "Midterm 2",
    "detail": "Midterm 2 (in person, 75 min; practice exam saved as School/Midterm 2 practice (Physics III).pdf). Taken Thu 11/19.",
-   "done": false,
+   "done": true,
    "source": "hand",
    "key": "midterm 2",
    "about": "In class Thu 11/19, 2:40 PM, 75 minutes. Practice exam (School/Midterm 2 practice (Physics III).pdf, 64 pts): 1 travelling-wave basics (λ, T, v, direction, sketches, transverse velocity, energy and power ⟨P⟩ = ½μvω²A²); 2 two strings μ and 2μ joined at x = 0: k, ω, transmission and reflection coefficients from continuity of displacement and slope, power fractions; 3 fixed–fixed string: k_n, ω_n, mode sketches, a two-mode superposition, nodes, frequency spectrum; 4 nonuniform string μ(x) = μ₀(1 + x/L)²: local speed, travel time by integrating dx/v.",
@@ -1779,8 +1779,8 @@
    "time": "11:59 PM",
    "class": "Topology",
    "title": "Homework 10",
-   "detail": "Homework 10 (Gradescope; 6 questions, 2% of grade; §26–29: compactness, one-point compactification, compact-to-Hausdorff quotients, binary map ∏{0,1} → [0,1]; worked into the Topology Reference Guide)",
-   "done": false,
+   "detail": "Homework 10 (Gradescope; 6 questions, 2% of grade; §26–29: compactness, one-point compactification, compact-to-Hausdorff quotients, binary map ∏{0,1} → [0,1]; worked into the Topology Reference Guide) Dropped Fri 11/27: you can't do it.",
+   "done": true,
    "source": "hand",
    "key": "homework 10",
    "about": "Six questions: (1) balls cover a metric space, compact ⇒ one ball, (0,1) example; (2) one-point compactification T+ is closed under unions and finite intersections; (3) X+ compact, Hausdorff if locally compact; (4) compact → Hausdorff continuous surjection is a quotient map; (5) binary map on ∏{0,1} is continuous; (6) its image is [0,1], compact, a quotient. Pages in the Topology guide (Homework 10).",
