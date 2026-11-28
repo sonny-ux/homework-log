@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T00:32:41+00:00",
+ "updated": "2026-11-28T00:32:54+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1464,7 +1464,7 @@
    "end_min": 1161,
    "minutes": 60,
    "in_progress": false,
-   "topic": "Virginia Woolf",
+   "topic": "Woolf: reading.",
    "refs": [
     "reading"
    ]
@@ -1480,7 +1480,7 @@
    "end_min": 1172,
    "minutes": 3,
    "in_progress": true,
-   "topic": "Paper 2: where Popper's arguments are in Logic of Scientific Discovery",
+   "topic": "Phil of Sci: Paper 2, prompt 8; where Popper's arguments are in Logic of Scientific Discovery.",
    "refs": [
     "paper 2",
     "reading"
