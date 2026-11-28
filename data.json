@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T05:40:43+00:00",
+ "updated": "2026-11-28T05:41:14+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1501,6 +1501,22 @@
    "topic": "Woolf: reading.",
    "refs": [
     "reading"
+   ]
+  },
+  {
+   "date": "2026-11-28",
+   "day": "Sat",
+   "week": "2026-11-22",
+   "class": "Phil of Sci",
+   "start": "12:41 AM",
+   "end": "now",
+   "start_min": 41,
+   "end_min": 41,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Phil of Sci: Paper 2 (Popper).",
+   "refs": [
+    "paper 2"
    ]
   }
  ],
