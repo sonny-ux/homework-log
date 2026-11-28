@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T00:32:54+00:00",
+ "updated": "2026-11-28T00:36:25+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1477,8 +1477,8 @@
    "start": "7:29 PM",
    "end": "now",
    "start_min": 1169,
-   "end_min": 1172,
-   "minutes": 3,
+   "end_min": 1176,
+   "minutes": 7,
    "in_progress": true,
    "topic": "Phil of Sci: Paper 2, prompt 8; where Popper's arguments are in Logic of Scientific Discovery.",
    "refs": [
