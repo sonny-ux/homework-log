@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T05:41:14+00:00",
+ "updated": "2026-11-28T06:02:40+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1509,11 +1509,11 @@
    "week": "2026-11-22",
    "class": "Phil of Sci",
    "start": "12:41 AM",
-   "end": "now",
+   "end": "1:02 AM",
    "start_min": 41,
-   "end_min": 41,
-   "minutes": 0,
-   "in_progress": true,
+   "end_min": 62,
+   "minutes": 21,
+   "in_progress": false,
    "topic": "Phil of Sci: Paper 2 (Popper).",
    "refs": [
     "paper 2"
