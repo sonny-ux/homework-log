@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T00:21:55+00:00",
+ "updated": "2026-11-28T00:32:41+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1468,6 +1468,23 @@
    "refs": [
     "reading"
    ]
+  },
+  {
+   "date": "2026-11-27",
+   "day": "Fri",
+   "week": "2026-11-22",
+   "class": "Phil of Sci",
+   "start": "7:29 PM",
+   "end": "now",
+   "start_min": 1169,
+   "end_min": 1172,
+   "minutes": 3,
+   "in_progress": true,
+   "topic": "Paper 2: where Popper's arguments are in Logic of Scientific Discovery",
+   "refs": [
+    "paper 2",
+    "reading"
+   ]
   }
  ],
  "assignments": [
@@ -1848,7 +1865,7 @@
    "time": null,
    "class": "Phil of Sci",
    "title": "Paper 2",
-   "detail": "Paper 2 (5 pages, double spaced; eight prompts in School/syllabi/Philosophy of Science paper 2.md; leaning toward 8, Popper on the descriptive and justificatory problems of induction)",
+   "detail": "Paper 2 (5 pages, double spaced; eight prompts in School/syllabi/Philosophy of Science paper 2.md; leaning toward 8, Popper on the descriptive and justificatory problems of induction) Popper is not on the syllabus: check for an assigned reading. Reading guide: School/reading guides/Phil of Sci paper 2 - prompt 8 (Popper).md",
    "done": false,
    "source": "hand",
    "key": "paper 2",
