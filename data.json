@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T07:43:46+00:00",
+ "updated": "2026-11-28T07:50:49+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1525,14 +1525,16 @@
    "week": "2026-11-22",
    "class": "Phil of Sci",
    "start": "1:09 AM",
-   "end": "now",
+   "end": "2:50 AM",
    "start_min": 69,
-   "end_min": 163,
-   "minutes": 94,
-   "in_progress": true,
-   "topic": "Phil of Sci: Paper 2 (Popper), continued.",
+   "end_min": 170,
+   "minutes": 101,
+   "in_progress": false,
+   "topic": "Phil of Sci: Paper 2; Newton, Einstein and intuition; the descriptive problem (Goodman pp. 61–67); Popper's attitude.",
    "refs": [
-    "paper 2"
+    "paper 2",
+    "problem set",
+    "reading"
    ]
   }
  ],
