@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T02:53:29+00:00",
+ "updated": "2026-11-28T05:24:36+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1485,6 +1485,22 @@
     "paper 2",
     "reading",
     "problem set"
+   ]
+  },
+  {
+   "date": "2026-11-28",
+   "day": "Sat",
+   "week": "2026-11-22",
+   "class": "Woolf",
+   "start": "12:24 AM",
+   "end": "now",
+   "start_min": 24,
+   "end_min": 24,
+   "minutes": 0,
+   "in_progress": true,
+   "topic": "Woolf: reading.",
+   "refs": [
+    "reading"
    ]
   }
  ],
