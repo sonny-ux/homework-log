@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T00:36:25+00:00",
+ "updated": "2026-11-28T02:20:24+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1475,15 +1475,16 @@
    "week": "2026-11-22",
    "class": "Phil of Sci",
    "start": "7:29 PM",
-   "end": "now",
+   "end": "9:20 PM",
    "start_min": 1169,
-   "end_min": 1176,
-   "minutes": 7,
-   "in_progress": true,
-   "topic": "Phil of Sci: Paper 2, prompt 8; where Popper's arguments are in Logic of Scientific Discovery.",
+   "end_min": 1280,
+   "minutes": 111,
+   "in_progress": false,
+   "topic": "Phil of Sci: Paper 2 (Popper); read §1, the regress and apriorism; descriptive problem traced to Goodman.",
    "refs": [
     "paper 2",
-    "reading"
+    "reading",
+    "problem set"
    ]
   }
  ],
@@ -1878,8 +1879,10 @@
      "Draft",
      "Revise"
     ],
-    "done": [],
-    "note": "Choosing between prompt 7 (Goodman: FFF ch. 3, then ch. 4) and prompt 8 (Popper: confirm the text; likely Conjectures and Refutations ch. 1)."
+    "done": [
+     "Choose prompt"
+    ],
+    "note": "Prompt 8 (Popper). Reading Logic of Scientific Discovery: §1 read; next Ch. 1 §2–8, then Ch. 10 §79–82 and §85. Hume (Enquiry IV) and Goodman FFF ch. III §1–2 for the intro."
    }
   }
  ],
