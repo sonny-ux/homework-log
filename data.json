@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28T02:20:24+00:00",
+ "updated": "2026-11-28T02:53:29+00:00",
  "sessions": [
   {
    "date": "2026-10-25",
@@ -1910,7 +1910,8 @@
      "Break",
      "Block 2 · Phil of Sci Paper 2 (~1.5 h): choose prompt 7 or 8, start the reading, notes as you go",
      "Break",
-     "Block 3 · Physics PS9 (~1 h): P1 (plot and describe), then P2(b), the one-line part"
+     "Block 3 · Physics PS9 (~1 h): P1 (plot and describe), then P2(b), the one-line part",
+     "Revised 9:52 PM: PS9 block moved to Sat. Optional tonight: Paper reading, Ch. 1 §4–6 (stop when tired; Sat can absorb it)"
     ],
     "goal": "Three blocks: HW11 Q1–Q2 written, paper prompt chosen, PS9 P1 and P2(b) done"
    },
@@ -1918,22 +1919,21 @@
     "date": "2026-11-28",
     "classes": [],
     "plan": [
-     "Start with 10 minutes recalling Q1–Q2 from memory, no notes",
-     "Topology HW11 (~1.5 h): Q3, then Q4 (Q3 uses Q2; Q4 uses Q1's idea)",
-     "Phil of Sci Paper 2 (~1.5 h): finish the reading, notes, one working thesis sentence",
-     "Physics PS9 (~1 h): start P2(a)"
+     "Topology HW11 (~2 h): finish Q2, then Q3–Q4",
+     "Phil of Sci Paper 2, reading (~1.5–2 h): Logic of Scientific Discovery Ch. 10 §79–82 and §85, then Hume's Enquiry section IV",
+     "Physics PS9 (~1 h): P1 and P2(b) (moved from Fri)"
     ],
-    "goal": "HW11 Q1–Q4 written"
+    "goal": "HW11 Q1–Q4 written; Paper reading done"
    },
    {
     "date": "2026-11-29",
     "classes": [],
     "plan": [
-     "Topology HW11 (~1.5 h): Q5 and Q6; assemble the PDF; submit tonight, a day early",
-     "Phil of Sci Paper 2 (~1 h): outline (claim, the argument in steps, an objection, a reply)",
-     "Physics PS9 (~1 h): finish P2(a)"
+     "Topology HW11 (~2 h): Q5 and Q6; assemble the PDF; submit tonight, a day early",
+     "Phil of Sci Paper 2, outline (~1.5 h): reread Goodman FFF pp. 59–65, then arrange the notes around the two problems",
+     "Physics PS9 (~1 h): P2(a)"
     ],
-    "goal": "HW11 submitted"
+    "goal": "HW11 submitted; Paper outlined"
    },
    {
     "date": "2026-11-30",
@@ -1945,9 +1945,9 @@
     ],
     "plan": [
      "11:25–1:10 gap: Physics PS9 P2(c)",
-     "2:25–4:10 gap: Paper 2 draft, first two pages",
+     "2:25–4:10 gap: Paper 2 draft, pages 1–2 (Hume; the justificatory problem)",
      "At the Approaches seminar: ask about the final assignment (due date, length) and the next reading",
-     "Evening: merge and submit PS9 (due Tue 9 AM); topology recall, 15 min: §26–29 ideas from memory"
+     "After 8 PM: merge and submit PS9 (due Tue 9 AM)"
     ],
     "goal": "PS9 submitted tonight"
    },
@@ -1959,8 +1959,9 @@
     ],
     "plan": [
      "Before 9 AM: confirm PS9 went through",
-     "11:25–2:40: Paper 2 draft, pages 3–5",
-     "Evening: Lit Study reading (once known)"
+     "11:25–2:40 gap: Paper 2 draft, pages 3–5 (descriptive problem, the solution, corroboration)",
+     "Evening (~1 h): revise Paper 2; check each claim is attributed to the right person (Popper or Reichenbach)",
+     "Lit Study reading (once known)"
     ],
     "goal": "Full Paper 2 draft"
    },
@@ -1973,7 +1974,7 @@
      "Physics recitation ~6:10"
     ],
     "plan": [
-     "Morning or 11:25–1:10 gap: revise Paper 2 and submit (deadline time to confirm)",
+     "Morning: final read-through and submit Paper 2 (confirm the deadline time; if it is before class, submit Tue night)",
      "Evening: Topology concepts (~1 h): reread the compactness and local compactness pages; Focus list"
     ],
     "goal": "Paper 2 submitted"
